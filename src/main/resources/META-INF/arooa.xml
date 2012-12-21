@@ -1,0 +1,7 @@
+<arooa:descriptor  xmlns:arooa="http://rgordon.co.uk/oddjob/arooa"
+        prefix="beancmpr" namespace="oddjob:beancmpr">
+	<components>
+        <arooa:bean-def element='compare'
+            className='org.oddjob.beancmpr.BeanCompareJob'/>
+	</components>
+</arooa:descriptor>

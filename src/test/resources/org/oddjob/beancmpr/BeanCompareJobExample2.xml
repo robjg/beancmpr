@@ -1,0 +1,35 @@
+<oddjob>
+    <job>
+        <sequential>
+            <jobs>
+                <beancmpr:compare xmlns:beancmpr="oddjob:beancmpr"
+                        id="comparison" sorted="${sorted}"
+                        keyProperties="type" 
+                        valueProperties="quantity"
+                        otherProperties="colour">
+                    <inX>
+                        <value value="${listX}"/>
+                    </inX>
+                    <inY>
+                        <value value="${listY}"/>
+                    </inY>
+                    <out>
+                        <list/>
+                    </out>                    
+                </beancmpr:compare>
+                <bean-report>
+                    <beans>
+                        <value value="${comparison.out}"/>
+                    </beans>
+                    <output>
+                        <identify id="results">
+                            <value>
+                                <buffer/>
+                            </value>
+                        </identify>
+                    </output>
+                </bean-report>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>
