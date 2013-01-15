@@ -12,9 +12,9 @@ public class BeanCompareJobTest extends TestCase {
 
 	SharedTestData data = new SharedTestData();
 	
-	String EOL = System.getProperty("line.separator");
+	static String EOL = System.getProperty("line.separator");
 	
-	public String expectedKeysDifferent =
+	public static String expectedKeysDifferent =
 		"matchResultType  id  xType   yType   typeComparison  xQuantity  yQuantity  quantityComparison  xColour  yColour  colourComparison" + EOL +
 		"---------------  --  ------  ------  --------------  ---------  ---------  ------------------  -------  -------  ----------------" + EOL +
 		"NOT_EQUAL        1   Apple   Apple                   4          4                              green    red      green<>red" + EOL +
@@ -22,7 +22,7 @@ public class BeanCompareJobTest extends TestCase {
 		"X_MISSING        3           Orange                             2                                       orange   " + EOL +
 		"Y_MISSING        5   Orange                          2                                         orange            " + EOL;
 
-	public String expectedKeysSame =
+	public static String expectedKeysSame =
 		"matchResultType  type    xQuantity  yQuantity  quantityComparison  xColour  yColour" + EOL +
 		"---------------  ------  ---------  ---------  ------------------  -------  -------" + EOL +
 		"EQUAL            Apple   4          4                              green    red" + EOL +

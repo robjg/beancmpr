@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.oddjob.arooa.reflect.ArooaClass;
 import org.oddjob.arooa.reflect.BeanOverview;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.MatchDefinition;
@@ -67,7 +68,9 @@ public class BeanMatchableFactory implements MatchableFactory<Object> {
 		
 		Map<String, Class<?>> types = new HashMap<String, Class<?>>();
 		
-		BeanOverview overview = accessor.getBeanOverview(bean.getClass());
+		ArooaClass arooaClass = accessor.getClassName(bean);
+		
+		BeanOverview overview = arooaClass.getBeanOverview(accessor);
 
 		for (String name : definition.getKeyProperties()) {
 			types.put(name, overview.getPropertyType(name));

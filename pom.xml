@@ -11,7 +11,6 @@
     <spring.framework.version>3.1.1.RELEASE</spring.framework.version>
     <log4j.version>1.2.16</log4j.version>
     <hsql.version>2.2.8</hsql.version>
-    <mysql.version>5.1.18</mysql.version>
   </properties>
     <distributionManagement>
   <snapshotRepository>
@@ -44,6 +43,12 @@
       <groupId>uk.co.rgordon</groupId>
       <artifactId>oddjob</artifactId>
       <version>1.3.0-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>${hsql.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

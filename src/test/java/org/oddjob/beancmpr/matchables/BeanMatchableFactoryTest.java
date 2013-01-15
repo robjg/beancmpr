@@ -6,14 +6,12 @@ import java.util.Arrays;
 import junit.framework.TestCase;
 
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
+import org.oddjob.arooa.beanutils.MagicBeanClassCreator;
+import org.oddjob.arooa.reflect.ArooaClass;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Iterables;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
-import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
-import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableMetaData;
-import org.oddjob.beancmpr.matchables.SimpleMatchKey;
 
 public class BeanMatchableFactoryTest extends TestCase {
 
@@ -211,4 +209,41 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		assertEquals(Integer.class, result.getMetaData().getPropertyType("int"));
 	}	
+	
+	public void testWithMagicBeans() {
+		
+		MagicBeanClassCreator creator = new MagicBeanClassCreator("fruit");
+		creator.addProperty("type", String.class);
+		creator.addProperty("quantity", Integer.class);
+		
+		ArooaClass beanClass = creator.create();
+		
+		Object bean = beanClass.newInstance();
+		
+		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
+		
+		accessor.setProperty(bean, "type", "apple");
+		accessor.setProperty(bean, "quantity", 42);
+		
+		MatchDefinition definition = new SimpleMatchDefinition(
+				null,
+				new String[] { "type", "quantity" },
+				null
+				);
+		
+		BeanMatchableFactory factory = new BeanMatchableFactory(
+				definition, accessor);
+
+		
+		Matchable matchable = factory.createMatchable(bean);
+		
+		assertEquals(0, Iterables.toArray(
+				matchable.getKeys(), Object.class).length);
+		assertEquals(0, Iterables.toArray(
+				matchable.getOthers(), Object.class).length);
+		
+		Object[] values = Iterables.toArray(matchable.getValues(), Object.class);
+		assertEquals("apple", values[0]);
+		assertEquals(42, values[1]);
+	}
 }

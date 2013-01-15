@@ -2,6 +2,7 @@
         prefix="beancmpr" namespace="oddjob:beancmpr">
 	<components>
         <arooa:bean-def element='compare'
-            className='org.oddjob.beancmpr.BeanCompareJob'/>
+            className='org.oddjob.beancmpr.BeanCompareJob'
+            designFactory='org.oddjob.beancmpr.BeanCompareDesFa'/>
 	</components>
 </arooa:descriptor>

@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
+import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.beans.BeanCreatingResultProcessor;
@@ -37,6 +38,13 @@ import org.oddjob.beancmpr.matchables.UnsortedBeanMatchables;
 public class BeanCompareJob implements ArooaSessionAware, Runnable {
 
 	private static final Logger logger = Logger.getLogger(BeanCompareJob.class);
+	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description The name of the job as seen in Oddjob.
+	 * @oddjob.required No.
+	 */
+	private String name;
 	
 	/**
 	 * @oddjob.property
@@ -125,6 +133,7 @@ public class BeanCompareJob implements ArooaSessionAware, Runnable {
 	private boolean sorted;
 	
 	@Override
+	@ArooaHidden
 	public void setArooaSession(ArooaSession session) {
 		this.accessor = session.getTools().getPropertyAccessor();
 	}
@@ -184,6 +193,14 @@ public class BeanCompareJob implements ArooaSessionAware, Runnable {
 		}
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Iterable<?> getInX() {
 		return inX;
 	}
@@ -273,5 +290,15 @@ public class BeanCompareJob implements ArooaSessionAware, Runnable {
 
 	public void setSorted(boolean sorted) {
 		this.sorted = sorted;
+	}
+	
+	@Override
+	public String toString() {
+		if (name == null) {
+			return getClass().getSimpleName();
+		}
+		else {
+			return name;
+		}
 	}
 }
