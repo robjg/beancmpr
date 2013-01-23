@@ -6,22 +6,21 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.Logger;
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
 import org.oddjob.arooa.reflect.PropertyAccessor;
+import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.Iterables;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
 import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
 import org.oddjob.beancmpr.comparers.DefaultComparersByType;
-import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
-import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableComparison;
-import org.oddjob.beancmpr.matchables.MatchableGroup;
-import org.oddjob.beancmpr.matchables.MatchableMatchProcessor;
-import org.oddjob.beancmpr.matchables.OrderedMatchablesComparer;
-import org.oddjob.beancmpr.matchables.UnsortedBeanMatchables;
+import org.oddjob.beancmpr.comparers.MultiItemComparison;
 
 public class OrderedMatchablesComparerTest extends TestCase {
+	
+	private static final Logger logger = 
+			Logger.getLogger(OrderedMatchablesComparerTest.class);
 	
 	public static class Fruit {
 		
@@ -51,20 +50,22 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		List<Object[]> ysMissing = 
 			new ArrayList<Object[]>();
 		
-		List<Object[]> matchedKeys = new ArrayList<Object[]>();
+		List<Object[]> comparedKeys = new ArrayList<Object[]>();
 		
-		List<MatchableComparison> comparisons = 
-			new ArrayList<MatchableComparison>();
+		List<MultiValueComparison<Matchable>> comparisons = 
+			new ArrayList<MultiValueComparison<Matchable>>();
 		
 		@Override
-		public void matched(Matchable x, Matchable y, 
-				MatchableComparison comparison) {
+		public void compared(MultiValueComparison<Matchable> comparison) {
 
+			Matchable x = comparison.getX();
+			Matchable y = comparison.getY();
+			
 			assertEquals(x.getKey(), y.getKey());
 			
 			Object[] keys = Iterables.toArray(x.getKeys(), Object.class);
 			
-			matchedKeys.add(keys);
+			comparedKeys.add(keys);
 					
 			comparisons.add(comparison);
 		}
@@ -138,7 +139,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		assertEquals("orange",
 				results.ysMissing.get(1)[0]);
 		
-		assertEquals(0, results.matchedKeys.size());
+		assertEquals(0, results.comparedKeys.size());
 	}	
 	
 	public void testKeysMatchOneValueDoesnt() {
@@ -183,13 +184,13 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		assertEquals(0, results.xsMissing.size());
 		assertEquals(0, results.ysMissing.size());
 				
-		assertEquals("apple", results.matchedKeys.get(0)[0]);
-		assertEquals("orange", results.matchedKeys.get(1)[0]);
-		assertEquals("pear", results.matchedKeys.get(2)[0]);
+		assertEquals("apple", results.comparedKeys.get(0)[0]);
+		assertEquals("orange", results.comparedKeys.get(1)[0]);
+		assertEquals("pear", results.comparedKeys.get(2)[0]);
 		
-		assertEquals(false, results.comparisons.get(0).isEqual());
-		assertEquals(true, results.comparisons.get(1).isEqual());
-		assertEquals(true, results.comparisons.get(2).isEqual());		
+		assertEquals(true, results.comparisons.get(0).getResult() != 0);
+		assertEquals(0, results.comparisons.get(1).getResult());
+		assertEquals(0, results.comparisons.get(2).getResult());		
 	}
 
 	public void testTwoXMissingOneYDuplicated() {
@@ -231,13 +232,13 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		
 		test.compare(xs, ys);
 		
-		assertEquals(2, results.matchedKeys.size());
+		assertEquals(2, results.comparedKeys.size());
 		
-		assertEquals("apple", results.matchedKeys.get(0)[0]);
-		assertEquals("banana", results.matchedKeys.get(1)[0]);
+		assertEquals("apple", results.comparedKeys.get(0)[0]);
+		assertEquals("banana", results.comparedKeys.get(1)[0]);
 		
-		assertEquals(true, results.comparisons.get(0).isEqual());
-		assertEquals(true, results.comparisons.get(1).isEqual());
+		assertEquals(0, results.comparisons.get(0).getResult());
+		assertEquals(0, results.comparisons.get(1).getResult());
 		
 		assertEquals(2, results.xsMissing.size());
 		
@@ -245,5 +246,75 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		assertEquals("orange", results.xsMissing.get(1)[0]);
 		
 		assertEquals(0, results.ysMissing.size());
+	}
+	
+	public void testWithNoKey() {
+		
+		MatchDefinition definition = new SimpleMatchDefinition(
+				null,
+				new String[] { "type", "quantity" },
+				null);
+		
+		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
+		
+		BeanMatchableFactory factory = new BeanMatchableFactory(
+				definition, accessor);		
+
+		List<Fruit> fruitX = Arrays.asList(		
+				new Fruit("apple", 5),
+				new Fruit("banana", 5),
+				new Fruit("kiwi", 5)
+			);
+				
+		UnsortedBeanMatchables<Object> xs = 
+			new UnsortedBeanMatchables<Object>(fruitX, factory);
+		
+		
+		List<Fruit> fruitY = Arrays.asList(		
+				new Fruit("banana", 5),
+				new Fruit("orange", 2),
+				new Fruit("pear", 2),
+				new Fruit("apple", 4),
+				new Fruit("apple", 5)
+			);
+				
+		UnsortedBeanMatchables<Object> ys = 
+			new UnsortedBeanMatchables<Object>(fruitY, factory);
+		
+		Results results = new Results();
+		
+		OrderedMatchablesComparer test = new OrderedMatchablesComparer(
+				accessor, 
+				new ComparersByPropertyOrType(
+						null, new DefaultComparersByType()),
+				results);
+		
+		MultiItemComparison<MatchableGroup> multiItemComparison =
+				test.compare(xs, ys);
+		
+		assertEquals(1, multiItemComparison.getDifferent());
+		assertEquals(2, multiItemComparison.getSame());
+		assertEquals(2, multiItemComparison.getXsMissing());
+		assertEquals(0, multiItemComparison.getYsMissing());
+		
+		assertEquals(3, results.comparedKeys.size());
+		assertEquals(0, results.comparedKeys.get(0).length);
+		assertEquals(0, results.comparedKeys.get(1).length);
+		assertEquals(0, results.comparedKeys.get(2).length);
+		
+		for (MultiValueComparison<?> comparison : results.comparisons) {
+			
+			logger.info(comparison.toString());
+			
+			for (Comparison<?> valueComparison : 
+				comparison.getValueComparisons()) {
+				
+				logger.info("  " + valueComparison.toString());
+				
+			}
+		}
+		
+		assertEquals(3, results.comparisons.size());
+		
 	}
 }

@@ -20,7 +20,7 @@ public class DefaultComparersByType implements ComparersByType {
 		comparers.setComparer(index++, new NumericComparer());		
 		comparers.setComparer(index++, new ArrayComparer());
 		comparers.setComparer(index++, new SimpleIterableComparer());
-		comparers.setComparer(index++, new EqualsComparer());
+		comparers.setComparer(index++, new SimpleComparer());
 	}
 		
 	@Override

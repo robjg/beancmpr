@@ -13,8 +13,8 @@ import org.oddjob.beancmpr.Comparison;
  * @author rob
  *
  */
-public class SimpleIterableComparer 
-implements HierarchicalComparer<Iterable<?>>{
+public class SimpleIterableComparer<T> 
+implements HierarchicalComparer<Iterable<T>>{
 
 	private ComparersByType comparers;
 	
@@ -24,13 +24,14 @@ implements HierarchicalComparer<Iterable<?>>{
 	}
 	
 	@Override
-	public MultiItemComparison compare(Iterable<?> x, Iterable<?> y) {
+	public MultiItemComparison<T> compare(Iterable<T> x, Iterable<T> y) {
+		
 		if (x == null || y == null) {
 			return null;
 		}
 				
-		List<Object> yCopy = new ArrayList<Object>();
-		for (Object o : y) {
+		List<T> yCopy = new ArrayList<T>();
+		for (T o : y) {
 			yCopy.add(o);
 		}
 		
@@ -42,24 +43,24 @@ implements HierarchicalComparer<Iterable<?>>{
 		int xCount = 0;
 		int yCount = yCopy.size();
 		
-		for (Object eX : x) {
+		for (T eX : x) {
 			
 			if (!yCopy.isEmpty()) {
 				
 				boolean found = false;
 				
-				for (Iterator<Object> itY = yCopy.iterator(); itY.hasNext(); ) {
+				for (Iterator<T> itY = yCopy.iterator(); itY.hasNext(); ) {
 					
-					Object eY = itY.next();
+					T eY = itY.next();
 					
 					@SuppressWarnings("unchecked")
-					Comparer<Object> comparer = (Comparer<Object>) 
+					Comparer<T> comparer = (Comparer<T>) 
 						comparers.comparerFor(eX.getClass());
 					
-					Comparison eComparison = 
+					Comparison<T> eComparison = 
 						comparer.compare(eX, eY);
 					
-					if (eComparison.isEqual()) {
+					if (eComparison.getResult() == 0) {
 						itY.remove();
 						found = true;
 						break;
@@ -86,7 +87,7 @@ implements HierarchicalComparer<Iterable<?>>{
 			different -= ysMissing;
 		}
 		
-		return new MultiItemComparison(
+		return new MultiItemComparison<T>(x, y,
 				xsMissing, ysMissing, different, same);
 	}
 	

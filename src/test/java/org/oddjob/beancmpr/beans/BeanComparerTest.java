@@ -5,9 +5,7 @@ import junit.framework.TestCase;
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.Iterables;
-import org.oddjob.beancmpr.beans.BeanComparer;
-import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
-import org.oddjob.beancmpr.matchables.MatchableComparison;
+import org.oddjob.beancmpr.matchables.MultiValueComparison;
 
 public class BeanComparerTest extends TestCase {
 
@@ -50,16 +48,17 @@ public class BeanComparerTest extends TestCase {
 		beanY.setType("apple");
 		beanY.setQuantity(3);
 		
-		MatchableComparison comparison = comparer.compare(beanX, beanY);
+		MultiValueComparison<Object> comparison = 
+				comparer.compare(beanX, beanY);
 		
-		assertEquals(false, comparison.isEqual());
+		assertEquals(false, comparison.getResult() == 0);
 		
-		Comparison[] comparisons = Iterables.toArray(
+		Comparison<?>[] comparisons = Iterables.toArray(
 				comparison.getValueComparisons(), Comparison.class);
 		
 		assertEquals(2, comparisons.length);
 		
-		assertEquals(true, comparisons[0].isEqual());
-		assertEquals(false, comparisons[1].isEqual());
+		assertEquals(0, comparisons[0].getResult());
+		assertEquals(false, comparisons[1].getResult() == 0);
 	}
 }

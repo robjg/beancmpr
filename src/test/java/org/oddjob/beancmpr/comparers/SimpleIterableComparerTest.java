@@ -12,7 +12,8 @@ public class SimpleIterableComparerTest extends TestCase {
 
 	public void testCompareEqual() {
 		
-		SimpleIterableComparer test = new SimpleIterableComparer();
+		SimpleIterableComparer<String> test = 
+				new SimpleIterableComparer<String>();
 		
 		test.setComparersByType(new DefaultComparersByType());
 		
@@ -20,9 +21,9 @@ public class SimpleIterableComparerTest extends TestCase {
 		
 		Iterable<String> y = Arrays.asList("b", "c", "a");
 		
-		MultiItemComparison comparison = test.compare(x, y);
+		MultiItemComparison<String> comparison = test.compare(x, y);
 		
-		assertEquals(true, comparison.isEqual());
+		assertEquals(0, comparison.getResult());
 		assertEquals(3, comparison.getSame());
 		assertEquals(0, comparison.getDifferent());		
 		assertEquals(0, comparison.getXsMissing());
@@ -31,7 +32,8 @@ public class SimpleIterableComparerTest extends TestCase {
 	
 	public void testCompareOneDifferentEqual() {
 		
-		SimpleIterableComparer test = new SimpleIterableComparer();
+		SimpleIterableComparer<String> test = 
+				new SimpleIterableComparer<String>();
 		
 		test.setComparersByType(new DefaultComparersByType());
 		
@@ -39,9 +41,9 @@ public class SimpleIterableComparerTest extends TestCase {
 		
 		Iterable<String> y = Arrays.asList("b", "c", "d");
 		
-		MultiItemComparison comparison = test.compare(x, y);
+		MultiItemComparison<String> comparison = test.compare(x, y);
 		
-		assertEquals(false, comparison.isEqual());
+		assertEquals(false, comparison.getResult() == 0);
 		assertEquals(2, comparison.getSame());
 		assertEquals(1, comparison.getDifferent());		
 		assertEquals(0, comparison.getXsMissing());
@@ -50,7 +52,8 @@ public class SimpleIterableComparerTest extends TestCase {
 
 	public void testCompareOneXMissing() {
 		
-		SimpleIterableComparer test = new SimpleIterableComparer();
+		SimpleIterableComparer<String> test = 
+				new SimpleIterableComparer<String>();
 		
 		test.setComparersByType(new DefaultComparersByType());
 		
@@ -58,9 +61,9 @@ public class SimpleIterableComparerTest extends TestCase {
 		
 		Iterable<String> y = Arrays.asList("b", "c", "a");
 		
-		MultiItemComparison comparison = test.compare(x, y);
+		MultiItemComparison<String> comparison = test.compare(x, y);
 		
-		assertEquals(false, comparison.isEqual());
+		assertEquals(false, comparison.getResult() == 0);
 		assertEquals(2, comparison.getSame());
 		assertEquals(0, comparison.getDifferent());		
 		assertEquals(1, comparison.getXsMissing());
@@ -69,7 +72,8 @@ public class SimpleIterableComparerTest extends TestCase {
 
 	public void testCompareOneYMissing() {
 		
-		SimpleIterableComparer test = new SimpleIterableComparer();
+		SimpleIterableComparer<String> test = 
+				new SimpleIterableComparer<String>();
 		
 		test.setComparersByType(new DefaultComparersByType());
 		
@@ -77,9 +81,9 @@ public class SimpleIterableComparerTest extends TestCase {
 		
 		Iterable<String> y = Arrays.asList("b", "c");
 		
-		MultiItemComparison comparison = test.compare(x, y);
+		MultiItemComparison<String> comparison = test.compare(x, y);
 		
-		assertEquals(false, comparison.isEqual());
+		assertEquals(false, comparison.getResult() == 0);
 		assertEquals(2, comparison.getSame());
 		assertEquals(0, comparison.getDifferent());		
 		assertEquals(0, comparison.getXsMissing());

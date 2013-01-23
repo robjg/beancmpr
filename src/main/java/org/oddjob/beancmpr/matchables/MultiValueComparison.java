@@ -8,7 +8,7 @@ import org.oddjob.beancmpr.Comparison;
  * @author Rob
  *
  */
-public interface MatchableComparison extends Comparison {
+public interface MultiValueComparison<T> extends Comparison<T> {
 
 	/**
 	 * Provides an {@code Iterable} of the individual {@link Comparison}s
@@ -16,6 +16,6 @@ public interface MatchableComparison extends Comparison {
 	 * 
 	 * @return
 	 */
-	public Iterable<Comparison> getValueComparisons();
+	public Iterable<Comparison<?>> getValueComparisons();
 
 }

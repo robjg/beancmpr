@@ -9,8 +9,12 @@ import org.oddjob.beancmpr.Comparison;
  * @author rob
  *
  */
-public class MultiItemComparison implements Comparison {
+public class MultiItemComparison<T> implements Comparison<Iterable<T>> {
 
+	private final Iterable<T> x;
+	
+	private final Iterable<T> y;
+	
 	private final int xsMissing;
 	
 	private final int ysMissing;
@@ -18,28 +22,52 @@ public class MultiItemComparison implements Comparison {
 	private final int different;
 	
 	private final int same;
-	
-	
+		
 	public MultiItemComparison(
+			Iterable<T> x,
+			Iterable<T> y,
 			int xsMissing,
 			int ysMissing,
 			int different,
 			int same) {
+		
+		this.x = x;
+		this.y = y;
 		
 		this.xsMissing = xsMissing;
 		this.ysMissing = ysMissing;
 		this.different = different;
 		this.same = same;
 	}
-
+	
 	@Override
-	public boolean isEqual() {
-		return different == 0 && xsMissing == 0 && ysMissing == 0;
+	public Iterable<T> getX() {
+		return x;
+	}
+	
+	@Override
+	public Iterable<T> getY() {
+		return y;
+	}
+	
+	@Override
+	public int getResult() {
+		int result = xsMissing - ysMissing;
+		
+		if (result != 0) {
+			return result;
+		}
+		else if (different == 0 ) {
+			return 0;
+		}
+		else {
+			return -1;
+		}
 	}
 	
 	@Override
 	public String getSummaryText() {
-		if (isEqual()) {
+		if (getResult() == 0) {
 			return "Equal, " + same + " matched";
 		}
 		else {

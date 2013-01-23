@@ -12,19 +12,14 @@ import org.oddjob.beancmpr.Comparison;
  * @author rob
  *
  */
-public class EqualsComparer implements Comparer<Object> {
+public class SimpleComparer implements Comparer<Object> {
 	
-	public Comparison compare(Object x, Object y) {
+	public Comparison<Object> compare(Object x, Object y) {
 		if (x == null || y == null) {
 			return null;
 		}
 		
-		if (x.equals(y)) {
-			return new AreEqual();
-		}
-		else {
-			return new AreNotEqual(x, y);
-		}
+		return new SimpleComparison<Object>(x, y);
 	}
 	
 	@Override

@@ -11,6 +11,7 @@ import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.beans.BeanCreatingResultProcessor;
 import org.oddjob.beancmpr.beans.ComparersByProperty;
 import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
+import org.oddjob.beancmpr.beans.SimpleResultBeanFactory;
 import org.oddjob.beancmpr.comparers.ComparersByType;
 import org.oddjob.beancmpr.comparers.MultiItemComparison;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
@@ -152,27 +153,28 @@ public class BeanCompareJob implements ArooaSessionAware, Runnable {
 		
 		if (out != null) {
 			resultsListener = new BeanCreatingResultProcessor(
-					accessor,
-					xPropertyPrefix, 
-					yPropertyPrefix, 
+					new SimpleResultBeanFactory(accessor, 
+							xPropertyPrefix, yPropertyPrefix),
 					out);
 		}
 				
 		MatchDefinition definition = new SimpleMatchDefinition(
-				getKeyProperties(), getValueProperties(), getOtherProperties());
+				getKeyProperties(), getValueProperties(), 
+				getOtherProperties());
 		
 		BeanMatchableFactory factory = new BeanMatchableFactory(
 				definition, accessor);
 		
 		ComparersByPropertyOrType comparerProvider =
-			new ComparersByPropertyOrType(comparersByProperty, comparersByType);
+			new ComparersByPropertyOrType(
+					comparersByProperty, comparersByType);
 			
 		OrderedMatchablesComparer rec = new OrderedMatchablesComparer(
 				accessor,
 				comparerProvider,
 				resultsListener);
 		
-		MultiItemComparison comparison = 
+		MultiItemComparison<MatchableGroup> comparison = 
 			rec.compare(getIterableMatchables(inX, factory), 
 				getIterableMatchables(inY, factory));		
 		

@@ -8,7 +8,7 @@ import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.Iterables;
 import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
 import org.oddjob.beancmpr.matchables.DefaultMatchableComparer;
-import org.oddjob.beancmpr.matchables.MatchableComparison;
+import org.oddjob.beancmpr.matchables.MultiValueComparison;
 import org.oddjob.beancmpr.matchables.MatchableMetaData;
 
 public class DefaultMatchableComparerTest extends TestCase {
@@ -52,17 +52,17 @@ public class DefaultMatchableComparerTest extends TestCase {
 		MyMatchable x = new MyMatchable("apple", "red");
 		MyMatchable y = new MyMatchable("apple", "red");
 		
-		MatchableComparison result = test.compare(x, y);
+		MultiValueComparison<Matchable> result = test.compare(x, y);
 		
-		assertEquals(true, result.isEqual());
+		assertEquals(0, result.getResult());
 		
-		Comparison[] comparisons = Iterables.toArray(
+		Comparison<?>[] comparisons = Iterables.toArray(
 				result.getValueComparisons(), Comparison.class);
 		
 		assertEquals(2, comparisons.length);
 		
-		assertEquals(true, comparisons[0].isEqual());
-		assertEquals(true, comparisons[1].isEqual());
+		assertEquals(0, comparisons[0].getResult());
+		assertEquals(0, comparisons[1].getResult());
 	}
 	
 	public void testCompareNotEqual() {
@@ -74,16 +74,16 @@ public class DefaultMatchableComparerTest extends TestCase {
 		MyMatchable x = new MyMatchable("apple", "red");
 		MyMatchable y = new MyMatchable("apple", "green");
 		
-		MatchableComparison result = test.compare(x, y);
+		MultiValueComparison<Matchable> result = test.compare(x, y);
 		
-		assertEquals(false, result.isEqual());
+		assertTrue(result.getResult() > 0);
 		
-		Comparison[] comparisons = Iterables.toArray(result.getValueComparisons(), 
+		Comparison<?>[] comparisons = Iterables.toArray(result.getValueComparisons(), 
 				Comparison.class);
 		
 		assertEquals(2, comparisons.length);
 		
-		assertEquals(true, comparisons[0].isEqual());
-		assertEquals(false, comparisons[1].isEqual());
+		assertEquals(0, comparisons[0].getResult());
+		assertTrue(comparisons[1].getResult() > 0);
 	}
 }

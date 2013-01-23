@@ -1,6 +1,6 @@
 package org.oddjob.beancmpr.matchables;
 
-import org.oddjob.beancmpr.comparers.MultiItemComparison;
+import org.oddjob.beancmpr.comparers.MultiItemComparisonStats;
 
 /**
  * A {@link MatchableMatchProcessor} that counts matches, before passing the result
@@ -43,21 +43,21 @@ implements MatchableMatchProcessor {
 	}
 	
 	@Override
-	public void matched(Matchable x, Matchable y,
-			MatchableComparison comparison) {
-		if (comparison.isEqual()) {
+	public void compared(MultiValueComparison<Matchable> comparison) {
+		if (comparison.getResult() == 0) {
 			++same;
 		}
 		else {
 			++different;
 		}
 		if (delegate != null) {
-			delegate.matched(x, y, comparison);
+			delegate.compared(comparison);
 		}
 	}
 	
-	public MultiItemComparison getComparison() {
-		return new MultiItemComparison(xsMissing, ysMissing, different, same);
+	public MultiItemComparisonStats getComparison() {
+		return new MultiItemComparisonStats(
+				xsMissing, ysMissing, different, same);
 	}
 	
 }

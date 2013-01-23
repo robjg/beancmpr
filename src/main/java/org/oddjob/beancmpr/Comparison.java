@@ -6,14 +6,29 @@ package org.oddjob.beancmpr;
  * @author Rob
  *
  */
-public interface Comparison {
+public interface Comparison<T> {
 
 	/**
-	 * Is the result of the comparison equal.
+	 * Get the x of the comparison.
+	 * 
+	 * @return The x. Will not be null.
+	 */
+	public T getX();
+	
+	/**
+	 * Get the y of the comparison.
+	 * 
+	 * @return The y. Will not be null.
+	 */
+	public T getY();
+	
+	/**
+	 * The result of the comparison. 0 they are equal. -1 when x < y and
+	 * 1 when x > y
 	 * 
 	 * @return true/false.
 	 */
-	public boolean isEqual();
+	public int getResult();
 
 	/**
 	 * Provide a brief summary of the comparison.

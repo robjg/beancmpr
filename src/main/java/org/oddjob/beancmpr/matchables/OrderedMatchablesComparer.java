@@ -6,6 +6,7 @@ import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.beans.BeanComparerProvider;
 import org.oddjob.beancmpr.comparers.MultiItemComparison;
+import org.oddjob.beancmpr.comparers.MultiItemComparisonStats;
 
 /**
  * Compares two {@code Iterable}s of {@link MatchableGroup}s.
@@ -32,7 +33,7 @@ implements Comparer<Iterable<MatchableGroup>>{
 	}
 	
 	@Override
-	public MultiItemComparison compare(
+	public MultiItemComparison<MatchableGroup> compare(
 			Iterable<MatchableGroup> x, 
 			Iterable<MatchableGroup> y) {
 			
@@ -79,18 +80,23 @@ implements Comparer<Iterable<MatchableGroup>>{
 			if (compareKeys > 0) {
 				matchProcessor.xMissing(currentY);
 				currentY = null;
-				continue;
-				
+				continue;				
 			}
 			
 			groupMatch(currentX, currentY);
 			
 			currentX = null;
 			currentY = null;
-
 		}
 				
-		return matchProcessor.getComparison();		
+		MultiItemComparisonStats stats = matchProcessor.getComparison();
+		
+		return new MultiItemComparison<MatchableGroup>(x, y,
+				stats.getXsMissing(),
+				stats.getYsMissing(),
+				stats.getDifferent(),
+				stats.getSame()
+				);
 	}
 	
 	/**
@@ -114,12 +120,12 @@ implements Comparer<Iterable<MatchableGroup>>{
 				
 				Matchable matchableY = itY.next();
 				
-				MatchableComparison comparison = 
+				MultiValueComparison<Matchable> comparison = 
 					matchableComparer.compare(matchableX, matchableY);
 				
-				if (comparison.isEqual()){
+				if (comparison.getResult() == 0){
 					
-					matchProcessor.matched(matchableX, matchableY, comparison);
+					matchProcessor.compared(comparison);
 					
 					itY.remove();
 					itX.remove();
@@ -138,8 +144,8 @@ implements Comparer<Iterable<MatchableGroup>>{
 			Matchable matchableX = itX.next();
 			Matchable matchableY = itY.next();	
 			
-			matchProcessor.matched(matchableX, matchableY, 
-					matchableComparer.compare(matchableX, matchableY));
+			matchProcessor.compared(matchableComparer.compare(
+					matchableX, matchableY));
 			
 			itY.remove();
 			itX.remove();

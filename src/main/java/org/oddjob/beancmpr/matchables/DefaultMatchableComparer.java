@@ -31,20 +31,20 @@ public class DefaultMatchableComparer implements MatchableComparer {
 	 * @return A {@link Comparison}. Never null.
 	 */
 	@Override
-	public MatchableComparison compare(Matchable x, Matchable y) {
+	public MultiValueComparison<Matchable> compare(Matchable x, Matchable y) {
 				
 		if (x == null || y == null) {
 			throw new NullPointerException("Matchables must not be null.");
 		}
 
-		List<Comparison> comparisons = new ArrayList<Comparison>();		
+		List<Comparison<?>> comparisons = new ArrayList<Comparison<?>>();		
 
-		MatchableIterable<?> values = 
-			new MatchableIterable<Object>(
+		ValuePairIterable<?> values = 
+			new ValuePairIterable<Object>(
 				x.getMetaData().getValueProperties(), 
 				x.getValues(), y.getValues());
 	
-		for (MatchableIterable.MatchableSet<?> set : values) {
+		for (ValuePairIterable.ValuePair<?> set : values) {
 
 			Object valueX = set.getValueX();
 			Object valueY = set.getValueY();
@@ -53,17 +53,17 @@ public class DefaultMatchableComparer implements MatchableComparer {
 			Class<?> propertyType = 
 				x.getMetaData().getPropertyType(propertyName);
 			
-			Comparison comparison = 
+			Comparison<?> comparison = 
 				inferComparerType(propertyName, valueX, valueY, 
 						propertyType);
 			
 			comparisons.add(comparison);			
 		}		
 		
-		return new SimpleMatchableComparision(comparisons);
+		return new MatchableComparision(x, y, comparisons);
 	}
 
-	private <T> Comparison inferComparerType(String propertyName,
+	private <T> Comparison<T> inferComparerType(String propertyName,
 			Object rawX, Object rawY, Class<T> type) {
 		
 		Comparer<T> differentiator = 

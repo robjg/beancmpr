@@ -2,11 +2,10 @@ package org.oddjob.beancmpr.beans;
 
 import java.util.Collection;
 
-import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableComparison;
 import org.oddjob.beancmpr.matchables.MatchableGroup;
 import org.oddjob.beancmpr.matchables.MatchableMatchProcessor;
+import org.oddjob.beancmpr.matchables.MultiValueComparison;
 
 /**
  * Creates result beans for matches.
@@ -21,34 +20,30 @@ public class BeanCreatingResultProcessor implements MatchableMatchProcessor {
 	private final Collection<Object> out;
 	
 	public BeanCreatingResultProcessor(
-			PropertyAccessor accessor, 
-			String xPropertyPrefix,
-			String yPropertyPrefix,			
+			MatchResultBeanFactory matchResultBeanFactory,
 			Collection<Object> collection) {
 		
-		factory = new SimpleResultBeanFactory(accessor, 
-				xPropertyPrefix, yPropertyPrefix);
+		factory = matchResultBeanFactory;
 		
 		this.out = collection;
 	}
 		
 	@Override
-	public void matched(Matchable x, Matchable y,
-			MatchableComparison comparison) {
-		out.add(factory.createResult(x, y, comparison));
+	public void compared(MultiValueComparison<Matchable> comparison) {
+		out.add(factory.createComparisonResult(comparison));
 	}
 	
 	@Override
 	public void xMissing(MatchableGroup ys) {
 		for (Matchable y : ys.getGroup()) {			
-			out.add(factory.createResult(null, y, null));
+			out.add(factory.createXMissingResult(y));
 		}
 	}
 	
 	@Override
 	public void yMissing(MatchableGroup xs) {
 		for (Matchable x : xs.getGroup()) {
-			out.add(factory.createResult(x, null, null));
+			out.add(factory.createYMissingResult(x));
 		}
 	}	
 }

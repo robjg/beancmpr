@@ -1,5 +1,7 @@
 package org.oddjob.beancmpr.comparers;
 
+import java.text.DecimalFormat;
+
 import org.oddjob.beancmpr.Comparer;
 
 /**
@@ -33,7 +35,7 @@ public class NumericComparer implements Comparer<Number> {
 	
 	private String percentageFormat;
 	
-	public NumericComparison compare(Number x, Number y) {
+	public NumericComparison compare(final Number x, final Number y) {
 
 		if (x == null || y == null) {
 			return null;
@@ -42,33 +44,97 @@ public class NumericComparer implements Comparer<Number> {
 		double doubleX = x.doubleValue();
 		double doubleY = y.doubleValue();
 
-		double delta = doubleY - doubleX;
+		final double delta = doubleY - doubleX;
+		final double percentage;
+		if (doubleX == 0) {
+			percentage = 0;
+		}
+		else {
+			percentage = delta /doubleX * 100; 
+		}
+		
+		int result;
+		if (delta == 0) {
+			result = 0;
+		}
+		else if (delta > 0) {
+			result = -1;
+		}
+		else {
+			result = 1;
+		}
 		
 		if (deltaTolerance > 0 && 
 				Math.abs(delta) < deltaTolerance) {
-			return new NumericComparison();
+			result = 0;
+		}
+		else if (percentageTolerance > 0 && 
+					Math.abs(percentage) < percentageTolerance) {
+			result = 0;
 		}
 
-		if (doubleX == 0) {
-			return new NumericComparison(
-					new Double(delta), deltaFormat, null, null);
-		}
+		final int finalResult = result;
 		
-		double percentage = delta /doubleX * 100; 
-			
-		if (percentageTolerance > 0 && 
-				Math.abs(percentage) < percentageTolerance) {
-			return new NumericComparison();
-		}
-		
-		if (delta == 0) {
-			return new NumericComparison();
+		StringBuilder builder = new StringBuilder();
+		if (deltaFormat == null) {
+			builder.append(String.valueOf(delta));
 		}
 		else {
-			return new NumericComparison(
-					new Double(delta),deltaFormat, 
-					percentage, percentageFormat);
+			builder.append(new DecimalFormat(
+					deltaFormat).format(delta));
 		}
+		builder.append(" (");
+		if (percentageFormat == null) {
+			percentageFormat = "0.0";
+		}
+		builder.append(new DecimalFormat(
+				percentageFormat).format(percentage));
+		builder.append("%)");
+
+		final String summaryText = builder.toString();
+
+		return new NumericComparison() {
+			
+			@Override
+			public Number getX() {
+				return x;
+			}
+			
+			@Override
+			public Number getY() {
+				return y;
+			}
+			
+			@Override
+			public double getDelta() {
+				return delta;
+			}
+			
+			@Override
+			public double getPercentage() {
+				return percentage;
+			}
+			
+			@Override
+			public int getResult() {
+				return finalResult;
+			}
+			
+			@Override
+			public String getSummaryText() {
+				if (finalResult == 0) {
+					return "";
+				}
+				else {
+					return summaryText;
+				}
+			}
+			
+			@Override
+			public String toString() {
+				return "NumericComparison " + summaryText;
+			}
+		};
 	}
 	
 	@Override

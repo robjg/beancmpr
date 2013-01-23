@@ -82,7 +82,7 @@ implements Iterable<MatchableGroup> {
 					@Override
 					public String toString() {
 						return MatchableGroup.class.getSimpleName() + 
-							", " + getKey();
+							": " + getKey() + ", size=" + getSize();
 					}
 
 				};

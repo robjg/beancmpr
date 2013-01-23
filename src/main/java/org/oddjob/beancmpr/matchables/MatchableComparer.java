@@ -11,5 +11,9 @@ import org.oddjob.beancmpr.Comparer;
  */
 public interface MatchableComparer extends Comparer<Matchable> {
 
-	public MatchableComparison compare(Matchable x, Matchable y);	
+	/*
+	 * (non-Javadoc)
+	 * @see org.oddjob.beancmpr.Comparer#compare(java.lang.Object, java.lang.Object)
+	 */
+	public MultiValueComparison<Matchable> compare(Matchable x, Matchable y);	
 }

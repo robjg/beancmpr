@@ -7,9 +7,10 @@ import org.oddjob.arooa.reflect.ArooaClass;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableComparison;
-import org.oddjob.beancmpr.matchables.MatchableIterable;
 import org.oddjob.beancmpr.matchables.MatchableMetaData;
+import org.oddjob.beancmpr.matchables.MultiValueComparison;
+import org.oddjob.beancmpr.matchables.ValueIterable;
+import org.oddjob.beancmpr.matchables.ValuePairIterable;
 
 /**
  * Creates a very simple match result bean.
@@ -28,6 +29,8 @@ public class SimpleResultBeanFactory implements MatchResultBeanFactory {
 	public static final String COMPARISON_PROPERTY_SUFFIX = "Comparison";
 	
 	private ArooaClass resultClass;
+	
+	private MatchableMetaData definition;
 	
 	private final PropertyAccessor accessor;
 	
@@ -54,30 +57,30 @@ public class SimpleResultBeanFactory implements MatchResultBeanFactory {
 		}
 	}	
 	
-	public Object createResult(Matchable x, Matchable y, 
-			MatchableComparison matchableComparison) {
+	private void checkInit(Matchable either) {
+		
+		if (resultClass != null) {
+			return;
+		}
+		
+		this.definition = either.getMetaData();
 			
-		MatchableMetaData definition;
-		if (x == null) {
-			definition = y.getMetaData();
-		}
-		else {
-			definition = x.getMetaData();
-		}
+		this.resultClass = classFor(definition);
+	}
+	
+	
+	@Override
+	public Object createComparisonResult(
+			MultiValueComparison<Matchable> matchableComparison) {
+			
+		Matchable x = matchableComparison.getX();
+		Matchable y = matchableComparison.getY();
 		
-		if (resultClass == null) {
-			resultClass = classFor(definition);
-		}
-		
+		checkInit(x);
+				
 		Object result = resultClass.newInstance();
 
-		if (x == null) {
-			accessor.setProperty(result, MATCH_RESULT_TYPE_PROPERTY, 
-					MatchResultType.X_MISSING);
-		} else if (y == null) {
-			accessor.setProperty(result, MATCH_RESULT_TYPE_PROPERTY, 
-					MatchResultType.Y_MISSING);
-		} else if (matchableComparison.isEqual()) {
+		if (matchableComparison.getResult() == 0) {
 			accessor.setProperty(result, MATCH_RESULT_TYPE_PROPERTY, 
 					MatchResultType.EQUAL);
 		} else {
@@ -85,39 +88,23 @@ public class SimpleResultBeanFactory implements MatchResultBeanFactory {
 					MatchResultType.NOT_EQUAL);
 		}
 		
+		populateKeys(result, x.getKeys());
 		
-		MatchableIterable<Object> keys = 
-				new MatchableIterable<Object>(
-					definition.getKeyProperties(), 
-					x == null ? null : x.getKeys(), 
-					y == null ? null : y.getKeys());
-		
-		for (MatchableIterable.MatchableSet<Object> set : keys) {
-			Object value;
-			if (x != null) {
-				value = set.getValueX();
-			}
-			else {
-				value = set.getValueY();
-			}
-			accessor.setProperty(result, set.getPropertyName(), value);
-		}
-		
-		MatchableIterable<Object> values = 
-				new MatchableIterable<Object>(
+		ValuePairIterable<Object> values = 
+				new ValuePairIterable<Object>(
 					definition.getValueProperties(), 
-					x == null ? null : x.getValues(), 
-					y == null ? null : y.getValues());
+					x.getValues(), 
+					y.getValues());
 		
-		Iterator<Comparison> comparisonsIterator = 
+		Iterator<Comparison<?>> comparisonsIterator = 
 			matchableComparison == null ? null :
 				matchableComparison.getValueComparisons().iterator();
 		
-		for (MatchableIterable.MatchableSet<Object> set : values) {
+		for (ValuePairIterable.ValuePair<Object> set : values) {
 			
 			String propertyName = set.getPropertyName();
 			
-			Comparison comparison = comparisonsIterator == null ?
+			Comparison<?> comparison = comparisonsIterator == null ?
 					null : comparisonsIterator.next();
 			
 			accessor.setProperty(result, 
@@ -129,13 +116,13 @@ public class SimpleResultBeanFactory implements MatchResultBeanFactory {
 					comparison == null ? null : comparison.getSummaryText());
 		}
 		
-		MatchableIterable<Object> others = 
-				new MatchableIterable<Object>(
+		ValuePairIterable<Object> others = 
+				new ValuePairIterable<Object>(
 					definition.getOtherProperties(), 
 					x == null ? null : x.getOthers(), 
 					y == null ? null : y.getOthers());
 		
-		for (MatchableIterable.MatchableSet<Object> set : others) {
+		for (ValuePairIterable.ValuePair<Object> set : others) {
 						
 			String propertyName = set.getPropertyName();
 			
@@ -148,6 +135,103 @@ public class SimpleResultBeanFactory implements MatchResultBeanFactory {
 		return result;
 	}
 		
+	@Override
+	public Object createXMissingResult(Matchable y) {
+
+		checkInit(y);
+		
+		Object result = resultClass.newInstance();
+
+		accessor.setProperty(result, MATCH_RESULT_TYPE_PROPERTY, 
+				MatchResultType.X_MISSING);
+			
+		populateKeys(result, y.getKeys());
+		
+		ValueIterable<Object> values = 
+				new ValueIterable<Object>(
+					definition.getValueProperties(), 
+					y.getValues());
+		
+		for (ValueIterable.Value<Object> set : values) {
+			
+			String propertyName = set.getPropertyName();
+			
+			accessor.setProperty(result, 
+					yify(propertyName), set.getValue());
+		}
+		
+		ValueIterable<Object> others = 
+				new ValueIterable<Object>(
+					definition.getOtherProperties(), 
+					y.getOthers());
+		
+		for (ValueIterable.Value<Object> set : others) {
+						
+			String propertyName = set.getPropertyName();
+			
+			accessor.setProperty(result, 
+					yify(propertyName), set.getValue());
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public Object createYMissingResult(Matchable x) {
+		
+		checkInit(x);
+		
+		Object result = resultClass.newInstance();
+
+		accessor.setProperty(result, MATCH_RESULT_TYPE_PROPERTY, 
+				MatchResultType.Y_MISSING);
+		
+		populateKeys(result, x.getKeys());
+		
+		ValueIterable<Object> values = 
+				new ValueIterable<Object>(
+					definition.getValueProperties(), 
+					x.getValues());
+		
+		for (ValueIterable.Value<Object> set : values) {
+			
+			String propertyName = set.getPropertyName();
+			
+			accessor.setProperty(result, 
+					xify(propertyName), set.getValue());
+		}
+		
+		ValueIterable<Object> others = 
+				new ValueIterable<Object>(
+					definition.getOtherProperties(), 
+					x.getOthers());
+		
+		for (ValueIterable.Value<Object> set : others) {
+						
+			String propertyName = set.getPropertyName();
+			
+			accessor.setProperty(result, 
+					xify(propertyName), set.getValue());
+		}
+		
+		return result;
+	}
+	
+	void populateKeys(Object bean, Iterable<?> keyValues) {
+		
+		ValueIterable<Object> keys = 
+				new ValueIterable<Object>(
+					definition.getKeyProperties(), 
+					keyValues);
+		
+		for (ValueIterable.Value<Object> set : keys) {
+			Object value = set.getValue();
+			accessor.setProperty(bean, set.getPropertyName(), value);
+		}
+		
+	}
+	
+	
 	public ArooaClass classFor(MatchableMetaData metaData) {
 		
 		MagicBeanClassCreator magicDef = new MagicBeanClassCreator(

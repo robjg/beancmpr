@@ -5,19 +5,19 @@ import java.util.Arrays;
 import junit.framework.TestCase;
 
 import org.oddjob.beancmpr.Iterables;
-import org.oddjob.beancmpr.matchables.MatchableIterable;
+import org.oddjob.beancmpr.matchables.ValuePairIterable;
 
 public class MatchableIterableTest extends TestCase {
 
 	public void testIterableOfIntegers() {
 		
-		MatchableIterable<Integer> test = new MatchableIterable<Integer>(
+		ValuePairIterable<Integer> test = new ValuePairIterable<Integer>(
 				Arrays.asList("a", "b", "c"), 
 				Arrays.asList(new Integer(1), new Integer(2), new Integer(3)),
 				Arrays.asList(new Integer(7), new Integer(8), new Integer(9)));
 	
-		MatchableIterable.MatchableSet<Integer>[] sets = 
-			Iterables.toArray(test, MatchableIterable.MatchableSet.class);
+		ValuePairIterable.ValuePair<Integer>[] sets = 
+			Iterables.toArray(test, ValuePairIterable.ValuePair.class);
 
 		assertEquals(3, sets.length);
 		
@@ -36,13 +36,13 @@ public class MatchableIterableTest extends TestCase {
 	
 	public void testWhenXisNull() {
 		
-		MatchableIterable<Integer> test = new MatchableIterable<Integer>(
+		ValuePairIterable<Integer> test = new ValuePairIterable<Integer>(
 				Arrays.asList("a", "b", "c"), 
 				null,
 				Arrays.asList(new Integer(7), new Integer(8), new Integer(9)));
 	
-		MatchableIterable.MatchableSet<Integer>[] sets = 
-			Iterables.toArray(test, MatchableIterable.MatchableSet.class);
+		ValuePairIterable.ValuePair<Integer>[] sets = 
+			Iterables.toArray(test, ValuePairIterable.ValuePair.class);
 
 		assertEquals(3, sets.length);
 		
@@ -61,13 +61,13 @@ public class MatchableIterableTest extends TestCase {
 	
 	public void testWhenYisNull() {
 		
-		MatchableIterable<Integer> test = new MatchableIterable<Integer>(
+		ValuePairIterable<Integer> test = new ValuePairIterable<Integer>(
 				Arrays.asList("a", "b", "c"), 
 				Arrays.asList(new Integer(1), new Integer(2), new Integer(3)),
 				null);
 	
-		MatchableIterable.MatchableSet<Integer>[] sets = 
-			Iterables.toArray(test, MatchableIterable.MatchableSet.class);
+		ValuePairIterable.ValuePair<Integer>[] sets = 
+			Iterables.toArray(test, ValuePairIterable.ValuePair.class);
 
 		assertEquals(3, sets.length);
 		

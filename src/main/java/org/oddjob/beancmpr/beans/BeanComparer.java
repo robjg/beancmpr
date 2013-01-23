@@ -7,7 +7,6 @@ import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.DefaultMatchableComparer;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableComparer;
-import org.oddjob.beancmpr.matchables.MatchableComparison;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
 
 /**
@@ -38,7 +37,7 @@ public class BeanComparer implements Comparer<Object> {
 	
 	
 	@Override
-	public MatchableComparison compare(Object x, Object y) {
+	public BeanComparison compare(Object x, Object y) {
 
 		if (x == null || y == null) {
 			return null;
@@ -68,7 +67,8 @@ public class BeanComparer implements Comparer<Object> {
 		Matchable matchableY = 
 			matchableFactory.createMatchable(y);
 
-		return comparer.compare(matchableX, matchableY);
+		return new BeanComparison(x, y, 
+				comparer.compare(matchableX, matchableY));
 	}					
 	
 	@Override

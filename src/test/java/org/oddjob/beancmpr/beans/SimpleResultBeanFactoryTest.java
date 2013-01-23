@@ -5,14 +5,13 @@ import java.util.Arrays;
 import junit.framework.TestCase;
 
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
-import org.oddjob.beancmpr.beans.MatchResultType;
-import org.oddjob.beancmpr.beans.SimpleResultBeanFactory;
-import org.oddjob.beancmpr.comparers.AreEqual;
-import org.oddjob.beancmpr.comparers.AreNotEqual;
-import org.oddjob.beancmpr.matchables.MatchableComparison;
+import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.comparers.SimpleComparison;
+import org.oddjob.beancmpr.matchables.Matchable;
+import org.oddjob.beancmpr.matchables.MatchableComparision;
 import org.oddjob.beancmpr.matchables.MockMatchableMetaData;
+import org.oddjob.beancmpr.matchables.MultiValueComparison;
 import org.oddjob.beancmpr.matchables.SimpleMatchable;
-import org.oddjob.beancmpr.matchables.SimpleMatchableComparision;
 
 public class SimpleResultBeanFactoryTest extends TestCase {
 
@@ -65,13 +64,16 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 				Arrays.asList("Apple"), 
 				Arrays.asList(new Integer(3)),
 				Arrays.asList("green"));
+
+		@SuppressWarnings("unchecked")
+		Iterable<? extends Comparison<?>> comparisons =
+				Arrays.asList(new SimpleComparison<Integer>(
+						new Integer(2), new Integer(3)));
 		
-		MatchableComparison matchableComparison = 
-			new SimpleMatchableComparision(
-				Arrays.asList(new AreNotEqual(
-						new Integer(2), new Integer(3))));
+		MultiValueComparison<Matchable> matchableComparison = 
+			new MatchableComparision(x, y, comparisons);
 		
-		Object bean = test.createResult(x, y, matchableComparison);
+		Object bean = test.createComparisonResult(matchableComparison);
 		
 		assertEquals(MatchResultType.NOT_EQUAL, 
 				accessor.getProperty(bean, "matchResultType"));
@@ -114,11 +116,14 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 				Arrays.asList(new Integer(2)),
 				Arrays.asList("green"));
 		
-		MatchableComparison matchableComparison = 
-			new SimpleMatchableComparision(
-				Arrays.asList(new AreEqual()));
+		@SuppressWarnings("unchecked")
+		Iterable<? extends Comparison<?>> comparisons =
+				Arrays.asList(new SimpleComparison<Object>("A", "A"));
 		
-		Object bean = test.createResult(x, y, matchableComparison);
+		MultiValueComparison<Matchable> matchableComparison = 
+			new MatchableComparision(x, y, comparisons);
+		
+		Object bean = test.createComparisonResult(matchableComparison);
 		
 		assertEquals(MatchResultType.EQUAL, 
 				accessor.getProperty(bean, "matchResultType"));
@@ -156,7 +161,7 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 				Arrays.asList("green"));
 		y.setMetaData(new MyMetaData());
 				
-		Object bean = test.createResult(null, y, null);
+		Object bean = test.createXMissingResult(y);
 		
 		assertEquals(MatchResultType.X_MISSING, 
 				accessor.getProperty(bean, "matchResultType"));
@@ -194,7 +199,7 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 				Arrays.asList("red"));
 		x.setMetaData(new MyMetaData());
 				
-		Object bean = test.createResult(x, null, null);
+		Object bean = test.createYMissingResult(x);
 		
 		assertEquals(MatchResultType.Y_MISSING, 
 				accessor.getProperty(bean, "matchResultType"));

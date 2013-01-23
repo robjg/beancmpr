@@ -2,7 +2,7 @@ package org.oddjob.beancmpr.matchables;
 
 import java.util.Iterator;
 
-import org.oddjob.beancmpr.matchables.MatchableIterable.MatchableSet;
+import org.oddjob.beancmpr.matchables.ValuePairIterable.ValuePair;
 
 /**
  * Provide an {@code Iterable} over two sets of values and their names.
@@ -11,13 +11,13 @@ import org.oddjob.beancmpr.matchables.MatchableIterable.MatchableSet;
  *
  * @param <T>
  */
-public class MatchableIterable<T> implements Iterable<MatchableSet<T>> {
+public class ValuePairIterable<T> implements Iterable<ValuePair<T>> {
 
 	private final Iterable<String> propertyNames;
 	private final Iterable<? extends T> valuesX;
 	private final Iterable<? extends T> valuesY;
 	
-	public MatchableIterable(Iterable<String> propertyNames,
+	public ValuePairIterable(Iterable<String> propertyNames,
 			Iterable<? extends T> valuesX, 
 			Iterable<? extends T> valuesY) {
 		
@@ -27,8 +27,8 @@ public class MatchableIterable<T> implements Iterable<MatchableSet<T>> {
 	}
 	
 	@Override
-	public Iterator<MatchableSet<T>> iterator() {
-		return new Iterator<MatchableSet<T>>() {
+	public Iterator<ValuePair<T>> iterator() {
+		return new Iterator<ValuePair<T>>() {
 			
 			final Iterator<String> namesIterator = propertyNames.iterator();
 			
@@ -43,7 +43,7 @@ public class MatchableIterable<T> implements Iterable<MatchableSet<T>> {
 				return namesIterator.hasNext();
 			}
 			@Override
-			public MatchableSet<T> next() {
+			public ValuePair<T> next() {
 				
 				final String name = namesIterator.next();
 				
@@ -53,7 +53,7 @@ public class MatchableIterable<T> implements Iterable<MatchableSet<T>> {
 				final T y = 
 					(yIterator == null ? null : yIterator.next());
 					
-				return new MatchableSet<T>() {
+				return new ValuePair<T>() {
 					
 					@Override
 					public T getValueY() {
@@ -79,7 +79,7 @@ public class MatchableIterable<T> implements Iterable<MatchableSet<T>> {
 		};
 	}
 		
-	public interface MatchableSet<T> {
+	public interface ValuePair<T> {
 		
 		public String getPropertyName();
 		

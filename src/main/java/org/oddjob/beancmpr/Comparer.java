@@ -19,7 +19,7 @@ public interface Comparer<T> {
 	 * and y is null.
 	 * 
 	 */
-	public Comparison compare(T x, T y);
+	public Comparison<T> compare(T x, T y);
 	
 	/**
 	 * The type of the things.  

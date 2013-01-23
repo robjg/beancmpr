@@ -66,6 +66,7 @@ public class SimpleMatchable implements Matchable {
 	
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + ", key=" + keys;
+		return getClass().getSimpleName() + ", key=" + keys + 
+				", values = " + values + ", other=" + others;
 	}
 }

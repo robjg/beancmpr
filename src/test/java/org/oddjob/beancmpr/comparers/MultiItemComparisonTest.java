@@ -8,27 +8,33 @@ public class MultiItemComparisonTest extends TestCase {
 
 	public void testIsEqual() {
 		
-		MultiItemComparison test1 = new MultiItemComparison(0, 0, 0, 3);
+		MultiItemComparison<Object> test1 = 
+				new MultiItemComparison<Object>(null, null, 0, 0, 0, 3);
 		
-		assertEquals(true, test1.isEqual());
+		assertEquals(0, test1.getResult());
 		
-		MultiItemComparison test2 = new MultiItemComparison(1, 0, 0, 3);
+		MultiItemComparison<Object> test2 = 
+				new MultiItemComparison<Object>(null, null, 1, 0, 0, 3);
 		
-		assertEquals(false, test2.isEqual());
+		assertTrue(new Integer(test2.getResult()).toString(), 
+				test2.getResult() > 0);
 		
-		MultiItemComparison test3 = new MultiItemComparison(0, 1, 0, 3);
+		MultiItemComparison<Object> test3 = 
+				new MultiItemComparison<Object>(null, null, 0, 1, 0, 3);
 		
-		assertEquals(false, test3.isEqual());
+		assertTrue(test3.getResult() < 0);
 		
-		MultiItemComparison test4 = new MultiItemComparison(0, 0, 1, 3);
+		MultiItemComparison<Object> test4 = 
+				new MultiItemComparison<Object>(null, null, 0, 0, 1, 3);
 		
-		assertEquals(false, test4.isEqual());		
+		assertTrue(test4.getResult() != 0);		
 
 	}
 	
 	public void testNumbers() {
 		
-		MultiItemComparison test = new MultiItemComparison(1, 2, 3, 4);
+		MultiItemComparison<Object> test = 
+				new MultiItemComparison<Object>(null, null, 1, 2, 3, 4);
 		
 		assertEquals(1, test.getXsMissing());
 		assertEquals(2, test.getYsMissing());

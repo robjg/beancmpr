@@ -33,7 +33,6 @@ public interface MatchableMatchProcessor {
 	 * @param y
 	 * @param comparison
 	 */
-	public void matched(Matchable x, Matchable y, 
-			MatchableComparison comparison);
+	public void compared(MultiValueComparison<Matchable> comparison);
 
 }
