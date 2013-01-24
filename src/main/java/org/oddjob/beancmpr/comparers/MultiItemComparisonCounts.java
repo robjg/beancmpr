@@ -7,7 +7,7 @@ package org.oddjob.beancmpr.comparers;
  * @author rob
  *
  */
-public interface MultiItemComparisonStats {
+public interface MultiItemComparisonCounts {
 	
 	public int getXMissingCount();
 	

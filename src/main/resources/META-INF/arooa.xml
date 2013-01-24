@@ -1,8 +1,26 @@
-<arooa:descriptor  xmlns:arooa="http://rgordon.co.uk/oddjob/arooa"
-        prefix="beancmpr" namespace="oddjob:beancmpr">
-	<components>
-        <arooa:bean-def element='compare'
-            className='org.oddjob.beancmpr.BeanCompareJob'
-            designFactory='org.oddjob.beancmpr.BeanCompareDesFa'/>
-	</components>
+<arooa:descriptor xmlns:arooa="http://rgordon.co.uk/oddjob/arooa"
+  prefix="beancmpr" namespace="oddjob:beancmpr">
+  <values>
+    <arooa:bean-def element='bean-results'
+      className='org.oddjob.beancmpr.beans.BeanCreatingResultHandler' 
+            designFactory='org.oddjob.beancmpr.beans.BeanCreatingResultHandlerDF'>
+      <annotations>
+        <arooa:annotation name="org.oddjob.arooa.life.Configured"
+          method="configured" />
+      </annotations>
+    </arooa:bean-def>
+  </values>
+  <components>
+    <arooa:bean-def element='compare'
+      className='org.oddjob.beancmpr.BeanCompareJob' 
+      designFactory='org.oddjob.beancmpr.BeanCompareDF'>
+      <annotations>
+        <arooa:annotation name="org.oddjob.framework.SoftReset"
+          method="reset" />
+        <arooa:annotation name="org.oddjob.framework.HardReset"
+          method="reset" />
+      </annotations>
+    </arooa:bean-def>
+  </components>
+
 </arooa:descriptor>

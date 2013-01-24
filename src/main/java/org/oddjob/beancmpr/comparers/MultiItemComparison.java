@@ -10,18 +10,18 @@ import org.oddjob.beancmpr.Comparison;
  *
  */
 public class MultiItemComparison<T> 
-implements Comparison<Iterable<T>>, MultiItemComparisonStats {
+implements Comparison<Iterable<T>>, MultiItemComparisonCounts {
 
 	private final Iterable<T> x;
 	
 	private final Iterable<T> y;
 	
-	private final MultiItemComparisonStats multiItemStats;
+	private final MultiItemComparisonCounts multiItemStats;
 	
 	public MultiItemComparison(
 			Iterable<T> x,
 			Iterable<T> y,
-			MultiItemComparisonStats multiItemStats) {
+			MultiItemComparisonCounts multiItemStats) {
 		
 		this.x = x;
 		this.y = y;

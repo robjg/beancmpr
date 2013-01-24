@@ -6,7 +6,7 @@ import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.beans.BeanComparerProvider;
 import org.oddjob.beancmpr.comparers.MultiItemComparison;
-import org.oddjob.beancmpr.comparers.MultiItemComparisonStats;
+import org.oddjob.beancmpr.comparers.MultiItemComparisonCounts;
 
 /**
  * Compares two {@code Iterable}s of {@link MatchableGroup}s.
@@ -32,7 +32,7 @@ implements Comparer<Iterable<MatchableGroup>> {
 		this.matchProcessor = new ComparisonGatheringProcessor(matchNotifier);
 	}
 	
-	public MultiItemComparisonStats getMultiItemComparisonStats() {
+	public MultiItemComparisonCounts getMultiItemComparisonStats() {
 		return matchProcessor;
 	}
 	

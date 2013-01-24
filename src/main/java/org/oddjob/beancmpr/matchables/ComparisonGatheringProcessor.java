@@ -2,7 +2,7 @@ package org.oddjob.beancmpr.matchables;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.oddjob.beancmpr.comparers.MultiItemComparisonStats;
+import org.oddjob.beancmpr.comparers.MultiItemComparisonCounts;
 
 /**
  * A {@link BeanCmprResultsHandler} that counts matches, before passing the result
@@ -12,7 +12,7 @@ import org.oddjob.beancmpr.comparers.MultiItemComparisonStats;
  *
  */
 public class ComparisonGatheringProcessor 
-implements BeanCmprResultsHandler, MultiItemComparisonStats {
+implements BeanCmprResultsHandler, MultiItemComparisonCounts {
 
 	private final BeanCmprResultsHandler delegate;
 	

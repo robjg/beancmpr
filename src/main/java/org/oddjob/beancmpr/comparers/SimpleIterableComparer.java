@@ -93,7 +93,7 @@ implements HierarchicalComparer<Iterable<T>>{
 		final int finalYsMissing = ysMissing;
 
 		return new MultiItemComparison<T>(x, y,
-				new MultiItemComparisonStats() {
+				new MultiItemComparisonCounts() {
 					
 					@Override
 					public int getXMissingCount() {

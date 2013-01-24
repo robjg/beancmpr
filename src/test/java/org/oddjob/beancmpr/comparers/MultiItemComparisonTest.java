@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 
 public class MultiItemComparisonTest extends TestCase {
 
-	private class Stats implements MultiItemComparisonStats {
+	private class Stats implements MultiItemComparisonCounts {
 		
 		private final int xsMissing;
 		

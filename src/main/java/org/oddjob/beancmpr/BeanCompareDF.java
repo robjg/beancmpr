@@ -17,7 +17,7 @@ import org.oddjob.arooa.parsing.ArooaElement;
 /**
  * {@link DesignFactory} for {@link BeanCompareJob}
  */
-public class BeanCompareDesFa implements DesignFactory {
+public class BeanCompareDF implements DesignFactory {
 	
 	public DesignInstance createDesign(ArooaElement element,
 			ArooaContext parentContext) {
@@ -40,13 +40,9 @@ class BeanCompareDesign extends DesignComponentBase {
 	
 	private final SimpleDesignProperty inY;
 	
-	private final SimpleDesignProperty out;
-	
-	private final SimpleTextAttribute xPropertyPrefix;
-	
-	private final SimpleTextAttribute yPropertyPrefix;
-	
 	private final SimpleTextAttribute sorted;
+	
+	private final SimpleDesignProperty results;
 	
 	private final SimpleDesignProperty comparersByType;
 	
@@ -68,18 +64,13 @@ class BeanCompareDesign extends DesignComponentBase {
 
 		inY = new SimpleDesignProperty("inY", this);
 
-		out = new SimpleDesignProperty("out", this);
-		
 		sorted = new SimpleTextAttribute("sorted", this);
 		
-		xPropertyPrefix = new SimpleTextAttribute("xPropertyPrefix", this);
-		
-		yPropertyPrefix = new SimpleTextAttribute("yPropertyPrefix", this);
+		results = new SimpleDesignProperty("results", this);
 		
 		comparersByType = new SimpleDesignProperty("comparersByType", this);
 		
 		comparersByProperty = new SimpleDesignProperty("comparersByProperty", this);
-		
 	}
 	
 	public Form detail() {
@@ -94,15 +85,11 @@ class BeanCompareDesign extends DesignComponentBase {
 				)
 			.addFormItem(
 				new TabGroup()
-					.add(new FieldGroup("Beans")
+					.add(new FieldGroup("Main")
 						.add(inX.view().setTitle("In X"))
 						.add(inY.view().setTitle("In Y"))
-						.add(out.view().setTitle("Out"))
 						.add(sorted.view().setTitle("Sorted"))
-					)
-					.add(new FieldGroup("Prefixes")
-						.add(xPropertyPrefix.view().setTitle("X Property Prefix"))
-						.add(yPropertyPrefix.view().setTitle("Y Property Prefix"))
+						.add(results.view().setTitle("Results"))
 					)
 					.add(new FieldGroup("Comparers")
 						.add(comparersByType.view().setTitle("Comparers By Type"))
@@ -115,8 +102,7 @@ class BeanCompareDesign extends DesignComponentBase {
 	public DesignProperty[] children() {
 		return new DesignProperty[] { name, 
 				keyProperties, valueProperties, otherProperties, 
-				inX, inY, out, sorted,
-				xPropertyPrefix, yPropertyPrefix,
+				inX, inY, sorted, results,
 				comparersByProperty, comparersByType };
 	}
 }

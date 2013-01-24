@@ -9,7 +9,6 @@ import org.oddjob.OddjobDescriptorFactory;
 import org.oddjob.OddjobSessionFactory;
 import org.oddjob.arooa.ArooaDescriptor;
 import org.oddjob.arooa.ArooaParseException;
-import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.ArooaType;
 import org.oddjob.arooa.design.DesignInstance;
 import org.oddjob.arooa.design.DesignParser;
@@ -18,7 +17,7 @@ import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.arooa.standard.StandardFragmentParser;
 import org.oddjob.arooa.xml.XMLConfiguration;
 
-public class BeanCompareDesFaTest extends TestCase {
+public class BeanCompareDFTest extends TestCase {
 
 	DesignInstance design;
 	
@@ -32,8 +31,6 @@ public class BeanCompareDesFaTest extends TestCase {
 			"     valueProperties='price, quantity'" +
 			"     otherProperties='exchange, broker'" +
 			"     sorted='true'" +
-			"     xPropertyPrefix='desk'" +
-			"     yPropertyPrefix='broker'" +
 			"   >" +
 			"   <inX>" +
 			"    <list/>" +
@@ -41,9 +38,9 @@ public class BeanCompareDesFaTest extends TestCase {
 			"   <inY>" +
 			"    <list/>" +
 			"   </inY>" +
-			"   <out>" +
-			"    <list/>" +
-			"   </out>" +
+			"   <results>" +
+			"     <beancmpr:bean-results/>" +
+			"   </results>" +
 			"</beancmpr:compare >";
 		
     	ArooaDescriptor descriptor = 
@@ -59,10 +56,8 @@ public class BeanCompareDesFaTest extends TestCase {
 		
 		assertEquals(BeanCompareDesign.class, design.getClass());
 		
-    	ArooaSession session = new OddjobSessionFactory().createSession();
-    	
-    	StandardFragmentParser fragmentParser = new StandardFragmentParser(session);
-    	
+    	StandardFragmentParser fragmentParser = new StandardFragmentParser(
+    			new OddjobSessionFactory().createSession());    	
     	fragmentParser.setArooaType(ArooaType.COMPONENT);
     	
     	fragmentParser.parse(design.getArooaContext().getConfigurationNode());
@@ -79,17 +74,14 @@ public class BeanCompareDesFaTest extends TestCase {
 		
 		assertNotNull(test.get("inX"));
 		assertNotNull(test.get("inY"));
-		assertNotNull(test.get("out"));
+		assertNotNull(test.get("results"));
 		assertEquals(true, test.get("sorted"));
-		
-		assertEquals("desk", test.get("xPropertyPrefix"));
-		assertEquals("broker", test.get("yPropertyPrefix"));
-		
+				
 	}
 
 	public static void main(String args[]) throws ArooaParseException {
 
-		BeanCompareDesFaTest test = new BeanCompareDesFaTest();
+		BeanCompareDFTest test = new BeanCompareDFTest();
 		test.testCreate();
 		
 		ViewMainHelper view = new ViewMainHelper(test.design);

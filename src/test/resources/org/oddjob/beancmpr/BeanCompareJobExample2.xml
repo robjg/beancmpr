@@ -13,13 +13,17 @@
                     <inY>
                         <value value="${listY}"/>
                     </inY>
-                    <out>
-                        <list/>
-                    </out>                    
-                </beancmpr:compare>
+                     <results>
+                      <beancmpr:bean-results>
+                        <out>
+                            <list/>
+                        </out>                    
+                      </beancmpr:bean-results>
+                    </results>
+               </beancmpr:compare>
                 <bean-report>
                     <beans>
-                        <value value="${comparison.out}"/>
+                        <value value="${comparison.results.out}"/>
                     </beans>
                     <output>
                         <identify id="results">
