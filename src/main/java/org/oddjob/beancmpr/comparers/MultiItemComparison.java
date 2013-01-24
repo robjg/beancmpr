@@ -9,35 +9,24 @@ import org.oddjob.beancmpr.Comparison;
  * @author rob
  *
  */
-public class MultiItemComparison<T> implements Comparison<Iterable<T>> {
+public class MultiItemComparison<T> 
+implements Comparison<Iterable<T>>, MultiItemComparisonStats {
 
 	private final Iterable<T> x;
 	
 	private final Iterable<T> y;
 	
-	private final int xsMissing;
+	private final MultiItemComparisonStats multiItemStats;
 	
-	private final int ysMissing;
-
-	private final int different;
-	
-	private final int same;
-		
 	public MultiItemComparison(
 			Iterable<T> x,
 			Iterable<T> y,
-			int xsMissing,
-			int ysMissing,
-			int different,
-			int same) {
+			MultiItemComparisonStats multiItemStats) {
 		
 		this.x = x;
 		this.y = y;
 		
-		this.xsMissing = xsMissing;
-		this.ysMissing = ysMissing;
-		this.different = different;
-		this.same = same;
+		this.multiItemStats = multiItemStats;
 	}
 	
 	@Override
@@ -52,12 +41,13 @@ public class MultiItemComparison<T> implements Comparison<Iterable<T>> {
 	
 	@Override
 	public int getResult() {
-		int result = xsMissing - ysMissing;
+		int result = multiItemStats.getXMissingCount() - 
+				multiItemStats.getYMissingCount();
 		
 		if (result != 0) {
 			return result;
 		}
-		else if (different == 0 ) {
+		else if (multiItemStats.getBreaksCount() == 0 ) {
 			return 0;
 		}
 		else {
@@ -68,27 +58,42 @@ public class MultiItemComparison<T> implements Comparison<Iterable<T>> {
 	@Override
 	public String getSummaryText() {
 		if (getResult() == 0) {
-			return "Equal, " + same + " matched";
+			return "Equal, " + multiItemStats.getMatchedCount() + 
+					" matched";
 		}
 		else {
-			return "" + (xsMissing + ysMissing + different) +
+			return "" + multiItemStats.getBreaksCount() +
 			  " differences";
 		}
 	}
 	
-	public int getXsMissing() {
-		return xsMissing;
+	@Override
+	public int getXMissingCount() {
+		return multiItemStats.getXMissingCount();
 	}
 	
-	public int getYsMissing() {
-		return ysMissing;
+	@Override
+	public int getYMissingCount() {
+		return multiItemStats.getYMissingCount();
 	}
 	
-	public int getDifferent() {
-		return different;
+	@Override
+	public int getMatchedCount() {
+		return multiItemStats.getMatchedCount();
 	}
 	
-	public int getSame() {
-		return same;
+	@Override
+	public int getDifferentCount() {
+		return multiItemStats.getDifferentCount();
+	}
+	
+	@Override
+	public int getBreaksCount() {
+		return multiItemStats.getBreaksCount();
+	}
+	
+	@Override
+	public int getComparedCount() {
+		return multiItemStats.getComparedCount();
 	}
 }

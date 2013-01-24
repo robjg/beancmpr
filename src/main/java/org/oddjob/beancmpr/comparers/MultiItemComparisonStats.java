@@ -1,48 +1,24 @@
 package org.oddjob.beancmpr.comparers;
 
 
-
 /**
  * Stats.
  * 
  * @author rob
  *
  */
-public class MultiItemComparisonStats {
-
-	private final int xsMissing;
+public interface MultiItemComparisonStats {
 	
-	private final int ysMissing;
-
-	private final int different;
+	public int getXMissingCount();
 	
-	private final int same;
+	public int getYMissingCount();
 		
-	public MultiItemComparisonStats(
-			int xsMissing,
-			int ysMissing,
-			int different,
-			int same) {
-		
-		this.xsMissing = xsMissing;
-		this.ysMissing = ysMissing;
-		this.different = different;
-		this.same = same;
-	}
+	public int getDifferentCount();
 	
-	public int getXsMissing() {
-		return xsMissing;
-	}
+	public int getMatchedCount();
 	
-	public int getYsMissing() {
-		return ysMissing;
-	}
+	public int getBreaksCount();
 	
-	public int getDifferent() {
-		return different;
-	}
+	public int getComparedCount();
 	
-	public int getSame() {
-		return same;
-	}
 }

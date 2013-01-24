@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableGroup;
-import org.oddjob.beancmpr.matchables.MatchableMatchProcessor;
+import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
 
 /**
@@ -13,7 +13,7 @@ import org.oddjob.beancmpr.matchables.MultiValueComparison;
  * @author rob
  *
  */
-public class BeanCreatingResultProcessor implements MatchableMatchProcessor {
+public class BeanCreatingResultProcessor implements BeanCmprResultsHandler {
 
 	private final MatchResultBeanFactory factory;
 	

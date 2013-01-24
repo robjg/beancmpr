@@ -1,34 +1,37 @@
 package org.oddjob.beancmpr.matchables;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.oddjob.beancmpr.comparers.MultiItemComparisonStats;
 
 /**
- * A {@link MatchableMatchProcessor} that counts matches, before passing the result
+ * A {@link BeanCmprResultsHandler} that counts matches, before passing the result
  * onto a delegate.
  * 
  * @author rob
  *
  */
 public class ComparisonGatheringProcessor 
-implements MatchableMatchProcessor {
+implements BeanCmprResultsHandler, MultiItemComparisonStats {
 
-	private final MatchableMatchProcessor delegate;
+	private final BeanCmprResultsHandler delegate;
 	
-	private int xsMissing;
+	private final AtomicInteger xMissingCount = new AtomicInteger();
 	
-	private int ysMissing;
+	private final AtomicInteger yMissingCount = new AtomicInteger();
 
-	private int different;
+	private final AtomicInteger differentCount = new AtomicInteger();
 	
-	private int same;
-	
-	public ComparisonGatheringProcessor(MatchableMatchProcessor delegate) {
+	private final AtomicInteger matchedCount = new AtomicInteger();
+		
+	public ComparisonGatheringProcessor(BeanCmprResultsHandler delegate) {
 		this.delegate = delegate;
 	}
 	
 	@Override
 	public void xMissing(MatchableGroup ys) {
-		xsMissing += ys.getSize();
+		xMissingCount.addAndGet(ys.getSize());
+		
 		if (delegate != null) {
 			delegate.xMissing(ys);
 		}
@@ -36,7 +39,8 @@ implements MatchableMatchProcessor {
 	
 	@Override
 	public void yMissing(MatchableGroup xs) {
-		ysMissing += xs.getSize();
+		yMissingCount.addAndGet(xs.getSize());
+		
 		if (delegate != null) {
 			delegate.yMissing(xs);
 		}
@@ -45,19 +49,45 @@ implements MatchableMatchProcessor {
 	@Override
 	public void compared(MultiValueComparison<Matchable> comparison) {
 		if (comparison.getResult() == 0) {
-			++same;
+			matchedCount.incrementAndGet();
 		}
 		else {
-			++different;
+			differentCount.incrementAndGet();
 		}
+		
 		if (delegate != null) {
 			delegate.compared(comparison);
 		}
 	}
 	
-	public MultiItemComparisonStats getComparison() {
-		return new MultiItemComparisonStats(
-				xsMissing, ysMissing, different, same);
+	@Override
+	public int getXMissingCount() {
+		return xMissingCount.get();
 	}
 	
+	@Override
+	public int getYMissingCount() {
+		return yMissingCount.get();
+	}
+	
+	@Override
+	public int getMatchedCount() {
+		return matchedCount.get();
+	}
+	
+	@Override
+	public int getDifferentCount() {
+		return differentCount.get();
+	}
+	
+	@Override
+	public int getBreaksCount() {
+		return xMissingCount.get() + yMissingCount.get() + 
+				differentCount.get();
+	}
+	
+	@Override
+	public int getComparedCount() {
+		return getBreaksCount() + matchedCount.get();
+	}
 }

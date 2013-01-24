@@ -42,7 +42,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		}
 	}
 	
-	private class Results implements MatchableMatchProcessor {
+	private class Results implements BeanCmprResultsHandler {
 		
 		List<Object[]> xsMissing = 
 			new ArrayList<Object[]>();
@@ -292,10 +292,10 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		MultiItemComparison<MatchableGroup> multiItemComparison =
 				test.compare(xs, ys);
 		
-		assertEquals(1, multiItemComparison.getDifferent());
-		assertEquals(2, multiItemComparison.getSame());
-		assertEquals(2, multiItemComparison.getXsMissing());
-		assertEquals(0, multiItemComparison.getYsMissing());
+		assertEquals(1, multiItemComparison.getDifferentCount());
+		assertEquals(2, multiItemComparison.getMatchedCount());
+		assertEquals(2, multiItemComparison.getXMissingCount());
+		assertEquals(0, multiItemComparison.getYMissingCount());
 		
 		assertEquals(3, results.comparedKeys.size());
 		assertEquals(0, results.comparedKeys.get(0).length);

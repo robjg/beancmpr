@@ -24,10 +24,10 @@ public class SimpleIterableComparerTest extends TestCase {
 		MultiItemComparison<String> comparison = test.compare(x, y);
 		
 		assertEquals(0, comparison.getResult());
-		assertEquals(3, comparison.getSame());
-		assertEquals(0, comparison.getDifferent());		
-		assertEquals(0, comparison.getXsMissing());
-		assertEquals(0, comparison.getYsMissing());
+		assertEquals(3, comparison.getMatchedCount());
+		assertEquals(0, comparison.getDifferentCount());		
+		assertEquals(0, comparison.getXMissingCount());
+		assertEquals(0, comparison.getYMissingCount());
 	}
 	
 	public void testCompareOneDifferentEqual() {
@@ -44,10 +44,10 @@ public class SimpleIterableComparerTest extends TestCase {
 		MultiItemComparison<String> comparison = test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
-		assertEquals(2, comparison.getSame());
-		assertEquals(1, comparison.getDifferent());		
-		assertEquals(0, comparison.getXsMissing());
-		assertEquals(0, comparison.getYsMissing());
+		assertEquals(2, comparison.getMatchedCount());
+		assertEquals(1, comparison.getDifferentCount());		
+		assertEquals(0, comparison.getXMissingCount());
+		assertEquals(0, comparison.getYMissingCount());
 	}
 
 	public void testCompareOneXMissing() {
@@ -64,10 +64,10 @@ public class SimpleIterableComparerTest extends TestCase {
 		MultiItemComparison<String> comparison = test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
-		assertEquals(2, comparison.getSame());
-		assertEquals(0, comparison.getDifferent());		
-		assertEquals(1, comparison.getXsMissing());
-		assertEquals(0, comparison.getYsMissing());
+		assertEquals(2, comparison.getMatchedCount());
+		assertEquals(0, comparison.getDifferentCount());		
+		assertEquals(1, comparison.getXMissingCount());
+		assertEquals(0, comparison.getYMissingCount());
 	}
 
 	public void testCompareOneYMissing() {
@@ -84,10 +84,10 @@ public class SimpleIterableComparerTest extends TestCase {
 		MultiItemComparison<String> comparison = test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
-		assertEquals(2, comparison.getSame());
-		assertEquals(0, comparison.getDifferent());		
-		assertEquals(0, comparison.getXsMissing());
-		assertEquals(1, comparison.getYsMissing());
+		assertEquals(2, comparison.getMatchedCount());
+		assertEquals(0, comparison.getDifferentCount());		
+		assertEquals(0, comparison.getXMissingCount());
+		assertEquals(1, comparison.getYMissingCount());
 	}
 
 }

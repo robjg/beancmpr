@@ -13,14 +13,16 @@ import org.oddjob.beancmpr.beans.ComparersByProperty;
 import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
 import org.oddjob.beancmpr.beans.SimpleResultBeanFactory;
 import org.oddjob.beancmpr.comparers.ComparersByType;
-import org.oddjob.beancmpr.comparers.MultiItemComparison;
+import org.oddjob.beancmpr.comparers.MultiItemComparisonStats;
+import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableGroup;
-import org.oddjob.beancmpr.matchables.MatchableMatchProcessor;
 import org.oddjob.beancmpr.matchables.OrderedMatchablesComparer;
 import org.oddjob.beancmpr.matchables.SortedBeanMatchables;
 import org.oddjob.beancmpr.matchables.UnsortedBeanMatchables;
+import org.oddjob.framework.HardReset;
+import org.oddjob.framework.SoftReset;
 
 /**
  * @oddjob.description A job that takes two streams of beans and
@@ -36,7 +38,8 @@ import org.oddjob.beancmpr.matchables.UnsortedBeanMatchables;
  * @author rob
  *
  */
-public class BeanCompareJob implements ArooaSessionAware, Runnable {
+public class BeanCompareJob 
+implements ArooaSessionAware, Runnable, MultiItemComparisonStats {
 
 	private static final Logger logger = Logger.getLogger(BeanCompareJob.class);
 	
@@ -131,12 +134,27 @@ public class BeanCompareJob implements ArooaSessionAware, Runnable {
 	 */
 	private String yPropertyPrefix;
 	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description Are the input Iterables sorted? If they
+	 * are then they will be read immediately, if not they will be 
+	 * copied and sorted.
+	 * @oddjob.required No. Defaults to false.
+	 */
 	private boolean sorted;
+		
+	private MultiItemComparisonStats stats;
 	
 	@Override
 	@ArooaHidden
 	public void setArooaSession(ArooaSession session) {
 		this.accessor = session.getTools().getPropertyAccessor();
+	}
+	
+	@HardReset
+	@SoftReset
+	synchronized public void reset() {
+		stats = null;
 	}
 	
 	@Override
@@ -149,7 +167,7 @@ public class BeanCompareJob implements ArooaSessionAware, Runnable {
 			throw new NullPointerException("No Y");
 		}
 		
-		MatchableMatchProcessor resultsListener = null;
+		BeanCmprResultsHandler resultsListener = null;
 		
 		if (out != null) {
 			resultsListener = new BeanCreatingResultProcessor(
@@ -173,17 +191,16 @@ public class BeanCompareJob implements ArooaSessionAware, Runnable {
 				accessor,
 				comparerProvider,
 				resultsListener);
+		this.stats = rec.getMultiItemComparisonStats();
 		
-		MultiItemComparison<MatchableGroup> comparison = 
-			rec.compare(getIterableMatchables(inX, factory), 
+		rec.compare(getIterableMatchables(inX, factory), 
 				getIterableMatchables(inY, factory));		
 		
-		logger.info("Xs Missing " + comparison.getXsMissing() +
-				", Ys Missing " + comparison.getYsMissing() + 
-				", Different " + comparison.getDifferent() + 
-				", Same " + comparison.getSame());
-	}
-	
+		logger.info("Xs Missing " + getXMissingCount() +
+				", Ys Missing " + getYMissingCount() + 
+				", Different " + getDifferentCount() + 
+				", Same " + getMatchedCount());
+	}	
 	
 	private Iterable<MatchableGroup> getIterableMatchables(
 			Iterable<?> in, MatchableFactory<Object> factory) {
@@ -292,6 +309,36 @@ public class BeanCompareJob implements ArooaSessionAware, Runnable {
 
 	public void setSorted(boolean sorted) {
 		this.sorted = sorted;
+	}
+	
+	@Override
+	synchronized public int getXMissingCount() {
+		return stats == null ? 0 : stats.getXMissingCount();
+	}
+	
+	@Override
+	synchronized public int getYMissingCount() {
+		return stats == null ? 0 : stats.getYMissingCount();
+	}
+	
+	@Override
+	synchronized public int getMatchedCount() {
+		return stats == null ? 0 : stats.getMatchedCount();
+	}
+	
+	@Override
+	synchronized public int getDifferentCount() {
+		return stats == null ? 0 : stats.getDifferentCount();
+	}
+	
+	@Override
+	synchronized public int getBreaksCount() {
+		return stats == null ? 0 : stats.getBreaksCount();
+	}
+	
+	@Override
+	synchronized public int getComparedCount() {
+		return stats == null ? 0 : stats.getComparedCount();
 	}
 	
 	@Override

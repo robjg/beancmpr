@@ -2,14 +2,14 @@ package org.oddjob.beancmpr.matchables;
 
 
 /**
- * Receives notifications of matches of {@link Matchable}s.
+ * Handles the result of comparing {@link Matchable}s.
  * 
  * @see OrderedMatchablesComparer.
  * 
  * @author Rob
  *
  */
-public interface MatchableMatchProcessor {
+public interface BeanCmprResultsHandler {
 	
 	/**
 	 * Data is missing from X.
@@ -26,12 +26,10 @@ public interface MatchableMatchProcessor {
 	public void yMissing(MatchableGroup xs);
 
 	/**
-	 * Two {@link Matchable}s have been matched
+	 * Two {@link Matchable}s have been compared
 	 * by their keys.
 	 * 
-	 * @param x
-	 * @param y
-	 * @param comparison
+	 * @param comparison The result of the comparison.
 	 */
 	public void compared(MultiValueComparison<Matchable> comparison);
 

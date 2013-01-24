@@ -87,8 +87,46 @@ implements HierarchicalComparer<Iterable<T>>{
 			different -= ysMissing;
 		}
 		
+		final int finalSame = same;
+		final int finalDifferent = different;
+		final int finalXsMissing = xsMissing;
+		final int finalYsMissing = ysMissing;
+
 		return new MultiItemComparison<T>(x, y,
-				xsMissing, ysMissing, different, same);
+				new MultiItemComparisonStats() {
+					
+					@Override
+					public int getXMissingCount() {
+						return finalXsMissing;
+					}
+			
+					@Override
+					public int getYMissingCount() {
+						return finalYsMissing;
+					}
+					
+					@Override
+					public int getMatchedCount() {
+						return finalSame;
+					}
+					
+					@Override
+					public int getDifferentCount() {
+						return finalDifferent;
+					}
+					
+					@Override
+					public int getBreaksCount() {
+						return finalXsMissing + finalYsMissing +
+								finalDifferent;
+					}
+					
+					@Override
+					public int getComparedCount() {
+						return getBreaksCount() + finalSame;
+					}
+					
+				});
 	}
 	
 	@Override

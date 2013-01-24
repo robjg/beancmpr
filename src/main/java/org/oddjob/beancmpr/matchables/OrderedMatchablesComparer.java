@@ -16,7 +16,7 @@ import org.oddjob.beancmpr.comparers.MultiItemComparisonStats;
  *
  */
 public class OrderedMatchablesComparer 
-implements Comparer<Iterable<MatchableGroup>>{
+implements Comparer<Iterable<MatchableGroup>> {
 	
 	private final DefaultMatchableComparer matchableComparer;
 	
@@ -25,11 +25,15 @@ implements Comparer<Iterable<MatchableGroup>>{
 	public OrderedMatchablesComparer(
 			PropertyAccessor accessor,
 			BeanComparerProvider comparerProvider,
-			MatchableMatchProcessor matchNotifier) {
+			BeanCmprResultsHandler matchNotifier) {
 		
 		this.matchableComparer = new DefaultMatchableComparer(comparerProvider);
 		
 		this.matchProcessor = new ComparisonGatheringProcessor(matchNotifier);
+	}
+	
+	public MultiItemComparisonStats getMultiItemComparisonStats() {
+		return matchProcessor;
 	}
 	
 	@Override
@@ -89,14 +93,8 @@ implements Comparer<Iterable<MatchableGroup>>{
 			currentY = null;
 		}
 				
-		MultiItemComparisonStats stats = matchProcessor.getComparison();
-		
 		return new MultiItemComparison<MatchableGroup>(x, y,
-				stats.getXsMissing(),
-				stats.getYsMissing(),
-				stats.getDifferent(),
-				stats.getSame()
-				);
+				matchProcessor);
 	}
 	
 	/**
@@ -167,7 +165,7 @@ implements Comparer<Iterable<MatchableGroup>>{
 		return Iterable.class;
 	}
 	
-	public MatchableMatchProcessor getMatchProcessor() {
+	public BeanCmprResultsHandler getMatchProcessor() {
 		return matchProcessor;
 	}
 
