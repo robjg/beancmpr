@@ -3,25 +3,23 @@ package org.oddjob.beancmpr.comparers;
 import java.util.Arrays;
 
 import org.oddjob.beancmpr.comparers.DefaultComparersByType;
-import org.oddjob.beancmpr.comparers.MultiItemComparison;
-import org.oddjob.beancmpr.comparers.SimpleIterableComparer;
+import org.oddjob.beancmpr.comparers.IterableComparison;
+import org.oddjob.beancmpr.comparers.IterableComparer;
 
 import junit.framework.TestCase;
 
-public class SimpleIterableComparerTest extends TestCase {
+public class IterableComparerTest extends TestCase {
 
 	public void testCompareEqual() {
 		
-		SimpleIterableComparer<String> test = 
-				new SimpleIterableComparer<String>();
-		
-		test.setComparersByType(new DefaultComparersByType());
+		IterableComparer<String> test = 
+				new IterableComparer<String>();
 		
 		Iterable<String> x = Arrays.asList("a", "b", "c");
 		
 		Iterable<String> y = Arrays.asList("b", "c", "a");
 		
-		MultiItemComparison<String> comparison = test.compare(x, y);
+		IterableComparison<String> comparison = test.compare(x, y);
 		
 		assertEquals(0, comparison.getResult());
 		assertEquals(3, comparison.getMatchedCount());
@@ -32,16 +30,14 @@ public class SimpleIterableComparerTest extends TestCase {
 	
 	public void testCompareOneDifferentEqual() {
 		
-		SimpleIterableComparer<String> test = 
-				new SimpleIterableComparer<String>();
-		
-		test.setComparersByType(new DefaultComparersByType());
+		IterableComparer<String> test = 
+				new IterableComparer<String>();
 		
 		Iterable<String> x = Arrays.asList("a", "b", "c");
 		
 		Iterable<String> y = Arrays.asList("b", "c", "d");
 		
-		MultiItemComparison<String> comparison = test.compare(x, y);
+		IterableComparison<String> comparison = test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
 		assertEquals(2, comparison.getMatchedCount());
@@ -52,16 +48,14 @@ public class SimpleIterableComparerTest extends TestCase {
 
 	public void testCompareOneXMissing() {
 		
-		SimpleIterableComparer<String> test = 
-				new SimpleIterableComparer<String>();
-		
-		test.setComparersByType(new DefaultComparersByType());
+		IterableComparer<String> test = 
+				new IterableComparer<String>();
 		
 		Iterable<String> x = Arrays.asList("b", "c");
 		
 		Iterable<String> y = Arrays.asList("b", "c", "a");
 		
-		MultiItemComparison<String> comparison = test.compare(x, y);
+		IterableComparison<String> comparison = test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
 		assertEquals(2, comparison.getMatchedCount());
@@ -72,16 +66,14 @@ public class SimpleIterableComparerTest extends TestCase {
 
 	public void testCompareOneYMissing() {
 		
-		SimpleIterableComparer<String> test = 
-				new SimpleIterableComparer<String>();
-		
-		test.setComparersByType(new DefaultComparersByType());
+		IterableComparer<String> test = 
+				new IterableComparer<String>();
 		
 		Iterable<String> x = Arrays.asList("a", "b", "c");
 		
 		Iterable<String> y = Arrays.asList("b", "c");
 		
-		MultiItemComparison<String> comparison = test.compare(x, y);
+		IterableComparison<String> comparison = test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
 		assertEquals(2, comparison.getMatchedCount());
@@ -90,4 +82,24 @@ public class SimpleIterableComparerTest extends TestCase {
 		assertEquals(1, comparison.getYMissingCount());
 	}
 
+	/**
+	 * Check comparer for Number can accept list of Integers.
+	 */
+	public void testGenericSanityCheck() {
+		
+		IterableComparer<Number> test = 
+				new IterableComparer<Number>();
+		
+		Iterable<Integer> x = Arrays.asList(4, 1 , 9);
+		
+		Iterable<Integer> y = Arrays.asList(1 , 9, 5);
+		
+		IterableComparison<Number> comparison = test.compare(x, y);
+		
+		assertEquals(false, comparison.getResult() == 0);
+		assertEquals(2, comparison.getMatchedCount());
+		assertEquals(1, comparison.getDifferentCount());		
+		assertEquals(0, comparison.getXMissingCount());
+		assertEquals(0, comparison.getYMissingCount());
+	}
 }

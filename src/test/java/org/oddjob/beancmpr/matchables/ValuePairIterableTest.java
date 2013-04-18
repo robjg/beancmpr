@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 import org.oddjob.beancmpr.Iterables;
 import org.oddjob.beancmpr.matchables.ValuePairIterable;
 
-public class MatchableIterableTest extends TestCase {
+public class ValuePairIterableTest extends TestCase {
 
 	public void testIterableOfIntegers() {
 		

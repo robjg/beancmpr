@@ -9,16 +9,27 @@
           method="configured" />
       </annotations>
     </arooa:bean-def>
+    <arooa:bean-def element='cmprs-list'
+      className='org.oddjob.beancmpr.comparers.ComparersByTypeList'/>
+    <arooa:bean-def element='cmprs-map'
+      className='org.oddjob.beancmpr.beans.ComparersByPropertyMap'/>
+    <arooa:bean-def element='numeric-cmpr'
+      className='org.oddjob.beancmpr.comparers.NumericComparer'/>
   </values>
   <components>
     <arooa:bean-def element='compare'
       className='org.oddjob.beancmpr.BeanCompareJob' 
       designFactory='org.oddjob.beancmpr.BeanCompareDF'>
+      <properties>
+        <arooa:property name="to" annotation="org.oddjob.beanbus.Destination"/>
+      </properties>
       <annotations>
         <arooa:annotation name="org.oddjob.framework.SoftReset"
           method="reset" />
         <arooa:annotation name="org.oddjob.framework.HardReset"
           method="reset" />
+        <arooa:annotation name="org.oddjob.beanbus.Destination"
+          method="acceptDestination" parameterTypes="java.util.Collection"/>
       </annotations>
     </arooa:bean-def>
   </components>

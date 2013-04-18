@@ -9,7 +9,7 @@ import org.oddjob.beancmpr.Comparison;
  * @author rob
  *
  */
-public class SimpleComparison<T> implements Comparison<T> {
+public class EqualityComparison<T> implements Comparison<T> {
 
 	private final T x;
 	private final T y;
@@ -17,7 +17,7 @@ public class SimpleComparison<T> implements Comparison<T> {
 	private final int result;
 	
 	@SuppressWarnings("unchecked")
-	public SimpleComparison(T x, T y) {
+	public EqualityComparison(T x, T y) {
 		this.x = x;
 		this.y = y;
 		

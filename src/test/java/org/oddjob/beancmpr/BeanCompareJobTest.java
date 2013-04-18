@@ -19,8 +19,8 @@ public class BeanCompareJobTest extends TestCase {
 		"---------------  --  ------  ------  --------------  ---------  ---------  ------------------  -------  -------  ----------------" + EOL +
 		"NOT_EQUAL        1   Apple   Apple                   4          4                              green    red      green<>red" + EOL +
 		"NOT_EQUAL        2   Banana  Banana                  3          4          1.0 (33.3%)         yellow   yellow   " + EOL +
-		"X_MISSING        3           Orange                             2                                       orange   " + EOL +
-		"Y_MISSING        5   Orange                          2                                         orange            " + EOL;
+		"x_MISSING        3           Orange                             2                                       orange   " + EOL +
+		"y_MISSING        5   Orange                          2                                         orange            " + EOL;
 
 	public static String expectedKeysSame =
 		"matchResultType  type    xQuantity  yQuantity  quantityComparison  xColour  yColour" + EOL +

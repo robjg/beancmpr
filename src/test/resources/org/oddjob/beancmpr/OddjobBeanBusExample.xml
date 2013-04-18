@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob id="this">
+    <job>
+        <sequential>
+            <jobs>
+                <oddjob file="${this.dir}/SharedData.xml" inheritance="SHARED"/>
+                <bean-bus>
+                    <parts>
+                        <beancmpr:compare id="comparison" keyProperties="type" valueProperties="price" xmlns:beancmpr="oddjob:beancmpr">
+                            <inX>
+                                <value value="${data.listX}"/>
+                            </inX>
+                            <inY>
+                                <value value="${data.listY}"/>
+                            </inY>
+                        </beancmpr:compare>
+                        <bus:bean-sheet id="bean-sheet" xmlns:bus="oddjob:beanbus">
+                            <output>
+                                <logout/>
+                            </output>
+                        </bus:bean-sheet>
+                        <bus:bean-capture id="bean-capture" xmlns:bus="oddjob:beanbus"/>
+                    </parts>
+                </bean-bus>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>

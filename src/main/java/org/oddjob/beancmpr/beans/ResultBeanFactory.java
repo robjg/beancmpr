@@ -9,7 +9,7 @@ import org.oddjob.beancmpr.matchables.MultiValueComparison;
  * @author rob
  *
  */
-public interface MatchResultBeanFactory {
+public interface ResultBeanFactory {
 
 	/**
 	 * Create a result bean for a comparison between two beans.

@@ -1,11 +1,14 @@
 package org.oddjob.beancmpr;
 
+import java.util.Collection;
+
 import org.apache.log4j.Logger;
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
+import org.oddjob.beancmpr.beans.BeanCreatingResultHandler;
 import org.oddjob.beancmpr.beans.ComparersByProperty;
 import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
 import org.oddjob.beancmpr.comparers.ComparersByType;
@@ -88,8 +91,8 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 	 */
 	private ComparersByProperty comparersByProperty;
 	
-	/** From the {@link ArooaSession}. */
-	private PropertyAccessor accessor;
+	/** From the {@link #setArooaSession}. */
+	private ArooaSession session;
 	
 	/**
 	 * @oddjob.property
@@ -121,6 +124,14 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 	 * @oddjob.required No.
 	 */
 	private BeanCmprResultsHandler results;
+		
+	/**
+	 * @oddjob.property
+	 * @oddjob.description A destination for results that create beans. This
+	 * allows this job to play with Oddjob's Bean Bus Framework.
+	 * @oddjob.required No.
+	 */
+	private Collection<? super Object> to;
 	
 	/** Counts. */
 	private MultiItemComparisonCounts counts;
@@ -128,7 +139,7 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 	@Override
 	@ArooaHidden
 	public void setArooaSession(ArooaSession session) {
-		this.accessor = session.getTools().getPropertyAccessor();
+		this.session = session;
 	}
 	
 	synchronized public void reset() {
@@ -145,6 +156,8 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 			throw new NullPointerException("No Y");
 		}
 		
+		PropertyAccessor accessor = session.getTools().getPropertyAccessor();
+		
 		MatchDefinition definition = new SimpleMatchDefinition(
 				getKeyProperties(), getValueProperties(), 
 				getOtherProperties());
@@ -156,10 +169,28 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 			new ComparersByPropertyOrType(
 					comparersByProperty, comparersByType);
 			
+		if (to != null) {
+			
+			if (results == null) {
+				BeanCreatingResultHandler results = new BeanCreatingResultHandler();
+				results.setArooaSession(session);
+				results.configured();
+				this.results = results;
+			}			
+			
+			if (results instanceof BeanCreatingResultHandler) {
+				((BeanCreatingResultHandler) results).setOut(to);
+			}
+			else {
+				logger.warn("The 'to' property is set but results will ignore it");
+			}
+		}
+		
 		OrderedMatchablesComparer rec = new OrderedMatchablesComparer(
 				accessor,
 				comparerProvider,
 				results);
+		
 		this.counts = rec.getMultiItemComparisonStats();
 		
 		rec.compare(getIterableMatchables(inX, factory), 
@@ -294,6 +325,15 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 		return counts == null ? 0 : counts.getComparedCount();
 	}
 	
+	/**
+	 * Used by Oddjob's Bean Bus to Automatically set a destination.
+	 * 
+	 * @param destination
+	 */
+	public void acceptDestination(Collection<? super Object> destination) {
+		this.to = destination;
+	}	
+	
 	@Override
 	public String toString() {
 		if (name == null) {
@@ -303,4 +343,5 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 			return name;
 		}
 	}
+
 }

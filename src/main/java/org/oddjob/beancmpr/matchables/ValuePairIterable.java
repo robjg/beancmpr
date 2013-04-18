@@ -9,7 +9,7 @@ import org.oddjob.beancmpr.matchables.ValuePairIterable.ValuePair;
  * 
  * @author rob
  *
- * @param <T>
+ * @param <T> The type of the value.
  */
 public class ValuePairIterable<T> implements Iterable<ValuePair<T>> {
 
@@ -79,6 +79,12 @@ public class ValuePairIterable<T> implements Iterable<ValuePair<T>> {
 		};
 	}
 		
+	
+	/**
+	 * Provide a container object for the values.
+	 *
+	 * @param <T>
+	 */
 	public interface ValuePair<T> {
 		
 		public String getPropertyName();

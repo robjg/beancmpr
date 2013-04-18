@@ -41,7 +41,7 @@
                                     <tasks>
                                         <xml>
                                             <tasks>
-                                                <scp file="${dist.src.zip.file}" sftp="true" todir="${sourceforge.user},ojob:${sourceforge.password}@${sourceforge.server}:/home/pfs/project/o/oj/ojob/oj-spring/snapshots" trust="true"/>
+                                                <scp file="${dist.src.zip.file}" sftp="true" todir="${sourceforge.user},ojob:${sourceforge.password}@${sourceforge.server}:/home/pfs/project/b/be/beancmpr/snapshots" trust="true"/>
                                             </tasks>
                                         </xml>
                                     </tasks>
@@ -60,7 +60,7 @@
                                     <tasks>
                                         <xml>
                                             <tasks>
-                                                <scp file="${this.dir}/README.txt" sftp="true" todir="${sourceforge.user},ojob:${sourceforge.password}@${sourceforge.server}:/home/pfs/project/o/oj/ojob/oj-spring/snapshots" trust="true"/>
+                                                <scp file="${this.dir}/README.txt" sftp="true" todir="${sourceforge.user},ojob:${sourceforge.password}@${sourceforge.server}:/home/pfs/project/b/be/beancmpr/snapshots" trust="true"/>
                                             </tasks>
                                         </xml>
                                     </tasks>

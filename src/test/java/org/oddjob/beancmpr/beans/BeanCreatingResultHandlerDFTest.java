@@ -40,6 +40,9 @@ public class BeanCreatingResultHandlerDFTest extends TestCase {
 				"   <out>" +
 				"    <list/>" +
 				"   </out>" +
+				"   <factoryBuilder>" +
+				"    <bean class='org.oddjob.beancmpr.beans.SimpleResultBeanFactoryBuilder'/>" +
+				"   </factoryBuilder>" +
 				"</beancmpr:bean-results>";
 	
     	ArooaDescriptor descriptor = 
@@ -67,6 +70,8 @@ public class BeanCreatingResultHandlerDFTest extends TestCase {
 		assertEquals("broker", test.getyPropertyPrefix());
 		assertEquals(true, test.isIgnoreMatches());
 		assertNotNull(test.getOut());
+		assertEquals(SimpleResultBeanFactoryBuilder.class,
+				test.getFactoryBuilder().getClass());
 		
 	}
 

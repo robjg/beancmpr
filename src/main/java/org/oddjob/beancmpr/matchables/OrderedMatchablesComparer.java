@@ -5,7 +5,7 @@ import java.util.Iterator;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.beans.BeanComparerProvider;
-import org.oddjob.beancmpr.comparers.MultiItemComparison;
+import org.oddjob.beancmpr.comparers.IterableComparison;
 import org.oddjob.beancmpr.comparers.MultiItemComparisonCounts;
 
 /**
@@ -16,7 +16,7 @@ import org.oddjob.beancmpr.comparers.MultiItemComparisonCounts;
  *
  */
 public class OrderedMatchablesComparer 
-implements Comparer<Iterable<MatchableGroup>> {
+implements Comparer<Iterable<? extends MatchableGroup>> {
 	
 	private final DefaultMatchableComparer matchableComparer;
 	
@@ -25,11 +25,11 @@ implements Comparer<Iterable<MatchableGroup>> {
 	public OrderedMatchablesComparer(
 			PropertyAccessor accessor,
 			BeanComparerProvider comparerProvider,
-			BeanCmprResultsHandler matchNotifier) {
+			BeanCmprResultsHandler resultsHandler) {
 		
 		this.matchableComparer = new DefaultMatchableComparer(comparerProvider);
 		
-		this.matchProcessor = new ComparisonGatheringProcessor(matchNotifier);
+		this.matchProcessor = new ComparisonGatheringProcessor(resultsHandler);
 	}
 	
 	public MultiItemComparisonCounts getMultiItemComparisonStats() {
@@ -37,12 +37,12 @@ implements Comparer<Iterable<MatchableGroup>> {
 	}
 	
 	@Override
-	public MultiItemComparison<MatchableGroup> compare(
-			Iterable<MatchableGroup> x, 
-			Iterable<MatchableGroup> y) {
+	public IterableComparison<MatchableGroup> compare(
+			Iterable<? extends MatchableGroup> x, 
+			Iterable<? extends MatchableGroup> y) {
 			
-		Iterator<MatchableGroup> matchablesX = x.iterator();
-		Iterator<MatchableGroup> matchablesY = y.iterator();
+		Iterator<? extends MatchableGroup> matchablesX = x.iterator();
+		Iterator<? extends MatchableGroup> matchablesY = y.iterator();
 		
 		MatchableGroup currentX = null;
 		MatchableGroup currentY = null;
@@ -93,7 +93,7 @@ implements Comparer<Iterable<MatchableGroup>> {
 			currentY = null;
 		}
 				
-		return new MultiItemComparison<MatchableGroup>(x, y,
+		return new IterableComparison<MatchableGroup>(x, y,
 				matchProcessor);
 	}
 	

@@ -13,7 +13,7 @@ import org.oddjob.beancmpr.matchables.MockMatchableMetaData;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
 import org.oddjob.beancmpr.matchables.SimpleMatchable;
 
-public class SimpleResultBeanFactoryTest extends TestCase {
+public class AlternativeResultBeanFactoryTest extends TestCase {
 
 	private class MyMetaData extends MockMatchableMetaData {
 		
@@ -51,8 +51,9 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 		
 		BeanUtilsPropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		SimpleResultBeanFactory test = new SimpleResultBeanFactory(
-				accessor, null, null);
+		AlternativeResultBeanFactory test = 
+				new AlternativeResultBeanFactory(
+						accessor, null, null);
 		
 		SimpleMatchable x = new SimpleMatchable(
 				Arrays.asList("Apple"), 
@@ -65,10 +66,12 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 				Arrays.asList(new Integer(3)),
 				Arrays.asList("green"));
 
+		Comparison<Integer> comparison = new EqualityComparison<Integer>(
+				new Integer(2), new Integer(3));
+		
 		@SuppressWarnings("unchecked")
 		Iterable<? extends Comparison<?>> comparisons =
-				Arrays.asList(new EqualityComparison<Integer>(
-						new Integer(2), new Integer(3)));
+				Arrays.asList(comparison);
 		
 		MultiValueComparison<Matchable> matchableComparison = 
 			new MatchableComparision(x, y, comparisons);
@@ -76,7 +79,7 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 		Object bean = test.createComparisonResult(matchableComparison);
 		
 		assertEquals("NOT_EQUAL", 
-				accessor.getProperty(bean, "matchResultType"));
+				accessor.getProperty(bean, "matchResultType.text"));
 
 		assertEquals("Apple", 
 				accessor.getProperty(bean, "fruit"));
@@ -87,7 +90,7 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 		assertEquals(new Integer(3), 
 				accessor.getProperty(bean, "yQuantity"));
 		
-		assertEquals("2<>3", 
+		assertSame(comparison, 
 				accessor.getProperty(bean, "quantityComparison"));
 		
 		assertEquals("red", 
@@ -102,8 +105,9 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 		
 		BeanUtilsPropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		SimpleResultBeanFactory test = new SimpleResultBeanFactory(
-				accessor, null, null);
+		AlternativeResultBeanFactory test = 
+				new AlternativeResultBeanFactory(
+						accessor, "left", "right");
 		
 		SimpleMatchable x = new SimpleMatchable(
 				Arrays.asList("Apple"), 
@@ -116,9 +120,12 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 				Arrays.asList(new Integer(2)),
 				Arrays.asList("green"));
 		
+		Comparison<Object> comparison = 
+				new EqualityComparison<Object>("A", "A");
+		
 		@SuppressWarnings("unchecked")
 		Iterable<? extends Comparison<?>> comparisons =
-				Arrays.asList(new EqualityComparison<Object>("A", "A"));
+				Arrays.asList(comparison);
 		
 		MultiValueComparison<Matchable> matchableComparison = 
 			new MatchableComparision(x, y, comparisons);
@@ -126,25 +133,25 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 		Object bean = test.createComparisonResult(matchableComparison);
 		
 		assertEquals("EQUAL", 
-				accessor.getProperty(bean, "matchResultType"));
+				accessor.getProperty(bean, "matchResultType.text"));
 
 		assertEquals("Apple", 
 				accessor.getProperty(bean, "fruit"));
 		
 		assertEquals(new Integer(2), 
-				accessor.getProperty(bean, "xQuantity"));
+				accessor.getProperty(bean, "leftQuantity"));
 		
 		assertEquals(new Integer(2), 
-				accessor.getProperty(bean, "yQuantity"));
+				accessor.getProperty(bean, "rightQuantity"));
 		
-		assertEquals("", 
+		assertSame(comparison, 
 				accessor.getProperty(bean, "quantityComparison"));
 		
 		assertEquals("red", 
-				accessor.getProperty(bean, "xColour"));
+				accessor.getProperty(bean, "leftColour"));
 		
 		assertEquals("green", 
-				accessor.getProperty(bean, "yColour"));
+				accessor.getProperty(bean, "rightColour"));
 		
 	}
 	
@@ -152,8 +159,8 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 		
 		BeanUtilsPropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		SimpleResultBeanFactory test = new SimpleResultBeanFactory(
-				accessor, "TODAY", "YESTERDAY");
+		AlternativeResultBeanFactory test = new AlternativeResultBeanFactory(
+				accessor, "a", "b");
 		
 		SimpleMatchable y = new SimpleMatchable(
 				Arrays.asList("Apple"), 
@@ -163,26 +170,26 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 				
 		Object bean = test.createXMissingResult(y);
 		
-		assertEquals("TODAY_MISSING", 
-				accessor.getProperty(bean, "matchResultType"));
+		assertEquals("a_MISSING", 
+				accessor.getProperty(bean, "matchResultType.text"));
 
 		assertEquals("Apple", 
 				accessor.getProperty(bean, "fruit"));
 		
 		assertEquals(null, 
-				accessor.getProperty(bean, "TODAYQuantity"));
+				accessor.getProperty(bean, "aQuantity"));
 		
 		assertEquals(new Integer(3), 
-				accessor.getProperty(bean, "YESTERDAYQuantity"));
+				accessor.getProperty(bean, "bQuantity"));
 		
 		assertEquals(null, 
 				accessor.getProperty(bean, "quantityComparison"));
 		
 		assertEquals(null, 
-				accessor.getProperty(bean, "TODAYColour"));
+				accessor.getProperty(bean, "aColour"));
 		
 		assertEquals("green", 
-				accessor.getProperty(bean, "YESTERDAYColour"));
+				accessor.getProperty(bean, "bColour"));
 		
 	}
 	
@@ -190,7 +197,7 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 		
 		BeanUtilsPropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		SimpleResultBeanFactory test = new SimpleResultBeanFactory(
+		AlternativeResultBeanFactory test = new AlternativeResultBeanFactory(
 				accessor, null, null);
 		
 		SimpleMatchable x = new SimpleMatchable(
@@ -202,7 +209,7 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 		Object bean = test.createYMissingResult(x);
 		
 		assertEquals("y_MISSING", 
-				accessor.getProperty(bean, "matchResultType"));
+				accessor.getProperty(bean, "matchResultType.text"));
 
 		assertEquals("Apple", 
 				accessor.getProperty(bean, "fruit"));

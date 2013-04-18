@@ -3,13 +3,13 @@ package org.oddjob.beancmpr.comparers;
 import junit.framework.TestCase;
 
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.comparers.SimpleComparer;
+import org.oddjob.beancmpr.comparers.EqualityComparer;
 
-public class SimpleComparerTest extends TestCase {
+public class EqualtiyComparerTest extends TestCase {
 
 	public void testNotEquals() {
 		
-		SimpleComparer test = new SimpleComparer();
+		EqualityComparer test = new EqualityComparer();
 		
 		Comparison<Object> comparison = test.compare("Apples", "Oranges");
 		
@@ -44,7 +44,7 @@ public class SimpleComparerTest extends TestCase {
 	
 	public void testEquals() {
 		
-		SimpleComparer test = new SimpleComparer();
+		EqualityComparer test = new EqualityComparer();
 		
 		Comparison<Object> comparison = test.compare("Apples", "Apples");
 		

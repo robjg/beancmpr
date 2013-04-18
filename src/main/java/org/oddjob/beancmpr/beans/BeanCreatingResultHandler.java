@@ -6,9 +6,9 @@ import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
+import org.oddjob.beancmpr.matchables.BeanProducingResultHandler;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableGroup;
-import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
 
 /**
@@ -19,14 +19,14 @@ import org.oddjob.beancmpr.matchables.MultiValueComparison;
  *
  */
 public class BeanCreatingResultHandler 
-implements BeanCmprResultsHandler, ArooaSessionAware {
+implements BeanProducingResultHandler, ArooaSessionAware {
 
 	/**
 	 * @oddjob.property
 	 * @oddjob.description A collection that result beans will be added to.
 	 * @oddjob.required No.
 	 */
-	private Collection<Object> out;
+	private Collection<? super Object> out;
 	
 	
 	/** From the {@link ArooaSession}. */
@@ -59,7 +59,16 @@ implements BeanCmprResultsHandler, ArooaSessionAware {
 	private boolean ignoreMatches;
 	
 	/** Factory to create beans. */
-	private MatchResultBeanFactory factory;
+	private ResultBeanFactory factory;
+	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description Allow For a different 
+	 * {@link ResultBeanFactory}.
+	 * @oddjob.required No. Defaults to 
+	 * {@link SimpleResultBeanFactoryBuilder}.
+	 */
+	private ResultBeanFactoryBuilder factoryBuilder;
 	
 	@Override
 	@ArooaHidden
@@ -72,8 +81,13 @@ implements BeanCmprResultsHandler, ArooaSessionAware {
 	 */
 	public void configured() {
 		
-		factory = new SimpleResultBeanFactory(accessor, 
-				xPropertyPrefix, yPropertyPrefix);
+		if (factoryBuilder == null) {
+			
+			factoryBuilder = new SimpleResultBeanFactoryBuilder();
+		}
+
+		factory = factoryBuilder.factoryFor(accessor, 
+					xPropertyPrefix, yPropertyPrefix);
 	}
 	
 	@Override
@@ -98,11 +112,12 @@ implements BeanCmprResultsHandler, ArooaSessionAware {
 		}
 	}	
 
-	public Collection<Object> getOut() {
+	public Collection<? super Object> getOut() {
 		return out;
 	}
 
-	public void setOut(Collection<Object> out) {
+	@Override
+	public void setOut(Collection<? super Object> out) {
 		this.out = out;
 	}
 
@@ -136,5 +151,13 @@ implements BeanCmprResultsHandler, ArooaSessionAware {
 				": xPropertyPrefix=" + xPropertyPrefix +
 				", yPropertyPrefix=" + yPropertyPrefix + 
 				", ignoreMatches=" + ignoreMatches;
+	}
+
+	public ResultBeanFactoryBuilder getFactoryBuilder() {
+		return factoryBuilder;
+	}
+
+	public void setFactoryBuilder(ResultBeanFactoryBuilder beanFactoryBuilder) {
+		this.factoryBuilder = beanFactoryBuilder;
 	}
 }

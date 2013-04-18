@@ -13,8 +13,8 @@ import org.oddjob.beancmpr.Comparison;
  * @author rob
  *
  */
-public class SimpleIterableComparer<T> 
-implements HierarchicalComparer<Iterable<T>>{
+public class IterableComparer<T> 
+implements HierarchicalComparer<Iterable<? extends T>>{
 
 	private ComparersByType comparers;
 	
@@ -24,7 +24,8 @@ implements HierarchicalComparer<Iterable<T>>{
 	}
 	
 	@Override
-	public MultiItemComparison<T> compare(Iterable<T> x, Iterable<T> y) {
+	public IterableComparison<T> compare(Iterable<? extends T> x, 
+			Iterable<? extends T> y) {
 		
 		if (x == null || y == null) {
 			return null;
@@ -42,6 +43,11 @@ implements HierarchicalComparer<Iterable<T>>{
 
 		int xCount = 0;
 		int yCount = yCopy.size();
+		
+		ComparersByType comparers = this.comparers;
+		if (comparers == null) {
+			comparers = new DefaultComparersByType();
+		}
 		
 		for (T eX : x) {
 			
@@ -92,7 +98,7 @@ implements HierarchicalComparer<Iterable<T>>{
 		final int finalXsMissing = xsMissing;
 		final int finalYsMissing = ysMissing;
 
-		return new MultiItemComparison<T>(x, y,
+		return new IterableComparison<T>(x, y,
 				new MultiItemComparisonCounts() {
 					
 					@Override

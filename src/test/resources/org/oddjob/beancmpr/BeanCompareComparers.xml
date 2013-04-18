@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob id="this">
+    <job>
+        <sequential>
+            <jobs>
+                <oddjob file="${this.dir}/SharedData.xml" inheritance="SHARED"/>
+                <bean-bus>
+                    <parts>
+                        <beancmpr:compare id="comparison" keyProperties="type" valueProperties="price" xmlns:beancmpr="oddjob:beancmpr">
+                            <inX>
+                                <value value="${data.listX}"/>
+                            </inX>
+                            <inY>
+                                <value value="${data.listY}"/>
+                            </inY>
+                            <results>
+                                <beancmpr:bean-results>
+                                    <out>
+                                        <value value="${bean-sheet}"/>
+                                    </out>
+                                    <factoryBuilder>
+                                        <bean class="org.oddjob.beancmpr.beans.AlternativeResultBeanFactoryBuilder"/>
+                                    </factoryBuilder>
+                                </beancmpr:bean-results>
+                            </results>
+                        </beancmpr:compare>
+                        <bus:bean-sheet id="bean-sheet" xmlns:bus="oddjob:beanbus">
+                            <output>
+                                <stdout/>
+                            </output>
+                        </bus:bean-sheet>
+                        <bus:bean-copy xmlns:bus="oddjob:beanbus">
+                            <arooaClass>
+                                <magic-class name="CompareResult">
+                                    <properties>
+                                        <value key="matchType" value="java.lang.String"/>
+                                        <value key="type" value="java.lang.String"/>
+                                        <value key="priceComparisonResult" value="java.lang.Double"/>
+                                        <value key="priceComparisonDelta" value="java.lang.Double"/>
+                                    </properties>
+                                </magic-class>
+                            </arooaClass>
+                            <mappings>
+                                <value key="matchResultType" value="matchType"/>
+                                <value key="type" value="type"/>
+                                <value key="priceComparison.result" value="priceComparisonResult"/>
+                                <value key="priceComparison.delta" value="priceComparisonDelta"/>
+                            </mappings>
+                        </bus:bean-copy>
+                        <bus:bean-capture xmlns:bus="oddjob:beanbus"/>
+                    </parts>
+                </bean-bus>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>

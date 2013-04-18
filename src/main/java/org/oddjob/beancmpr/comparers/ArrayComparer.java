@@ -13,8 +13,8 @@ import org.oddjob.beancmpr.Comparison;
 public class ArrayComparer 
 implements HierarchicalComparer<Object[]>{
 
-	private final SimpleIterableComparer iterableComparer
-		= new SimpleIterableComparer();
+	private final IterableComparer iterableComparer
+		= new IterableComparer();
 	
 	@Override
 	public void setComparersByType(ComparersByType comparersByType) {
@@ -22,11 +22,37 @@ implements HierarchicalComparer<Object[]>{
 	}
 	
 	@Override
-	public Comparison compare(Object[] x, Object[] y) {
+	public Comparison<Object[]> compare(final Object[] x, final Object[] y) {
+		
 		if (x == null || y == null) {
 			return null;
 		}
-		return iterableComparer.compare(Arrays.asList(x), Arrays.asList(y));
+	
+		final IterableComparison<Object> iterableComparison = 
+				iterableComparer.compare(Arrays.asList(x), Arrays.asList(y));
+		
+		return new Comparison<Object[]>() {
+
+			@Override
+			public Object[] getX() {
+				return x;
+			}
+
+			@Override
+			public Object[] getY() {
+				return y;
+			}
+
+			@Override
+			public int getResult() {
+				return iterableComparison.getResult();
+			}
+
+			@Override
+			public String getSummaryText() {
+				return iterableComparison.getSummaryText();
+			}
+		};
 	}
 	
 	@Override

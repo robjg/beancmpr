@@ -34,6 +34,8 @@ class BeanCreatingResultDesign extends DesignValueBase {
 	
 	private final SimpleTextAttribute ignoreMatches;
 	
+	private final SimpleDesignProperty factoryBuilder;
+	
 	public BeanCreatingResultDesign(ArooaElement element, ArooaContext parentContext) {
 		super(element, parentContext);
 		
@@ -44,6 +46,8 @@ class BeanCreatingResultDesign extends DesignValueBase {
 		yPropertyPrefix = new SimpleTextAttribute("yPropertyPrefix", this);
 		
 		ignoreMatches = new SimpleTextAttribute("ignoreMatches", this);
+		
+		factoryBuilder = new SimpleDesignProperty("factoryBuilder", this);
 	}
 	
 	public Form detail() {
@@ -53,6 +57,7 @@ class BeanCreatingResultDesign extends DesignValueBase {
 			.add(xPropertyPrefix.view().setTitle("X Property Prefix"))
 			.add(yPropertyPrefix.view().setTitle("Y Property Prefix"))
 			.add(ignoreMatches.view().setTitle("Ignore Matches"))
+			.add(factoryBuilder.view().setTitle("Factory Builder"))
 		);
 	}
 
@@ -60,6 +65,7 @@ class BeanCreatingResultDesign extends DesignValueBase {
 	public DesignProperty[] children() {
 		return new DesignProperty[] { out, 
 				xPropertyPrefix, yPropertyPrefix,
-				ignoreMatches, ignoreMatches };
+				ignoreMatches, ignoreMatches,
+				factoryBuilder };
 	}
 }

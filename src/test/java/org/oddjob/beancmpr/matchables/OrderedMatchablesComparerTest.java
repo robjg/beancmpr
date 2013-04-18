@@ -15,7 +15,7 @@ import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
 import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
 import org.oddjob.beancmpr.comparers.DefaultComparersByType;
-import org.oddjob.beancmpr.comparers.MultiItemComparison;
+import org.oddjob.beancmpr.comparers.IterableComparison;
 
 public class OrderedMatchablesComparerTest extends TestCase {
 	
@@ -289,7 +289,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 						null, new DefaultComparersByType()),
 				results);
 		
-		MultiItemComparison<MatchableGroup> multiItemComparison =
+		IterableComparison<MatchableGroup> multiItemComparison =
 				test.compare(xs, ys);
 		
 		assertEquals(1, multiItemComparison.getDifferentCount());

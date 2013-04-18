@@ -9,18 +9,18 @@ import org.oddjob.beancmpr.Comparison;
  * @author rob
  *
  */
-public class MultiItemComparison<T> 
-implements Comparison<Iterable<T>>, MultiItemComparisonCounts {
+public class IterableComparison<T> 
+implements Comparison<Iterable<? extends T>>, MultiItemComparisonCounts {
 
-	private final Iterable<T> x;
+	private final Iterable<? extends T> x;
 	
-	private final Iterable<T> y;
+	private final Iterable<? extends T> y;
 	
 	private final MultiItemComparisonCounts multiItemStats;
 	
-	public MultiItemComparison(
-			Iterable<T> x,
-			Iterable<T> y,
+	public IterableComparison(
+			Iterable<? extends T> x,
+			Iterable<? extends T> y,
 			MultiItemComparisonCounts multiItemStats) {
 		
 		this.x = x;
@@ -30,12 +30,12 @@ implements Comparison<Iterable<T>>, MultiItemComparisonCounts {
 	}
 	
 	@Override
-	public Iterable<T> getX() {
+	public Iterable<? extends T> getX() {
 		return x;
 	}
 	
 	@Override
-	public Iterable<T> getY() {
+	public Iterable<? extends T> getY() {
 		return y;
 	}
 	

@@ -15,6 +15,7 @@ public class SharedTestData {
 		private String type;
 		private int quantity;
 		private String colour;
+		private double price;
 		
 		public long getId() {
 			return id;
@@ -47,6 +48,14 @@ public class SharedTestData {
 		public void setColour(String snack) {
 			this.colour = snack;
 		}
+		
+		public double getPrice() {
+			return price;
+		}
+		
+		public void setPrice(double price) {
+			this.price = price;
+		}
 	}
 	
 
@@ -56,7 +65,8 @@ public class SharedTestData {
 		fruit.setType("Apple");
 		fruit.setQuantity(4);
 		fruit.setColour("green");
-	
+		fruit.setPrice(54.56);
+		
 		fruitX.add(fruit);
 	}
 	
@@ -66,6 +76,7 @@ public class SharedTestData {
 		fruit.setType("Banana");
 		fruit.setQuantity(3);
 		fruit.setColour("yellow");
+		fruit.setPrice(23.24);
 		
 		fruitX.add(fruit);
 	}
@@ -76,6 +87,7 @@ public class SharedTestData {
 		fruit.setType("Orange");
 		fruit.setQuantity(2);
 		fruit.setColour("orange");
+		fruit.setPrice(70.95);
 		
 		fruitX.add(fruit);
 	}
@@ -86,7 +98,8 @@ public class SharedTestData {
 		fruit.setType("Apple");
 		fruit.setQuantity(4);
 		fruit.setColour("red");
-
+		fruit.setPrice(54.57);
+		
 		fruitY.add(fruit);
 	}
 	
@@ -96,6 +109,7 @@ public class SharedTestData {
 		fruit.setType("Banana");
 		fruit.setQuantity(4);
 		fruit.setColour("yellow");
+		fruit.setPrice(23.25);
 		
 		fruitY.add(fruit);
 	}
@@ -106,6 +120,7 @@ public class SharedTestData {
 		fruit.setType("Orange");
 		fruit.setQuantity(2);
 		fruit.setColour("orange");		
+		fruit.setPrice(80.05);
 		
 		fruitY.add(fruit);
 	}	

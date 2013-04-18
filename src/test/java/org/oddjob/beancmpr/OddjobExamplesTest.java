@@ -1,5 +1,7 @@
 package org.oddjob.beancmpr;
 
+import java.io.File;
+import java.net.URL;
 import java.text.ParseException;
 
 import org.junit.Assert;
@@ -11,8 +13,31 @@ import org.oddjob.arooa.reflect.ArooaPropertyException;
 import org.oddjob.arooa.xml.XMLConfiguration;
 import org.oddjob.state.ParentState;
 
-public class OddjobDatabaseExampleTest {
+public class OddjobExamplesTest {
 
+	@Test
+	public void testBeanBusExample() 
+	throws ArooaPropertyException, ArooaConversionException, ParseException {
+		
+		URL config = getClass().getResource("OddjobBeanBusExample.xml");
+		
+		Oddjob oddjob = new Oddjob();
+		oddjob.setFile(new File(config.getFile()));
+		
+		oddjob.run();
+
+		Assert.assertEquals(ParentState.COMPLETE, 
+				oddjob.lastStateEvent().getState());
+
+		OddjobLookup lookup = new OddjobLookup(
+				oddjob);
+		
+		Assert.assertEquals(3, 
+				(int) lookup.lookup("bean-capture.count", int.class));
+		
+		oddjob.destroy();
+	}
+	
 	static String EOL = System.getProperty("line.separator");
 	
 	public static String expectedKeysDifferent =
@@ -30,8 +55,7 @@ public class OddjobDatabaseExampleTest {
 			"NOT_EQUAL        Banana  3          4          1.0 (33.3%)         yellow   yellow" + EOL +
 			"EQUAL            Orange  2          2                              orange   orange" + EOL;
 
-	@Test
-	public void testExample() 
+	public void testDatabaseExample() 
 	throws ArooaPropertyException, ArooaConversionException, ParseException {
 		
 		Oddjob oddjob = new Oddjob();
@@ -57,5 +81,4 @@ public class OddjobDatabaseExampleTest {
 
 		oddjob.destroy();
 	}
-	
 }

@@ -4,6 +4,9 @@ import org.oddjob.beancmpr.MatchDefinition;
 
 /**
  * Meta data that describe a {@link Matchable}.
+ * <p>
+ * This is a {@link MatchDefinition} that is able to provide a type
+ * for each property.
  * 
  * @author rob
  *

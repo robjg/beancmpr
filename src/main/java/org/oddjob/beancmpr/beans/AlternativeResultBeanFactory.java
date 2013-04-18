@@ -7,19 +7,24 @@ import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.matchables.MatchableMetaData;
 
 /**
- * Creates a very simple match result bean.
+ * Creates a very match result bean where the comparison is the object (
+ * i.e. of type {@link Comparison}) not it's summary text.
+ * <p>
+ * Note the developer was really running out of naming ideas when this
+ * class was created.
+ * 
+ * @see SimpleResultBeanFactory
  * 
  * @author rob
  *
  */
-public class SimpleResultBeanFactory extends SharedNameResultBeanFactory
+public class AlternativeResultBeanFactory extends SharedNameResultBeanFactory
 implements ResultBeanFactory {
 
 	private final PropertyAccessor accessor;
 	
-	public SimpleResultBeanFactory(PropertyAccessor accessor,
+	public AlternativeResultBeanFactory(PropertyAccessor accessor,
 			String xPropertyPrefix, String yPropertyPrefix) {
-		
 		super(xPropertyPrefix, yPropertyPrefix);
 		
 		this.accessor = accessor;
@@ -30,7 +35,8 @@ implements ResultBeanFactory {
 		MagicBeanClassCreator magicDef = new MagicBeanClassCreator(
 				"MatchResultBean");
 		
-		magicDef.addProperty(MATCH_RESULT_TYPE_PROPERTY, String.class);
+		magicDef.addProperty(MATCH_RESULT_TYPE_PROPERTY, 
+				MatchResultType.class);
 		
 		for (String key : metaData.getKeyProperties()) {			
 			
@@ -43,7 +49,7 @@ implements ResultBeanFactory {
 			magicDef.addProperty(xify(propertyName), valueType);
 			magicDef.addProperty(yify(propertyName), valueType);
 			magicDef.addProperty(propertyName + COMPARISON_PROPERTY_SUFFIX, 
-					String.class);
+					Comparison.class);
 		}
 		
 		for (String propertyName : metaData.getOtherProperties()) {
@@ -59,9 +65,9 @@ implements ResultBeanFactory {
 	@Override
 	protected void populateMatchResultType(Object resultBean,
 			MatchResultType matchResultType) {
-
+		
 		accessor.setProperty(resultBean, MATCH_RESULT_TYPE_PROPERTY, 
-				matchResultType.getText());
+				matchResultType);
 	}
 	
 	@Override
@@ -77,6 +83,7 @@ implements ResultBeanFactory {
 		
 		accessor.setProperty(resultBean, 
 				xify(property), value);
+		
 	}
 	
 	@Override
@@ -91,9 +98,9 @@ implements ResultBeanFactory {
 	@Override
 	protected void populateComparison(Object resultBean, String property,
 			Comparison<?> comparison) {
-		
+
 		accessor.setProperty(resultBean, 
 				property + COMPARISON_PROPERTY_SUFFIX, 
-				comparison == null ? null : comparison.getSummaryText());
-	}
+				comparison);
+	}	
 }
