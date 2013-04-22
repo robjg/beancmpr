@@ -8,7 +8,7 @@ import org.oddjob.beancmpr.Comparer;
  * @author rob
  *
  */
-public interface ComparersByType {
+public interface ComparersByType extends HierarchicalComparer {
 
 	/**
 	 * Find a {@link Comparer} for a given type.
@@ -18,14 +18,5 @@ public interface ComparersByType {
 	 * 
 	 * @return The comparer or null if one can't be found for the type.
 	 */
-	public <T> Comparer<T> comparerFor(Class<T> type);
-	
-	/**
-	 * Used by owner of comparers to inject the master comparer into
-	 * {@link HierarchicalComparer}s.
-	 * 
-	 * @param comparers The master comparers.
-	 */
-	public void injectComparers(ComparersByType comparers);
-	
+	public <T> Comparer<T> comparerFor(Class<T> type);	
 }

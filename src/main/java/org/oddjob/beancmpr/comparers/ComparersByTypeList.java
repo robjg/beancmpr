@@ -44,9 +44,8 @@ public class ComparersByTypeList implements ComparersByType {
 	@Override
 	public void injectComparers(ComparersByType comparers) {
 		for (Comparer<?> comparer : this.comparers) {
-			if (comparer instanceof HierarchicalComparer<?>) {
-				((HierarchicalComparer<?>) comparer).setComparersByType(
-						comparers);
+			if (comparer instanceof HierarchicalComparer) {
+				((HierarchicalComparer) comparer).injectComparers(comparers);
 			}
 		}
 	}

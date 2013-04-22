@@ -14,13 +14,19 @@ import org.oddjob.beancmpr.Comparison;
  *
  */
 public class IterableComparer<T> 
-implements HierarchicalComparer<Iterable<? extends T>>{
+implements HierarchicalComparer, Comparer<Iterable<? extends T>>{
 
 	private ComparersByType comparers;
 	
-	@Override
+	private ComparersByType parentComparers;
+	
 	public void setComparersByType(ComparersByType comparersByType) {
 		this.comparers = comparersByType;
+	}
+	
+	@Override
+	public void injectComparers(ComparersByType comparers) {
+		this.parentComparers = comparers;
 	}
 	
 	@Override
@@ -44,10 +50,12 @@ implements HierarchicalComparer<Iterable<? extends T>>{
 		int xCount = 0;
 		int yCount = yCopy.size();
 		
-		ComparersByType comparers = this.comparers;
-		if (comparers == null) {
-			comparers = new DefaultComparersByType();
+		ComparersByType parentComparers = this.parentComparers;
+		if (parentComparers == null) {
+			parentComparers = new DefaultComparersByType();
 		}
+		ComparersByType comparers = new CompositeComparersByType(
+				this.comparers, parentComparers);
 		
 		for (T eX : x) {
 			

@@ -10,12 +10,13 @@ import org.oddjob.beancmpr.Comparer;
  *
  * @param <T>
  */
-public interface HierarchicalComparer<T> extends Comparer<T> {
+public interface HierarchicalComparer {
 
 	/**
-	 * Set the comparers the comparer can use.
+	 * Used by owner of comparers to inject the master comparer into
+	 * {@link HierarchicalComparer}s.
 	 * 
-	 * @param comparersByType The comparers.
+	 * @param comparers The master comparers.
 	 */
-	public void setComparersByType(ComparersByType comparersByType);
+	public void injectComparers(ComparersByType comparers);
 }

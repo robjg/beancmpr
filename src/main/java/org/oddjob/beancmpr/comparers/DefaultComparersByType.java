@@ -18,6 +18,7 @@ public class DefaultComparersByType implements ComparersByType {
 		int index = 0;
 		
 		comparers.setComparer(index++, new NumericComparer());		
+		comparers.setComparer(index++, new DateComparer());		
 		comparers.setComparer(index++, new ArrayComparer());
 		comparers.setComparer(index++, new IterableComparer<Object>());
 		comparers.setComparer(index++, new EqualityComparer());

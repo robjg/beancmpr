@@ -24,11 +24,11 @@
                                 </beancmpr:bean-results>
                             </results>
                             <comparersByType>
-                                <beancmpr:cmprs-list>
+                                <beancmpr:comparers-list>
                                     <comparer>
-                                        <beancmpr:numeric-cmpr deltaTolerance="0.5"/>
+                                        <beancmpr:numeric-comparer deltaTolerance="0.5"/>
                                     </comparer>
-                                </beancmpr:cmprs-list>
+                                </beancmpr:comparers-list>
                             </comparersByType>
                         </beancmpr:compare>
                         <bus:bean-copy xmlns:bus="oddjob:beanbus">

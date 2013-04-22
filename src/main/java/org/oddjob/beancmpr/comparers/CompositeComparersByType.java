@@ -1,5 +1,8 @@
 package org.oddjob.beancmpr.comparers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.oddjob.beancmpr.Comparer;
 
 /**
@@ -10,12 +13,18 @@ import org.oddjob.beancmpr.Comparer;
  * @author rob
  *
  */
-public class CompositeComparersByType implements ComparersByType {
+public class CompositeComparersByType 
+implements ComparersByType, HierarchicalComparer {
 
-	private ComparersByType[] comparers;
+	private final List<ComparersByType> comparers = 
+			new ArrayList<ComparersByType>();
 	
 	public CompositeComparersByType(ComparersByType... comparers) {
-		this.comparers = comparers;
+		for (ComparersByType e : comparers) {
+			if (e != null) {
+				this.comparers.add(e);
+			}
+		}
 	}
 	
 	@Override

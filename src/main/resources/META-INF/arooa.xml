@@ -9,11 +9,13 @@
           method="configured" />
       </annotations>
     </arooa:bean-def>
-    <arooa:bean-def element='cmprs-list'
+    <arooa:bean-def element='comparers-list'
       className='org.oddjob.beancmpr.comparers.ComparersByTypeList'/>
-    <arooa:bean-def element='cmprs-map'
+    <arooa:bean-def element='comparers-map'
       className='org.oddjob.beancmpr.beans.ComparersByPropertyMap'/>
-    <arooa:bean-def element='numeric-cmpr'
+    <arooa:bean-def element='numeric-comparer'
+      className='org.oddjob.beancmpr.comparers.NumericComparer'/>
+    <arooa:bean-def element='date-comparer'
       className='org.oddjob.beancmpr.comparers.NumericComparer'/>
   </values>
   <components>

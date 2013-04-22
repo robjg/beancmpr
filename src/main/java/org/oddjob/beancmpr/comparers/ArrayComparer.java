@@ -2,6 +2,7 @@ package org.oddjob.beancmpr.comparers;
 
 import java.util.Arrays;
 
+import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 
 /**
@@ -11,14 +12,20 @@ import org.oddjob.beancmpr.Comparison;
  *
  */
 public class ArrayComparer 
-implements HierarchicalComparer<Object[]>{
+implements HierarchicalComparer, Comparer<Object[]>{
 
-	private final IterableComparer iterableComparer
-		= new IterableComparer();
+	private ComparersByType comparers;
 	
-	@Override
+	private ComparersByType parentComparers;
+	
 	public void setComparersByType(ComparersByType comparersByType) {
-		iterableComparer.setComparersByType(comparersByType);
+		this.comparers = comparersByType;
+	}
+
+	@Override
+	public void injectComparers(ComparersByType comparersByType) {
+		this.parentComparers = comparersByType;
+		
 	}
 	
 	@Override
@@ -28,6 +35,11 @@ implements HierarchicalComparer<Object[]>{
 			return null;
 		}
 	
+		IterableComparer<Object> iterableComparer = 
+				new IterableComparer<Object>();
+		iterableComparer.setComparersByType(comparers);
+		iterableComparer.injectComparers(parentComparers);
+		
 		final IterableComparison<Object> iterableComparison = 
 				iterableComparer.compare(Arrays.asList(x), Arrays.asList(y));
 		
