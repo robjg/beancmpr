@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <variables id="expected">
+            <expected1>
+                <list>
+                    <values>
+                        <result matchType="EQUAL" priceComparisonResult="0" type="Apple"/>
+                        <result matchType="EQUAL" priceComparisonResult="0" type="Banana"/>
+                        <result matchType="NOT_EQUAL" priceComparisonResult="-1" type="Orange"/>
+                    </values>
+                </list>
+            </expected1>
+        </variables>
+    </job>
+</oddjob>

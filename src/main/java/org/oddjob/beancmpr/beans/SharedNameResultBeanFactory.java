@@ -1,6 +1,14 @@
 package org.oddjob.beancmpr.beans;
 
+import org.apache.log4j.Logger;
+import org.oddjob.arooa.beanutils.MagicBeanClassCreator;
+import org.oddjob.arooa.reflect.ArooaClass;
+import org.oddjob.arooa.reflect.BeanOverview;
+import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.beans.MatchResultType.Type;
+import org.oddjob.beancmpr.matchables.Matchable;
+import org.oddjob.beancmpr.matchables.MatchableMetaData;
+import org.oddjob.beancmpr.matchables.MultiValueComparison;
 
 
 /**
@@ -13,6 +21,9 @@ import org.oddjob.beancmpr.beans.MatchResultType.Type;
 abstract public class SharedNameResultBeanFactory extends AbstractResultBeanFactory
 implements ResultBeanFactory {
 
+	private static final Logger logger = Logger.getLogger(
+			SharedNameResultBeanFactory.class);
+	
 	public static final String MATCH_RESULT_TYPE_PROPERTY = "matchResultType";
 	
 	public static final String DEFAULT_X_PROPERTY_PREFIX = "x";
@@ -93,4 +104,236 @@ implements ResultBeanFactory {
 	
 	abstract protected void populateMatchResultType(Object resultBean,
 			MatchResultType matchResultType);
+	
+	private interface Ifyer {
+		String ify(String propertyName);
+	}
+	
+	abstract protected class AbstractResultBeanClassProvider 
+	implements ResultBeanClassProvider {
+		
+		private ArooaClass resultClass;
+		
+		private boolean haveX;
+		
+		private boolean haveY;
+		
+		@Override
+		public final ArooaClass classForX(Matchable x) {
+			
+			if (haveX) {
+				return resultClass;				
+			}
+			
+			if (resultClass == null) {
+				resultClass = classForResult(x, x);
+			}
+			else {
+				resultClass = mergeXintoY(x);
+			}
+			haveX = true;
+			
+			return resultClass;
+		}
+		
+		@Override
+		public final ArooaClass classForY(Matchable y) {
+			
+			if (haveY) {
+				return resultClass;				
+			}
+			
+			if (resultClass == null) {
+				resultClass = classForResult(y, y);
+			}
+			else {
+				resultClass = mergeYintoX(y);
+			}
+			haveY = true;
+			
+			return resultClass;
+		}
+		
+		@Override
+		public final ArooaClass classForComparison(
+				MultiValueComparison<Matchable> matchableComparison) {
+			
+			if (haveX && haveY) {
+				return resultClass;
+			}
+			
+			if (haveX) {
+				resultClass = mergeYintoX(matchableComparison.getY());
+			}
+			else if (haveY) {
+				resultClass = mergeXintoY(matchableComparison.getX());
+			}
+			else {
+				resultClass = classForResult(matchableComparison.getX(), 
+						matchableComparison.getY());
+			}
+			
+			haveX = true;
+			haveY = true;
+			
+			return resultClass;
+		}
+		
+		private ArooaClass mergeXintoY(Matchable x) {
+			return merge(
+					new Ifyer() {
+						public String ify(String propertyName) {
+							return yify(propertyName);
+						}
+					},
+					new Ifyer() {
+						public String ify(String propertyName) {
+							return xify(propertyName);
+						}
+					},
+					x.getMetaData());
+		}
+		
+		private ArooaClass mergeYintoX(Matchable y) {
+			return merge(
+					new Ifyer() {
+						public String ify(String propertyName) {
+							return xify(propertyName);
+						}
+					},
+					new Ifyer() {
+						public String ify(String propertyName) {
+							return yify(propertyName);
+						}
+					},
+					y.getMetaData());
+		}
+		
+		private ArooaClass merge(Ifyer existingIfyer, Ifyer newIfyer,
+				MatchableMetaData metaData) {
+
+			boolean change = false;
+			
+			MagicBeanClassCreator magicDef = new MagicBeanClassCreator(
+					"MatchResultBean");
+			
+			BeanOverview overview = resultClass.getBeanOverview(
+					getPropertyAccessor());
+			
+			for (String key : metaData.getKeyProperties()) {			
+				
+				Class<?> existingType = overview.getPropertyType(key);
+				Class<?> newType = metaData.getPropertyType(key);
+				
+				Class<?> commonType = new PropertyTypeHelper().typeFor(
+						key, existingType, newType);
+				
+				magicDef.addProperty(key, commonType);
+
+				if (commonType != newType) {
+					change = true;
+				}
+			}
+			
+			for (String propertyName : metaData.getValueProperties()) {
+				
+				if (inspect(propertyName, existingIfyer, newIfyer, 
+						overview, metaData, magicDef)) {
+					change = true;
+				}
+				
+				magicDef.addProperty(propertyName + COMPARISON_PROPERTY_SUFFIX, 
+						classForComparison());
+			}
+			
+			for (String propertyName : metaData.getOtherProperties()) {
+				
+				if (inspect(propertyName, existingIfyer, newIfyer, 
+						overview, metaData, magicDef)) {
+					change = true;
+				}
+			}
+			
+			if (!change) {
+				return resultClass;
+			}
+			
+			magicDef.addProperty(MATCH_RESULT_TYPE_PROPERTY,
+					classForResultType());
+			
+			return magicDef.create();
+		}		
+		
+		private boolean inspect(String propertyName, 
+				Ifyer existingIfyer, Ifyer newIfyer, 
+				BeanOverview overview, MatchableMetaData metaData,
+				MagicBeanClassCreator magicDef) {
+			
+			Class<?> existingType = overview.getPropertyType(
+					existingIfyer.ify(propertyName));
+			Class<?> newType = metaData.getPropertyType(propertyName);
+			
+			if (existingType.isAssignableFrom(newType)) {
+				magicDef.addProperty(propertyName, existingType);
+				return false;
+			}
+			else {
+				magicDef.addProperty(newIfyer.ify(propertyName), newType);
+				logger.debug("Changing Types for property " + propertyName +
+						" from " + existingType.getName() + " to " +
+						newType);
+				return true;
+			}
+		}
+		
+		private ArooaClass classForResult(Matchable x, Matchable y) {
+				
+			MatchableMetaData xMetaData = x.getMetaData();
+			MatchableMetaData yMetaData = y.getMetaData();
+			
+			MagicBeanClassCreator magicDef = new MagicBeanClassCreator(
+					"MatchResultBean");
+			
+			magicDef.addProperty(MATCH_RESULT_TYPE_PROPERTY,
+					classForResultType());
+			
+			for (String key : xMetaData.getKeyProperties()) {			
+
+				Class<?> xType = xMetaData.getPropertyType(key);
+				Class<?> yType = xMetaData.getPropertyType(key);
+
+				magicDef.addProperty(key, new PropertyTypeHelper().typeFor(
+						key, xType, yType));
+			}
+			
+			for (String propertyName : xMetaData.getValueProperties()) {
+				
+				Class<?> xValueType = xMetaData.getPropertyType(propertyName);
+				magicDef.addProperty(xify(propertyName), xValueType);
+				
+				Class<?> yValueType = xMetaData.getPropertyType(propertyName);
+				magicDef.addProperty(yify(propertyName), yValueType);
+				
+				magicDef.addProperty(propertyName + COMPARISON_PROPERTY_SUFFIX, 
+						classForComparison());
+			}
+			
+			for (String propertyName : xMetaData.getOtherProperties()) {
+				
+				Class<?> xValueType = xMetaData.getPropertyType(propertyName);
+				magicDef.addProperty(xify(propertyName), xValueType);
+				
+				Class<?> yValueType = yMetaData.getPropertyType(propertyName);
+				magicDef.addProperty(yify(propertyName), yValueType);
+			}
+			
+			return magicDef.create();
+		}
+				
+		abstract protected Class<?> classForComparison();
+		
+		abstract protected Class<?> classForResultType();
+		
+		abstract protected PropertyAccessor getPropertyAccessor();
+	}
 }

@@ -27,10 +27,18 @@ public interface MatchResultType {
 	
 	public Type getType();
 	
-	
 	public String getText();	
 	
-	public static abstract class XMissing implements MatchResultType {
+	public static abstract class MatchResultTypeBase 
+	implements MatchResultType {
+		
+		@Override
+		public String toString() {
+			return getClass().getSimpleName() + ", text=" + getText();
+		}
+	}
+	
+	public static abstract class XMissing extends MatchResultTypeBase {
 
 		@Override
 		public final Type getType() {
@@ -38,7 +46,7 @@ public interface MatchResultType {
 		}
 	}
 	
-	public static abstract class YMissing implements MatchResultType {
+	public static abstract class YMissing  extends MatchResultTypeBase {
 
 		@Override
 		public final Type getType() {
@@ -46,7 +54,7 @@ public interface MatchResultType {
 		}
 	}
 	
-	public static abstract class Equal implements MatchResultType {
+	public static abstract class Equal  extends MatchResultTypeBase {
 
 		@Override
 		public final Type getType() {
@@ -54,7 +62,7 @@ public interface MatchResultType {
 		}
 	}
 	
-	public static abstract class NotEqual implements MatchResultType {
+	public static abstract class NotEqual  extends MatchResultTypeBase {
 
 		@Override
 		public final Type getType() {

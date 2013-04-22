@@ -6,6 +6,7 @@ import java.util.List;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.beans.BeanComparerProvider;
+import org.oddjob.beancmpr.beans.PropertyTypeHelper;
 
 /**
  * Compares two {@link Matchable}s.
@@ -50,8 +51,11 @@ public class DefaultMatchableComparer implements MatchableComparer {
 			Object valueY = set.getValueY();
 			
 			String propertyName = set.getPropertyName();
-			Class<?> propertyType = 
-				x.getMetaData().getPropertyType(propertyName);
+			
+			Class<?> propertyType = new PropertyTypeHelper().typeFor(
+					propertyName, 
+					x.getMetaData().getPropertyType(propertyName),
+					y.getMetaData().getPropertyType(propertyName));
 			
 			Comparison<?> comparison = 
 				inferComparerType(propertyName, valueX, valueY, 

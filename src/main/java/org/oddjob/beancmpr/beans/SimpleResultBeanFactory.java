@@ -1,10 +1,7 @@
 package org.oddjob.beancmpr.beans;
 
-import org.oddjob.arooa.beanutils.MagicBeanClassCreator;
-import org.oddjob.arooa.reflect.ArooaClass;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.matchables.MatchableMetaData;
 
 /**
  * Creates a very simple match result bean.
@@ -15,6 +12,25 @@ import org.oddjob.beancmpr.matchables.MatchableMetaData;
 public class SimpleResultBeanFactory extends SharedNameResultBeanFactory
 implements ResultBeanFactory {
 
+	private final ResultBeanClassProvider classProvider = 
+			new AbstractResultBeanClassProvider() {
+		
+		@Override
+		protected Class<?> classForComparison() {
+			return String.class;
+		}
+		
+		@Override
+		protected Class<?> classForResultType() {
+			return String.class;
+		}
+		
+		@Override
+		protected PropertyAccessor getPropertyAccessor() {
+			return accessor;
+		}
+	};
+	
 	private final PropertyAccessor accessor;
 	
 	public SimpleResultBeanFactory(PropertyAccessor accessor,
@@ -25,35 +41,9 @@ implements ResultBeanFactory {
 		this.accessor = accessor;
 	}		
 	
-	public ArooaClass classFor(MatchableMetaData metaData) {
-		
-		MagicBeanClassCreator magicDef = new MagicBeanClassCreator(
-				"MatchResultBean");
-		
-		magicDef.addProperty(MATCH_RESULT_TYPE_PROPERTY, String.class);
-		
-		for (String key : metaData.getKeyProperties()) {			
-			
-			magicDef.addProperty(key, metaData.getPropertyType(key));
-		}
-		
-		for (String propertyName : metaData.getValueProperties()) {
-			
-			Class<?> valueType = metaData.getPropertyType(propertyName);
-			magicDef.addProperty(xify(propertyName), valueType);
-			magicDef.addProperty(yify(propertyName), valueType);
-			magicDef.addProperty(propertyName + COMPARISON_PROPERTY_SUFFIX, 
-					String.class);
-		}
-		
-		for (String propertyName : metaData.getOtherProperties()) {
-			
-			Class<?> valueType = metaData.getPropertyType(propertyName);
-			magicDef.addProperty(xify(propertyName), valueType);
-			magicDef.addProperty(yify(propertyName), valueType);
-		}
-		
-		return magicDef.create();
+	@Override
+	protected ResultBeanClassProvider getClassProvider() {
+		return classProvider;
 	}
 	
 	@Override

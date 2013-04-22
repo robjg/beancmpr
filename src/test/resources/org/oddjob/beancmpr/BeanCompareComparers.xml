@@ -23,31 +23,56 @@
                                     </factoryBuilder>
                                 </beancmpr:bean-results>
                             </results>
+                            <comparersByType>
+                                <beancmpr:cmprs-list>
+                                    <comparer>
+                                        <beancmpr:numeric-cmpr deltaTolerance="0.5"/>
+                                    </comparer>
+                                </beancmpr:cmprs-list>
+                            </comparersByType>
                         </beancmpr:compare>
-                        <bus:bean-sheet id="bean-sheet" xmlns:bus="oddjob:beanbus">
-                            <output>
-                                <stdout/>
-                            </output>
-                        </bus:bean-sheet>
                         <bus:bean-copy xmlns:bus="oddjob:beanbus">
                             <arooaClass>
                                 <magic-class name="CompareResult">
                                     <properties>
                                         <value key="matchType" value="java.lang.String"/>
                                         <value key="type" value="java.lang.String"/>
-                                        <value key="priceComparisonResult" value="java.lang.Double"/>
+                                        <value key="priceComparisonResult" value="java.lang.Integer"/>
                                         <value key="priceComparisonDelta" value="java.lang.Double"/>
                                     </properties>
                                 </magic-class>
                             </arooaClass>
                             <mappings>
-                                <value key="matchResultType" value="matchType"/>
+                                <value key="matchResultType.text" value="matchType"/>
                                 <value key="type" value="type"/>
                                 <value key="priceComparison.result" value="priceComparisonResult"/>
                                 <value key="priceComparison.delta" value="priceComparisonDelta"/>
                             </mappings>
                         </bus:bean-copy>
-                        <bus:bean-capture xmlns:bus="oddjob:beanbus"/>
+                        <bus:bean-sheet id="bean-sheet" xmlns:bus="oddjob:beanbus">
+                            <output>
+                                <stdout/>
+                            </output>
+                        </bus:bean-sheet>
+                        <bus:bean-capture id="results1" xmlns:bus="oddjob:beanbus"/>
+                    </parts>
+                </bean-bus>
+                <oddjob file="${this.dir}/CompareTestResults1.xml" inheritance="SHARED">
+                    <descriptorFactory>
+                        <import file="${this.dir}/ComparersTestResultDefinition.xml"/>
+                    </descriptorFactory>
+                </oddjob>
+                <bean-bus>
+                    <parts>
+                        <beancmpr:compare id="check1" keyProperties="type" otherProperties="priceComparisonDelta" valueProperties="matchType, priceComparisonResult" xmlns:beancmpr="oddjob:beancmpr">
+                            <inX>
+                                <value value="${results1.beans}"/>
+                            </inX>
+                            <inY>
+                                <value value="${expected.expected1}"/>
+                            </inY>
+                        </beancmpr:compare>
+                        <bus:bean-sheet xmlns:bus="oddjob:beanbus"/>
                     </parts>
                 </bean-bus>
             </jobs>

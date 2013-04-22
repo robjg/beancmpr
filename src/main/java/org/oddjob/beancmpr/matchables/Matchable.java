@@ -45,7 +45,7 @@ public interface Matchable {
 	/**
 	 * Get the meta data that describe this matchable.
 	 * 
-	 * @return The meta data.
+	 * @return The meta data. Will not be null.
 	 */
 	public MatchableMetaData getMetaData();
 }

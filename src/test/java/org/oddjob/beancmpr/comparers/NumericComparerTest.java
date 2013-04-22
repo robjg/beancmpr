@@ -77,4 +77,14 @@ public class NumericComparerTest extends TestCase {
 		
 		assertEquals(0, comparison.getResult());
 	}
+	
+	public void testIntegerDoubleComparison() {
+		
+		NumericComparer test = new NumericComparer();
+		
+		NumericComparison comparison = test.compare(
+				new Integer(2), new Double(2.0));
+		
+		assertEquals(0, comparison.getResult());
+	}
 }

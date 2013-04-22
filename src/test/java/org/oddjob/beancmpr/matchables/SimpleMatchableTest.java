@@ -18,7 +18,7 @@ public class SimpleMatchableTest extends TestCase {
 		keys1.add(new Integer(2));
 		
 		SimpleMatchable test1  = new SimpleMatchable(
-				keys1, null, null);
+				keys1, null, null, null);
 		
 		List<Comparable<?>> keys2 = new ArrayList<Comparable<?>>();
 		
@@ -26,7 +26,7 @@ public class SimpleMatchableTest extends TestCase {
 		keys2.add(new Integer(1));
 		
 		SimpleMatchable test2  = new SimpleMatchable(
-				keys2, null, null);
+				keys2, null, null, null);
 		
 		assertTrue(test1.getKey().compareTo(test2.getKey()) < 0);
 		
@@ -40,14 +40,14 @@ public class SimpleMatchableTest extends TestCase {
 		values.add(new Integer(2));
 		
 		SimpleMatchable test1 = new SimpleMatchable(
-				new ArrayList<Comparable<?>>(), values, null);
+				new ArrayList<Comparable<?>>(), values, null, null);
 		
 		Object[] results = Iterables.toArray(test1.getValues(), Object.class);
 		assertEquals("Apple", results[0]);
 		assertEquals(new Integer(2), results[1]);
 				
 		SimpleMatchable test2 = new SimpleMatchable(
-				new ArrayList<Comparable<?>>(), null, null);
+				new ArrayList<Comparable<?>>(), null, null, null);
 		
 		assertEquals(0, test1.getKey().compareTo(test2.getKey()));
 	}
@@ -59,7 +59,7 @@ public class SimpleMatchableTest extends TestCase {
 		others.add(new Integer(2));
 		
 		SimpleMatchable test1 = new SimpleMatchable(
-				null, null, others);
+				null, null, others, null);
 		
 		Object[] results = Iterables.toArray(test1.getOthers(), Object.class);
 		assertEquals("Apple", results[0]);

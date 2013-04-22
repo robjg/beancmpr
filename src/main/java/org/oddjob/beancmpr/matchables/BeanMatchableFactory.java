@@ -47,9 +47,7 @@ public class BeanMatchableFactory implements MatchableFactory<Object> {
 		List<?> others = strip(bean, definition.getOtherProperties());
 		
 		SimpleMatchable matchable = 
-			new SimpleMatchable(keys, comparables, others);
-		
-		matchable.setMetaData(metaData);
+			new SimpleMatchable(keys, comparables, others, metaData);
 		
 		return matchable;
 	}

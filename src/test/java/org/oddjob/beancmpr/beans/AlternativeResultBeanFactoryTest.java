@@ -58,13 +58,14 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		SimpleMatchable x = new SimpleMatchable(
 				Arrays.asList("Apple"), 
 				Arrays.asList(new Integer(2)),
-				Arrays.asList("red"));
-		x.setMetaData(new MyMetaData());
+				Arrays.asList("red"),
+				new MyMetaData());
 		
 		SimpleMatchable y = new SimpleMatchable(
 				Arrays.asList("Apple"), 
 				Arrays.asList(new Integer(3)),
-				Arrays.asList("green"));
+				Arrays.asList("green"),
+				new MyMetaData());
 
 		Comparison<Integer> comparison = new EqualityComparison<Integer>(
 				new Integer(2), new Integer(3));
@@ -112,13 +113,14 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		SimpleMatchable x = new SimpleMatchable(
 				Arrays.asList("Apple"), 
 				Arrays.asList(new Integer(2)),
-				Arrays.asList("red"));
-		x.setMetaData(new MyMetaData());
+				Arrays.asList("red"),
+				new MyMetaData());
 		
 		SimpleMatchable y = new SimpleMatchable(
 				Arrays.asList("Apple"), 
 				Arrays.asList(new Integer(2)),
-				Arrays.asList("green"));
+				Arrays.asList("green"),
+				new MyMetaData());
 		
 		Comparison<Object> comparison = 
 				new EqualityComparison<Object>("A", "A");
@@ -165,8 +167,8 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		SimpleMatchable y = new SimpleMatchable(
 				Arrays.asList("Apple"), 
 				Arrays.asList(new Integer(3)),
-				Arrays.asList("green"));
-		y.setMetaData(new MyMetaData());
+				Arrays.asList("green"),
+				new MyMetaData());
 				
 		Object bean = test.createXMissingResult(y);
 		
@@ -203,8 +205,8 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		SimpleMatchable x = new SimpleMatchable(
 				Arrays.asList("Apple"), 
 				Arrays.asList(new Integer(2)),
-				Arrays.asList("red"));
-		x.setMetaData(new MyMetaData());
+				Arrays.asList("red"),
+				new MyMetaData());
 				
 		Object bean = test.createYMissingResult(x);
 		

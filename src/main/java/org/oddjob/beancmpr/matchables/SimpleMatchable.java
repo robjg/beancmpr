@@ -17,7 +17,7 @@ public class SimpleMatchable implements Matchable {
 	
 	private final List<?> others;
 	
-	private MatchableMetaData metaData;
+	private final MatchableMetaData metaData;
 	
 	/**
 	 * Only Constructor.
@@ -27,13 +27,15 @@ public class SimpleMatchable implements Matchable {
 	 * @param others Other values.
 	 */
 	public SimpleMatchable(List<? extends Comparable<?>> keys,		
-			List<?> values, List<?> others) {
+			List<?> values, List<?> others, MatchableMetaData metaData) {
 		
 		this.keys = keys;
 		this.values = values;
 		this.others = others;
 		
 		this.key = new SimpleMatchKey(keys);
+		
+		this.metaData = metaData; 
 	}
 	
 	@Override
@@ -60,10 +62,6 @@ public class SimpleMatchable implements Matchable {
 		return metaData;
 	}
 
-	public void setMetaData(MatchableMetaData metaData) {
-		this.metaData = metaData;
-	}
-	
 	@Override
 	public String toString() {
 		return getClass().getSimpleName() + ", key=" + keys + 

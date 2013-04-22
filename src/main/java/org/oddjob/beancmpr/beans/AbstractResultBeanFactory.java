@@ -19,21 +19,6 @@ import org.oddjob.beancmpr.matchables.ValuePairIterable;
 public abstract class AbstractResultBeanFactory 
 implements ResultBeanFactory {
 	
-	private ArooaClass resultClass;
-	
-	private MatchableMetaData definition;
-		
-	protected void checkInit(Matchable either) {
-		
-		if (resultClass != null) {
-			return;
-		}
-		
-		this.definition = either.getMetaData();
-			
-		this.resultClass = classFor(definition);
-	}
-	
 	
 	@Override
 	public Object createComparisonResult(
@@ -42,9 +27,11 @@ implements ResultBeanFactory {
 		Matchable x = matchableComparison.getX();
 		Matchable y = matchableComparison.getY();
 		
-		checkInit(x);
-				
-		Object result = resultClass.newInstance();
+		ArooaClass resultClass = getClassProvider().classForComparison(
+				 matchableComparison);
+		MatchableMetaData definition = x.getMetaData();
+		
+		Object result = resultClass.newInstance();		
 		
 		if (matchableComparison.getResult() == 0) {
 			populateMatchResultType(result, MatchResultType.Type.EQUAL);
@@ -52,7 +39,7 @@ implements ResultBeanFactory {
 			populateMatchResultType(result, MatchResultType.Type.NOT_EQUAL);
 		}
 		
-		populateKeys(result, x.getKeys());
+		populateKeys(result, definition.getKeyProperties(), x.getKeys());
 		
 		ValuePairIterable<Object> values = 
 				new ValuePairIterable<Object>(
@@ -96,13 +83,14 @@ implements ResultBeanFactory {
 	@Override
 	public Object createXMissingResult(Matchable y) {
 
-		checkInit(y);
+		ArooaClass resultClass = getClassProvider().classForY(y);
+		MatchableMetaData definition = y.getMetaData();
 		
 		Object result = resultClass.newInstance();
 
 		populateMatchResultType(result, MatchResultType.Type.X_MISSING);
 			
-		populateKeys(result, y.getKeys());
+		populateKeys(result, definition.getKeyProperties(), y.getKeys());
 		
 		ValueIterable<Object> values = 
 				new ValueIterable<Object>(
@@ -134,13 +122,14 @@ implements ResultBeanFactory {
 	@Override
 	public Object createYMissingResult(Matchable x) {
 		
-		checkInit(x);
+		ArooaClass resultClass = getClassProvider().classForX(x);
+		MatchableMetaData definition = x.getMetaData();
 		
 		Object result = resultClass.newInstance();
 
 		populateMatchResultType(result, MatchResultType.Type.Y_MISSING);
 		
-		populateKeys(result, x.getKeys());
+		populateKeys(result, definition.getKeyProperties(), x.getKeys());
 		
 		ValueIterable<Object> values = 
 				new ValueIterable<Object>(
@@ -169,11 +158,24 @@ implements ResultBeanFactory {
 		return result;
 	}
 	
-	protected void populateKeys(Object resultBean, Iterable<?> keyValues) {
+	protected interface ResultBeanClassProvider {
+		
+		ArooaClass classForComparison(
+				MultiValueComparison<Matchable> matchableComparison);
+				
+		ArooaClass classForX(Matchable x);
+
+		ArooaClass classForY(Matchable y);
+	}
+	
+	abstract protected ResultBeanClassProvider getClassProvider();
+	
+	private void populateKeys(Object resultBean, 
+			Iterable<String> keyProperties, Iterable<?> keyValues) {
 		
 		ValueIterable<Object> keys = 
 				new ValueIterable<Object>(
-					definition.getKeyProperties(), 
+					keyProperties, 
 					keyValues);
 		
 		for (ValueIterable.Value<Object> set : keys) {
@@ -197,8 +199,6 @@ implements ResultBeanFactory {
 	
 	protected abstract void populateComparison(Object resultBean,
 			String property, Comparison<?> comparison);
-	
-	protected abstract ArooaClass classFor(MatchableMetaData metaData);
 	
 	/**
 	 * Utility method to upper case the first letter of a property name.

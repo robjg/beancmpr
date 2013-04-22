@@ -20,7 +20,19 @@ public interface ResultBeanFactory {
 	public Object createComparisonResult(
 			MultiValueComparison<Matchable> matchableComparison);	
 	
+	/**
+	 * Create a result bean for a missing X.
+	 * 
+	 * @param y
+	 * @return
+	 */
 	public Object createXMissingResult(Matchable y);
 	
+	/**
+	 * Create a result bean for a missing Y.
+	 * 
+	 * @param x
+	 * @return
+	 */
 	public Object createYMissingResult(Matchable x);
 }
