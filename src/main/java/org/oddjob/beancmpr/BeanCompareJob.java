@@ -162,9 +162,6 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 				getKeyProperties(), getValueProperties(), 
 				getOtherProperties());
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
-				definition, accessor);
-		
 		ComparersByPropertyOrType comparerProvider =
 			new ComparersByPropertyOrType(
 					comparersByProperty, comparersByType);
@@ -193,8 +190,11 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 		
 		this.counts = rec.getMultiItemComparisonStats();
 		
-		rec.compare(getIterableMatchables(inX, factory), 
-				getIterableMatchables(inY, factory));		
+		rec.compare(
+				getIterableMatchables(inX, 
+					new BeanMatchableFactory(definition, accessor)), 
+				getIterableMatchables(inY, 
+					new BeanMatchableFactory(definition, accessor)));
 		
 		logger.info("Xs Missing " + getXMissingCount() +
 				", Ys Missing " + getYMissingCount() + 

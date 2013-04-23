@@ -3,6 +3,7 @@ package org.oddjob.beancmpr.matchables;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.beans.BeanComparerProvider;
@@ -15,6 +16,9 @@ import org.oddjob.beancmpr.beans.PropertyTypeHelper;
  *
  */
 public class DefaultMatchableComparer implements MatchableComparer {
+
+	private static final Logger logger = 
+			Logger.getLogger(DefaultMatchableComparer.class);
 	
 	private final BeanComparerProvider comparerProvider;
 			
@@ -74,9 +78,26 @@ public class DefaultMatchableComparer implements MatchableComparer {
 			comparerProvider.comparerFor(propertyName, 
 					type);
 	
-		return differentiator.compare(
-				type.cast(rawX), 
-				type.cast(rawY));
+		T x = null;
+		T y = null;
+		
+		try {
+			x = type.cast(rawX);
+		}
+		catch (ClassCastException e) {
+			logger.error("Failed to cast X [" + rawX + "] to type [" + type + "]");
+			throw e;
+		}
+			
+		try {
+			y = type.cast(rawY);
+		}
+		catch (ClassCastException e) {
+			logger.error("Failed to cast Y [" + rawY + "] to type [" + type + "]");
+			throw e;
+		}
+		
+		return differentiator.compare(x, y);
 	}
 	
 	public BeanComparerProvider getComparerProvider() {

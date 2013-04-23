@@ -126,6 +126,9 @@ implements ResultBeanFactory {
 			}
 			
 			if (resultClass == null) {
+				logger.debug("Creating Result Class based on [" + 
+						xPropertyPrefix + "] types only.");
+				
 				resultClass = classForResult(x, x);
 			}
 			else {
@@ -144,6 +147,9 @@ implements ResultBeanFactory {
 			}
 			
 			if (resultClass == null) {
+				logger.debug("Creating Result Class based on [" + 
+						yPropertyPrefix + "] types only.");
+				
 				resultClass = classForResult(y, y);
 			}
 			else {
@@ -169,6 +175,10 @@ implements ResultBeanFactory {
 				resultClass = mergeXintoY(matchableComparison.getX());
 			}
 			else {
+				logger.debug("Creating Result Class based on both [" + 
+						xPropertyPrefix + "] and [" +
+						yPropertyPrefix + "] types.");
+				
 				resultClass = classForResult(matchableComparison.getX(), 
 						matchableComparison.getY());
 			}
@@ -180,6 +190,10 @@ implements ResultBeanFactory {
 		}
 		
 		private ArooaClass mergeXintoY(Matchable x) {
+			
+			logger.debug("Merging [" + 
+					xPropertyPrefix + "] types into Result Class.");
+			
 			return merge(
 					new Ifyer() {
 						public String ify(String propertyName) {
@@ -195,6 +209,10 @@ implements ResultBeanFactory {
 		}
 		
 		private ArooaClass mergeYintoX(Matchable y) {
+			
+			logger.debug("Merging [" + 
+					yPropertyPrefix + "] types into Result Class.");
+			
 			return merge(
 					new Ifyer() {
 						public String ify(String propertyName) {
@@ -269,17 +287,24 @@ implements ResultBeanFactory {
 				BeanOverview overview, MatchableMetaData metaData,
 				MagicBeanClassCreator magicDef) {
 			
+			String existingPropertyName = existingIfyer.ify(propertyName);
 			Class<?> existingType = overview.getPropertyType(
-					existingIfyer.ify(propertyName));
+					existingPropertyName);
+
+			// add the existing type back.
+			magicDef.addProperty(existingPropertyName, existingType);
+			
 			Class<?> newType = metaData.getPropertyType(propertyName);
 			
+			String newPropertyName = newIfyer.ify(propertyName);
+			
 			if (existingType.isAssignableFrom(newType)) {
-				magicDef.addProperty(propertyName, existingType);
+				magicDef.addProperty(newPropertyName, existingType);
 				return false;
 			}
 			else {
-				magicDef.addProperty(newIfyer.ify(propertyName), newType);
-				logger.debug("Changing Types for property " + propertyName +
+				magicDef.addProperty(newPropertyName, newType);
+				logger.debug("Changing Types for property " + newPropertyName +
 						" from " + existingType.getName() + " to " +
 						newType);
 				return true;
@@ -302,17 +327,31 @@ implements ResultBeanFactory {
 				Class<?> xType = xMetaData.getPropertyType(key);
 				Class<?> yType = xMetaData.getPropertyType(key);
 
-				magicDef.addProperty(key, new PropertyTypeHelper().typeFor(
-						key, xType, yType));
+				Class<?> type = new PropertyTypeHelper().typeFor(
+						key, xType, yType);
+				
+				logger.debug("Key Property: " + key + ", type " + type);
+				
+				magicDef.addProperty(key, type);
 			}
 			
 			for (String propertyName : xMetaData.getValueProperties()) {
 				
+				String xProperty = xify(propertyName);
 				Class<?> xValueType = xMetaData.getPropertyType(propertyName);
-				magicDef.addProperty(xify(propertyName), xValueType);
+
+				logger.debug("Value Property: " + xProperty+ ", type " + 
+						xValueType);
 				
-				Class<?> yValueType = xMetaData.getPropertyType(propertyName);
-				magicDef.addProperty(yify(propertyName), yValueType);
+				magicDef.addProperty(xProperty, xValueType);
+				
+				String yProperty = yify(propertyName);
+				Class<?> yValueType = yMetaData.getPropertyType(propertyName);
+				
+				logger.debug("Value Property: " + yProperty+ ", type " + 
+						yValueType);
+				
+				magicDef.addProperty(yProperty, yValueType);
 				
 				magicDef.addProperty(propertyName + COMPARISON_PROPERTY_SUFFIX, 
 						classForComparison());
@@ -320,11 +359,21 @@ implements ResultBeanFactory {
 			
 			for (String propertyName : xMetaData.getOtherProperties()) {
 				
+				String xProperty = xify(propertyName);
 				Class<?> xValueType = xMetaData.getPropertyType(propertyName);
-				magicDef.addProperty(xify(propertyName), xValueType);
 				
+				logger.debug("Other Property: " + xProperty+ ", type " + 
+						xValueType);
+
+				magicDef.addProperty(xProperty, xValueType);
+				
+				String yProperty = yify(propertyName);
 				Class<?> yValueType = yMetaData.getPropertyType(propertyName);
-				magicDef.addProperty(yify(propertyName), yValueType);
+				
+				logger.debug("Other Property: " + yProperty+ ", type " + 
+						yValueType);
+				
+				magicDef.addProperty(yProperty, yValueType);
 			}
 			
 			return magicDef.create();
