@@ -235,6 +235,9 @@ implements ResultBeanFactory {
 			MagicBeanClassCreator magicDef = new MagicBeanClassCreator(
 					"MatchResultBean");
 			
+			magicDef.addProperty(MATCH_RESULT_TYPE_PROPERTY,
+					classForResultType());
+			
 			BeanOverview overview = resultClass.getBeanOverview(
 					getPropertyAccessor());
 			
@@ -275,9 +278,6 @@ implements ResultBeanFactory {
 			if (!change) {
 				return resultClass;
 			}
-			
-			magicDef.addProperty(MATCH_RESULT_TYPE_PROPERTY,
-					classForResultType());
 			
 			return magicDef.create();
 		}		
