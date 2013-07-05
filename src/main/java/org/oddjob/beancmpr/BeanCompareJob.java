@@ -8,7 +8,6 @@ import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
-import org.oddjob.beancmpr.beans.BeanCreatingResultHandler;
 import org.oddjob.beancmpr.beans.ComparersByProperty;
 import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
 import org.oddjob.beancmpr.comparers.ComparersByType;
@@ -20,6 +19,8 @@ import org.oddjob.beancmpr.matchables.MatchableGroup;
 import org.oddjob.beancmpr.matchables.OrderedMatchablesComparer;
 import org.oddjob.beancmpr.matchables.SortedBeanMatchables;
 import org.oddjob.beancmpr.matchables.UnsortedBeanMatchables;
+import org.oddjob.beancmpr.results.BeanCreatingResultHandler;
+import org.oddjob.beancmpr.results.PlaysWithBeanbus;
 
 /**
  * @oddjob.description A job that takes two streams of beans and
@@ -175,8 +176,8 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 				this.results = results;
 			}			
 			
-			if (results instanceof BeanCreatingResultHandler) {
-				((BeanCreatingResultHandler) results).setOut(to);
+			if (results instanceof PlaysWithBeanbus) {
+				((PlaysWithBeanbus) results).setOut(to);
 			}
 			else {
 				logger.warn("The 'to' property is set but results will ignore it");

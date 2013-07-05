@@ -1,4 +1,4 @@
-package org.oddjob.beancmpr.beans;
+package org.oddjob.beancmpr.results;
 
 import org.oddjob.arooa.design.DesignFactory;
 import org.oddjob.arooa.design.DesignInstance;

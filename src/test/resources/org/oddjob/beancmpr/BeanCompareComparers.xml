@@ -19,7 +19,7 @@
                                         <value value="${bean-sheet}"/>
                                     </out>
                                     <factoryBuilder>
-                                        <bean class="org.oddjob.beancmpr.beans.AlternativeResultBeanFactoryBuilder"/>
+                                        <bean class="org.oddjob.beancmpr.results.AlternativeResultBeanFactoryBuilder"/>
                                     </factoryBuilder>
                                 </beancmpr:bean-results>
                             </results>

@@ -1,4 +1,4 @@
-package org.oddjob.beancmpr.beans;
+package org.oddjob.beancmpr.results;
 
 import java.util.Collection;
 
@@ -6,7 +6,7 @@ import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
-import org.oddjob.beancmpr.matchables.BeanProducingResultHandler;
+import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableGroup;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
@@ -19,7 +19,7 @@ import org.oddjob.beancmpr.matchables.MultiValueComparison;
  *
  */
 public class BeanCreatingResultHandler 
-implements BeanProducingResultHandler, ArooaSessionAware {
+implements BeanCmprResultsHandler, PlaysWithBeanbus, ArooaSessionAware {
 
 	/**
 	 * @oddjob.property

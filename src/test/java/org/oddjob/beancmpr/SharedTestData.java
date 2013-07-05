@@ -5,8 +5,8 @@ import java.util.List;
 
 public class SharedTestData {
 
-	List<Fruit> fruitX = new ArrayList<Fruit>();
-	List<Fruit> fruitY = new ArrayList<Fruit>();
+	public List<Fruit> fruitX = new ArrayList<Fruit>();
+	public List<Fruit> fruitY = new ArrayList<Fruit>();
 		
 	
 	public static class Fruit {

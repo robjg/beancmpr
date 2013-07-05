@@ -2,13 +2,15 @@
   prefix="beancmpr" namespace="oddjob:beancmpr">
   <values>
     <arooa:bean-def element='bean-results'
-      className='org.oddjob.beancmpr.beans.BeanCreatingResultHandler' 
-            designFactory='org.oddjob.beancmpr.beans.BeanCreatingResultHandlerDF'>
+      className='org.oddjob.beancmpr.results.BeanCreatingResultHandler' 
+            designFactory='org.oddjob.beancmpr.results.BeanCreatingResultHandlerDF'>
       <annotations>
         <arooa:annotation name="org.oddjob.arooa.life.Configured"
           method="configured" />
       </annotations>
     </arooa:bean-def>
+    <arooa:bean-def element='dido-results'
+      className='org.oddjob.beancmpr.results.DidoBeanResultHandler'/>
     <arooa:bean-def element='comparers-list'
       className='org.oddjob.beancmpr.comparers.ComparersByTypeList'/>
     <arooa:bean-def element='comparers-map'

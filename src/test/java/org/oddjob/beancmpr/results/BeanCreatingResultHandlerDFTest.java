@@ -1,4 +1,4 @@
-package org.oddjob.beancmpr.beans;
+package org.oddjob.beancmpr.results;
 
 import java.text.ParseException;
 
@@ -16,6 +16,9 @@ import org.oddjob.arooa.design.view.ViewMainHelper;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.arooa.standard.StandardFragmentParser;
 import org.oddjob.arooa.xml.XMLConfiguration;
+import org.oddjob.beancmpr.results.BeanCreatingResultDesign;
+import org.oddjob.beancmpr.results.BeanCreatingResultHandler;
+import org.oddjob.beancmpr.results.SimpleResultBeanFactoryBuilder;
 
 /**
  *
@@ -41,7 +44,7 @@ public class BeanCreatingResultHandlerDFTest extends TestCase {
 				"    <list/>" +
 				"   </out>" +
 				"   <factoryBuilder>" +
-				"    <bean class='org.oddjob.beancmpr.beans.SimpleResultBeanFactoryBuilder'/>" +
+				"    <bean class='org.oddjob.beancmpr.results.SimpleResultBeanFactoryBuilder'/>" +
 				"   </factoryBuilder>" +
 				"</beancmpr:bean-results>";
 	

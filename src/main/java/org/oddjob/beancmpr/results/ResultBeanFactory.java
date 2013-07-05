@@ -1,4 +1,4 @@
-package org.oddjob.beancmpr.beans;
+package org.oddjob.beancmpr.results;
 
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
@@ -7,6 +7,8 @@ import org.oddjob.beancmpr.matchables.MultiValueComparison;
  * Creates a bean who's properties are the results.
  * 
  * @author rob
+ * 
+ * @see ResultBeanFactoryBuilder
  *
  */
 public interface ResultBeanFactory {

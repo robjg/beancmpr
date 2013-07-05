@@ -10,6 +10,8 @@ import org.oddjob.beancmpr.matchables.ValueIterable.Value;
  * @author rob
  *
  * @param <T>
+ * 
+ * @see ValuePairIterable
  */
 public class ValueIterable<T> implements Iterable<Value<T>> {
 

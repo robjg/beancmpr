@@ -12,6 +12,7 @@ import org.oddjob.beancmpr.matchables.MatchableComparision;
 import org.oddjob.beancmpr.matchables.MockMatchableMetaData;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
 import org.oddjob.beancmpr.matchables.SimpleMatchable;
+import org.oddjob.beancmpr.results.SimpleResultBeanFactory;
 
 public class SimpleResultBeanFactoryTest extends TestCase {
 

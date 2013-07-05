@@ -1,14 +1,15 @@
-package org.oddjob.beancmpr.beans;
+package org.oddjob.beancmpr.results;
 
 import org.apache.log4j.Logger;
 import org.oddjob.arooa.beanutils.MagicBeanClassCreator;
 import org.oddjob.arooa.reflect.ArooaClass;
 import org.oddjob.arooa.reflect.BeanOverview;
 import org.oddjob.arooa.reflect.PropertyAccessor;
-import org.oddjob.beancmpr.beans.MatchResultType.Type;
+import org.oddjob.beancmpr.beans.PropertyTypeHelper;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableMetaData;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
+import org.oddjob.beancmpr.results.MatchResultType.Type;
 
 
 /**
