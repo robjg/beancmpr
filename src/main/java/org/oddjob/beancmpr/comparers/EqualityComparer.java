@@ -16,7 +16,7 @@ public class EqualityComparer implements Comparer<Object> {
 	
 	public Comparison<Object> compare(Object x, Object y) {
 		if (x == null || y == null) {
-			return null;
+			throw new NullPointerException("X or Y is null.");
 		}
 		
 		return new EqualityComparison<Object>(x, y);

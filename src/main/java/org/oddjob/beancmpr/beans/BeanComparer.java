@@ -40,7 +40,7 @@ public class BeanComparer implements Comparer<Object> {
 	public BeanComparison compare(Object x, Object y) {
 
 		if (x == null || y == null) {
-			return null;
+			throw new NullPointerException("X or Y is null.");
 		}
 
 		if (matchableFactory == null) {

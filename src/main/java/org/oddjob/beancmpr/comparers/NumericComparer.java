@@ -38,7 +38,7 @@ public class NumericComparer implements Comparer<Number> {
 	public NumericComparison compare(final Number x, final Number y) {
 
 		if (x == null || y == null) {
-			return null;
+			throw new NullPointerException("X or Y Null.");
 		}
 		
 		double doubleX = x.doubleValue();
@@ -73,68 +73,7 @@ public class NumericComparer implements Comparer<Number> {
 			result = 0;
 		}
 
-		final int finalResult = result;
-		
-		StringBuilder builder = new StringBuilder();
-		if (deltaFormat == null) {
-			builder.append(String.valueOf(delta));
-		}
-		else {
-			builder.append(new DecimalFormat(
-					deltaFormat).format(delta));
-		}
-		builder.append(" (");
-		if (percentageFormat == null) {
-			percentageFormat = "0.0";
-		}
-		builder.append(new DecimalFormat(
-				percentageFormat).format(percentage));
-		builder.append("%)");
-
-		final String summaryText = builder.toString();
-
-		return new NumericComparison() {
-			
-			@Override
-			public Number getX() {
-				return x;
-			}
-			
-			@Override
-			public Number getY() {
-				return y;
-			}
-			
-			@Override
-			public double getDelta() {
-				return delta;
-			}
-			
-			@Override
-			public double getPercentage() {
-				return percentage;
-			}
-			
-			@Override
-			public int getResult() {
-				return finalResult;
-			}
-			
-			@Override
-			public String getSummaryText() {
-				if (finalResult == 0) {
-					return "";
-				}
-				else {
-					return summaryText;
-				}
-			}
-			
-			@Override
-			public String toString() {
-				return "NumericComparison " + summaryText;
-			}
-		};
+		return new NumericComparisonImpl(x, y, result, delta, percentage);
 	}
 	
 	@Override
@@ -179,5 +118,94 @@ public class NumericComparer implements Comparer<Number> {
 			(deltaTolerance > 0 ? ", +/-" + deltaTolerance : "" ) +
 			(percentageTolerance > 0 ? ", " + percentageTolerance + "%" : ""); 
 	}
+
+	class NumericComparisonImpl implements NumericComparison {
+		
+		private final Number x;
+		private final Number y;
+		
+		private final int finalResult;
+		
+		private final double delta;
+		private final double percentage;
+		
+		private String summaryText;
+		
+		public NumericComparisonImpl(Number x, Number y, int result,
+				double delta, double percentage) {
+			this.x = x;
+			this.y = y;
+			
+			this.finalResult = result;
+			
+			this.delta = delta;
+			this.percentage = percentage;
+		}
+		
+		@Override
+		public Number getX() {
+			return x;
+		}
+		
+		@Override
+		public Number getY() {
+			return y;
+		}
+		
+		@Override
+		public double getDelta() {
+			return delta;
+		}
+		
+		@Override
+		public double getPercentage() {
+			return percentage;
+		}
+		
+		@Override
+		public int getResult() {
+			return finalResult;
+		}
+		
+		@Override
+		public String getSummaryText() {
+			if (summaryText == null) {
+				if (finalResult == 0) {
+					summaryText = "";
+				}
+				else {
+					if (x == null || y == null) {
+						summaryText = "Null Value";
+					}
+					else {
+						
+						StringBuilder builder = new StringBuilder();
+						if (deltaFormat == null) {
+							builder.append(String.valueOf(delta));
+						}
+						else {
+							builder.append(new DecimalFormat(
+									deltaFormat).format(delta));
+						}
+						builder.append(" (");
+						if (percentageFormat == null) {
+							percentageFormat = "0.0";
+						}
+						builder.append(new DecimalFormat(
+								percentageFormat).format(percentage));
+						builder.append("%)");
+		
+						summaryText = builder.toString();
+					}
+				}
+			}			
+			return summaryText;
+		}
+		
+		@Override
+		public String toString() {
+			return "NumericComparison " + getSummaryText();
+		}
+	};
 
 }

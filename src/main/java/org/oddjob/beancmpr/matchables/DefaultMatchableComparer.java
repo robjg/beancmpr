@@ -8,6 +8,7 @@ import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.beans.BeanComparerProvider;
 import org.oddjob.beancmpr.beans.PropertyTypeHelper;
+import org.oddjob.beancmpr.comparers.NullComparison;
 
 /**
  * Compares two {@link Matchable}s.
@@ -97,7 +98,12 @@ public class DefaultMatchableComparer implements MatchableComparer {
 			throw e;
 		}
 		
-		return differentiator.compare(x, y);
+		if (x == null || y == null) {
+			return new NullComparison<T>(x, y);
+		}
+		else {
+			return differentiator.compare(x, y);
+		}
 	}
 	
 	public BeanComparerProvider getComparerProvider() {

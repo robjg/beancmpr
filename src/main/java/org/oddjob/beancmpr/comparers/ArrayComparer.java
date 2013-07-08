@@ -32,7 +32,7 @@ implements HierarchicalComparer, Comparer<Object[]>{
 	public Comparison<Object[]> compare(final Object[] x, final Object[] y) {
 		
 		if (x == null || y == null) {
-			return null;
+			throw new NullPointerException("X or Y is null.");
 		}
 	
 		IterableComparer<Object> iterableComparer = 

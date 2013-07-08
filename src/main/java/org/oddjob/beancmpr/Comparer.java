@@ -15,8 +15,7 @@ public interface Comparer<T> {
 	 * @param x One thing.
 	 * @param y The other thing.
 	 * 
-	 * @return A Comparison. The may be null if either or both of x
-	 * and y is null.
+	 * @return A Comparison. Will not be null.
 	 * 
 	 */
 	public Comparison<T> compare(T x, T y);

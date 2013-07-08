@@ -8,12 +8,11 @@ import org.oddjob.beancmpr.Comparer;
  * 
  * @author rob
  *
- * @param <T>
  */
 public interface HierarchicalComparer {
 
 	/**
-	 * Used by owner of comparers to inject the master comparer into
+	 * Used by an owner of comparers to inject the master comparer into
 	 * {@link HierarchicalComparer}s.
 	 * 
 	 * @param comparers The master comparers.

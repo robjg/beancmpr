@@ -21,7 +21,7 @@ public class DateComparer implements Comparer<Date>{
 	public Comparison<Date> compare(final Date x, final Date y) {
 		
 		if (x == null || y == null) {
-			return null;
+			throw new NullPointerException("X or Y is null.");
 		}
 		
 		long delta = x.getTime() - y.getTime();

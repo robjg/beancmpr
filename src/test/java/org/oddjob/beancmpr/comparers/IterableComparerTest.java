@@ -2,10 +2,6 @@ package org.oddjob.beancmpr.comparers;
 
 import java.util.Arrays;
 
-import org.oddjob.beancmpr.comparers.DefaultComparersByType;
-import org.oddjob.beancmpr.comparers.IterableComparison;
-import org.oddjob.beancmpr.comparers.IterableComparer;
-
 import junit.framework.TestCase;
 
 public class IterableComparerTest extends TestCase {

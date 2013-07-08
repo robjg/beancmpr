@@ -33,7 +33,7 @@ public class BeanComparerTest extends TestCase {
 		
 	}
 	
-	public void testCompare() {
+	public void testCompareTwoBeans() {
 		
 		BeanComparer comparer = new BeanComparer(
 				new String[] { "type", "quantity" },
@@ -60,5 +60,60 @@ public class BeanComparerTest extends TestCase {
 		
 		assertEquals(0, comparisons[0].getResult());
 		assertEquals(false, comparisons[1].getResult() == 0);
+	}
+	
+	public void testCompareBothNullValues() {
+		
+		BeanComparer comparer = new BeanComparer(
+				new String[] { "type", "quantity" },
+				new BeanUtilsPropertyAccessor(),
+				new ComparersByPropertyOrType());
+		
+		Fruit beanX = new Fruit();
+		beanX.setQuantity(2);
+		
+		Fruit beanY = new Fruit();
+		beanY.setQuantity(2);
+		
+		MultiValueComparison<Object> comparison = 
+				comparer.compare(beanX, beanY);
+		
+		assertEquals(0, comparison.getResult());
+		
+		Comparison<?>[] comparisons = Iterables.toArray(
+				comparison.getValueComparisons(), Comparison.class);
+		
+		assertEquals(2, comparisons.length);
+		
+		assertEquals(0, comparisons[0].getResult());
+		assertEquals(0, comparisons[1].getResult());
+	}
+	
+	public void testCompareOneNullValues() {
+		
+		BeanComparer comparer = new BeanComparer(
+				new String[] { "type", "quantity" },
+				new BeanUtilsPropertyAccessor(),
+				new ComparersByPropertyOrType());
+		
+		Fruit beanX = new Fruit();
+		beanX.setType("apple");
+		beanX.setQuantity(2);
+		
+		Fruit beanY = new Fruit();
+		beanY.setQuantity(2);
+		
+		MultiValueComparison<Object> comparison = 
+				comparer.compare(beanX, beanY);
+		
+		assertEquals(-1, comparison.getResult());
+		
+		Comparison<?>[] comparisons = Iterables.toArray(
+				comparison.getValueComparisons(), Comparison.class);
+		
+		assertEquals(2, comparisons.length);
+		
+		assertEquals(-1, comparisons[0].getResult());
+		assertEquals(0, comparisons[1].getResult());
 	}
 }

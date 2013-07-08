@@ -86,5 +86,24 @@ public class NumericComparerTest extends TestCase {
 				new Integer(2), new Double(2.0));
 		
 		assertEquals(0, comparison.getResult());
+		
+		test.setDeltaTolerance(0.05);
+		
+		comparison = test.compare(
+				new Integer(2), new Double(2.01));
+		
+		assertEquals(0, comparison.getResult());
+	}
+	
+	public void testNullValuesComparison() {
+		
+		NumericComparer test = new NumericComparer();
+
+		try {
+			test.compare(null, null);
+		}
+		catch (NullPointerException e) {
+			// expected
+		}		
 	}
 }

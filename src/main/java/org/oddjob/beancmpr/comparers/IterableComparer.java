@@ -34,7 +34,7 @@ implements HierarchicalComparer, Comparer<Iterable<? extends T>>{
 			Iterable<? extends T> y) {
 		
 		if (x == null || y == null) {
-			return null;
+			throw new NullPointerException("X or Y is null.");
 		}
 				
 		List<T> yCopy = new ArrayList<T>();
