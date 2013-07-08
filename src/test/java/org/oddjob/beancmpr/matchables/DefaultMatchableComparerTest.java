@@ -46,8 +46,7 @@ public class DefaultMatchableComparerTest extends TestCase {
 	public void testCompareEqual() {
 		
 		DefaultMatchableComparer test = new DefaultMatchableComparer(
-				new ComparersByPropertyOrType(
-						null, null));
+				new ComparersByPropertyOrType());
 
 		MyMatchable x = new MyMatchable("apple", "red");
 		MyMatchable y = new MyMatchable("apple", "red");

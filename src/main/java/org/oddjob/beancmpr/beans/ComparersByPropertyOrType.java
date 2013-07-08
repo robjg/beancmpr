@@ -19,6 +19,14 @@ public class ComparersByPropertyOrType implements BeanComparerProvider {
 	
 	private final ComparersByType comparersByType;
 	
+	/**
+	 * Create a new instance.
+	 * 
+	 * @param comparersByProperty May be null.
+	 * @param comparersByType If null defaults to 
+	 * {@link DefaultComparersByType} otherwise creates a
+	 * {@link CompositeComparersByType}
+	 */
 	public ComparersByPropertyOrType(
 			ComparersByProperty comparersByProperty,
 			ComparersByType comparersByType) {
@@ -35,6 +43,9 @@ public class ComparersByPropertyOrType implements BeanComparerProvider {
 		this.comparersByProperty = comparersByProperty;
 	}
 	
+	/**
+	 * Create a new instance with default values.
+	 */
 	public ComparersByPropertyOrType() {
 		this(null, null);
 	}

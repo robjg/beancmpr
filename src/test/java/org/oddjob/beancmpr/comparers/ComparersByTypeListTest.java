@@ -15,7 +15,7 @@ public class ComparersByTypeListTest extends TestCase {
 	private class MyComparer implements Comparer<MyType> {
 		
 		@Override
-		public Comparison compare(MyType x, MyType y) {
+		public Comparison<MyType> compare(MyType x, MyType y) {
 			throw new RuntimeException("Unexepected");
 		}
 		

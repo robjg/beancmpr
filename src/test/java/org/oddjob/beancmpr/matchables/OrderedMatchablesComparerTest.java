@@ -1,5 +1,6 @@
 package org.oddjob.beancmpr.matchables;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -314,7 +315,77 @@ public class OrderedMatchablesComparerTest extends TestCase {
 			}
 		}
 		
-		assertEquals(3, results.comparisons.size());
+		assertEquals(3, results.comparisons.size());		
+	}
+	
+	public static class FruitByBigDecimal extends Fruit {
 		
+		private final BigDecimal id;
+		
+		public FruitByBigDecimal(BigDecimal id, String type, int quantity) {
+			super(type, quantity);
+			this.id = id;
+		}
+		
+		public BigDecimal getId() {
+			return id;
+		}
+	}
+	
+	public static class FruitByInteger extends Fruit {
+		
+		private final int id;
+		
+		public FruitByInteger(int id, String type, int quantity) {
+			super(type, quantity);
+			this.id = id;
+		}
+		
+		public int getId() {
+			return id;
+		}
+	}
+	
+	public void testKeysOfDifferentTypes() {
+		
+		MatchDefinition definition = new SimpleMatchDefinition(
+				new String[] { "id" },
+				new String[] { "type", "quantity" },
+				null);
+		
+		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
+		
+		BeanMatchableFactory factory = new BeanMatchableFactory(
+				definition, accessor);		
+
+		List<? extends Fruit> fruitX = Arrays.asList(		
+				new FruitByBigDecimal(new BigDecimal(1), "apple", 4),
+				new FruitByBigDecimal(new BigDecimal(2), "banana", 5));
+				
+		UnsortedBeanMatchables<Object> xs = 
+			new UnsortedBeanMatchables<Object>(fruitX, factory);
+		
+		
+		List<? extends Fruit> fruitY = Arrays.asList(		
+				new FruitByInteger(1, "apple", 4),
+				new FruitByInteger(3, "banana", 5));
+				
+		UnsortedBeanMatchables<Object> ys = 
+			new UnsortedBeanMatchables<Object>(fruitY, factory);
+		
+		Results results = new Results();
+		
+		OrderedMatchablesComparer test = new OrderedMatchablesComparer(
+				accessor, 
+				new ComparersByPropertyOrType(
+						null, new DefaultComparersByType()),
+				results);
+
+		try {
+			test.compare(xs, ys);
+		} 
+		catch (ClassCastException e) {
+			// To Fix!
+		}
 	}
 }
