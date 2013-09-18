@@ -3,7 +3,7 @@ package org.oddjob.beancmpr.matchables;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.oddjob.beancmpr.Iterables;
+import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.matchables.SimpleMatchable;
 
 import junit.framework.TestCase;

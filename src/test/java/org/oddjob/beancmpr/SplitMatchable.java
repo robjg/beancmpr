@@ -3,6 +3,7 @@ package org.oddjob.beancmpr;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.matchables.Matchable;
 
 public class SplitMatchable {

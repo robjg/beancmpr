@@ -3,8 +3,8 @@ package org.oddjob.beancmpr.beans;
 import junit.framework.TestCase;
 
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
+import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.Iterables;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
 
 public class BeanComparerTest extends TestCase {

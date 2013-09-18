@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import org.oddjob.beancmpr.Iterables;
+import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.matchables.ValuePairIterable;
 
 public class ValuePairIterableTest extends TestCase {

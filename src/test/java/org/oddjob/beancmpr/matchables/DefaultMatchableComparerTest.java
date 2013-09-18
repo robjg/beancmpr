@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
+import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.Iterables;
 import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
 import org.oddjob.beancmpr.matchables.DefaultMatchableComparer;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
