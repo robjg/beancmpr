@@ -4,8 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.oddjob.arooa.utils.ClassUtils;
 import org.oddjob.beancmpr.results.SharedNameResultBeanFactory;
 
+/**
+ * Help with Property Types.
+ * 
+ * @author rob
+ *
+ */
 public class PropertyTypeHelper {
 
 	private static final Map<Class<?>, Class<?>> primitiveTypeWrappers = 
@@ -28,7 +35,15 @@ public class PropertyTypeHelper {
 	
 	private static final Logger logger = Logger.getLogger(
 			SharedNameResultBeanFactory.class);
-	
+
+	/**
+	 * Find a common base type for two property types.
+	 * 
+	 * @param propertyName
+	 * @param firstType
+	 * @param secondType
+	 * @return
+	 */
 	public Class<?> typeFor(String propertyName,
 			Class<?> firstType, Class<?> secondType) {
 		
@@ -36,10 +51,14 @@ public class PropertyTypeHelper {
 		Class<?> newType;
 		
 		if (firstType.isPrimitive()) {
-			newType = primitiveTypeWrappers.get(firstType);
+			newType = ClassUtils.wrapperClassForPrimitive(firstType);
 		}
 		else {
 			newType = firstType;
+		}
+		
+		if (secondType.isPrimitive()) {
+			secondType = ClassUtils.wrapperClassForPrimitive(secondType);
 		}
 		
 		while (!newType.isAssignableFrom(secondType)) {

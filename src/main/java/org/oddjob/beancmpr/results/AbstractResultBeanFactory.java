@@ -41,8 +41,8 @@ implements ResultBeanFactory {
 		
 		populateKeys(result, definition.getKeyProperties(), x.getKeys());
 		
-		ValuePairIterable<Object> values = 
-				new ValuePairIterable<Object>(
+		ValuePairIterable<String, Object> values = 
+				new ValuePairIterable<String, Object>(
 					definition.getValueProperties(), 
 					x.getValues(), 
 					y.getValues());
@@ -51,9 +51,9 @@ implements ResultBeanFactory {
 			matchableComparison == null ? null :
 				matchableComparison.getValueComparisons().iterator();
 		
-		for (ValuePairIterable.ValuePair<Object> set : values) {
+		for (ValuePairIterable.ValuePair<String, Object> set : values) {
 			
-			String propertyName = set.getPropertyName();
+			String propertyName = set.getCommon();
 			
 			Comparison<?> comparison = comparisonsIterator == null ?
 					null : comparisonsIterator.next();
@@ -63,15 +63,15 @@ implements ResultBeanFactory {
 			populateComparison(result, propertyName, comparison);
 		}
 		
-		ValuePairIterable<Object> others = 
-				new ValuePairIterable<Object>(
+		ValuePairIterable<String, Object> others = 
+				new ValuePairIterable<String, Object>(
 					definition.getOtherProperties(), 
 					x == null ? null : x.getOthers(), 
 					y == null ? null : y.getOthers());
 		
-		for (ValuePairIterable.ValuePair<Object> set : others) {
+		for (ValuePairIterable.ValuePair<String, Object> set : others) {
 						
-			String propertyName = set.getPropertyName();
+			String propertyName = set.getCommon();
 			
 			populateXProperty(result, propertyName, set.getValueX());
 			populateYProperty(result, propertyName, set.getValueY());

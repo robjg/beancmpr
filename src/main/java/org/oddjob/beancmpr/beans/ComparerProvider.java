@@ -8,7 +8,7 @@ import org.oddjob.beancmpr.Comparer;
  * @author Rob
  *
  */
-public interface BeanComparerProvider {
+public interface ComparerProvider {
 
 	/**
 	 * Provide a {@link Comparer} for the given property

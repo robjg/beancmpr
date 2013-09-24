@@ -5,39 +5,40 @@ import java.util.Iterator;
 import org.oddjob.beancmpr.matchables.ValuePairIterable.ValuePair;
 
 /**
- * Provide an {@code Iterable} over two sets of values and their names.
+ * Provide an {@code Iterable} over two sets of values and a shared common 
+ * thing, such as their name.
  * 
  * @author rob
  *
- * @param <T> The type of the value.
+ * @param <V> The type of the value.
  * 
  * @see ValueIterable
  */
-public class ValuePairIterable<T> implements Iterable<ValuePair<T>> {
+public class ValuePairIterable<C, V> implements Iterable<ValuePair<C, V>> {
 
-	private final Iterable<String> propertyNames;
-	private final Iterable<? extends T> valuesX;
-	private final Iterable<? extends T> valuesY;
+	private final Iterable<? extends C> common;
+	private final Iterable<? extends V> valuesX;
+	private final Iterable<? extends V> valuesY;
 	
-	public ValuePairIterable(Iterable<String> propertyNames,
-			Iterable<? extends T> valuesX, 
-			Iterable<? extends T> valuesY) {
+	public ValuePairIterable(Iterable<? extends C> propertyNames,
+			Iterable<? extends V> valuesX, 
+			Iterable<? extends V> valuesY) {
 		
-		this.propertyNames = propertyNames;
+		this.common = propertyNames;
 		this.valuesX = valuesX;
 		this.valuesY = valuesY;
 	}
 	
 	@Override
-	public Iterator<ValuePair<T>> iterator() {
-		return new Iterator<ValuePair<T>>() {
+	public Iterator<ValuePair<C, V>> iterator() {
+		return new Iterator<ValuePair<C, V>>() {
 			
-			final Iterator<String> namesIterator = propertyNames.iterator();
+			final Iterator<? extends C> namesIterator = common.iterator();
 			
-			final Iterator<? extends T> xIterator = 
+			final Iterator<? extends V> xIterator = 
 				(valuesX == null ? null : valuesX.iterator());
 			
-			final Iterator<? extends T> yIterator =
+			final Iterator<? extends V> yIterator =
 				(valuesY == null ? null : valuesY.iterator());
 			
 			@Override
@@ -45,31 +46,31 @@ public class ValuePairIterable<T> implements Iterable<ValuePair<T>> {
 				return namesIterator.hasNext();
 			}
 			@Override
-			public ValuePair<T> next() {
+			public ValuePair<C, V> next() {
 				
-				final String name = namesIterator.next();
+				final C common = namesIterator.next();
 				
-				final T x = 
+				final V x = 
 					(xIterator == null ? null : xIterator.next());
 				
-				final T y = 
+				final V y = 
 					(yIterator == null ? null : yIterator.next());
 					
-				return new ValuePair<T>() {
+				return new ValuePair<C, V>() {
 					
 					@Override
-					public T getValueY() {
+					public V getValueY() {
 						return y;
 					}
 					
 					@Override
-					public T getValueX() {
+					public V getValueX() {
 						return x;
 					}
 					
 					@Override
-					public String getPropertyName() {
-						return name;
+					public C getCommon() {
+						return common;
 					}
 				};
 			}
@@ -87,9 +88,9 @@ public class ValuePairIterable<T> implements Iterable<ValuePair<T>> {
 	 *
 	 * @param <T>
 	 */
-	public interface ValuePair<T> {
+	public interface ValuePair<C, T> {
 		
-		public String getPropertyName();
+		public C getCommon();
 		
 		public T getValueX();
 		

@@ -101,19 +101,20 @@ public class BeanComparerTest extends TestCase {
 		beanX.setQuantity(2);
 		
 		Fruit beanY = new Fruit();
+		beanY.setType(null);
 		beanY.setQuantity(2);
 		
 		MultiValueComparison<Object> comparison = 
 				comparer.compare(beanX, beanY);
 		
-		assertEquals(-1, comparison.getResult());
+		assertEquals(1, comparison.getResult());
 		
 		Comparison<?>[] comparisons = Iterables.toArray(
 				comparison.getValueComparisons(), Comparison.class);
 		
 		assertEquals(2, comparisons.length);
 		
-		assertEquals(-1, comparisons[0].getResult());
+		assertEquals(1, comparisons[0].getResult());
 		assertEquals(0, comparisons[1].getResult());
 	}
 }

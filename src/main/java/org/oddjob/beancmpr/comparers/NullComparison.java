@@ -38,6 +38,6 @@ public class NullComparison<T> implements Comparison<T> {
 	
 	@Override
 	public int getResult() {
-		return x == y ? 0 : -1;
+		return x == y ? 0 : x == null ? -1 : 1;
 	}
 }

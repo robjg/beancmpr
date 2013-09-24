@@ -1,5 +1,6 @@
 package org.oddjob.beancmpr.matchables;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 /**
@@ -8,21 +9,24 @@ import java.util.Iterator;
  * @author rob
  *
  */
-public class SimpleMatchKey implements MatchKey {
+public class SimpleMatchKey implements Comparable<SimpleMatchKey>{
 
-	private final Iterable<? extends Comparable<?>> keys;
+	private final Iterable<?> keys;
 
+	private final Comparator<Iterable<?>> comparator;
+	
 	/**
 	 * Constructor.
 	 * 
 	 * @param components The component values of the key.
 	 */
-	public SimpleMatchKey(Iterable<? extends Comparable<?>> components) {
+	public SimpleMatchKey(Iterable<?> components,
+			Comparator<Iterable<?>> comparator) {
 		this.keys = components;
+		this.comparator = comparator;
 	}
 	
-	@Override
-	public Iterable<? extends Comparable<?>> getKeys() {
+	public Iterable<?> getKeys() {
 		return keys;
 	}
 	
@@ -30,10 +34,10 @@ public class SimpleMatchKey implements MatchKey {
 		if (other == this)
 		    return true;
 		
-		if (!(other instanceof MatchKey))
+		if (!(other instanceof SimpleMatchKey))
 		    return false;
 
-		return compareTo((MatchKey) other) == 0;
+		return compareTo((SimpleMatchKey) other) == 0;
 	}
 
 	public int hashCode() {
@@ -46,45 +50,10 @@ public class SimpleMatchKey implements MatchKey {
 		return hashCode;
 	}
 
-	public int compareTo(MatchKey other) throws ClassCastException {
+	public int compareTo(SimpleMatchKey other) throws ClassCastException {
 		
-		Iterator<? extends Comparable<?>> e1 = keys.iterator();
-		Iterator<? extends Comparable<?>> e2 = other.getKeys().iterator();
-		
-		while(e1.hasNext() && e2.hasNext()) {
-			
-		    Comparable<?> o1 = e1.next();
-		    Comparable<?> o2 = e2.next();
-		    
-		    if (o1 == null && o2 == null) {
-		    	continue;
-		    }
-		    if (o1 == null) {
-		    	return -1;
-		    }
-		    if (o2 == null) {
-		    	return 1;
-		    }
-		    
-			int result = objectCompare(o1,o2);
-			if (result != 0) {
-				return result;
-			}
-		}
-		
-		if (e1.hasNext() || e2.hasNext()) {
-			throw new IllegalArgumentException(
-					"Keys must be the same length.");
-		}
-		
-		return 0;		
+		return comparator.compare(keys, other.getKeys());
 	}	
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private int objectCompare(
-			Comparable o1, Comparable o2) {
-		return o1.compareTo(o2);
-	}
 	
 	@Override
 	public String toString() {

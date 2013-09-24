@@ -9,8 +9,6 @@ import java.util.List;
  */
 public class SimpleMatchable implements Matchable {
 
-	private final MatchKey key;
-	
 	private final List<?> keys;
 		
 	private final List<?> values;
@@ -33,16 +31,9 @@ public class SimpleMatchable implements Matchable {
 		this.values = values;
 		this.others = others;
 		
-		this.key = new SimpleMatchKey(keys);
-		
 		this.metaData = metaData; 
 	}
 	
-	@Override
-	public MatchKey getKey() {
-		return key;
-	}
-
 	@Override
 	public Iterable<?> getKeys() {
 		return keys;

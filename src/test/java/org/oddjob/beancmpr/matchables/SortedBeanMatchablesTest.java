@@ -1,7 +1,6 @@
 package org.oddjob.beancmpr.matchables;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -13,12 +12,7 @@ import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
-import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
-import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableFactory;
-import org.oddjob.beancmpr.matchables.MatchableGroup;
-import org.oddjob.beancmpr.matchables.SimpleMatchKey;
-import org.oddjob.beancmpr.matchables.SortedBeanMatchables;
+import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
 
 
 public class SortedBeanMatchablesTest extends TestCase {
@@ -78,7 +72,7 @@ public class SortedBeanMatchablesTest extends TestCase {
 		fruits.add(bean3);
 		
 		Iterable<MatchableGroup> test = new SortedBeanMatchables<Object>(
-				fruits, factory);
+				fruits, factory, new ComparersByPropertyOrType());
 		
 		MatchableGroup[] groups = Iterables.toArray(
 				test, MatchableGroup.class);		
@@ -90,19 +84,20 @@ public class SortedBeanMatchablesTest extends TestCase {
 				
 		assertEquals(2, matchables.length);
 		
-		assertEquals(new SimpleMatchKey(Arrays.asList("Apple")), 
-				matchables[0].getKey());
+		Object[] matchable0Keys = Iterables.toArray(matchables[0].getKeys());
 		
-		Object[] others = Iterables.toArray(
-				matchables[0].getOthers(), Object.class);
+		assertEquals("Apple", matchable0Keys[0]);
 		
-		assertEquals("red", others[0]);
+		Object[] matchable0Others = Iterables.toArray(matchables[0].getOthers());
+		
+		assertEquals("red", matchable0Others[0]);
 	
 		matchables = Iterables.toArray(
 				groups[1].getGroup(), Matchable.class);
 		
-		assertEquals(new SimpleMatchKey(Arrays.asList("Banana")),
-				matchables[0].getKey());		
+		Object[] matchable1Keys = Iterables.toArray(matchables[0].getKeys());
+		
+		assertEquals("Banana", matchable1Keys[0]);		
 	}
 
 	private class MockFactory implements MatchableFactory<Object> {
@@ -115,7 +110,8 @@ public class SortedBeanMatchablesTest extends TestCase {
 	public void testEmptyIterator() {
 		
 		final SortedBeanMatchables<Object> test = new SortedBeanMatchables<Object>(
-				new ArrayList<Fruit>(), new MockFactory());
+				new ArrayList<Fruit>(), new MockFactory(), 
+				new ComparersByPropertyOrType());
 		
 		Iterator<MatchableGroup> iter = test.iterator();
 		

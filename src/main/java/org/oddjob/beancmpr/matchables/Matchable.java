@@ -12,13 +12,6 @@ import org.oddjob.beancmpr.MatchDefinition;
 public interface Matchable {
 
 	/**
-	 * Get the key to match on.
-	 * 
-	 * @return The key.
-	 */
-	public MatchKey getKey();
-	
-	/**
 	 * Get the keys.
 	 * 
 	 * @return The keys.

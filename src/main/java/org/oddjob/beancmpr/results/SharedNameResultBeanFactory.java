@@ -106,7 +106,17 @@ implements ResultBeanFactory {
 	abstract protected void populateMatchResultType(Object resultBean,
 			MatchResultType matchResultType);
 	
+	/**
+	 * Something that can prefix a property name.
+	 */
 	private interface Ifyer {
+		/**
+		 * Prefix the property name.
+		 * 
+		 * @param propertyName The property name.
+		 * 
+		 * @return The prefixed property name.
+		 */
 		String ify(String propertyName);
 	}
 	

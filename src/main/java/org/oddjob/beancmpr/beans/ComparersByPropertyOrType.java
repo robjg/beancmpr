@@ -13,7 +13,7 @@ import org.oddjob.beancmpr.comparers.DefaultComparersByType;
  * @author rob
  *
  */
-public class ComparersByPropertyOrType implements BeanComparerProvider {
+public class ComparersByPropertyOrType implements ComparerProvider {
 	
 	private final ComparersByProperty comparersByProperty;
 	

@@ -8,6 +8,7 @@ import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
+import org.oddjob.beancmpr.beans.ComparerProvider;
 import org.oddjob.beancmpr.beans.ComparersByProperty;
 import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
 import org.oddjob.beancmpr.comparers.ComparersByType;
@@ -193,9 +194,11 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 		
 		rec.compare(
 				getIterableMatchables(inX, 
-					new BeanMatchableFactory(definition, accessor)), 
+					new BeanMatchableFactory(definition, accessor),
+					comparerProvider), 
 				getIterableMatchables(inY, 
-					new BeanMatchableFactory(definition, accessor)));
+					new BeanMatchableFactory(definition, accessor),
+					comparerProvider));
 		
 		logger.info("Xs Missing " + getXMissingCount() +
 				", Ys Missing " + getYMissingCount() + 
@@ -204,12 +207,15 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 	}	
 	
 	private Iterable<MatchableGroup> getIterableMatchables(
-			Iterable<?> in, MatchableFactory<Object> factory) {
+			Iterable<?> in, MatchableFactory<Object> factory,
+			ComparerProvider comparerProvider) {
 		if (sorted) {
-			return new SortedBeanMatchables<Object>(in, factory);
+			return new SortedBeanMatchables<Object>(in, factory, 
+					comparerProvider);
 		}
 		else {
-			return new UnsortedBeanMatchables<Object>(in, factory);
+			return new UnsortedBeanMatchables<Object>(in, factory,
+					comparerProvider);
 		}
 	}
 	

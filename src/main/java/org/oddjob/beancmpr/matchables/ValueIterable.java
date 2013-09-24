@@ -5,33 +5,33 @@ import java.util.Iterator;
 import org.oddjob.beancmpr.matchables.ValueIterable.Value;
 
 /**
- * Provide an {@code Iterable} over two sets of values and their names.
+ * Provide an {@code Iterable} over a sets of values and their names.
  * 
  * @author rob
  *
- * @param <T>
+ * @param <V> The type of the value.
  * 
  * @see ValuePairIterable
  */
-public class ValueIterable<T> implements Iterable<Value<T>> {
+public class ValueIterable<V> implements Iterable<Value<V>> {
 
 	private final Iterable<String> propertyNames;
-	private final Iterable<? extends T> values;
+	private final Iterable<? extends V> values;
 	
 	public ValueIterable(Iterable<String> propertyNames,
-			Iterable<? extends T> values) {
+			Iterable<? extends V> values) {
 		
 		this.propertyNames = propertyNames;
 		this.values = values;
 	}
 	
 	@Override
-	public Iterator<Value<T>> iterator() {
-		return new Iterator<Value<T>>() {
+	public Iterator<Value<V>> iterator() {
+		return new Iterator<Value<V>>() {
 			
 			final Iterator<String> namesIterator = propertyNames.iterator();
 			
-			final Iterator<? extends T> iterator = 
+			final Iterator<? extends V> iterator = 
 				(values == null ? null : values.iterator());
 			
 			@Override
@@ -39,17 +39,17 @@ public class ValueIterable<T> implements Iterable<Value<T>> {
 				return namesIterator.hasNext();
 			}
 			@Override
-			public Value<T> next() {
+			public Value<V> next() {
 				
 				final String name = namesIterator.next();
 				
-				final T value = 
+				final V value = 
 					(iterator == null ? null : iterator.next());
 				
-				return new Value<T>() {
+				return new Value<V>() {
 					
 					@Override
-					public T getValue() {
+					public V getValue() {
 						return value;
 					}
 					

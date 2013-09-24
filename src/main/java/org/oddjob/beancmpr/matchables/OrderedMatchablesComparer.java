@@ -1,10 +1,11 @@
 package org.oddjob.beancmpr.matchables;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Comparer;
-import org.oddjob.beancmpr.beans.BeanComparerProvider;
+import org.oddjob.beancmpr.beans.ComparerProvider;
 import org.oddjob.beancmpr.comparers.IterableComparison;
 import org.oddjob.beancmpr.comparers.MultiItemComparisonCounts;
 
@@ -18,18 +19,22 @@ import org.oddjob.beancmpr.comparers.MultiItemComparisonCounts;
 public class OrderedMatchablesComparer 
 implements Comparer<Iterable<? extends MatchableGroup>> {
 	
-	private final DefaultMatchableComparer matchableComparer;
-	
 	private final ComparisonGatheringProcessor matchProcessor;
+	
+	private final ComparerProvider comparerProvider;
+	
+	private MatchableComparer matchableComparer;
+	
+	private Comparator<Iterable<?>> keyComparator;
 	
 	public OrderedMatchablesComparer(
 			PropertyAccessor accessor,
-			BeanComparerProvider comparerProvider,
+			ComparerProvider comparerProvider,
 			BeanCmprResultsHandler resultsHandler) {
 		
-		this.matchableComparer = new DefaultMatchableComparer(comparerProvider);
-		
 		this.matchProcessor = new ComparisonGatheringProcessor(resultsHandler);
+		
+		this.comparerProvider = comparerProvider;
 	}
 	
 	public MultiItemComparisonCounts getMultiItemComparisonStats() {
@@ -73,7 +78,19 @@ implements Comparer<Iterable<? extends MatchableGroup>> {
 				continue;
 			}
 			
-			int compareKeys = currentX.getKey().compareTo(currentY.getKey());
+			if (matchableComparer == null) {
+				matchableComparer = new MatchableComparerFactory(
+						comparerProvider).createComparerFor(
+								currentX.getMetaData(), currentY.getMetaData());
+			}
+			if (keyComparator == null) {
+				keyComparator = new KeyComparatorFactory(
+						comparerProvider).createComparerFor(
+								currentX.getMetaData(), currentY.getMetaData());
+			}
+			
+			int compareKeys = keyComparator.compare(
+					currentX.getKeys(), currentY.getKeys());
 			
 			if (compareKeys < 0) {
 				matchProcessor.yMissing(currentX);
@@ -169,7 +186,7 @@ implements Comparer<Iterable<? extends MatchableGroup>> {
 		return matchProcessor;
 	}
 
-	public BeanComparerProvider getDifferentiatorProvider() {
-		return matchableComparer.getComparerProvider();
+	public ComparerProvider getDifferentiatorProvider() {
+		return comparerProvider;
 	}
 }

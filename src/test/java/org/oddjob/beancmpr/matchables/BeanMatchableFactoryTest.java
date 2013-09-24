@@ -1,8 +1,5 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import junit.framework.TestCase;
 
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
@@ -38,7 +35,6 @@ public class BeanMatchableFactoryTest extends TestCase {
 		}
 	}
 		
-	@SuppressWarnings("unchecked")
 	public void testCreateKeys() {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
@@ -59,10 +55,6 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		result = factory.createMatchable(snack);
 		
-		assertEquals(new SimpleMatchKey(Arrays.asList(
-				(Comparable<?>) null, (Comparable<?>) null)),
-				result.getKey());
-
 		values = Iterables.toArray(result.getKeys(), Object.class);
 		
 		assertEquals(2, values.length);
@@ -75,9 +67,6 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		result = factory.createMatchable(snack);
 		
-		assertEquals(new SimpleMatchKey(Arrays.asList("apple", "red")),
-				result.getKey());
-
 		values = Iterables.toArray(result.getKeys(), Object.class);
 		
 		assertEquals(2, values.length);
@@ -110,9 +99,6 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		result = factory.createMatchable(snack);
 		
-		assertEquals(new SimpleMatchKey(new ArrayList<Comparable<Object>>()),
-				result.getKey());
-
 		values = Iterables.toArray(result.getValues(), Object.class);
 		
 		assertEquals(2, values.length);
@@ -154,9 +140,6 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		result = factory.createMatchable(snack);
 		
-		assertEquals(new SimpleMatchKey(new ArrayList<Comparable<Object>>()),
-				result.getKey());
-
 		values = Iterables.toArray(result.getOthers(), Object.class);
 		
 		assertEquals(2, values.length);

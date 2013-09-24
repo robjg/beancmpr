@@ -4,7 +4,8 @@ import org.oddjob.beancmpr.Comparer;
 
 
 /**
- * Something that can compare two {@link Matchable}s.
+ * Something that can compare two {@link Matchable}s based on the contents
+ * of their values (not keys).
  * 
  * @author Rob
  *

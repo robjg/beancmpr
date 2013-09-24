@@ -1,11 +1,15 @@
 package org.oddjob.beancmpr.matchables;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import org.oddjob.arooa.utils.Iterables;
+import org.oddjob.beancmpr.beans.ComparerProvider;
 
 /**
  * Takes an unsorted {@code Iterable} of beans and provides an 
@@ -20,25 +24,43 @@ public class UnsortedBeanMatchables<T>
 implements Iterable<MatchableGroup> {
 	
 	/** Collect groups of matchables sorted by key. */
-	private final SortedMap<MatchKey, List<Matchable>> data = 
-		new TreeMap<MatchKey, List<Matchable>>();
+	private final SortedMap<SimpleMatchKey, List<Matchable>> data = 
+		new TreeMap<SimpleMatchKey, List<Matchable>>();
 	
 	/**
 	 * Constructor.
 	 * 
 	 * @param iterable The beans
 	 * @param factory The factory to create the {link Matchable}s.
+	 * @param comparerProvider Provide comparers.
 	 */
 	public UnsortedBeanMatchables(Iterable<? extends T> iterable, 
-			MatchableFactory<T> factory) {
+			MatchableFactory<T> factory,
+			ComparerProvider comparerProvider) {
+		
+		Comparator<Iterable<?>> keyComparator = null;
 		
 		for (T thing : iterable) {
-			Matchable matchable = factory.createMatchable(thing);			
-			List<Matchable> group = data.get(matchable.getKey());
+			Matchable matchable = factory.createMatchable(thing);
+			
+			if (keyComparator == null) {
+				
+				MatchableMetaData metaData = matchable.getMetaData();
+				
+				keyComparator = new KeyComparatorFactory(
+						comparerProvider).createComparerFor(
+								metaData, metaData);
+			}
+						
+			SimpleMatchKey key = new SimpleMatchKey(
+					matchable.getKeys(), keyComparator);
+			
+			
+			List<Matchable> group = data.get(key);
 			
 			if (group == null) {
 				group = new ArrayList<Matchable>();
-				this.data.put(matchable.getKey(), group);
+				this.data.put(key, group);
 			}
 			group.add(matchable);
 		}		
@@ -46,9 +68,10 @@ implements Iterable<MatchableGroup> {
 	
 	@Override
 	public Iterator<MatchableGroup> iterator() {
+		
 		return new Iterator<MatchableGroup>() {
 			
-			private Iterator<Map.Entry<MatchKey, List<Matchable>>> iterator 
+			private Iterator<Map.Entry<SimpleMatchKey, List<Matchable>>> iterator 
 				= data.entrySet().iterator();
 			
 			@Override
@@ -59,19 +82,24 @@ implements Iterable<MatchableGroup> {
 			@Override
 			public MatchableGroup next() {
 				
-				final Map.Entry<MatchKey, List<Matchable>> next = 
+				final Map.Entry<SimpleMatchKey, List<Matchable>> next = 
 					iterator.next();
 				
 				return new MatchableGroup() {
 					
 					@Override
-					public MatchKey getKey() {
-						return next.getKey();
+					public Iterable<?> getKeys() {
+						return next.getKey().getKeys();
 					}
 					
 					@Override
 					public Iterable<Matchable> getGroup() {
 						return next.getValue();
+					}
+					
+					@Override
+					public MatchableMetaData getMetaData() {
+						return next.getValue().get(0).getMetaData();
 					}
 					
 					@Override
@@ -82,7 +110,7 @@ implements Iterable<MatchableGroup> {
 					@Override
 					public String toString() {
 						return MatchableGroup.class.getSimpleName() + 
-							": " + getKey() + ", size=" + getSize();
+							": " + Iterables.toString(getKeys()) + ", size=" + getSize();
 					}
 
 				};

@@ -4,9 +4,9 @@ import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
-import org.oddjob.beancmpr.matchables.DefaultMatchableComparer;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableComparer;
+import org.oddjob.beancmpr.matchables.MatchableComparerFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
 
 /**
@@ -21,21 +21,27 @@ public class BeanComparer implements Comparer<Object> {
 	
 	private final String[] valueProperties;
 	
-	private final BeanComparerProvider comparerProvider;
+	private final ComparerProvider comparerProvider;
 	
 	private MatchableFactory<Object> matchableFactory;
 	
 	private MatchableComparer comparer;
 	
+	/**
+	 * Create a new instance.
+	 * 
+	 * @param valueProperties
+	 * @param accessor
+	 * @param comparerProvider
+	 */
 	public BeanComparer(String[] valueProperties,
 			PropertyAccessor accessor,
-			BeanComparerProvider comparerProvider) {
+			ComparerProvider comparerProvider) {
 		this.valueProperties = valueProperties;
 		this.accessor = accessor;
 		this.comparerProvider = comparerProvider;
 	}
-	
-	
+		
 	@Override
 	public BeanComparison compare(Object x, Object y) {
 
@@ -46,7 +52,7 @@ public class BeanComparer implements Comparer<Object> {
 		if (matchableFactory == null) {
 
 			String[] properties = 
-				BeanComparer.this.valueProperties;
+					BeanComparer.this.valueProperties;
 
 			if (properties == null) {
 				properties = accessor.getBeanOverview(
@@ -57,9 +63,6 @@ public class BeanComparer implements Comparer<Object> {
 					new SimpleMatchDefinition(
 							null, properties, null), 
 							accessor);
-
-			comparer = 
-				new DefaultMatchableComparer(comparerProvider);							
 		}
 
 		Matchable matchableX = 
@@ -67,6 +70,14 @@ public class BeanComparer implements Comparer<Object> {
 		Matchable matchableY = 
 			matchableFactory.createMatchable(y);
 
+		if (comparer == null) {
+			comparer = 
+				new MatchableComparerFactory(
+						comparerProvider).createComparerFor(
+								matchableX.getMetaData(), 
+								matchableY.getMetaData());							
+		}
+		
 		return new BeanComparison(x, y, 
 				comparer.compare(matchableX, matchableY));
 	}					

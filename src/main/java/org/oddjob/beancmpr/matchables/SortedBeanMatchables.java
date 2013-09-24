@@ -1,9 +1,13 @@
 package org.oddjob.beancmpr.matchables;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import org.oddjob.arooa.utils.Iterables;
+import org.oddjob.beancmpr.beans.ComparerProvider;
 
 /**
  * An adapter that converts an {@code Iterable} of bean to 
@@ -22,10 +26,14 @@ public class SortedBeanMatchables<T> implements Iterable<MatchableGroup> {
 	
 	private final MatchableFactory<T> factory;
 	
+	private final ComparerProvider comparerProvider;
+	
 	public SortedBeanMatchables(Iterable<? extends T> iterable, 
-			MatchableFactory<T> factory) {
+			MatchableFactory<T> factory,
+			ComparerProvider comparerProivder) {
 		this.iterable = iterable;
 		this.factory = factory;
+		this.comparerProvider = comparerProivder;
 	}
 		
 	@Override
@@ -33,6 +41,10 @@ public class SortedBeanMatchables<T> implements Iterable<MatchableGroup> {
 		
 		return new Iterator<MatchableGroup>() {
 
+			private MatchableMetaData metaData;
+			
+			private Comparator<Iterable<?>> keyComparator;
+			
 			private Matchable last;
 
 			private Iterator<? extends T> iterator = iterable.iterator();
@@ -56,8 +68,17 @@ public class SortedBeanMatchables<T> implements Iterable<MatchableGroup> {
 					
 					Matchable next = factory.createMatchable(iterator.next());
 
+					if (metaData == null) {
+						metaData = next.getMetaData();
+						
+						keyComparator = new KeyComparatorFactory(
+								comparerProvider).createComparerFor(
+										metaData, metaData);
+					}
+					
 					if (group.size() > 0 && 
-							!group.get(0).getKey().equals(next.getKey())) {
+							keyComparator.compare(group.get(0).getKeys(), 
+									next.getKeys()) != 0) {
 						last = next;
 						break;	
 					}
@@ -78,8 +99,8 @@ public class SortedBeanMatchables<T> implements Iterable<MatchableGroup> {
 					}
 					
 					@Override
-					public MatchKey getKey() {
-						return group.get(0).getKey();
+					public Iterable<?> getKeys() {
+						return group.get(0).getKeys();
 					}
 					
 					@Override
@@ -88,9 +109,14 @@ public class SortedBeanMatchables<T> implements Iterable<MatchableGroup> {
 					}
 					
 					@Override
+					public MatchableMetaData getMetaData() {
+						return metaData;
+					}
+					
+					@Override
 					public String toString() {
 						return MatchableGroup.class.getSimpleName() + 
-							", " + getKey();
+							", " + Iterables.toString(getKeys());
 					}
 				};
 			}
