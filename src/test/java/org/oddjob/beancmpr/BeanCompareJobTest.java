@@ -18,7 +18,7 @@ public class BeanCompareJobTest extends TestCase {
 		"matchResultType  id  xType   yType   typeComparison  xQuantity  yQuantity  quantityComparison  xColour  yColour  colourComparison" + EOL +
 		"---------------  --  ------  ------  --------------  ---------  ---------  ------------------  -------  -------  ----------------" + EOL +
 		"NOT_EQUAL        1   Apple   Apple                   4          4                              green    red      green<>red" + EOL +
-		"NOT_EQUAL        2   Banana  Banana                  3          4          1.0 (33.3%)         yellow   yellow   " + EOL +
+		"NOT_EQUAL        2   Banana  Banana                  3          4          3<>4                yellow   yellow   " + EOL +
 		"x_MISSING        3           Orange                             2                                       orange   " + EOL +
 		"y_MISSING        5   Orange                          2                                         orange            " + EOL;
 
@@ -26,7 +26,7 @@ public class BeanCompareJobTest extends TestCase {
 		"matchResultType  type    xQuantity  yQuantity  quantityComparison  xColour  yColour" + EOL +
 		"---------------  ------  ---------  ---------  ------------------  -------  -------" + EOL +
 		"EQUAL            Apple   4          4                              green    red" + EOL +
-		"NOT_EQUAL        Banana  3          4          1.0 (33.3%)         yellow   yellow" + EOL +
+		"NOT_EQUAL        Banana  3          4          3<>4                yellow   yellow" + EOL +
 		"EQUAL            Orange  2          2                              orange   orange" + EOL;
 
 	
