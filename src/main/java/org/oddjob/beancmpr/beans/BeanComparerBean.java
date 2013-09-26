@@ -2,6 +2,8 @@ package org.oddjob.beancmpr.beans;
 
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.convert.ArooaConversionException;
+import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
+import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.arooa.types.ValueFactory;
@@ -24,6 +26,7 @@ public class BeanComparerBean implements ArooaSessionAware, ValueFactory<Compare
 	
 	private ComparersByProperty comparersByProperty;
 	
+	@ArooaHidden
 	@Override
 	public void setArooaSession(ArooaSession session) {
 		this.accessor = session.getTools().getPropertyAccessor();
@@ -33,10 +36,11 @@ public class BeanComparerBean implements ArooaSessionAware, ValueFactory<Compare
 	@Override
 	public Comparer<Object> toValue() throws ArooaConversionException {
 		
-		ComparersByPropertyOrType comparerProvider =
-			new ComparersByPropertyOrType(comparersByProperty, comparersByType);
+		ComparersByPropertyOrTypeFactory comparerProviderFactory =
+			new ComparersByPropertyOrTypeFactory(
+					comparersByProperty, comparersByType);
 					
-		return new BeanComparer(matchProperties, accessor, comparerProvider);
+		return new BeanComparer(matchProperties, accessor, comparerProviderFactory);
 	}
 
 
@@ -44,7 +48,7 @@ public class BeanComparerBean implements ArooaSessionAware, ValueFactory<Compare
 		return matchProperties;
 	}
 
-
+	@ArooaAttribute
 	public void setMatchProperties(String[] matchProperties) {
 		this.matchProperties = matchProperties;
 	}

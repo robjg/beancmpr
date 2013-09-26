@@ -8,7 +8,6 @@ import org.oddjob.beancmpr.comparers.DefaultComparersByType;
 /**
  * Collects together {@link ComparersByProperty} and {@link ComparersByType}
  * <p>
- * Also provides a base set of {@link DefaultComparersByType}.
  * 
  * @author rob
  *
@@ -23,31 +22,24 @@ public class ComparersByPropertyOrType implements ComparerProvider {
 	 * Create a new instance.
 	 * 
 	 * @param comparersByProperty May be null.
-	 * @param comparersByType If null defaults to 
+	 * @param comparersByType May be null.
 	 * {@link DefaultComparersByType} otherwise creates a
 	 * {@link CompositeComparersByType}
 	 */
 	public ComparersByPropertyOrType(
 			ComparersByProperty comparersByProperty,
 			ComparersByType comparersByType) {
-		if (comparersByType == null) {
-			this.comparersByType = new DefaultComparersByType(); 
-		}
-		else {
-			this.comparersByType = new CompositeComparersByType(
-					comparersByType, new DefaultComparersByType());
-		}
 		
-		this.comparersByType.injectComparers(this.comparersByType);
-		
+		this.comparersByType = comparersByType; 
 		this.comparersByProperty = comparersByProperty;
 	}
 	
 	/**
-	 * Create a new instance with default values.
+	 * Create a new instance with default values. This is only used by 
+	 * tests.
 	 */
 	public ComparersByPropertyOrType() {
-		this(null, null);
+		this(null, new DefaultComparersByType());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -65,6 +57,10 @@ public class ComparersByPropertyOrType implements ComparerProvider {
 			return comparer;
 		}
 		
-		return comparersByType.comparerFor(type);
+		if (comparersByType != null) {
+			return comparersByType.comparerFor(type);
+		}
+
+		return null;
 	}
 }

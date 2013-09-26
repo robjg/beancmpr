@@ -38,7 +38,8 @@ public class BeanComparerTest extends TestCase {
 		BeanComparer comparer = new BeanComparer(
 				new String[] { "type", "quantity" },
 				new BeanUtilsPropertyAccessor(),
-				new ComparersByPropertyOrType());
+				new ComparersByPropertyOrTypeFactory());
+		comparer.injectComparers(null);
 		
 		Fruit beanX = new Fruit();
 		beanX.setType("apple");
@@ -67,7 +68,8 @@ public class BeanComparerTest extends TestCase {
 		BeanComparer comparer = new BeanComparer(
 				new String[] { "type", "quantity" },
 				new BeanUtilsPropertyAccessor(),
-				new ComparersByPropertyOrType());
+				new ComparersByPropertyOrTypeFactory());
+		comparer.injectComparers(null);
 		
 		Fruit beanX = new Fruit();
 		beanX.setQuantity(2);
@@ -94,7 +96,8 @@ public class BeanComparerTest extends TestCase {
 		BeanComparer comparer = new BeanComparer(
 				new String[] { "type", "quantity" },
 				new BeanUtilsPropertyAccessor(),
-				new ComparersByPropertyOrType());
+				new ComparersByPropertyOrTypeFactory());
+		comparer.injectComparers(null);
 		
 		Fruit beanX = new Fruit();
 		beanX.setType("apple");

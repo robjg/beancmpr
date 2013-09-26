@@ -10,7 +10,7 @@ import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.beans.ComparerProvider;
 import org.oddjob.beancmpr.beans.ComparersByProperty;
-import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
+import org.oddjob.beancmpr.beans.ComparersByPropertyOrTypeFactory;
 import org.oddjob.beancmpr.comparers.ComparersByType;
 import org.oddjob.beancmpr.comparers.MultiItemComparisonCounts;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
@@ -164,9 +164,9 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 				getKeyProperties(), getValueProperties(), 
 				getOtherProperties());
 		
-		ComparersByPropertyOrType comparerProvider =
-			new ComparersByPropertyOrType(
-					comparersByProperty, comparersByType);
+		ComparerProvider comparerProvider =
+			new ComparersByPropertyOrTypeFactory(
+					comparersByProperty, comparersByType).createWith(null);
 			
 		if (to != null) {
 			

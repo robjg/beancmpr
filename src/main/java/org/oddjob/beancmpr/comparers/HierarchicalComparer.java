@@ -15,7 +15,7 @@ public interface HierarchicalComparer {
 	 * Used by an owner of comparers to inject the master comparer into
 	 * {@link HierarchicalComparer}s.
 	 * 
-	 * @param comparers The master comparers.
+	 * @param parentComparers The master comparers.
 	 */
-	public void injectComparers(ComparersByType comparers);
+	public void injectComparers(ComparersByType parentComparers);
 }

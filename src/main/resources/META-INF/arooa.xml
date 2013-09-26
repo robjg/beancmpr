@@ -11,14 +11,23 @@
     </arooa:bean-def>
     <arooa:bean-def element='dido-results'
       className='org.oddjob.beancmpr.results.DidoBeanResultHandler'/>
+      
     <arooa:bean-def element='comparers-list'
       className='org.oddjob.beancmpr.comparers.ComparersByTypeList'/>
     <arooa:bean-def element='comparers-map'
       className='org.oddjob.beancmpr.beans.ComparersByPropertyMap'/>
+      
+    <arooa:bean-def element='bean-comparer'
+      className='org.oddjob.beancmpr.beans.BeanComparerBean'/>
+    <arooa:bean-def element='date-comparer'
+      className='org.oddjob.beancmpr.comparers.DateComparer'/>
+    <arooa:bean-def element='integer-comparer'
+      className='org.oddjob.beancmpr.comparers.IntegerComparer'/>
     <arooa:bean-def element='numeric-comparer'
       className='org.oddjob.beancmpr.comparers.NumericComparer'/>
-    <arooa:bean-def element='date-comparer'
-      className='org.oddjob.beancmpr.comparers.NumericComparer'/>
+    <arooa:bean-def element='text-comparer'
+      className='org.oddjob.beancmpr.comparers.TextComparer'/>
+      
   </values>
   <components>
     <arooa:bean-def element='compare'

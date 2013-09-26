@@ -3,6 +3,8 @@ package org.oddjob.beancmpr.beans;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
+import org.oddjob.beancmpr.comparers.ComparersByType;
+import org.oddjob.beancmpr.comparers.HierarchicalComparer;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableComparer;
@@ -15,13 +17,15 @@ import org.oddjob.beancmpr.matchables.MatchableFactory;
  * @author rob
  *
  */
-public class BeanComparer implements Comparer<Object> {
+public class BeanComparer implements Comparer<Object>, HierarchicalComparer {
 
 	private final PropertyAccessor accessor;
 	
 	private final String[] valueProperties;
 	
-	private final ComparerProvider comparerProvider;
+	private final ComparerProviderFactory comparerProviderFactory;
+	
+	private ComparerProvider comparerProvider;
 	
 	private MatchableFactory<Object> matchableFactory;
 	
@@ -36,12 +40,18 @@ public class BeanComparer implements Comparer<Object> {
 	 */
 	public BeanComparer(String[] valueProperties,
 			PropertyAccessor accessor,
-			ComparerProvider comparerProvider) {
+			ComparerProviderFactory comparerProviderFactory) {
 		this.valueProperties = valueProperties;
 		this.accessor = accessor;
-		this.comparerProvider = comparerProvider;
+		this.comparerProviderFactory = comparerProviderFactory;
 	}
-		
+	
+	@Override
+	public void injectComparers(ComparersByType parentComparers) {
+		comparerProvider = comparerProviderFactory.createWith(
+				parentComparers);
+	}
+	
 	@Override
 	public BeanComparison compare(Object x, Object y) {
 
@@ -49,6 +59,10 @@ public class BeanComparer implements Comparer<Object> {
 			throw new NullPointerException("X or Y is null.");
 		}
 
+		if (comparerProvider == null) {
+			throw new IllegalStateException("Parent Comparers Not Yet Injected!");
+		}
+		
 		if (matchableFactory == null) {
 
 			String[] properties = 

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.oddjob.beancmpr.Comparer;
+import org.oddjob.beancmpr.comparers.ComparersByType;
+import org.oddjob.beancmpr.comparers.HierarchicalComparer;
 
 /**
  * Collects {@link Comparer}s by property name.
@@ -26,4 +28,12 @@ public class ComparersByPropertyMap implements ComparersByProperty {
 		return comparersByProperty.get(propertyName);
 	}
 	
+	@Override
+	public void injectComparers(ComparersByType comparers) {
+		for (Comparer<?> comparer : comparersByProperty.values()) {
+			if (comparer instanceof HierarchicalComparer) {
+				((HierarchicalComparer) comparer).injectComparers(comparers);
+			}
+		}
+	}
 }
