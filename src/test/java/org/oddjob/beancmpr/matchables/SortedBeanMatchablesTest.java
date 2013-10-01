@@ -23,25 +23,21 @@ public class SortedBeanMatchablesTest extends TestCase {
 		
 		private String colour;
 		
+		public Fruit(String type, String colour) {
+			this.type = type;
+			this.colour = colour;
+		}
+		
 		public String getType() {
 			return type;
 		}
-		
-		public void setType(String make) {
-			this.type = make;
-		}
-		
+				
 		public String getColour() {
 			return colour;
-		}
-		
-		public void setColour(String colour) {
-			this.colour = colour;
-		}
+		}		
 	}
 	
-	
-	public void testIterating() {
+	public void testIteratingWithOneKey() {
 				
 		MatchDefinition definition = new SimpleMatchDefinition(
 				new String[] { "type" }, 
@@ -55,17 +51,9 @@ public class SortedBeanMatchablesTest extends TestCase {
 		
 		List<Fruit> fruits = new ArrayList<Fruit>();
 		
-		Fruit bean1 = new Fruit();
-		bean1.setType("Apple");
-		bean1.setColour("red");
-		
-		Fruit bean2 = new Fruit();
-		bean2.setType("Apple");
-		bean2.setColour("green");
-
-		Fruit bean3 = new Fruit();
-		bean3.setType("Banana");
-		bean3.setColour("yellow");
+		Fruit bean1 = new Fruit("apple", "red");
+		Fruit bean2 = new Fruit("apple", "green");
+		Fruit bean3 = new Fruit("banana", "yellow");
 		
 		fruits.add(bean1);
 		fruits.add(bean2);
@@ -86,7 +74,7 @@ public class SortedBeanMatchablesTest extends TestCase {
 		
 		Object[] matchable0Keys = Iterables.toArray(matchables[0].getKeys());
 		
-		assertEquals("Apple", matchable0Keys[0]);
+		assertEquals("apple", matchable0Keys[0]);
 		
 		Object[] matchable0Others = Iterables.toArray(matchables[0].getOthers());
 		
@@ -97,9 +85,58 @@ public class SortedBeanMatchablesTest extends TestCase {
 		
 		Object[] matchable1Keys = Iterables.toArray(matchables[0].getKeys());
 		
-		assertEquals("Banana", matchable1Keys[0]);		
+		assertEquals("banana", matchable1Keys[0]);		
 	}
 
+	public void testIteratingWithTwoKeys() {
+		
+		MatchDefinition definition = new SimpleMatchDefinition(
+				new String[] { "type", "colour" }, 
+				new String[] { },
+				new String[] { });
+		
+		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
+		
+		BeanMatchableFactory factory = new BeanMatchableFactory(
+				definition, accessor);
+		
+		List<Fruit> fruits = new ArrayList<Fruit>();
+		
+		Fruit bean1 = new Fruit("apple", "green");
+		Fruit bean2 = new Fruit("apple", "red");
+		Fruit bean3 = new Fruit("banana", "yellow");
+		
+		fruits.add(bean1);
+		fruits.add(bean2);
+		fruits.add(bean3);
+		
+		Iterable<MatchableGroup> test = new SortedBeanMatchables<Object>(
+				fruits, factory, new ComparersByPropertyOrType());
+		
+		MatchableGroup[] groups = Iterables.toArray(
+				test, MatchableGroup.class);		
+		
+		assertEquals(3, groups.length);
+				
+		Matchable[] matchables = Iterables.toArray(
+				groups[0].getGroup(), Matchable.class);
+				
+		assertEquals(1, matchables.length);
+		
+		Object[] matchable0Keys = Iterables.toArray(matchables[0].getKeys());
+		
+		assertEquals("apple", matchable0Keys[0]);
+		assertEquals("green", matchable0Keys[1]);
+	
+		matchables = Iterables.toArray(
+				groups[2].getGroup(), Matchable.class);
+		
+		Object[] matchable1Keys = Iterables.toArray(matchables[0].getKeys());
+		
+		assertEquals("banana", matchable1Keys[0]);		
+	}
+
+	
 	private class MockFactory implements MatchableFactory<Object> {
 		@Override
 		public Matchable createMatchable(Object bean) {
