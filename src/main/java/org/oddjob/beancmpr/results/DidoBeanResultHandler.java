@@ -102,11 +102,11 @@ implements BeanCmprResultsHandler, PlaysWithBeanbus {
 	
 	protected Object createYMissingResult(Matchable x) {
 
-		List<XMissingComparison> comparisons = 
-				new ArrayList<XMissingComparison>();
+		List<YMissingComparison> comparisons = 
+				new ArrayList<YMissingComparison>();
 		
 		for (Object xValue : x.getValues()) {
-			comparisons.add(new XMissingComparison(xValue));
+			comparisons.add(new YMissingComparison(xValue));
 		}
 		
 		MatchableMetaData metaData = x.getMetaData();
@@ -185,10 +185,10 @@ implements BeanCmprResultsHandler, PlaysWithBeanbus {
 	
 	public static class XMissingComparison implements Comparison<Object> {
 
-		private final Object value;
+		private final Object yValue;
 		
-		public XMissingComparison(Object value) {
-			this.value = value;
+		public XMissingComparison(Object yValue) {
+			this.yValue = yValue;
 		}
 		
 		@Override
@@ -198,7 +198,7 @@ implements BeanCmprResultsHandler, PlaysWithBeanbus {
 		
 		@Override
 		public Object getY() {
-			return value;
+			return yValue;
 		}
 		
 		@Override
@@ -214,15 +214,15 @@ implements BeanCmprResultsHandler, PlaysWithBeanbus {
 	
 	public static class YMissingComparison implements Comparison<Object> {
 
-		private final Object value;
+		private final Object xValue;
 		
-		public YMissingComparison(Object value) {
-			this.value = value;
+		public YMissingComparison(Object xValue) {
+			this.xValue = xValue;
 		}
 		
 		@Override
 		public Object getX() {
-			return value;
+			return xValue;
 		}
 		
 		@Override
