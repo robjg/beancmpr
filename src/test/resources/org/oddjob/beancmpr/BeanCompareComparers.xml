@@ -25,9 +25,9 @@
                             </results>
                             <comparersByType>
                                 <beancmpr:comparers-list>
-                                    <comparer>
-                                        <beancmpr:numeric-comparer deltaTolerance="0.5"/>
-                                    </comparer>
+                                    <specialisations>
+                                        <beancmpr:numeric-comparer key="java.lang.Double" deltaTolerance="0.5"/>
+                                    </specialisations>
                                 </beancmpr:comparers-list>
                             </comparersByType>
                         </beancmpr:compare>

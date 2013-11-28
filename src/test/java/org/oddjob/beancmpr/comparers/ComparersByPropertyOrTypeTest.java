@@ -3,6 +3,7 @@ package org.oddjob.beancmpr.comparers;
 import junit.framework.TestCase;
 
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
+import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.beans.BeanComparer;
@@ -43,7 +44,7 @@ public class ComparersByPropertyOrTypeTest extends TestCase {
 		}
 	}
 	
-	public void testThatTypeComparersInjectedIntoPropertyComparers() {
+	public void testThatTypeComparersInjectedIntoPropertyComparers() throws ArooaConversionException {
 		
 		BeanComparer beanComparer = new BeanComparer(
 				new String[] { "quantity" }, new BeanUtilsPropertyAccessor(), 
@@ -54,9 +55,11 @@ public class ComparersByPropertyOrTypeTest extends TestCase {
 		comparersByProperty.setComparerForProperty("fruit", 
 				beanComparer);
 
-		ComparersByTypeList comparersByType = new ComparersByTypeList();
-		comparersByType.setComparer(0, new OurIntegercomparer());
+		ComparersByTypeList comparersByTypeList = new ComparersByTypeList();
+		comparersByTypeList.setSpecialisations("java.lang.Integer", 
+				new OurIntegercomparer());
 		
+		ComparersByType comparersByType = comparersByTypeList.toValue();
 		beanComparer.injectComparers(comparersByType);
 		
 		ComparersByPropertyOrType test = 

@@ -1,5 +1,6 @@
 package org.oddjob.beancmpr.comparers;
 
+import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.beancmpr.Comparer;
 
 import junit.framework.TestCase;
@@ -14,13 +15,13 @@ public class CompositeComparersByTypeTest extends TestCase {
 		}
 	}
 	
-	public void testCustomOverridesDefault() {
+	public void testCustomOverridesDefault() throws ArooaConversionException {
 		
 		ComparersByTypeList comparerList = new ComparersByTypeList();
-		comparerList.setComparer(0, new OurComparer());
+		comparerList.setSpecialisations(Integer.class.getName(), new OurComparer());
 		
 		CompositeComparersByType test = new CompositeComparersByType(
-				comparerList, new DefaultComparersByType());
+				comparerList.toValue(), new DefaultComparersByType());
 		
 		Comparer<Integer> comparer = test.comparerFor(Integer.class);
 		

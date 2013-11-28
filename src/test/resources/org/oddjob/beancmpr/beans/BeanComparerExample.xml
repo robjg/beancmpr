@@ -70,9 +70,9 @@
                     </comparersByProperty>
                     <comparersByType>
                         <beancmpr:comparers-list>
-                            <comparer>
+                            <comparers>
                                 <beancmpr:text-comparer ignoreCase="true"/>
-                            </comparer>
+                            </comparers>
                         </beancmpr:comparers-list>
                     </comparersByType>
                 </beancmpr:compare>

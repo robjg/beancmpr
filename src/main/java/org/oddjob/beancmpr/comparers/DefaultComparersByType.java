@@ -1,5 +1,8 @@
 package org.oddjob.beancmpr.comparers;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.oddjob.beancmpr.Comparer;
 
 /**
@@ -10,21 +13,29 @@ import org.oddjob.beancmpr.Comparer;
  */
 public class DefaultComparersByType implements ComparersByType {
 
-	private final ComparersByTypeList comparers = 
-		new ComparersByTypeList();
+	private final InternalComparersByType comparers;
 	
 	public DefaultComparersByType() {
 		
-		int index = 0;
+		Map<Class<?>, Comparer<?>> map = 
+				new LinkedHashMap<Class<?>, Comparer<?>>();
 		
-		comparers.setComparer(index++, new IntegerComparer());		
-		comparers.setComparer(index++, new NumericComparer());		
-		comparers.setComparer(index++, new DateComparer());		
-		comparers.setComparer(index++, new ArrayComparer());
-		comparers.setComparer(index++, new IterableComparer<Object>());
-		comparers.setComparer(index++, new EqualityComparer());
+		doPut(new IntegerComparer(), map);		
+		doPut(new NumericComparer(), map);
+		doPut(new DateComparer(), map);
+		doPut(new ArrayComparer(), map);
+		doPut(new IterableComparer<Object>(), map);
+		doPut(new EqualityComparer(), map);
+		
+		this.comparers = new InternalComparersByType(map);
 	}
 		
+	private void doPut(Comparer<?> comparer, 
+			Map<Class<?>, Comparer<?>> map) {
+		map.put(comparer.getType(), comparer);
+	}
+	
+	
 	@Override
 	public <T> Comparer<T> comparerFor(Class<T> type) {
 		return comparers.comparerFor(type);
