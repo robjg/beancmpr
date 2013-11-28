@@ -4,21 +4,22 @@ import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 
 /**
- * A {@link Comparer} for integers.
+ * A generic {@link Comparer} for comparables.
  * <p>
  * 
  * @author Rob
  *
  */
-public class IntegerComparer implements Comparer<Integer> {
+public class ComparableComparer<T extends Comparable<T>> 
+implements Comparer<T> {
 
-	public Comparison<Integer> compare(final Integer x, final Integer y) {
+	public Comparison<T> compare(final T x, final T y) {
 
 		if (x == null || y == null) {
 			throw new NullPointerException("X or Y Null.");
 		}
 
-		return new Comparison<Integer>() {
+		return new Comparison<T>() {
 			
 			final int result = x.compareTo(y);
 			final String summary = result == 0 ? "" : "" + x + "<>" + y;
@@ -34,20 +35,20 @@ public class IntegerComparer implements Comparer<Integer> {
 			}
 			
 			@Override
-			public Integer getX() {
+			public T getX() {
 				return x;
 			}
 			
 			@Override
-			public Integer getY() {
+			public T getY() {
 				return y;
 			}
 		};
 	}
 	
 	@Override
-	public Class<Integer> getType() {
-		return Integer.class;
+	public Class<?> getType() {
+		return Comparable.class;
 	}
 	
 	public String toString() {

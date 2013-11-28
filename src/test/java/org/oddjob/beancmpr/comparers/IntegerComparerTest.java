@@ -1,14 +1,14 @@
 package org.oddjob.beancmpr.comparers;
 
-import org.oddjob.beancmpr.Comparison;
-
 import junit.framework.TestCase;
+
+import org.oddjob.beancmpr.Comparison;
 
 public class IntegerComparerTest extends TestCase {
 
 	public void testIntegersEqual() {
 	
-		IntegerComparer test = new IntegerComparer();
+		ComparableComparer<Integer> test = new ComparableComparer<Integer>();
 		
 		Comparison<Integer> comparison = test.compare(42, 42);
 		
@@ -18,7 +18,7 @@ public class IntegerComparerTest extends TestCase {
 	
 	public void testXBigger() {
 		
-		IntegerComparer test = new IntegerComparer();
+		ComparableComparer<Integer> test = new ComparableComparer<Integer>();
 		
 		Comparison<Integer> comparison = test.compare(42, 24);
 		
@@ -30,7 +30,7 @@ public class IntegerComparerTest extends TestCase {
 	
 	public void testYBigger() {
 		
-		IntegerComparer test = new IntegerComparer();
+		ComparableComparer<Integer> test = new ComparableComparer<Integer>();
 		
 		Comparison<Integer> comparison = test.compare(24, 42);
 		
