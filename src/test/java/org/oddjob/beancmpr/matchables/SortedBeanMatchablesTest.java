@@ -136,6 +136,46 @@ public class SortedBeanMatchablesTest extends TestCase {
 		assertEquals("banana", matchable1Keys[0]);		
 	}
 
+	public void testThrowsExceptionWhenUnordered() {
+		
+		MatchDefinition definition = new SimpleMatchDefinition(
+				new String[] { "type", "colour" }, 
+				new String[] { },
+				new String[] { });
+		
+		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
+		
+		BeanMatchableFactory factory = new BeanMatchableFactory(
+				definition, accessor);
+		
+		List<Fruit> fruits = new ArrayList<Fruit>();
+		
+		Fruit bean1 = new Fruit("apple", "green");
+		Fruit bean2 = new Fruit("banana", "yellow");
+		Fruit bean3 = new Fruit("apple", "red");
+		
+		fruits.add(bean1);
+		fruits.add(bean2);
+		fruits.add(bean3);
+		
+		Iterable<MatchableGroup> test = new SortedBeanMatchables<Object>(
+				fruits, factory, new ComparersByPropertyOrType());
+		
+		Iterator<MatchableGroup> iter = test.iterator();
+		
+		assertEquals(true, iter.hasNext());
+		assertEquals(1, iter.next().getSize());
+		
+		assertEquals(true, iter.hasNext());
+		
+		try {
+			iter.next().getSize();
+			fail("Should fail.");
+		}
+		catch (IllegalArgumentException e) {
+			// expected
+		}
+	}
 	
 	private class MockFactory implements MatchableFactory<Object> {
 		@Override

@@ -76,19 +76,33 @@ public class SortedBeanMatchables<T> implements Iterable<MatchableGroup> {
 										metaData, metaData);
 					}
 					
-					if (group.size() > 0 && 
-							keyComparator.compare(group.get(0).getKeys(), 
-									next.getKeys()) != 0) {
-						last = next;
-						break;	
+					if (group.size() > 0) {
+						
+						Iterable<?> currentKeys = group.get(0).getKeys();
+						Iterable<?> nextKeys = next.getKeys();
+						
+						int comparison = keyComparator.compare(
+								currentKeys, nextKeys);
+
+						if (comparison > 0) {
+							throw new IllegalArgumentException(
+									"Source must be in ascending order, however " +
+									Iterables.toString(nextKeys) +
+									"<" +
+									Iterables.toString(currentKeys));
+						}
+						else if (comparison < 0) {
+							last = next;
+							break;	
+						}
 					}
-					else {
-						group.add(next);
-					}
+					
+					group.add(next);
 				}
 
 				if (group.size() == 0) {
-					throw new NoSuchElementException();
+					throw new NoSuchElementException(
+							"No next - did you call hasNext()?");
 				}
 				
 				return new MatchableGroup() {
