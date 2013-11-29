@@ -8,6 +8,7 @@ import org.oddjob.beancmpr.comparers.DefaultComparersByType;
 /**
  * Collects together {@link ComparersByProperty} and {@link ComparersByType}
  * <p>
+ * Used by {@link ComparersByPropertyOrTypeFactory}.
  * 
  * @author rob
  *

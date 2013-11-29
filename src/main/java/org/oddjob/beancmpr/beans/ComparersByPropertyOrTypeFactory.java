@@ -4,6 +4,17 @@ import org.oddjob.beancmpr.comparers.ComparersByType;
 import org.oddjob.beancmpr.comparers.CompositeComparersByType;
 import org.oddjob.beancmpr.comparers.DefaultComparersByType;
 
+/**
+ * Create {@link ComparerProvider} by a combination of 
+ * {@link ComparersByProperty} and {@link ComparersByType} and using
+ * {@link DefaultComparersByType} where necessary.
+ * <p>
+ * The resulting {@code ComparerProvider} will always be able to provide
+ * a {@link Comparer} for any type.
+ * 
+ * @author rob
+ *
+ */
 public class ComparersByPropertyOrTypeFactory 
 implements ComparerProviderFactory {
 

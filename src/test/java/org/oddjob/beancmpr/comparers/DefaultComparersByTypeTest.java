@@ -14,6 +14,9 @@ public class DefaultComparersByTypeTest extends TestCase {
 		Comparer<Number> numberComparer = test.comparerFor(Number.class);
 		assertEquals(Number.class, numberComparer.getType());
 		
+		Comparer<Integer> integerComparer = test.comparerFor(Integer.class);
+		assertEquals(Comparable.class, integerComparer.getType());
+
 		Comparer<Object> objectComparer = test.comparerFor(Object.class);
 		assertEquals(Object.class, objectComparer.getType());
 		

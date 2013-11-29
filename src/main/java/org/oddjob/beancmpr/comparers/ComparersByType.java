@@ -3,7 +3,8 @@ package org.oddjob.beancmpr.comparers;
 import org.oddjob.beancmpr.Comparer;
 
 /**
- * A collection of {@link Comparer}s.
+ * A collection of {@link Comparer}s where the comparer can be retrieved
+ * by type.
  * 
  * @author rob
  *
