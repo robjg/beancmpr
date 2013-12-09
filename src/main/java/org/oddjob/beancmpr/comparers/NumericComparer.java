@@ -44,35 +44,35 @@ public class NumericComparer implements Comparer<Number> {
 		double doubleX = x.doubleValue();
 		double doubleY = y.doubleValue();
 
-		final double delta = doubleY - doubleX;
-		final double percentage;
-		if (doubleX == 0) {
-			percentage = 0;
-		}
-		else {
-			percentage = delta /doubleX * 100; 
-		}
+		double delta = doubleY - doubleX;
+		
+		double percentage = 0.0;
 		
 		int result;
-		if (delta == 0) {
+		
+		if (Math.abs(delta) <= deltaTolerance) {
 			result = 0;
-		}
-		else if (delta > 0) {
-			result = -1;
 		}
 		else {
-			result = 1;
-		}
 		
-		if (deltaTolerance > 0 && 
-				Math.abs(delta) < deltaTolerance) {
-			result = 0;
+			if (delta > 0.0) {
+				result = -1;
+			}
+			else {
+				result = 1;
+			}
+			
+			if (doubleX != 0.0) {
+ 
+				percentage = delta /doubleX * 100; 
+				
+				if (percentageTolerance > 0.0 && 
+						Math.abs(percentage) < percentageTolerance) {
+					result = 0;
+				}
+			}
 		}
-		else if (percentageTolerance > 0 && 
-					Math.abs(percentage) < percentageTolerance) {
-			result = 0;
-		}
-
+			
 		return new NumericComparisonImpl(x, y, result, delta, percentage);
 	}
 	

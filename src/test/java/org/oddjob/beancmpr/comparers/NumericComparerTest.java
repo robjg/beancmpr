@@ -106,4 +106,29 @@ public class NumericComparerTest extends TestCase {
 			// expected
 		}		
 	}
+	
+	public void testZerosWithPercentageTolerance() {
+		
+		NumericComparer test = new NumericComparer();
+		test.setPercentageTolerance(1.0);
+		
+		NumericComparison comparison = test.compare(new Double(0), 
+				new Double(1000));
+		
+		assertEquals(-1, comparison.getResult());
+		assertEquals("1000.0 (0.0%)", comparison.getSummaryText());
+		
+		comparison = test.compare( 
+				new Double(1000), new Double(0));
+		
+		assertEquals(1, comparison.getResult());
+		assertEquals("-1000.0 (-100.0%)", comparison.getSummaryText());
+		
+		comparison = test.compare( 
+				new Double(0), new Double(0));
+		
+		assertEquals(0, comparison.getResult());
+		assertEquals("", comparison.getSummaryText());
+	}
+	
 }
