@@ -66,6 +66,10 @@ public class SortedBeanMatchables<T> implements Iterable<MatchableGroup> {
 				
 				while (iterator.hasNext()) {
 					
+					if (Thread.currentThread().isInterrupted()) {
+						break;
+					}
+					
 					Matchable next = factory.createMatchable(iterator.next());
 
 					if (metaData == null) {

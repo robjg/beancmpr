@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Comparer;
+import org.oddjob.beancmpr.ComparisonStoppedException;
 import org.oddjob.beancmpr.beans.ComparerProvider;
 import org.oddjob.beancmpr.comparers.IterableComparison;
 import org.oddjob.beancmpr.comparers.MultiItemComparisonCounts;
@@ -44,7 +45,8 @@ implements Comparer<Iterable<? extends MatchableGroup>> {
 	@Override
 	public IterableComparison<MatchableGroup> compare(
 			Iterable<? extends MatchableGroup> x, 
-			Iterable<? extends MatchableGroup> y) {
+			Iterable<? extends MatchableGroup> y)
+	throws ComparisonStoppedException {
 			
 		Iterator<? extends MatchableGroup> matchablesX = x.iterator();
 		Iterator<? extends MatchableGroup> matchablesY = y.iterator();
@@ -54,6 +56,11 @@ implements Comparer<Iterable<? extends MatchableGroup>> {
 		
 		while (true) {
 
+			if (Thread.interrupted()) {
+				throw new ComparisonStoppedException(getClass().getSimpleName() + 
+						" detected inturrupt.");
+			}
+			
 			if (currentX == null && matchablesX.hasNext()) {
 				currentX = matchablesX.next();
 			}

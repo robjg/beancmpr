@@ -41,6 +41,11 @@ implements Iterable<MatchableGroup> {
 		Comparator<Iterable<?>> keyComparator = null;
 		
 		for (T thing : iterable) {
+			
+			if (Thread.currentThread().isInterrupted()) {
+				break;
+			}
+			
 			Matchable matchable = factory.createMatchable(thing);
 			
 			if (keyComparator == null) {
