@@ -116,7 +116,8 @@ public class NumericComparerTest extends TestCase {
 				new Double(1000));
 		
 		assertEquals(-1, comparison.getResult());
-		assertEquals("1000.0 (0.0%)", comparison.getSummaryText());
+		assertEquals("1000.0", comparison.getSummaryText());
+		assertEquals(true, Double.isInfinite(comparison.getPercentage()));
 		
 		comparison = test.compare( 
 				new Double(1000), new Double(0));

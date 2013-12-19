@@ -35,6 +35,8 @@ public class NumericComparer implements Comparer<Number> {
 	
 	private String percentageFormat;
 	
+	private boolean twoNaNsEqual;
+	
 	public NumericComparison compare(final Number x, final Number y) {
 
 		if (x == null || y == null) {
@@ -44,28 +46,36 @@ public class NumericComparer implements Comparer<Number> {
 		double doubleX = x.doubleValue();
 		double doubleY = y.doubleValue();
 
-		double delta = doubleY - doubleX;
-		
-		double percentage = 0.0;
-		
+		double delta;
+		double percentage;
 		int result;
 		
-		if (Math.abs(delta) <= deltaTolerance) {
+		if (doubleX == doubleY || (
+				twoNaNsEqual && Double.isNaN(doubleX) 
+				&& Double.isNaN(doubleY))) {
+			delta = 0;
+			percentage = 0.0;
 			result = 0;
 		}
 		else {
-		
-			if (delta > 0.0) {
-				result = -1;
+			delta = doubleY - doubleX;
+			
+			percentage = 0.0;
+			
+			if (Math.abs(delta) <= deltaTolerance) {
+				result = 0;
 			}
 			else {
-				result = 1;
-			}
 			
-			if (doubleX != 0.0) {
- 
-				percentage = delta /doubleX * 100; 
+				if (delta > 0.0) {
+					result = -1;
+				}
+				else {
+					result = 1;
+				}
 				
+				percentage = delta /doubleX * 100; 
+					
 				if (percentageTolerance > 0.0 && 
 						Math.abs(percentage) < percentageTolerance) {
 					result = 0;
@@ -113,6 +123,14 @@ public class NumericComparer implements Comparer<Number> {
 		this.percentageFormat = percentageFormat;
 	}
 	
+	public boolean isTwoNaNsEqual() {
+		return twoNaNsEqual;
+	}
+
+	public void setTwoNaNsEqual(boolean twoNaNsEqual) {
+		this.twoNaNsEqual = twoNaNsEqual;
+	}
+
 	public String toString() {
 		return getClass().getName() + 
 			(deltaTolerance > 0 ? ", +/-" + deltaTolerance : "" ) +
@@ -129,7 +147,7 @@ public class NumericComparer implements Comparer<Number> {
 		private final double delta;
 		private final double percentage;
 		
-		private String summaryText;
+		private volatile String summaryText;
 		
 		public NumericComparisonImpl(Number x, Number y, int result,
 				double delta, double percentage) {
@@ -174,19 +192,17 @@ public class NumericComparer implements Comparer<Number> {
 					summaryText = "";
 				}
 				else {
-					if (x == null || y == null) {
-						summaryText = "Null Value";
+					StringBuilder builder = new StringBuilder();
+					if (deltaFormat == null) {
+						builder.append(String.valueOf(delta));
 					}
 					else {
-						
-						StringBuilder builder = new StringBuilder();
-						if (deltaFormat == null) {
-							builder.append(String.valueOf(delta));
-						}
-						else {
-							builder.append(new DecimalFormat(
-									deltaFormat).format(delta));
-						}
+						builder.append(new DecimalFormat(
+								deltaFormat).format(delta));
+					}
+					
+					if (!Double.isInfinite(percentage) 
+							&& !Double.isNaN(percentage)) {
 						builder.append(" (");
 						if (percentageFormat == null) {
 							percentageFormat = "0.0";
@@ -194,9 +210,8 @@ public class NumericComparer implements Comparer<Number> {
 						builder.append(new DecimalFormat(
 								percentageFormat).format(percentage));
 						builder.append("%)");
-		
-						summaryText = builder.toString();
 					}
+					summaryText = builder.toString();
 				}
 			}			
 			return summaryText;
