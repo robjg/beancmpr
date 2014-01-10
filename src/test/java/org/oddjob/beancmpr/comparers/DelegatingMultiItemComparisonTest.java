@@ -1,10 +1,10 @@
 package org.oddjob.beancmpr.comparers;
 
-import org.oddjob.beancmpr.comparers.IterableComparison;
+import org.oddjob.beancmpr.comparers.MultiItemComparison;
 
 import junit.framework.TestCase;
 
-public class MultiItemComparisonTest extends TestCase {
+public class DelegatingMultiItemComparisonTest extends TestCase {
 
 	private class Stats implements MultiItemComparisonCounts {
 		
@@ -63,27 +63,27 @@ public class MultiItemComparisonTest extends TestCase {
 	
 	public void testIsEqual() {
 		
-		IterableComparison<Object> test1 = 
-				new IterableComparison<Object>(null, null, 
+		MultiItemComparison<Object> test1 = 
+				new DelegatingMultiItemComparison<Object>(null, null, 
 						new Stats(0, 0, 0, 3));
 		
 		assertEquals(0, test1.getResult());
 		
-		IterableComparison<Object> test2 = 
-				new IterableComparison<Object>(null, null, 
+		MultiItemComparison<Object> test2 = 
+				new DelegatingMultiItemComparison<Object>(null, null, 
 						new Stats(1, 0, 0, 3));
 		
 		assertTrue(new Integer(test2.getResult()).toString(), 
 				test2.getResult() > 0);
 		
-		IterableComparison<Object> test3 = 
-				new IterableComparison<Object>(null, null, 
+		MultiItemComparison<Object> test3 = 
+				new DelegatingMultiItemComparison<Object>(null, null, 
 						new Stats(0, 1, 0, 3));
 		
-		assertTrue(test3.getResult() < 0);
+		assertTrue("Result is "+ test3.getResult(), test3.getResult() != 0);
 		
-		IterableComparison<Object> test4 = 
-				new IterableComparison<Object>(null, null, 
+		MultiItemComparison<Object> test4 = 
+				new DelegatingMultiItemComparison<Object>(null, null, 
 						new Stats(0, 0, 1, 3));
 		
 		assertTrue(test4.getResult() != 0);		
@@ -92,8 +92,8 @@ public class MultiItemComparisonTest extends TestCase {
 	
 	public void testNumbers() {
 		
-		IterableComparison<Object> test = 
-				new IterableComparison<Object>(null, null, 
+		MultiItemComparison<Object> test = 
+				new DelegatingMultiItemComparison<Object>(null, null, 
 						new Stats(1, 2, 3, 4));
 		
 		assertEquals(1, test.getXMissingCount());

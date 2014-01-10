@@ -18,11 +18,13 @@
       className='org.oddjob.beancmpr.beans.ComparersByPropertyMap'/>
       
     <arooa:bean-def element='bean-comparer'
-      className='org.oddjob.beancmpr.beans.BeanComparerBean'/>
+      className='org.oddjob.beancmpr.beans.BeanComparerType'/>
     <arooa:bean-def element='comparable-comparer'
       className='org.oddjob.beancmpr.comparers.ComparableComparer'/>
     <arooa:bean-def element='date-comparer'
       className='org.oddjob.beancmpr.comparers.DateComparer'/>
+    <arooa:bean-def element='map-comparer'
+      className='org.oddjob.beancmpr.beans.MapComparerType'/>
     <arooa:bean-def element='equality-comparer'
       className='org.oddjob.beancmpr.comparers.EqualityComparer'/>
     <arooa:bean-def element='numeric-comparer'

@@ -1,8 +1,10 @@
 package org.oddjob.beancmpr.matchables;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.oddjob.arooa.utils.ClassUtils;
 import org.oddjob.beancmpr.MatchDefinition;
 
 /**
@@ -13,54 +15,81 @@ import org.oddjob.beancmpr.MatchDefinition;
  */
 public class SimpleMatchableMeta implements MatchableMetaData {
 
-	private static final Map<Class<?>, Class<?>> PRIMATIVES = 
-		new HashMap<Class<?>, Class<?>>();
+	private final Iterable<String> keyProperties;
 	
-	static {
-		PRIMATIVES.put(boolean.class, Boolean.class);
-		PRIMATIVES.put(byte.class, Byte.class);
-		PRIMATIVES.put(short.class, Short.class);
-		PRIMATIVES.put(char.class, Character.class);
-		PRIMATIVES.put(int.class, Integer.class);
-		PRIMATIVES.put(long.class, Long.class);
-		PRIMATIVES.put(float.class, Float.class);
-		PRIMATIVES.put(double.class, Double.class);		
-	}
+	private final Iterable<String> valueProperties;
 	
-	private final MatchDefinition definition;
+	private final Iterable<String> otherProperties;
 	
 	private final Map<String, Class<?>> types;
-	
-	public SimpleMatchableMeta(MatchDefinition definition,
-			Map<String, Class<?>> types) {
-		this.definition = definition;
+
+	public SimpleMatchableMeta(Iterable<String> keyProperties,
+		Iterable<String> valueProperties, Iterable<String> otherProperties,
+		Map<String, Class<?>> types) {
+		
+		if (keyProperties == null) {
+			this.keyProperties = Collections.emptyList();
+		}
+		else {
+			this.keyProperties = keyProperties;
+		}
+		
+		if (valueProperties == null) {
+			this.valueProperties = Collections.emptyList();
+		}
+		else {
+			this.valueProperties = valueProperties;
+		}
+		
+		if (otherProperties == null) {
+			this.otherProperties = Collections.emptyList();
+		}
+		else {
+			this.otherProperties = otherProperties;
+		}
+		
 		this.types = new HashMap<String, Class<?>>();
 		for (Map.Entry<String, Class<?>> entry: types.entrySet()) {
 			Class<?> type = entry.getValue();
 			if (type.isPrimitive()) {
-				type = PRIMATIVES.get(type);
+				type = ClassUtils.wrapperClassForPrimitive(type);
 			}
 			this.types.put(entry.getKey(), type);
 		}
 	}
 	
+	public SimpleMatchableMeta(MatchDefinition definition,
+			Map<String, Class<?>> types) {
+
+		this(definition.getKeyProperties(),
+				definition.getValueProperties(),
+				definition.getOtherProperties(),
+				types); 
+	}
+	
 	@Override
 	public Iterable<String> getKeyProperties() {
-		return definition.getKeyProperties();
+		return keyProperties;
 	}
 	
 	@Override
 	public Iterable<String> getValueProperties() {
-		return definition.getValueProperties();
+		return valueProperties;
 	}
 	
 	@Override
 	public Iterable<String> getOtherProperties() {
-		return definition.getOtherProperties();
+		return otherProperties;
 	}
 	
 	@Override
 	public Class<?> getPropertyType(String name) {
 		return types.get(name);
+	}
+	
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + ": for " + types.size() + 
+				" types";
 	}
 }

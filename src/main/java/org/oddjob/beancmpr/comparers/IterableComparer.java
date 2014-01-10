@@ -14,7 +14,7 @@ import org.oddjob.beancmpr.Comparison;
  *
  */
 public class IterableComparer<T> 
-implements HierarchicalComparer, Comparer<Iterable<? extends T>>{
+implements HierarchicalComparer, MultiItemComparer<Iterable<? extends T>>{
 
 	private ComparersByType comparers;
 	
@@ -30,8 +30,8 @@ implements HierarchicalComparer, Comparer<Iterable<? extends T>>{
 	}
 	
 	@Override
-	public IterableComparison<T> compare(Iterable<? extends T> x, 
-			Iterable<? extends T> y) {
+	public MultiItemComparison<Iterable<? extends T>> compare(
+			Iterable<? extends T> x, Iterable<? extends T> y) {
 		
 		if (x == null || y == null) {
 			throw new NullPointerException("X or Y is null.");
@@ -101,46 +101,17 @@ implements HierarchicalComparer, Comparer<Iterable<? extends T>>{
 			different -= ysMissing;
 		}
 		
-		final int finalSame = same;
-		final int finalDifferent = different;
-		final int finalXsMissing = xsMissing;
-		final int finalYsMissing = ysMissing;
-
-		return new IterableComparison<T>(x, y,
-				new MultiItemComparisonCounts() {
-					
-					@Override
-					public int getXMissingCount() {
-						return finalXsMissing;
-					}
-			
-					@Override
-					public int getYMissingCount() {
-						return finalYsMissing;
-					}
-					
-					@Override
-					public int getMatchedCount() {
-						return finalSame;
-					}
-					
-					@Override
-					public int getDifferentCount() {
-						return finalDifferent;
-					}
-					
-					@Override
-					public int getBreaksCount() {
-						return finalXsMissing + finalYsMissing +
-								finalDifferent;
-					}
-					
-					@Override
-					public int getComparedCount() {
-						return getBreaksCount() + finalSame;
-					}
-					
-				});
+		MultiItemComparisonCounts counts = 
+				new MultiItemComparisonCountsImutable(
+						xsMissing, 
+						ysMissing, 
+						different, 
+						same, 
+						xsMissing + ysMissing + different, 
+						xsMissing + ysMissing + different + same);
+		
+		return new DelegatingMultiItemComparison<Iterable<? extends T>>(
+				x, y, counts);
 	}
 	
 	@Override

@@ -2,10 +2,19 @@ package org.oddjob.beancmpr.comparers;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.oddjob.beancmpr.Comparer;
 
+/**
+ * Used by {@link ComparersByTypeList}.
+ * 
+ * @author rob
+ *
+ */
 class InternalComparersByType implements ComparersByType {
 
+	private static final Logger logger = Logger.getLogger(InternalComparersByType.class);
+	
 	private final Map<Class<?>, Comparer<?>> comparers;
 	
 	public InternalComparersByType(Map<Class<?>, Comparer<?>> comparers) {
@@ -20,7 +29,13 @@ class InternalComparersByType implements ComparersByType {
 				comparers.entrySet()) {
 			
 			if (entry.getKey().isAssignableFrom(type)) {
-				return (Comparer<T>) entry.getValue();
+				
+				Comparer<T> comparer = (Comparer<T>) entry.getValue();
+				
+				logger.trace("Providing [" + comparer + "] for type " +
+						type.getName());
+				
+				return comparer;
 			}
 		}
 		

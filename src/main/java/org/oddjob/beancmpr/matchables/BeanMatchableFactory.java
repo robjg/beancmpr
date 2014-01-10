@@ -24,6 +24,12 @@ public class BeanMatchableFactory implements MatchableFactory<Object> {
 	
 	private MatchableMetaData metaData;
 	
+	/**
+	 * Create a new instance.
+	 * 
+	 * @param definition
+	 * @param accessor
+	 */
 	public BeanMatchableFactory(MatchDefinition definition,
 			PropertyAccessor accessor) {
 		this.definition = definition;
@@ -42,7 +48,7 @@ public class BeanMatchableFactory implements MatchableFactory<Object> {
 					typesFor(bean));
 		}
 		
-		List<Comparable<?>> keys = strip(bean, definition.getKeyProperties());		
+		List<?> keys = strip(bean, definition.getKeyProperties());		
 		List<?> comparables = strip(bean, definition.getValueProperties());
 		List<?> others = strip(bean, definition.getOtherProperties());
 		
@@ -52,16 +58,34 @@ public class BeanMatchableFactory implements MatchableFactory<Object> {
 		return matchable;
 	}
 	
+	/**
+	 * Create a list of the given property values.
+	 * 
+	 * @param bean
+	 * @param names
+	 * 
+	 * @return The property values. Never null.
+	 */
 	@SuppressWarnings("unchecked")
-	<T> List<T> strip(Object bean, Iterable<String> names) {
+	private <T> List<T> strip(Object bean, Iterable<String> names) {
 		
 		List<T> values = new ArrayList<T>();
-		for (String name : names) {
-			values.add( (T)accessor.getProperty(bean, name));
+		
+		if (names != null) {
+			for (String name : names) {
+				values.add((T) accessor.getProperty(bean, name));
+			}
 		}
+		
 		return values;
 	}
 	
+	/**
+	 * Create a property to type map.
+	 * 
+	 * @param bean
+	 * @return
+	 */
 	private Map<String, Class<?>> typesFor(Object bean) {
 		
 		Map<String, Class<?>> types = new HashMap<String, Class<?>>();
@@ -70,17 +94,28 @@ public class BeanMatchableFactory implements MatchableFactory<Object> {
 		
 		BeanOverview overview = arooaClass.getBeanOverview(accessor);
 
-		for (String name : definition.getKeyProperties()) {
-			types.put(name, overview.getPropertyType(name));
-		}
-		for (String name : definition.getValueProperties()) {
-			types.put(name, overview.getPropertyType(name));
-		}
-		for (String name : definition.getOtherProperties()) {
-			types.put(name, overview.getPropertyType(name));
-		}
+		addTypes(definition.getKeyProperties(), overview, types);
+		addTypes(definition.getValueProperties(), overview, types);
+		addTypes(definition.getOtherProperties(), overview, types);
 		
 		return types;
 	}	
+	
+	/**
+	 * Used by the above.
+	 * 
+	 * @param propertyNames
+	 * @param overview
+	 * @param types
+	 */
+	private void addTypes(Iterable<String> propertyNames, 
+			BeanOverview overview, Map<String, Class<?>> types) {
+		if (propertyNames != null) {
+			for (String name : propertyNames) {
+				types.put(name, overview.getPropertyType(name));
+			}
+		}		
+	}
+		
 }
 

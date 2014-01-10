@@ -24,8 +24,8 @@ public class SimpleMatchable implements Matchable {
 	 * @param values The values to compare.
 	 * @param others Other values.
 	 */
-	public SimpleMatchable(List<? extends Comparable<?>> keys,		
-			List<?> values, List<?> others, MatchableMetaData metaData) {
+	public SimpleMatchable(List<?> keys, List<?> values, 
+			List<?> others, MatchableMetaData metaData) {
 		
 		this.keys = keys;
 		this.values = values;

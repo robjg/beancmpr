@@ -17,7 +17,7 @@ import org.oddjob.beancmpr.SimpleMatchDefinition;
 import org.oddjob.beancmpr.beans.ComparerProvider;
 import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
 import org.oddjob.beancmpr.comparers.DefaultComparersByType;
-import org.oddjob.beancmpr.comparers.IterableComparison;
+import org.oddjob.beancmpr.comparers.MultiItemComparison;
 
 public class OrderedMatchablesComparerTest extends TestCase {
 	
@@ -123,7 +123,6 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		Results results = new Results();
 		
 		OrderedMatchablesComparer test = new OrderedMatchablesComparer(
-				accessor,
 				new ComparersByPropertyOrType(
 						null, new DefaultComparersByType()),
 				results);
@@ -183,7 +182,6 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		Results results = new Results();
 		
 		OrderedMatchablesComparer test = new OrderedMatchablesComparer(
-				accessor, 
 				new ComparersByPropertyOrType(
 						null, new DefaultComparersByType()),
 				results);
@@ -238,7 +236,6 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		Results results = new Results();
 		
 		OrderedMatchablesComparer test = new OrderedMatchablesComparer(
-				accessor, 
 				new ComparersByPropertyOrType(
 						null, new DefaultComparersByType()),
 				results);
@@ -301,12 +298,11 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		Results results = new Results();
 		
 		OrderedMatchablesComparer test = new OrderedMatchablesComparer(
-				accessor, 
 				new ComparersByPropertyOrType(
 						null, new DefaultComparersByType()),
 				results);
 		
-		IterableComparison<MatchableGroup> multiItemComparison =
+		MultiItemComparison<Iterable<? extends MatchableGroup>> multiItemComparison =
 				test.compare(xs, ys);
 		
 		assertEquals(1, multiItemComparison.getDifferentCount());
@@ -396,13 +392,13 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		Results results = new Results();
 		
 		OrderedMatchablesComparer test = new OrderedMatchablesComparer(
-				accessor, 
 				new ComparersByPropertyOrType(),
 				results);
 
-		IterableComparison<MatchableGroup> comparison = test.compare(xs, ys);
+		MultiItemComparison<Iterable<? extends MatchableGroup>> comparison = 
+				test.compare(xs, ys);
 		
-		assertEquals(-1, comparison.getResult());
+		assertEquals(2, comparison.getResult());
 		
 		assertEquals(1, comparison.getMatchedCount());
 		assertEquals(1, comparison.getXMissingCount());

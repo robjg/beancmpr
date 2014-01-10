@@ -23,10 +23,15 @@ public class MatchableComparerFactory {
 	 *  Create an instance.
 	 *  
 	 * @param comparerProvider Used to provide {@link Comparer}s for 
-	 * the fields.
+	 * the fields. Must not be null.
 	 */
 	public MatchableComparerFactory(
 			ComparerProvider comparerProvider) {
+		
+		if (comparerProvider == null) {
+			throw new NullPointerException("ComparerProvider must be provded.");
+		}
+		
 		this.comparerProvider = comparerProvider;
 	}
 	

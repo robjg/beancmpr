@@ -15,7 +15,8 @@ public class IterableComparerTest extends TestCase {
 		
 		Iterable<String> y = Arrays.asList("b", "c", "a");
 		
-		IterableComparison<String> comparison = test.compare(x, y);
+		MultiItemComparison<Iterable<? extends String>> comparison = 
+				test.compare(x, y);
 		
 		assertEquals(0, comparison.getResult());
 		assertEquals(3, comparison.getMatchedCount());
@@ -33,7 +34,8 @@ public class IterableComparerTest extends TestCase {
 		
 		Iterable<String> y = Arrays.asList("b", "c", "d");
 		
-		IterableComparison<String> comparison = test.compare(x, y);
+		MultiItemComparison<Iterable<? extends String>> comparison = 
+				test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
 		assertEquals(2, comparison.getMatchedCount());
@@ -51,7 +53,8 @@ public class IterableComparerTest extends TestCase {
 		
 		Iterable<String> y = Arrays.asList("b", "c", "a");
 		
-		IterableComparison<String> comparison = test.compare(x, y);
+		MultiItemComparison<Iterable<? extends String>> comparison = 
+				test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
 		assertEquals(2, comparison.getMatchedCount());
@@ -69,7 +72,8 @@ public class IterableComparerTest extends TestCase {
 		
 		Iterable<String> y = Arrays.asList("b", "c");
 		
-		IterableComparison<String> comparison = test.compare(x, y);
+		MultiItemComparison<Iterable<? extends String>> comparison = 
+				test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
 		assertEquals(2, comparison.getMatchedCount());
@@ -90,7 +94,8 @@ public class IterableComparerTest extends TestCase {
 		
 		Iterable<Integer> y = Arrays.asList(1 , 9, 5);
 		
-		IterableComparison<Number> comparison = test.compare(x, y);
+		MultiItemComparison<Iterable<? extends Number>> comparison = 
+				test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
 		assertEquals(2, comparison.getMatchedCount());

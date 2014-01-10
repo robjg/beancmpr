@@ -164,6 +164,8 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 				getKeyProperties(), getValueProperties(), 
 				getOtherProperties());
 		
+		logger.debug("Using definition: " + definition + ".");
+		
 		ComparerProvider comparerProvider =
 			new ComparersByPropertyOrTypeFactory(
 					comparersByProperty, comparersByType).createWith(null);
@@ -186,13 +188,10 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 		}
 		
 		OrderedMatchablesComparer rec = new OrderedMatchablesComparer(
-				accessor,
 				comparerProvider,
 				results);
 		
-		this.counts = rec.getMultiItemComparisonStats();
-		
-		rec.compare(
+		this.counts = rec.compare(
 				getIterableMatchables(inX, 
 					new BeanMatchableFactory(definition, accessor),
 					comparerProvider), 

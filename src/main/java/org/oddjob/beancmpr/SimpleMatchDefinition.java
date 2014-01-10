@@ -1,7 +1,8 @@
 package org.oddjob.beancmpr;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+
+import org.oddjob.arooa.utils.Iterables;
 
 /**
  * Simple definition of an {@link MatchDefinition}.
@@ -31,7 +32,7 @@ public class SimpleMatchDefinition implements MatchDefinition {
 			String[] values, String[] others) {
 		
 		if (keys == null) {
-			this.keyProperties = new ArrayList<String>();
+			this.keyProperties = null;
 		}
 		else {
 			this.keyProperties = Arrays.asList(keys);
@@ -39,14 +40,14 @@ public class SimpleMatchDefinition implements MatchDefinition {
 		}
 		
 		if (values == null) {
-			this.valueProperties = new ArrayList<String>();
+			this.valueProperties = null;
 		}
 		else {
 			this.valueProperties = Arrays.asList(values);
 		}
 	
 		if (others == null) {
-			this.otherProperties = new ArrayList<String>();
+			this.otherProperties = null;
 		}
 		else {
 			this.otherProperties = Arrays.asList(others);
@@ -66,5 +67,13 @@ public class SimpleMatchDefinition implements MatchDefinition {
 	@Override
 	public Iterable<String> getOtherProperties() {
 		return otherProperties;
+	}
+	
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + ": keys " +
+				Iterables.toString(keyProperties) + ", values " +
+				Iterables.toString(valueProperties) + ", others " + 
+				Iterables.toString(otherProperties);
 	}
 }

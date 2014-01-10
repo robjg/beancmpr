@@ -16,7 +16,7 @@ import org.oddjob.beancmpr.comparers.ComparersByType;
  * @author rob
  *
  */
-public class BeanComparerBean implements ArooaSessionAware, ValueFactory<Comparer<Object>> {
+public class BeanComparerType implements ArooaSessionAware, ValueFactory<Comparer<Object>> {
 	
 	private String[] matchProperties;
 	

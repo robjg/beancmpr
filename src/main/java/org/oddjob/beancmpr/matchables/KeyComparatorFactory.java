@@ -55,9 +55,16 @@ public class KeyComparatorFactory {
 					xMetaData.getPropertyType(propertyName),
 					yMetaData.getPropertyType(propertyName));
 			
-			compares.add(createWithinferdType(	
-				comparerProvider.comparerFor(propertyName, 
-						propertyType), propertyName));
+			Comparer<?> comparer = comparerProvider.comparerFor(propertyName, 
+					propertyType);
+					
+			if (comparer == null) {
+				throw new IllegalStateException("No comparer for [" + 
+						propertyName + "] of type [" + 
+						propertyType.getName() + "]");
+			}
+			
+			compares.add(createWithinferdType(comparer, propertyName));
 		}		
 		
 		return new Comparator<Iterable<?>>() {

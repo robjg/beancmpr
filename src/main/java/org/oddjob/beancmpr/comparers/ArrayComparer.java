@@ -2,9 +2,6 @@ package org.oddjob.beancmpr.comparers;
 
 import java.util.Arrays;
 
-import org.oddjob.beancmpr.Comparer;
-import org.oddjob.beancmpr.Comparison;
-
 /**
  * Compares to Arrays of Objects.
  * 
@@ -12,7 +9,7 @@ import org.oddjob.beancmpr.Comparison;
  *
  */
 public class ArrayComparer 
-implements HierarchicalComparer, Comparer<Object[]>{
+implements HierarchicalComparer, MultiItemComparer<Object[]>{
 
 	private ComparersByType comparers;
 	
@@ -29,7 +26,7 @@ implements HierarchicalComparer, Comparer<Object[]>{
 	}
 	
 	@Override
-	public Comparison<Object[]> compare(final Object[] x, final Object[] y) {
+	public MultiItemComparison<Object[]> compare(final Object[] x, final Object[] y) {
 		
 		if (x == null || y == null) {
 			throw new NullPointerException("X or Y is null.");
@@ -40,31 +37,10 @@ implements HierarchicalComparer, Comparer<Object[]>{
 		iterableComparer.setComparersByType(comparers);
 		iterableComparer.injectComparers(parentComparers);
 		
-		final IterableComparison<Object> iterableComparison = 
+		final MultiItemComparison<Iterable<? extends Object>> iterableComparison = 
 				iterableComparer.compare(Arrays.asList(x), Arrays.asList(y));
 		
-		return new Comparison<Object[]>() {
-
-			@Override
-			public Object[] getX() {
-				return x;
-			}
-
-			@Override
-			public Object[] getY() {
-				return y;
-			}
-
-			@Override
-			public int getResult() {
-				return iterableComparison.getResult();
-			}
-
-			@Override
-			public String getSummaryText() {
-				return iterableComparison.getSummaryText();
-			}
-		};
+		return new DelegatingMultiItemComparison<Object[]>(x, y, iterableComparison);
 	}
 	
 	@Override

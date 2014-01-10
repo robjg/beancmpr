@@ -22,10 +22,13 @@ public class InferredTypeCompare<T> {
 	/**
 	 * Create a new instance.
 	 * 
-	 * @param comparer A comparer.
+	 * @param comparer A comparer. Must not be null.
 	 * @param propertyName The property name. Used to look up a Comparer.
 	 */
 	public InferredTypeCompare(Comparer<T> comparer, String propertyName) {
+		if (comparer == null) {
+			throw new NullPointerException("No Comparer");
+		}
 		this.comparer = comparer;
 		this.propertyName = propertyName;
 	}

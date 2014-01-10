@@ -24,6 +24,11 @@ implements BeanCmprResultsHandler, MultiItemComparisonCounts {
 	
 	private final AtomicInteger matchedCount = new AtomicInteger();
 		
+	/**
+	 * Create a new instance.
+	 * 
+	 * @param delegate The handler this wraps. May be null.
+	 */
 	public ComparisonGatheringProcessor(BeanCmprResultsHandler delegate) {
 		this.delegate = delegate;
 	}

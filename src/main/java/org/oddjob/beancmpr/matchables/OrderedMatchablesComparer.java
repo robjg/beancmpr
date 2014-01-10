@@ -3,12 +3,12 @@ package org.oddjob.beancmpr.matchables;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.ComparisonStoppedException;
 import org.oddjob.beancmpr.beans.ComparerProvider;
-import org.oddjob.beancmpr.comparers.IterableComparison;
-import org.oddjob.beancmpr.comparers.MultiItemComparisonCounts;
+import org.oddjob.beancmpr.comparers.DelegatingMultiItemComparison;
+import org.oddjob.beancmpr.comparers.MultiItemComparer;
+import org.oddjob.beancmpr.comparers.MultiItemComparison;
 
 /**
  * Compares two {@code Iterable}s of {@link MatchableGroup}s.
@@ -18,7 +18,7 @@ import org.oddjob.beancmpr.comparers.MultiItemComparisonCounts;
  *
  */
 public class OrderedMatchablesComparer 
-implements Comparer<Iterable<? extends MatchableGroup>> {
+implements MultiItemComparer<Iterable<? extends MatchableGroup>> {
 	
 	private final ComparisonGatheringProcessor matchProcessor;
 	
@@ -28,22 +28,28 @@ implements Comparer<Iterable<? extends MatchableGroup>> {
 	
 	private Comparator<Iterable<?>> keyComparator;
 	
+	/**
+	 * Create a new instance.
+	 * 
+	 * @param comparerProvider To provide {@link Comparer}s. Must not be
+	 * null.
+	 * @param resultsHandler To process results. May be null.
+	 */
 	public OrderedMatchablesComparer(
-			PropertyAccessor accessor,
 			ComparerProvider comparerProvider,
 			BeanCmprResultsHandler resultsHandler) {
+		
+		if (comparerProvider == null) {
+			throw new NullPointerException("ComparerProvider must be provded.");
+		}
 		
 		this.matchProcessor = new ComparisonGatheringProcessor(resultsHandler);
 		
 		this.comparerProvider = comparerProvider;
 	}
 	
-	public MultiItemComparisonCounts getMultiItemComparisonStats() {
-		return matchProcessor;
-	}
-	
 	@Override
-	public IterableComparison<MatchableGroup> compare(
+	public MultiItemComparison<Iterable<? extends MatchableGroup>> compare(
 			Iterable<? extends MatchableGroup> x, 
 			Iterable<? extends MatchableGroup> y)
 	throws ComparisonStoppedException {
@@ -117,7 +123,8 @@ implements Comparer<Iterable<? extends MatchableGroup>> {
 			currentY = null;
 		}
 				
-		return new IterableComparison<MatchableGroup>(x, y,
+		return new DelegatingMultiItemComparison<Iterable<? extends MatchableGroup>>(
+				x, y,
 				matchProcessor);
 	}
 	

@@ -27,16 +27,20 @@ import org.oddjob.beancmpr.Comparer;
  */
 public class NumericComparer implements Comparer<Number> {
 
-	private double deltaTolerance;
+	private volatile double deltaTolerance;
 	
-	private String deltaFormat;
+	private volatile String deltaFormat;
 	
-	private double percentageTolerance;
+	private volatile double percentageTolerance;
 	
-	private String percentageFormat;
+	private volatile String percentageFormat;
 	
-	private boolean twoNaNsEqual;
+	private volatile boolean twoNaNsEqual;
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.oddjob.beancmpr.Comparer#compare(java.lang.Object, java.lang.Object)
+	 */
 	public NumericComparison compare(final Number x, final Number y) {
 
 		if (x == null || y == null) {
@@ -137,6 +141,9 @@ public class NumericComparer implements Comparer<Number> {
 			(percentageTolerance > 0 ? ", " + percentageTolerance + "%" : ""); 
 	}
 
+	/**
+	 * Implementation of the {@link NumericComparison}.
+	 */
 	class NumericComparisonImpl implements NumericComparison {
 		
 		private final Number x;

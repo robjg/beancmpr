@@ -1,6 +1,7 @@
 package org.oddjob.beancmpr.matchables;
 
 
+
 /**
  * Handles the result of comparing {@link Matchable}s.
  * 
