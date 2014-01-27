@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.Logger;
 import org.oddjob.FailedToStopException;
 import org.oddjob.Iconic;
 import org.oddjob.Oddjob;
@@ -20,6 +21,16 @@ import org.oddjob.tools.StateSteps;
 
 public class BeanCompareStopTest extends TestCase {
 
+	private static final Logger logger = Logger.getLogger(BeanCompareStopTest.class);
+	
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		
+		logger.info("---------------------------  " + getName() + 
+				"  ----------------------------");
+	};
+	
 	public static class Fruit {
 		
 		public String getType() {

@@ -2,16 +2,27 @@ package org.oddjob.beancmpr.beans;
 
 import java.io.File;
 
+import junit.framework.TestCase;
+
+import org.apache.log4j.Logger;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
 import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.arooa.reflect.ArooaPropertyException;
 import org.oddjob.state.ParentState;
 
-import junit.framework.TestCase;
-
 public class BeanComparerBeanTest extends TestCase {
 
+	private static final Logger logger = Logger.getLogger(BeanComparerBeanTest.class);
+	
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		
+		logger.info("---------------------------  " + getName() + 
+				"  ----------------------------");
+	};
+	
 	public static class Fruit {
 		
 		private String type;

@@ -5,6 +5,7 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
@@ -15,6 +16,16 @@ import org.oddjob.state.ParentState;
 
 public class BeanCompareComparersTest extends TestCase {
 
+	private static final Logger logger = Logger.getLogger(BeanCompareComparersTest.class);
+	
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		
+		logger.info("---------------------------  " + getName() + 
+				"  ----------------------------");
+	};
+	
 	SharedTestData data = new SharedTestData();
 	
 	public void testBeanComparersExample() throws ArooaParseException, ArooaPropertyException, ArooaConversionException {

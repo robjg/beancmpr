@@ -14,12 +14,19 @@ import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.arooa.types.ValueFactory;
 import org.oddjob.state.ParentState;
 import org.oddjob.tools.ConsoleCapture;
-import org.oddjob.tools.OddjobTestHelper;
 
 public class MapComparerTypeTest extends TestCase {
 
 	private static final Logger logger = Logger.getLogger(
 			MapComparerTypeTest.class);
+	
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		
+		logger.info("---------------------------  " + getName() + 
+				"  ----------------------------");
+	};
 	
 	public static class MapBean1 {
 		

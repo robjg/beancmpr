@@ -4,6 +4,9 @@ import java.io.File;
 import java.net.URL;
 import java.text.ParseException;
 
+import junit.framework.TestCase;
+
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.oddjob.Oddjob;
@@ -13,8 +16,18 @@ import org.oddjob.arooa.reflect.ArooaPropertyException;
 import org.oddjob.arooa.xml.XMLConfiguration;
 import org.oddjob.state.ParentState;
 
-public class OddjobExamplesTest {
+public class OddjobExamplesTest extends TestCase {
 
+	private static final Logger logger = Logger.getLogger(OddjobExamplesTest.class);
+	
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		
+		logger.info("---------------------------  " + getName() + 
+				"  ----------------------------");
+	};
+	
 	@Test
 	public void testBeanBusExample() 
 	throws ArooaPropertyException, ArooaConversionException, ParseException {
@@ -44,15 +57,15 @@ public class OddjobExamplesTest {
 			"matchResultType  ID  xTYPE   yTYPE   TYPEComparison  xQUANTITY  yQUANTITY  QUANTITYComparison  xCOLOUR  yCOLOUR  COLOURComparison" + EOL +
 			"---------------  --  ------  ------  --------------  ---------  ---------  ------------------  -------  -------  ----------------" + EOL +
 			"NOT_EQUAL        1   Apple   Apple                   4          4                              green    red      green<>red" + EOL +
-			"NOT_EQUAL        2   Banana  Banana                  3          4          1.0 (33.3%)         yellow   yellow   " + EOL +
-			"X_MISSING        3           Orange                             2                                       orange   " + EOL +
-			"Y_MISSING        5   Orange                          2                                         orange            " + EOL;
+			"NOT_EQUAL        2   Banana  Banana                  3          4          3<>4                yellow   yellow   " + EOL +
+			"x_MISSING        3           Orange                             2                                       orange   " + EOL +
+			"y_MISSING        5   Orange                          2                                         orange            " + EOL;
 
 		public static String expectedKeysSame =
 			"matchResultType  TYPE    xQUANTITY  yQUANTITY  QUANTITYComparison  xCOLOUR  yCOLOUR" + EOL +
 			"---------------  ------  ---------  ---------  ------------------  -------  -------" + EOL +
 			"EQUAL            Apple   4          4                              green    red" + EOL +
-			"NOT_EQUAL        Banana  3          4          1.0 (33.3%)         yellow   yellow" + EOL +
+			"NOT_EQUAL        Banana  3          4          3<>4                yellow   yellow" + EOL +
 			"EQUAL            Orange  2          2                              orange   orange" + EOL;
 
 	public void testDatabaseExample() 
