@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
 import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
 
 public class BeanComparerTest extends TestCase {
@@ -38,8 +39,7 @@ public class BeanComparerTest extends TestCase {
 		BeanComparer comparer = new BeanComparer(
 				new String[] { "type", "quantity" },
 				new BeanUtilsPropertyAccessor(),
-				new ComparersByPropertyOrTypeFactory());
-		comparer.injectComparers(null);
+				new ComparersByNameOrTypeFactory().createWith(null));
 		
 		Fruit beanX = new Fruit();
 		beanX.setType("apple");
@@ -68,8 +68,7 @@ public class BeanComparerTest extends TestCase {
 		BeanComparer comparer = new BeanComparer(
 				new String[] { "type", "quantity" },
 				new BeanUtilsPropertyAccessor(),
-				new ComparersByPropertyOrTypeFactory());
-		comparer.injectComparers(null);
+				new ComparersByNameOrTypeFactory().createWith(null));
 		
 		Fruit beanX = new Fruit();
 		beanX.setQuantity(2);
@@ -96,8 +95,7 @@ public class BeanComparerTest extends TestCase {
 		BeanComparer comparer = new BeanComparer(
 				new String[] { "type", "quantity" },
 				new BeanUtilsPropertyAccessor(),
-				new ComparersByPropertyOrTypeFactory());
-		comparer.injectComparers(null);
+				new ComparersByNameOrTypeFactory().createWith(null));
 		
 		Fruit beanX = new Fruit();
 		beanX.setType("apple");

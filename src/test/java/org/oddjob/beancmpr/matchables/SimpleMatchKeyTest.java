@@ -8,7 +8,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
+import org.oddjob.beancmpr.composite.ComparersByNameOrType;
 
 public class SimpleMatchKeyTest extends TestCase {
 
@@ -49,7 +49,7 @@ public class SimpleMatchKeyTest extends TestCase {
 				add("fruit", String.class);
 
 		Comparator<Iterable<?>> comparator = new KeyComparatorFactory(
-				new ComparersByPropertyOrType()).createComparerFor(
+				new ComparersByNameOrType()).createComparerFor(
 						metaData, metaData);
 		
 		SimpleMatchKey key1 = new SimpleMatchKey(
@@ -70,7 +70,7 @@ public class SimpleMatchKeyTest extends TestCase {
 				add("fruit2", String.class);
 
 		Comparator<Iterable<?>> comparator = new KeyComparatorFactory(
-				new ComparersByPropertyOrType()).createComparerFor(
+				new ComparersByNameOrType()).createComparerFor(
 						metaData, metaData);		
 		
 		SimpleMatchKey key1 = new SimpleMatchKey(
@@ -92,7 +92,7 @@ public class SimpleMatchKeyTest extends TestCase {
 				add("fruit3", String.class);
 		
 		Comparator<Iterable<?>> comparator = new KeyComparatorFactory(
-				new ComparersByPropertyOrType()).createComparerFor(
+				new ComparersByNameOrType()).createComparerFor(
 						metaData, metaData);
 		
 		SimpleMatchKey key1 = new SimpleMatchKey(Arrays.asList(
@@ -115,7 +115,7 @@ public class SimpleMatchKeyTest extends TestCase {
 				add("fruit3", String.class);
 		
 		Comparator<Iterable<?>> comparator = new KeyComparatorFactory(
-				new ComparersByPropertyOrType()).createComparerFor(
+				new ComparersByNameOrType()).createComparerFor(
 						metaData, metaData);		
 		
 		SimpleMatchKey key1 = new SimpleMatchKey(
@@ -142,7 +142,7 @@ public class SimpleMatchKeyTest extends TestCase {
 				add("price", double.class);
 		
 		Comparator<Iterable<?>> comparator = new KeyComparatorFactory(
-				new ComparersByPropertyOrType()).createComparerFor(
+				new ComparersByNameOrType()).createComparerFor(
 						metaData1, metaData2);		
 		
 		@SuppressWarnings("unchecked")

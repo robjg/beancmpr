@@ -1,21 +1,18 @@
-package org.oddjob.beancmpr.beans;
+package org.oddjob.beancmpr.composite;
 
 import org.oddjob.beancmpr.Comparer;
-import org.oddjob.beancmpr.comparers.ComparersByType;
-import org.oddjob.beancmpr.comparers.CompositeComparersByType;
-import org.oddjob.beancmpr.comparers.DefaultComparersByType;
 
 /**
- * Collects together {@link ComparersByProperty} and {@link ComparersByType}
+ * Collects together {@link ComparersByName} and {@link ComparersByType}
  * <p>
- * Used by {@link ComparersByPropertyOrTypeFactory}.
+ * Used by {@link ComparersByNameOrTypeFactory}.
  * 
  * @author rob
  *
  */
-public class ComparersByPropertyOrType implements ComparerProvider {
+public class ComparersByNameOrType implements BeanPropertyComparerProvider {
 	
-	private final ComparersByProperty comparersByProperty;
+	private final ComparersByName comparersByName;
 	
 	private final ComparersByType comparersByType;
 	
@@ -27,30 +24,30 @@ public class ComparersByPropertyOrType implements ComparerProvider {
 	 * {@link DefaultComparersByType} otherwise creates a
 	 * {@link CompositeComparersByType}
 	 */
-	public ComparersByPropertyOrType(
-			ComparersByProperty comparersByProperty,
+	public ComparersByNameOrType(
+			ComparersByName comparersByProperty,
 			ComparersByType comparersByType) {
 		
 		this.comparersByType = comparersByType; 
-		this.comparersByProperty = comparersByProperty;
+		this.comparersByName = comparersByProperty;
 	}
 	
 	/**
 	 * Create a new instance with default values. This is only used by 
 	 * tests.
 	 */
-	public ComparersByPropertyOrType() {
+	public ComparersByNameOrType() {
 		this(null, new DefaultComparersByType());
-	}
+	}	
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Comparer<T> comparerFor(String property, Class<T> type) {
 
 		Comparer<T> comparer = null;
-		if (comparersByProperty != null) {
+		if (comparersByName != null) {
 			comparer = 
-				(Comparer<T>) comparersByProperty.getComparerForProperty(
+				(Comparer<T>) comparersByName.getComparerForProperty(
 						property);
 		}
 		

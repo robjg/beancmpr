@@ -1,11 +1,13 @@
-package org.oddjob.beancmpr.comparers;
+package org.oddjob.beancmpr.composite;
 
 import junit.framework.TestCase;
 
 import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.comparers.ComparersByTypeList;
+import org.oddjob.beancmpr.comparers.NumericComparer;
+import org.oddjob.beancmpr.composite.ComparersByType;
+import org.oddjob.beancmpr.composite.ComparersByTypeList;
 
 public class ComparersByTypeListTest extends TestCase {
 
@@ -33,9 +35,11 @@ public class ComparersByTypeListTest extends TestCase {
 		
 		MyComparer comparer = new MyComparer();
 		
-		test.setSpecialisations(MyType.class.getName(), comparer);
+		test.setSpecialisations(MyType.class.getName(), 
+				new ComparerFactoryAdaptor<Comparer<?>>(comparer));
 		
-		ComparersByType comparersByType = test.toValue();
+		ComparersByType comparersByType = 
+				test.createComparersByTypeWith(null);
 		
 		assertSame(null, comparersByType.comparerFor(Object.class));
 		assertSame(comparer, comparersByType.comparerFor(MyType.class));
@@ -46,9 +50,12 @@ public class ComparersByTypeListTest extends TestCase {
 		
 		ComparersByTypeList test = new ComparersByTypeList();
 		
-		test.setSpecialisations(Integer.class.getName(), new NumericComparer());
+		test.setSpecialisations(Integer.class.getName(), 
+				new ComparerFactoryAdaptor<Comparer<?>>(
+						new NumericComparer()));
 		
-		ComparersByType comparersByType = test.toValue();
+		ComparersByType comparersByType = 
+				test.createComparersByTypeWith(null);
 		
 		Comparer<Integer> comparer = comparersByType.comparerFor(Integer.class);
 		
@@ -59,12 +66,13 @@ public class ComparersByTypeListTest extends TestCase {
 		
 		ComparersByTypeList test = new ComparersByTypeList();
 		
-		test.setSpecialisations(Object.class.getName(), new MyComparer());
+		test.setSpecialisations(Object.class.getName(),
+				new ComparerFactoryAdaptor<Comparer<?>>(new MyComparer()));
 		
 		try {
-			test.toValue();
+			test.createComparersByTypeWith(null);
 			fail("Should fail.");
-		} catch (ArooaConversionException e) {
+		} catch (IllegalArgumentException e) {
 			// expected
 		}
 		

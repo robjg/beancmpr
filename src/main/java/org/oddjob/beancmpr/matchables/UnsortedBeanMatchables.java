@@ -9,7 +9,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.oddjob.arooa.utils.Iterables;
-import org.oddjob.beancmpr.beans.ComparerProvider;
+import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 
 /**
  * Takes an unsorted {@code Iterable} of beans and provides an 
@@ -36,7 +36,7 @@ implements Iterable<MatchableGroup> {
 	 */
 	public UnsortedBeanMatchables(Iterable<? extends T> iterable, 
 			MatchableFactory<T> factory,
-			ComparerProvider comparerProvider) {
+			BeanPropertyComparerProvider comparerProvider) {
 		
 		Comparator<Iterable<?>> keyComparator = null;
 		

@@ -14,10 +14,10 @@ import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
-import org.oddjob.beancmpr.beans.ComparerProvider;
-import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
-import org.oddjob.beancmpr.comparers.DefaultComparersByType;
-import org.oddjob.beancmpr.comparers.MultiItemComparison;
+import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
+import org.oddjob.beancmpr.composite.ComparersByNameOrType;
+import org.oddjob.beancmpr.composite.DefaultComparersByType;
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
 public class OrderedMatchablesComparerTest extends TestCase {
 	
@@ -102,7 +102,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		BeanMatchableFactory factory = new BeanMatchableFactory(
 				definition, accessor);
 		
-		ComparerProvider comparerProvider = new ComparersByPropertyOrType();
+		BeanPropertyComparerProvider comparerProvider = new ComparersByNameOrType();
 		
 		List<Fruit> fruitX = Arrays.asList(
 				new Fruit("orange", 2),
@@ -123,7 +123,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		Results results = new Results();
 		
 		OrderedMatchablesComparer test = new OrderedMatchablesComparer(
-				new ComparersByPropertyOrType(
+				new ComparersByNameOrType(
 						null, new DefaultComparersByType()),
 				results);
 		
@@ -159,7 +159,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		BeanMatchableFactory factory = new BeanMatchableFactory(
 				definition, accessor);
 		
-		ComparerProvider comparerProvider = new ComparersByPropertyOrType();
+		BeanPropertyComparerProvider comparerProvider = new ComparersByNameOrType();
 
 		List<Fruit> fruitX = Arrays.asList(
 				new Fruit("orange", 3),
@@ -182,7 +182,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		Results results = new Results();
 		
 		OrderedMatchablesComparer test = new OrderedMatchablesComparer(
-				new ComparersByPropertyOrType(
+				new ComparersByNameOrType(
 						null, new DefaultComparersByType()),
 				results);
 		
@@ -212,7 +212,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		BeanMatchableFactory factory = new BeanMatchableFactory(
 				definition, accessor);		
 
-		ComparerProvider comparerProvider = new ComparersByPropertyOrType();
+		BeanPropertyComparerProvider comparerProvider = new ComparersByNameOrType();
 		
 		List<Fruit> fruitX = Arrays.asList(		
 				new Fruit("apple", 4),
@@ -236,7 +236,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		Results results = new Results();
 		
 		OrderedMatchablesComparer test = new OrderedMatchablesComparer(
-				new ComparersByPropertyOrType(
+				new ComparersByNameOrType(
 						null, new DefaultComparersByType()),
 				results);
 		
@@ -270,7 +270,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		BeanMatchableFactory factory = new BeanMatchableFactory(
 				definition, accessor);		
 
-		ComparerProvider comparerProvider = new ComparersByPropertyOrType();
+		BeanPropertyComparerProvider comparerProvider = new ComparersByNameOrType();
 		
 		List<Fruit> fruitX = Arrays.asList(		
 				new Fruit("apple", 5),
@@ -298,7 +298,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		Results results = new Results();
 		
 		OrderedMatchablesComparer test = new OrderedMatchablesComparer(
-				new ComparersByPropertyOrType(
+				new ComparersByNameOrType(
 						null, new DefaultComparersByType()),
 				results);
 		
@@ -370,7 +370,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		BeanMatchableFactory factory = new BeanMatchableFactory(
 				definition, accessor);		
 
-		ComparerProvider comparerProvider = new ComparersByPropertyOrType();
+		BeanPropertyComparerProvider comparerProvider = new ComparersByNameOrType();
 		
 		List<? extends Fruit> fruitX = Arrays.asList(		
 				new FruitByBigDecimal(new BigDecimal(1), "apple", 4),
@@ -392,7 +392,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		Results results = new Results();
 		
 		OrderedMatchablesComparer test = new OrderedMatchablesComparer(
-				new ComparersByPropertyOrType(),
+				new ComparersByNameOrType(),
 				results);
 
 		MultiItemComparison<Iterable<? extends MatchableGroup>> comparison = 

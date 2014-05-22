@@ -4,12 +4,16 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
+import org.oddjob.beancmpr.beans.IterableComparer;
+import org.oddjob.beancmpr.composite.DefaultComparersByType;
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
+
 public class IterableComparerTest extends TestCase {
 
 	public void testCompareEqual() {
 		
 		IterableComparer<String> test = 
-				new IterableComparer<String>();
+				new IterableComparer<String>(new DefaultComparersByType());
 		
 		Iterable<String> x = Arrays.asList("a", "b", "c");
 		
@@ -28,7 +32,7 @@ public class IterableComparerTest extends TestCase {
 	public void testCompareOneDifferentEqual() {
 		
 		IterableComparer<String> test = 
-				new IterableComparer<String>();
+				new IterableComparer<String>(new DefaultComparersByType());
 		
 		Iterable<String> x = Arrays.asList("a", "b", "c");
 		
@@ -47,7 +51,7 @@ public class IterableComparerTest extends TestCase {
 	public void testCompareOneXMissing() {
 		
 		IterableComparer<String> test = 
-				new IterableComparer<String>();
+				new IterableComparer<String>(new DefaultComparersByType());
 		
 		Iterable<String> x = Arrays.asList("b", "c");
 		
@@ -66,7 +70,7 @@ public class IterableComparerTest extends TestCase {
 	public void testCompareOneYMissing() {
 		
 		IterableComparer<String> test = 
-				new IterableComparer<String>();
+				new IterableComparer<String>(new DefaultComparersByType());
 		
 		Iterable<String> x = Arrays.asList("a", "b", "c");
 		
@@ -88,7 +92,7 @@ public class IterableComparerTest extends TestCase {
 	public void testGenericSanityCheck() {
 		
 		IterableComparer<Number> test = 
-				new IterableComparer<Number>();
+				new IterableComparer<Number>(new DefaultComparersByType());
 		
 		Iterable<Integer> x = Arrays.asList(4, 1 , 9);
 		

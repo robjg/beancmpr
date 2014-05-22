@@ -3,8 +3,7 @@ package org.oddjob.beancmpr.beans;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
-import org.oddjob.beancmpr.comparers.ComparersByType;
-import org.oddjob.beancmpr.comparers.HierarchicalComparer;
+import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableComparer;
@@ -17,15 +16,13 @@ import org.oddjob.beancmpr.matchables.MatchableFactory;
  * @author rob
  *
  */
-public class BeanComparer implements Comparer<Object>, HierarchicalComparer {
+public class BeanComparer implements Comparer<Object> {
 
 	private final PropertyAccessor accessor;
 	
 	private final String[] valueProperties;
 	
-	private final ComparerProviderFactory comparerProviderFactory;
-	
-	private ComparerProvider comparerProvider;
+	private final BeanPropertyComparerProvider comparerProvider;
 	
 	private MatchableFactory<Object> matchableFactory;
 	
@@ -40,16 +37,10 @@ public class BeanComparer implements Comparer<Object>, HierarchicalComparer {
 	 */
 	public BeanComparer(String[] valueProperties,
 			PropertyAccessor accessor,
-			ComparerProviderFactory comparerProviderFactory) {
+			BeanPropertyComparerProvider comparerProvider) {
 		this.valueProperties = valueProperties;
 		this.accessor = accessor;
-		this.comparerProviderFactory = comparerProviderFactory;
-	}
-	
-	@Override
-	public void injectComparers(ComparersByType parentComparers) {
-		comparerProvider = comparerProviderFactory.createWith(
-				parentComparers);
+		this.comparerProvider = comparerProvider;
 	}
 	
 	@Override

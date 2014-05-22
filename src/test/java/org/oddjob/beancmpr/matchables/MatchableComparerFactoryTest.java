@@ -11,8 +11,8 @@ import junit.framework.TestCase;
 
 import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
 import org.oddjob.beancmpr.comparers.NumericComparison;
+import org.oddjob.beancmpr.composite.ComparersByNameOrType;
 
 public class MatchableComparerFactoryTest extends TestCase {
 
@@ -72,7 +72,7 @@ public class MatchableComparerFactoryTest extends TestCase {
 	public void testCompareEqual() {
 		
 		MatchableComparerFactory test = new MatchableComparerFactory(
-				new ComparersByPropertyOrType());
+				new ComparersByNameOrType());
 				
 		MatchableMetaData metaData = new MyMetaData(
 				(Iterable<String>) Arrays.asList("fruit", "colour"), 
@@ -102,7 +102,7 @@ public class MatchableComparerFactoryTest extends TestCase {
 	public void testCompareNotEqual() {
 		
 		MatchableComparerFactory test = new MatchableComparerFactory(
-				new ComparersByPropertyOrType());
+				new ComparersByNameOrType());
 				
 		MatchableMetaData metaData = new MyMetaData(
 				(Iterable<String>) Arrays.asList("fruit", "colour"), 
@@ -132,7 +132,7 @@ public class MatchableComparerFactoryTest extends TestCase {
 	public void testEqualDifferentTypes() {
 		
 		MatchableComparerFactory test = new MatchableComparerFactory(
-				new ComparersByPropertyOrType());
+				new ComparersByNameOrType());
 				
 		MatchableMetaData xMetaData = new MyMetaData(
 				(Iterable<String>) Arrays.asList("fruit", "quantity"), 

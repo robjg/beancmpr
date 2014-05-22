@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.beans.ComparerProvider;
 import org.oddjob.beancmpr.beans.PropertyTypeHelper;
+import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 
 /**
  * Create a {@code Comparator} for the keys of {@link Matchable}s based
@@ -18,7 +18,7 @@ import org.oddjob.beancmpr.beans.PropertyTypeHelper;
  */
 public class KeyComparatorFactory {
 
-	private final ComparerProvider comparerProvider;
+	private final BeanPropertyComparerProvider comparerProvider;
 	
 	/**
 	 * Create a new instance.
@@ -27,7 +27,7 @@ public class KeyComparatorFactory {
 	 * fields.
 	 */
 	public KeyComparatorFactory(
-			ComparerProvider comparerProvider) {
+			BeanPropertyComparerProvider comparerProvider) {
 		this.comparerProvider = comparerProvider;
 	}
 	

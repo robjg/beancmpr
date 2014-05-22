@@ -1,7 +1,7 @@
 package org.oddjob.beancmpr.comparers;
 
 import org.oddjob.beancmpr.Comparer;
-import org.oddjob.beancmpr.comparers.DefaultComparersByType;
+import org.oddjob.beancmpr.composite.DefaultComparersByType;
 
 import junit.framework.TestCase;
 

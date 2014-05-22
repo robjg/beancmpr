@@ -1,4 +1,4 @@
-package org.oddjob.beancmpr.comparers;
+package org.oddjob.beancmpr.composite;
 
 import org.oddjob.beancmpr.Comparer;
 
@@ -9,7 +9,7 @@ import org.oddjob.beancmpr.Comparer;
  * @author rob
  *
  */
-public interface ComparersByType extends HierarchicalComparer {
+public interface ComparersByType {
 
 	/**
 	 * Find a {@link Comparer} for a given type.

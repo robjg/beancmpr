@@ -1,4 +1,4 @@
-package org.oddjob.beancmpr.comparers;
+package org.oddjob.beancmpr.multiitem;
 
 import org.oddjob.beancmpr.Comparison;
 

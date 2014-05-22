@@ -1,6 +1,5 @@
-package org.oddjob.beancmpr.beans;
+package org.oddjob.beancmpr.composite;
 
-import org.oddjob.beancmpr.comparers.ComparersByType;
 
 /**
  * Something that is able to create a {@link ComparerProivder}.
@@ -8,10 +7,10 @@ import org.oddjob.beancmpr.comparers.ComparersByType;
  * @author rob
  *
  */
-public interface ComparerProviderFactory {
+public interface BeanPropertyComparerProviderFactory {
 
 	/**
-	 * Create a {@link ComparerProvider} providing defaults and injection
+	 * Create a {@link BeanPropertyComparerProvider} providing defaults and injection
 	 * of parent comparers where necessary.
 	 * 
 	 * @param parentComparers Parent comparers to be injected. May be
@@ -19,5 +18,5 @@ public interface ComparerProviderFactory {
 	 * 
 	 * @return A {@code ComparerProvider}. Never null.
 	 */
-	public ComparerProvider createWith(ComparersByType parentComparers);
+	public BeanPropertyComparerProvider createWith(ComparersByType parentComparers);
 }

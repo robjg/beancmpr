@@ -3,21 +3,23 @@ package org.oddjob.beancmpr.beans;
 import java.util.Map;
 
 import org.oddjob.arooa.ArooaSession;
-import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
-import org.oddjob.arooa.types.ValueFactory;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
-import org.oddjob.beancmpr.comparers.ComparersByType;
+import org.oddjob.beancmpr.composite.ComparerFactory;
+import org.oddjob.beancmpr.composite.ComparersByNameFactory;
+import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
+import org.oddjob.beancmpr.composite.ComparersByType;
+import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
 import org.oddjob.beancmpr.matchables.MapMatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
 
 public class MapComparerType 
-implements ValueFactory<Comparer<Map<?, ?>>>, ArooaSessionAware {
+implements ComparerFactory<Comparer<Map<?, ?>>>, ArooaSessionAware {
 
 	private PropertyAccessor accessor;
 	
@@ -29,9 +31,9 @@ implements ValueFactory<Comparer<Map<?, ?>>>, ArooaSessionAware {
 	
 	private boolean sorted;
 	
-	private ComparersByType comparersByType;
+	private ComparersByTypeFactory comparersByType;
 	
-	private ComparersByProperty comparersByProperty;
+	private ComparersByNameFactory comparersByName;
 	
 	
 	@ArooaHidden
@@ -41,11 +43,12 @@ implements ValueFactory<Comparer<Map<?, ?>>>, ArooaSessionAware {
 	}
 
 	@Override
-	public Comparer<Map<?, ?>> toValue() throws ArooaConversionException {
+	public Comparer<Map<?, ?>> createComparerWith(
+			ComparersByType parentComparersByType) {
 		
-		ComparersByPropertyOrTypeFactory comparerProviderFactory =
-				new ComparersByPropertyOrTypeFactory(
-						comparersByProperty, comparersByType);
+		ComparersByNameOrTypeFactory comparerProviderFactory =
+				new ComparersByNameOrTypeFactory(
+						comparersByName, comparersByType);
 		
 		MatchDefinition matchDefinition = new SimpleMatchDefinition(
 				keys, values, others);
@@ -53,7 +56,9 @@ implements ValueFactory<Comparer<Map<?, ?>>>, ArooaSessionAware {
 		MatchableFactory<Map.Entry<?, ?>> matchableFactory = 
 				new MapMatchableFactory(matchDefinition, accessor);
 	
-		return new MapComparer(matchableFactory, comparerProviderFactory);
+		return new MapComparer(matchableFactory, 
+				comparerProviderFactory.createWith(parentComparersByType),
+				sorted);
 	}
 		
 	public String[] getKeys() {
@@ -91,22 +96,22 @@ implements ValueFactory<Comparer<Map<?, ?>>>, ArooaSessionAware {
 		this.sorted = sorted;
 	}
 
-	public ComparersByType getComparersByType() {
+	public ComparersByTypeFactory getComparersByType() {
 		return comparersByType;
 	}
 
-	public void setComparersByType(ComparersByType comparersByType) {
+	public void setComparersByType(ComparersByTypeFactory comparersByType) {
 		this.comparersByType = comparersByType;
 	}
 
 
-	public ComparersByProperty getComparersByProperty() {
-		return comparersByProperty;
+	public ComparersByNameFactory getComparersByName() {
+		return comparersByName;
 	}
 
 
-	public void setComparersByProperty(ComparersByProperty comparersByProperty) {
-		this.comparersByProperty = comparersByProperty;
+	public void setComparersByName(ComparersByNameFactory comparersByName) {
+		this.comparersByName = comparersByName;
 	}
 
 }

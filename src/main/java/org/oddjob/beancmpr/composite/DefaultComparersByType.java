@@ -1,9 +1,15 @@
-package org.oddjob.beancmpr.comparers;
+package org.oddjob.beancmpr.composite;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.oddjob.beancmpr.Comparer;
+import org.oddjob.beancmpr.beans.ArrayComparerType;
+import org.oddjob.beancmpr.beans.IterableComparerType;
+import org.oddjob.beancmpr.comparers.ComparableComparer;
+import org.oddjob.beancmpr.comparers.DateComparer;
+import org.oddjob.beancmpr.comparers.EqualityComparer;
+import org.oddjob.beancmpr.comparers.NumericComparer;
 
 /**
  * Default {@link Comparer}s.
@@ -27,8 +33,8 @@ public class DefaultComparersByType implements ComparersByType {
 		
 		doPut(new NumericComparer(), map);
 		doPut(new DateComparer(), map);
-		doPut(new ArrayComparer(), map);
-		doPut(new IterableComparer<Object>(), map);
+		doPut(new ArrayComparerType().createComparerWith(this), map);
+		doPut(new IterableComparerType<Object>().createComparerWith(this), map);
 		doPut(new EqualityComparer(), map);
 		
 		this.comparers = new InternalComparersByType(map);
@@ -44,10 +50,5 @@ public class DefaultComparersByType implements ComparersByType {
 	@Override
 	public <T> Comparer<T> comparerFor(Class<T> type) {
 		return comparers.comparerFor(type);
-	}
-	
-	@Override
-	public void injectComparers(ComparersByType comparers) {
-		this.comparers.injectComparers(comparers);
-	}
+	}	
 }

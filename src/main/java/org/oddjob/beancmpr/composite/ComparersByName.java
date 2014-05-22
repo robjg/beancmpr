@@ -1,7 +1,6 @@
-package org.oddjob.beancmpr.beans;
+package org.oddjob.beancmpr.composite;
 
 import org.oddjob.beancmpr.Comparer;
-import org.oddjob.beancmpr.comparers.HierarchicalComparer;
 
 /**
  * Provide a {@link Comparer} for a property. 
@@ -9,7 +8,7 @@ import org.oddjob.beancmpr.comparers.HierarchicalComparer;
  * @author rob
  *
  */
-public interface ComparersByProperty extends HierarchicalComparer {
+public interface ComparersByName {
 
 	/**
 	 * Provide a {@link Comparer}.

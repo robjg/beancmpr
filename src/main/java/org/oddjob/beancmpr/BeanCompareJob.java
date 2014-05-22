@@ -8,11 +8,10 @@ import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
-import org.oddjob.beancmpr.beans.ComparerProvider;
-import org.oddjob.beancmpr.beans.ComparersByProperty;
-import org.oddjob.beancmpr.beans.ComparersByPropertyOrTypeFactory;
-import org.oddjob.beancmpr.comparers.ComparersByType;
-import org.oddjob.beancmpr.comparers.MultiItemComparisonCounts;
+import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
+import org.oddjob.beancmpr.composite.ComparersByNameFactory;
+import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
+import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
@@ -20,6 +19,7 @@ import org.oddjob.beancmpr.matchables.MatchableGroup;
 import org.oddjob.beancmpr.matchables.OrderedMatchablesComparer;
 import org.oddjob.beancmpr.matchables.SortedBeanMatchables;
 import org.oddjob.beancmpr.matchables.UnsortedBeanMatchables;
+import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
 import org.oddjob.beancmpr.results.BeanCreatingResultHandler;
 import org.oddjob.beancmpr.results.PlaysWithBeanbus;
 
@@ -83,7 +83,7 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 	 * takes precedence.
 	 * @oddjob.required No.
 	 */
-	private ComparersByType comparersByType;
+	private ComparersByTypeFactory comparersByType;
 	
 	/**
 	 * @oddjob.property
@@ -91,7 +91,7 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 	 * particular properties of the beans.
 	 * @oddjob.required No.
 	 */
-	private ComparersByProperty comparersByProperty;
+	private ComparersByNameFactory comparersByProperty;
 	
 	/** From the {@link #setArooaSession}. */
 	private ArooaSession session;
@@ -166,8 +166,8 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 		
 		logger.debug("Using definition: " + definition + ".");
 		
-		ComparerProvider comparerProvider =
-			new ComparersByPropertyOrTypeFactory(
+		BeanPropertyComparerProvider comparerProvider =
+			new ComparersByNameOrTypeFactory(
 					comparersByProperty, comparersByType).createWith(null);
 			
 		if (to != null) {
@@ -207,7 +207,7 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 	
 	private Iterable<MatchableGroup> getIterableMatchables(
 			Iterable<?> in, MatchableFactory<Object> factory,
-			ComparerProvider comparerProvider) {
+			BeanPropertyComparerProvider comparerProvider) {
 		if (sorted) {
 			return new SortedBeanMatchables<Object>(in, factory, 
 					comparerProvider);
@@ -269,19 +269,19 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 		this.otherProperties = others;
 	}
 
-	public ComparersByType getComparersByType() {
+	public ComparersByTypeFactory getComparersByType() {
 		return comparersByType;
 	}
 
-	public void setComparersByType(ComparersByType comparersByType) {
+	public void setComparersByType(ComparersByTypeFactory comparersByType) {
 		this.comparersByType = comparersByType;
 	}
 
-	public ComparersByProperty getComparersByProperty() {
+	public ComparersByNameFactory getComparersByProperty() {
 		return comparersByProperty;
 	}
 
-	public void setComparersByProperty(ComparersByProperty comparersByProperty) {
+	public void setComparersByProperty(ComparersByNameFactory comparersByProperty) {
 		this.comparersByProperty = comparersByProperty;
 	}
 

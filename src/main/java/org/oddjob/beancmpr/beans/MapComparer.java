@@ -2,44 +2,28 @@ package org.oddjob.beancmpr.beans;
 
 import java.util.Map;
 
-import org.oddjob.beancmpr.comparers.ComparersByType;
-import org.oddjob.beancmpr.comparers.DelegatingMultiItemComparison;
-import org.oddjob.beancmpr.comparers.HierarchicalComparer;
-import org.oddjob.beancmpr.comparers.MultiItemComparer;
-import org.oddjob.beancmpr.comparers.MultiItemComparison;
+import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
+import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
+import org.oddjob.beancmpr.multiitem.MultiItemComparer;
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
 public class MapComparer 
-implements MultiItemComparer<Map<?, ?>>, HierarchicalComparer {
+implements MultiItemComparer<Map<?, ?>> {
 
-	private MatchableFactory<Map.Entry<?, ?>> matchableFactory;
-	
-	private boolean sorted;
-	
-	private final ComparerProviderFactory comparerProviderFactory;
-	
-	private MultiItemComparer<Iterable<? extends Map.Entry<?, ?>>> comparer;
+	private final IterableBeansComparer<Map.Entry<?, ?>> comparer;
 	
 	public MapComparer(MatchableFactory<Map.Entry<?, ?>> matchableFactory,
-			ComparerProviderFactory comparerProviderFactory) {
-		this.matchableFactory = matchableFactory;
-		this.comparerProviderFactory = comparerProviderFactory;
-	}
+			BeanPropertyComparerProvider comparerProvider,
+			boolean sorted) {
 		
-	@Override
-	public void injectComparers(ComparersByType parentComparers) {
-		ComparerProvider comparerProvider = comparerProviderFactory.createWith(
-				parentComparers);
-		
-		IterableBeansComparer<Map.Entry<?, ?>> beansComparer = 
+		this.comparer = 
 				new IterableBeansComparer<Map.Entry<?, ?>>(
 						matchableFactory, comparerProvider);
 		
-		beansComparer.setSorted(sorted);
-		
-		this.comparer = beansComparer;
+		comparer.setSorted(sorted);
 	}
-	
+		
 	@Override
 	public MultiItemComparison<Map<?, ?>> compare(Map<?, ?> x, Map<?, ?> y) {
 
@@ -55,11 +39,7 @@ implements MultiItemComparer<Map<?, ?>>, HierarchicalComparer {
 	}
 
 	public boolean isSorted() {
-		return sorted;
-	}
-
-	public void setSorted(boolean sorted) {
-		this.sorted = sorted;
+		return comparer.isSorted();
 	}
 
 }

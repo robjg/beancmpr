@@ -12,7 +12,7 @@ import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
-import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
+import org.oddjob.beancmpr.composite.ComparersByNameOrType;
 
 
 public class SortedBeanMatchablesTest extends TestCase {
@@ -60,7 +60,7 @@ public class SortedBeanMatchablesTest extends TestCase {
 		fruits.add(bean3);
 		
 		Iterable<MatchableGroup> test = new SortedBeanMatchables<Object>(
-				fruits, factory, new ComparersByPropertyOrType());
+				fruits, factory, new ComparersByNameOrType());
 		
 		MatchableGroup[] groups = Iterables.toArray(
 				test, MatchableGroup.class);		
@@ -111,7 +111,7 @@ public class SortedBeanMatchablesTest extends TestCase {
 		fruits.add(bean3);
 		
 		Iterable<MatchableGroup> test = new SortedBeanMatchables<Object>(
-				fruits, factory, new ComparersByPropertyOrType());
+				fruits, factory, new ComparersByNameOrType());
 		
 		MatchableGroup[] groups = Iterables.toArray(
 				test, MatchableGroup.class);		
@@ -159,7 +159,7 @@ public class SortedBeanMatchablesTest extends TestCase {
 		fruits.add(bean3);
 		
 		Iterable<MatchableGroup> test = new SortedBeanMatchables<Object>(
-				fruits, factory, new ComparersByPropertyOrType());
+				fruits, factory, new ComparersByNameOrType());
 		
 		Iterator<MatchableGroup> iter = test.iterator();
 		
@@ -188,7 +188,7 @@ public class SortedBeanMatchablesTest extends TestCase {
 		
 		final SortedBeanMatchables<Object> test = new SortedBeanMatchables<Object>(
 				new ArrayList<Fruit>(), new MockFactory(), 
-				new ComparersByPropertyOrType());
+				new ComparersByNameOrType());
 		
 		Iterator<MatchableGroup> iter = test.iterator();
 		

@@ -1,4 +1,4 @@
-package org.oddjob.beancmpr.comparers;
+package org.oddjob.beancmpr.beans;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,6 +6,12 @@ import java.util.List;
 
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.composite.ComparersByType;
+import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
+import org.oddjob.beancmpr.multiitem.MultiItemComparer;
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
+import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
+import org.oddjob.beancmpr.multiitem.MultiItemComparisonCountsImutable;
 
 /**
  * Compares to {@code Iterable}s.
@@ -14,19 +20,15 @@ import org.oddjob.beancmpr.Comparison;
  *
  */
 public class IterableComparer<T> 
-implements HierarchicalComparer, MultiItemComparer<Iterable<? extends T>>{
+implements MultiItemComparer<Iterable<? extends T>>{
 
-	private ComparersByType comparers;
+	private final ComparersByType comparers;
 	
-	private ComparersByType parentComparers;
-	
-	public void setComparersByType(ComparersByType comparersByType) {
-		this.comparers = comparersByType;
-	}
-	
-	@Override
-	public void injectComparers(ComparersByType comparers) {
-		this.parentComparers = comparers;
+	public IterableComparer(ComparersByType comparers) {
+		if (comparers == null) {
+			throw new NullPointerException("No comparers");
+		}
+		this.comparers = comparers;
 	}
 	
 	@Override
@@ -49,13 +51,6 @@ implements HierarchicalComparer, MultiItemComparer<Iterable<? extends T>>{
 
 		int xCount = 0;
 		int yCount = yCopy.size();
-		
-		ComparersByType parentComparers = this.parentComparers;
-		if (parentComparers == null) {
-			parentComparers = new DefaultComparersByType();
-		}
-		ComparersByType comparers = new CompositeComparersByType(
-				this.comparers, parentComparers);
 		
 		for (T eX : x) {
 			

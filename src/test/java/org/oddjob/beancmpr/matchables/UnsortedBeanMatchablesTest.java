@@ -12,7 +12,7 @@ import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
-import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
+import org.oddjob.beancmpr.composite.ComparersByNameOrType;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
@@ -78,7 +78,7 @@ public class UnsortedBeanMatchablesTest extends TestCase {
 		fruit.add(bean3);
 		
 		UnsortedBeanMatchables<Object> test = new UnsortedBeanMatchables<Object>(				
-				fruit, factory, new ComparersByPropertyOrType());
+				fruit, factory, new ComparersByNameOrType());
 
 		MatchableGroup[] groups = Iterables.toArray(
 				test, MatchableGroup.class);
@@ -128,7 +128,7 @@ public class UnsortedBeanMatchablesTest extends TestCase {
 		final UnsortedBeanMatchables<Object> test = 
 			new UnsortedBeanMatchables<Object>(
 				new ArrayList<Fruit>(), new MockFactory(),
-				new ComparersByPropertyOrType());
+				new ComparersByNameOrType());
 		
 		Iterator<MatchableGroup> iter = test.iterator();
 		

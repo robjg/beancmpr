@@ -1,6 +1,8 @@
 package org.oddjob.beancmpr.comparers;
 
-import org.oddjob.beancmpr.comparers.MultiItemComparison;
+import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
+import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
 
 import junit.framework.TestCase;
 

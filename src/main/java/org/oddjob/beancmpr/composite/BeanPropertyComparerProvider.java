@@ -1,14 +1,14 @@
-package org.oddjob.beancmpr.beans;
+package org.oddjob.beancmpr.composite;
 
 import org.oddjob.beancmpr.Comparer;
 
 /**
- * Provides {@link Comparer}s.
+ * Provides {@link Comparer}s for a bean class.
  * 
  * @author Rob
  *
  */
-public interface ComparerProvider {
+public interface BeanPropertyComparerProvider {
 
 	/**
 	 * Provide a {@link Comparer} for the given property

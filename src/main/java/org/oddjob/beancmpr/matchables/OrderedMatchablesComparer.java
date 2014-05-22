@@ -5,10 +5,10 @@ import java.util.Iterator;
 
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.ComparisonStoppedException;
-import org.oddjob.beancmpr.beans.ComparerProvider;
-import org.oddjob.beancmpr.comparers.DelegatingMultiItemComparison;
-import org.oddjob.beancmpr.comparers.MultiItemComparer;
-import org.oddjob.beancmpr.comparers.MultiItemComparison;
+import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
+import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
+import org.oddjob.beancmpr.multiitem.MultiItemComparer;
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
 /**
  * Compares two {@code Iterable}s of {@link MatchableGroup}s.
@@ -22,7 +22,7 @@ implements MultiItemComparer<Iterable<? extends MatchableGroup>> {
 	
 	private final ComparisonGatheringProcessor matchProcessor;
 	
-	private final ComparerProvider comparerProvider;
+	private final BeanPropertyComparerProvider comparerProvider;
 	
 	private MatchableComparer matchableComparer;
 	
@@ -36,7 +36,7 @@ implements MultiItemComparer<Iterable<? extends MatchableGroup>> {
 	 * @param resultsHandler To process results. May be null.
 	 */
 	public OrderedMatchablesComparer(
-			ComparerProvider comparerProvider,
+			BeanPropertyComparerProvider comparerProvider,
 			BeanCmprResultsHandler resultsHandler) {
 		
 		if (comparerProvider == null) {
@@ -200,7 +200,7 @@ implements MultiItemComparer<Iterable<? extends MatchableGroup>> {
 		return matchProcessor;
 	}
 
-	public ComparerProvider getDifferentiatorProvider() {
+	public BeanPropertyComparerProvider getDifferentiatorProvider() {
 		return comparerProvider;
 	}
 }

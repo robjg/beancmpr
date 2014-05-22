@@ -10,8 +10,9 @@ import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
-import org.oddjob.beancmpr.comparers.MultiItemComparison;
+import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
 import org.oddjob.beancmpr.matchables.MapMatchableFactory;
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
 public class MapComparerTest extends TestCase {
 	
@@ -37,8 +38,8 @@ public class MapComparerTest extends TestCase {
 		MapMatchableFactory matchableFactory = new MapMatchableFactory(definition, accessor);
 		
 		MapComparer test = new MapComparer(matchableFactory, 
-				new ComparersByPropertyOrTypeFactory());
-		test.injectComparers(null);
+				new ComparersByNameOrTypeFactory().createWith(null),
+				false);
 		
 		MultiItemComparison<Map<?, ?>> result = test.compare(map1, map2);
 

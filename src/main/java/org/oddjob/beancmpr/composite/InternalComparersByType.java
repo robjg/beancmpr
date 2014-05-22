@@ -1,4 +1,4 @@
-package org.oddjob.beancmpr.comparers;
+package org.oddjob.beancmpr.composite;
 
 import java.util.Map;
 
@@ -40,17 +40,5 @@ class InternalComparersByType implements ComparersByType {
 		}
 		
 		return null;
-	}
-
-	@Override
-	public void injectComparers(ComparersByType comparers) {
-		
-		for (Comparer<?> comparer : this.comparers.values()) {
-		
-			if (comparer instanceof HierarchicalComparer) {
-				((HierarchicalComparer) comparer)
-						.injectComparers(comparers);
-			}
-		}
 	}
 }

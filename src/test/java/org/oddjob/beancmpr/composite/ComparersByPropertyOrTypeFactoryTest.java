@@ -1,11 +1,13 @@
-package org.oddjob.beancmpr.comparers;
+package org.oddjob.beancmpr.composite;
 
 import junit.framework.TestCase;
 
 import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.beancmpr.Comparer;
-import org.oddjob.beancmpr.beans.ComparerProvider;
-import org.oddjob.beancmpr.beans.ComparersByPropertyOrTypeFactory;
+import org.oddjob.beancmpr.comparers.NumericComparer;
+import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
+import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
+import org.oddjob.beancmpr.composite.ComparersByTypeList;
 
 public class ComparersByPropertyOrTypeFactoryTest extends TestCase {
 
@@ -17,12 +19,13 @@ public class ComparersByPropertyOrTypeFactoryTest extends TestCase {
 		NumericComparer numericComparer = new NumericComparer();
 		numericComparer.setPercentageTolerance(100);
 		
-		list.setSpecialisations("double", numericComparer);
+		list.setSpecialisations("double", 
+				new ComparerFactoryAdaptor<Comparer<?>>(numericComparer));
 		
-		ComparersByPropertyOrTypeFactory test = 
-				new ComparersByPropertyOrTypeFactory(null, list.toValue());
+		ComparersByNameOrTypeFactory test = 
+				new ComparersByNameOrTypeFactory(null, list);
 		
-		ComparerProvider provider = test.createWith(null);
+		BeanPropertyComparerProvider provider = test.createWith(null);
 		
 		Comparer<Long> comparerLong = provider.comparerFor(null, Long.class);
 		

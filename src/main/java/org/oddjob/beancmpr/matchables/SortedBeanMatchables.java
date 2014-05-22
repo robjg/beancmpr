@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.oddjob.arooa.utils.Iterables;
-import org.oddjob.beancmpr.beans.ComparerProvider;
+import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 
 /**
  * An adapter that converts an {@code Iterable} of bean to 
@@ -26,11 +26,11 @@ public class SortedBeanMatchables<T> implements Iterable<MatchableGroup> {
 	
 	private final MatchableFactory<T> factory;
 	
-	private final ComparerProvider comparerProvider;
+	private final BeanPropertyComparerProvider comparerProvider;
 	
 	public SortedBeanMatchables(Iterable<? extends T> iterable, 
 			MatchableFactory<T> factory,
-			ComparerProvider comparerProivder) {
+			BeanPropertyComparerProvider comparerProivder) {
 		this.iterable = iterable;
 		this.factory = factory;
 		this.comparerProvider = comparerProivder;

@@ -10,7 +10,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
+import org.oddjob.beancmpr.composite.ComparersByNameOrType;
 
 public class KeyComparatorFactoryTest extends TestCase {
 
@@ -70,7 +70,7 @@ public class KeyComparatorFactoryTest extends TestCase {
 	public void testCompareEqual() {
 		
 		KeyComparatorFactory test = new KeyComparatorFactory(
-				new ComparersByPropertyOrType());
+				new ComparersByNameOrType());
 				
 		MatchableMetaData metaData = new MyMetaData(
 				(Iterable<String>) Arrays.asList("fruit", "colour"), 
@@ -92,7 +92,7 @@ public class KeyComparatorFactoryTest extends TestCase {
 	public void testCompareNotEqual() {
 		
 		KeyComparatorFactory test = new KeyComparatorFactory(
-				new ComparersByPropertyOrType());
+				new ComparersByNameOrType());
 				
 		MatchableMetaData metaData = new MyMetaData(
 				(Iterable<String>) Arrays.asList("fruit", "colour"), 
@@ -114,7 +114,7 @@ public class KeyComparatorFactoryTest extends TestCase {
 	public void testEqualDifferentTypes() {
 		
 		KeyComparatorFactory test = new KeyComparatorFactory(
-				new ComparersByPropertyOrType());
+				new ComparersByNameOrType());
 				
 		MatchableMetaData xMetaData = new MyMetaData(
 				(Iterable<String>) Arrays.asList("fruit", "quantity"), 
@@ -143,7 +143,7 @@ public class KeyComparatorFactoryTest extends TestCase {
 	public void testCompareOneSideNullComponent() {
 		
 		KeyComparatorFactory test = new KeyComparatorFactory(
-				new ComparersByPropertyOrType());
+				new ComparersByNameOrType());
 				
 		MatchableMetaData xMetaData = new MyMetaData(
 				(Iterable<String>) Arrays.asList("fruit", "quantity"), 

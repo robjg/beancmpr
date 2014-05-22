@@ -1,4 +1,4 @@
-package org.oddjob.beancmpr.comparers;
+package org.oddjob.beancmpr.composite;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -7,8 +7,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.oddjob.arooa.convert.ArooaConversionException;
-import org.oddjob.arooa.types.ValueFactory;
 import org.oddjob.arooa.utils.ClassUtils;
 import org.oddjob.beancmpr.Comparer;
 
@@ -18,22 +16,22 @@ import org.oddjob.beancmpr.Comparer;
  * @author rob
  * 
  */
-public class ComparersByTypeList implements ValueFactory<ComparersByType>{
+public class ComparersByTypeList implements ComparersByTypeFactory {
 
 	private ClassLoader classLoader;
 
-	private final List<Comparer<?>> comparers = 
-			new ArrayList<Comparer<?>>();
+	private final List<ComparerFactory<?>> comparers = 
+			new ArrayList<ComparerFactory<?>>();
 	
-	private final Map<String, Comparer<?>> specialisations = 
-			new LinkedHashMap<String, Comparer<?>>();
+	private final Map<String, ComparerFactory<?>> specialisations = 
+			new LinkedHashMap<String, ComparerFactory<?>>();
 
 	@Inject
 	public void setClassLoader(ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
 
-	public void setComparers(int index, Comparer<?> comparer) {
+	public void setComparers(int index, ComparerFactory<?> comparer) {
 		if (comparer == null) {
 			comparers.remove(index);
 		}
@@ -42,7 +40,7 @@ public class ComparersByTypeList implements ValueFactory<ComparersByType>{
 		}
 	}
 	
-	public void setSpecialisations(String className, Comparer<?> comparer) {
+	public void setSpecialisations(String className, ComparerFactory<?> comparer) {
 		if (comparer == null) {
 			specialisations.remove(className);
 		}
@@ -52,32 +50,38 @@ public class ComparersByTypeList implements ValueFactory<ComparersByType>{
 	}
 	
 	@Override
-	public ComparersByType toValue() throws ArooaConversionException {
+	public ComparersByType createComparersByTypeWith(
+			ComparersByType parentComparersByType) {
 		
 		Map<Class<?>, Comparer<?>> byClass = 
 				new LinkedHashMap<Class<?>, Comparer<?>>();
 		
-		for (Map.Entry<String, Comparer<?>> entry : specialisations.entrySet()) {
+		ComparersByType comparersByType = new CompositeComparersByType(
+				new InternalComparersByType(byClass), parentComparersByType);
+		
+		for (Map.Entry<String, ComparerFactory<?>> entry : 
+					specialisations.entrySet()) {
 			
 			Class<?> theClass;
 			try {
 				theClass = ClassUtils.classFor(
 						entry.getKey(), classLoader);
 			} catch (ClassNotFoundException e) {
-				throw new ArooaConversionException(e);
+				throw new IllegalArgumentException(e);
 			}
 
 			if (theClass.isPrimitive()) {
 				theClass = ClassUtils.wrapperClassForPrimitive(theClass);
 			}
 			
-			Comparer<?> comparer = entry.getValue();
+			Comparer<?> comparer = 
+					entry.getValue().createComparerWith(comparersByType);
 			
 			if (comparer.getType().isAssignableFrom(theClass)) {
 				byClass.put(theClass, comparer);
 			}
 			else {
-				throw new ArooaConversionException(
+				throw new IllegalArgumentException(
 						"Can't add a comparer for " +
 						comparer.getType() + 
 						" as it is not type compatible with " + 
@@ -85,7 +89,9 @@ public class ComparersByTypeList implements ValueFactory<ComparersByType>{
 			}
 		}
 		
-		for (Comparer<?> comparer : comparers) {
+		for (ComparerFactory<?> comparerFactory : comparers) {
+			Comparer<?> comparer = comparerFactory.createComparerWith(
+					comparersByType);
 			byClass.put(comparer.getType(), comparer);
 		}
 		

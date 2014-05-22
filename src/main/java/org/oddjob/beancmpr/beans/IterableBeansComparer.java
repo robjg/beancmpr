@@ -1,28 +1,29 @@
 package org.oddjob.beancmpr.beans;
 
-import org.oddjob.beancmpr.comparers.DelegatingMultiItemComparison;
-import org.oddjob.beancmpr.comparers.MultiItemComparer;
-import org.oddjob.beancmpr.comparers.MultiItemComparison;
+import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableGroup;
 import org.oddjob.beancmpr.matchables.OrderedMatchablesComparer;
 import org.oddjob.beancmpr.matchables.SortedBeanMatchables;
 import org.oddjob.beancmpr.matchables.UnsortedBeanMatchables;
+import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
+import org.oddjob.beancmpr.multiitem.MultiItemComparer;
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
 public class IterableBeansComparer<T> 
 implements MultiItemComparer<Iterable<? extends T>> {
 
 	private final MatchableFactory<T> matchableFactory;
 	
-	private final ComparerProvider comparerProvider;
+	private final BeanPropertyComparerProvider comparerProvider;
 	
 	private BeanCmprResultsHandler resultsHandler;
 	
 	private boolean sorted;
 	
 	public IterableBeansComparer(MatchableFactory<T> matchableFactory,
-			ComparerProvider comparerProvider) {
+			BeanPropertyComparerProvider comparerProvider) {
 		
 		if (matchableFactory == null) {
 			throw new NullPointerException("MatchableFactory must be provided.");
@@ -59,7 +60,7 @@ implements MultiItemComparer<Iterable<? extends T>> {
 	
 	private Iterable<MatchableGroup> getIterableMatchables(
 			Iterable<? extends T> in, MatchableFactory<T> factory,
-			ComparerProvider comparerProvider) {
+			BeanPropertyComparerProvider comparerProvider) {
 		
 		if (sorted) {
 			return new SortedBeanMatchables<T>(in, factory, 

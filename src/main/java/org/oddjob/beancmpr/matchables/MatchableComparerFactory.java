@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.beans.ComparerProvider;
 import org.oddjob.beancmpr.beans.PropertyTypeHelper;
+import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 
 /**
  * Create a {@link MatchableComparer} base on the {@link Matchable}s 
@@ -17,7 +17,7 @@ import org.oddjob.beancmpr.beans.PropertyTypeHelper;
  */
 public class MatchableComparerFactory {
 
-	private final ComparerProvider comparerProvider;
+	private final BeanPropertyComparerProvider comparerProvider;
 	
 	/**
 	 *  Create an instance.
@@ -26,7 +26,7 @@ public class MatchableComparerFactory {
 	 * the fields. Must not be null.
 	 */
 	public MatchableComparerFactory(
-			ComparerProvider comparerProvider) {
+			BeanPropertyComparerProvider comparerProvider) {
 		
 		if (comparerProvider == null) {
 			throw new NullPointerException("ComparerProvider must be provded.");
@@ -60,9 +60,10 @@ public class MatchableComparerFactory {
 					xMetaData.getPropertyType(propertyName),
 					yMetaData.getPropertyType(propertyName));
 			
-			compares.add(createWithinferdType(	
-				comparerProvider.comparerFor(propertyName, 
-						propertyType), propertyName));
+			Comparer<?> comparer = comparerProvider.comparerFor(propertyName, 
+					propertyType);
+			
+			compares.add(createWithinferdType(comparer, propertyName));
 		}		
 		
 		return new MatchableComparer() {

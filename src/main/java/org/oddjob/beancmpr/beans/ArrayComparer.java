@@ -1,6 +1,11 @@
-package org.oddjob.beancmpr.comparers;
+package org.oddjob.beancmpr.beans;
 
 import java.util.Arrays;
+
+import org.oddjob.beancmpr.composite.ComparersByType;
+import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
+import org.oddjob.beancmpr.multiitem.MultiItemComparer;
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
 /**
  * Compares to Arrays of Objects.
@@ -9,20 +14,15 @@ import java.util.Arrays;
  *
  */
 public class ArrayComparer 
-implements HierarchicalComparer, MultiItemComparer<Object[]>{
+implements MultiItemComparer<Object[]>{
 
-	private ComparersByType comparers;
-	
-	private ComparersByType parentComparers;
-	
-	public void setComparersByType(ComparersByType comparersByType) {
-		this.comparers = comparersByType;
-	}
+	private final ComparersByType comparers;
 
-	@Override
-	public void injectComparers(ComparersByType comparersByType) {
-		this.parentComparers = comparersByType;
-		
+	public ArrayComparer(ComparersByType comparers) {
+		if (comparers == null) {
+			throw new NullPointerException("No comparers");
+		}
+		this.comparers = comparers;
 	}
 	
 	@Override
@@ -33,9 +33,7 @@ implements HierarchicalComparer, MultiItemComparer<Object[]>{
 		}
 	
 		IterableComparer<Object> iterableComparer = 
-				new IterableComparer<Object>();
-		iterableComparer.setComparersByType(comparers);
-		iterableComparer.injectComparers(parentComparers);
+				new IterableComparer<Object>(comparers);
 		
 		final MultiItemComparison<Iterable<? extends Object>> iterableComparison = 
 				iterableComparer.compare(Arrays.asList(x), Arrays.asList(y));

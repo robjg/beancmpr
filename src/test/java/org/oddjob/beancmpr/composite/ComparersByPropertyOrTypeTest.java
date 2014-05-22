@@ -1,15 +1,14 @@
-package org.oddjob.beancmpr.comparers;
+package org.oddjob.beancmpr.composite;
 
 import junit.framework.TestCase;
 
-import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
+import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.convert.ArooaConversionException;
+import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.beans.BeanComparer;
-import org.oddjob.beancmpr.beans.ComparersByPropertyMap;
-import org.oddjob.beancmpr.beans.ComparersByPropertyOrType;
-import org.oddjob.beancmpr.beans.ComparersByPropertyOrTypeFactory;
+import org.oddjob.beancmpr.beans.BeanComparerType;
+import org.oddjob.beancmpr.comparers.MockComparison;
 
 public class ComparersByPropertyOrTypeTest extends TestCase {
 
@@ -46,25 +45,31 @@ public class ComparersByPropertyOrTypeTest extends TestCase {
 	
 	public void testThatTypeComparersInjectedIntoPropertyComparers() throws ArooaConversionException {
 		
-		BeanComparer beanComparer = new BeanComparer(
-				new String[] { "quantity" }, new BeanUtilsPropertyAccessor(), 
-				new ComparersByPropertyOrTypeFactory(null, null));
+		ArooaSession session = new StandardArooaSession();
 		
-		ComparersByPropertyMap comparersByProperty =
-				new ComparersByPropertyMap();
-		comparersByProperty.setComparerForProperty("fruit", 
-				beanComparer);
+		BeanComparerType beanComparer = new BeanComparerType();
+		beanComparer.setMatchProperties(new String[] { "quantity" }); 
+		beanComparer.setArooaSession(session);
+		
+		ComparersByNameType comparersByNameType =
+				new ComparersByNameType();
+		comparersByNameType.setComparerForProperty("fruit", beanComparer);
 
 		ComparersByTypeList comparersByTypeList = new ComparersByTypeList();
 		comparersByTypeList.setSpecialisations("java.lang.Integer", 
-				new OurIntegercomparer());
+				new ComparerFactoryAdaptor<Comparer<?>>(
+						new OurIntegercomparer()));
 		
-		ComparersByType comparersByType = comparersByTypeList.toValue();
-		beanComparer.injectComparers(comparersByType);
+		ComparersByType comparersByType = 
+				comparersByTypeList.createComparersByTypeWith(null);
+
+		ComparersByName comparersByName =
+				comparersByNameType.createComparersByNameWith(
+						comparersByType);
 		
-		ComparersByPropertyOrType test = 
-				new ComparersByPropertyOrType(
-						comparersByProperty, null);
+		ComparersByNameOrType test = 
+				new ComparersByNameOrType(
+						comparersByName, null);
 		
 		Comparer<Object> comparer = test.comparerFor("fruit", Object.class);
 		
