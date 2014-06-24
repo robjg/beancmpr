@@ -17,16 +17,16 @@ import org.oddjob.beancmpr.MatchDefinition;
  * @author rob
  *
  */
-public class MapMatchableFactory 
-implements MatchableFactory<Map.Entry<?, ?>> {
+public class MapMatchableFactory<K, V> 
+implements MatchableFactory<Map.Entry<K, V>> {
 
 	/** The name of the matchable property when the key is the entire key 
 	 * of the entry. */
-	private static final String KEY_NAME = "key";
+	public static final String KEY_NAME = "key";
 	
 	/** The name of the matchable value when the value is the entire value 
 	 * of the entry. */
-	private static final String VALUE_NAME = "value";
+	public static final String VALUE_NAME = "value";
 	
 	private final MatchDefinition definition;
 	
@@ -46,9 +46,8 @@ implements MatchableFactory<Map.Entry<?, ?>> {
 		this.accessor = accessor;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public Matchable createMatchable(Map.Entry<?, ?> entry) {
+	public Matchable createMatchable(Map.Entry<K, V> entry) {
 
 		if (entry == null) {
 			throw new NullPointerException("No Map Entry.");
@@ -115,10 +114,11 @@ implements MatchableFactory<Map.Entry<?, ?>> {
 	}
 	
 	/**
+	 * Create the meta data.
 	 * 
-	 * @param bean
+	 * @param entry A map entry on which to base the meta data.
 	 * 
-	 * @return
+	 * @return The meta data. Never null.
 	 */
 	private MatchableMetaData metaDataFor(Map.Entry<?, ?> entry) {
 		

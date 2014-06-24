@@ -48,7 +48,7 @@ public class ComparersByPropertyOrTypeTest extends TestCase {
 		ArooaSession session = new StandardArooaSession();
 		
 		BeanComparerType beanComparer = new BeanComparerType();
-		beanComparer.setMatchProperties(new String[] { "quantity" }); 
+		beanComparer.setValues(new String[] { "quantity" }); 
 		beanComparer.setArooaSession(session);
 		
 		ComparersByNameType comparersByNameType =
@@ -57,7 +57,7 @@ public class ComparersByPropertyOrTypeTest extends TestCase {
 
 		ComparersByTypeList comparersByTypeList = new ComparersByTypeList();
 		comparersByTypeList.setSpecialisations("java.lang.Integer", 
-				new ComparerFactoryAdaptor<Comparer<?>>(
+				new ComparerFactoryAdaptor<Integer>(
 						new OurIntegercomparer()));
 		
 		ComparersByType comparersByType = 

@@ -26,6 +26,8 @@
       className='org.oddjob.beancmpr.comparers.ComparableComparer'/>
     <arooa:bean-def element='date-comparer'
       className='org.oddjob.beancmpr.comparers.DateComparer'/>
+    <arooa:bean-def element='iterable-comparer'
+      className='org.oddjob.beancmpr.beans.IterableBeansComparerType'/>
     <arooa:bean-def element='map-comparer'
       className='org.oddjob.beancmpr.beans.MapComparerType'/>
     <arooa:bean-def element='equality-comparer'
@@ -43,6 +45,18 @@
       <properties>
         <arooa:property name="to" annotation="org.oddjob.beanbus.Destination"/>
       </properties>
+      <annotations>
+        <arooa:annotation name="org.oddjob.framework.SoftReset"
+          method="reset" />
+        <arooa:annotation name="org.oddjob.framework.HardReset"
+          method="reset" />
+        <arooa:annotation name="org.oddjob.beanbus.Destination"
+          method="acceptDestination" parameterTypes="java.util.Collection"/>
+      </annotations>
+    </arooa:bean-def>
+    <arooa:bean-def element='compare2'
+      className='org.oddjob.beancmpr.BeanCompareJob2' 
+      designFactory='org.oddjob.beancmpr.BeanCompare2DF'>
       <annotations>
         <arooa:annotation name="org.oddjob.framework.SoftReset"
           method="reset" />

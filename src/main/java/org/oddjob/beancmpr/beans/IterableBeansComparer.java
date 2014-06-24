@@ -11,19 +11,35 @@ import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
-public class IterableBeansComparer<T> 
-implements MultiItemComparer<Iterable<? extends T>> {
+/**
+ * Compare any two collections of beans.
+ * 
+ * @author rob
+ *
+ * @param <T>
+ */
+public class IterableBeansComparer<T>
+implements MultiItemComparer<Iterable<T>> {
 
 	private final MatchableFactory<T> matchableFactory;
 	
 	private final BeanPropertyComparerProvider comparerProvider;
 	
-	private BeanCmprResultsHandler resultsHandler;
+	private final BeanCmprResultsHandler resultsHandler;
 	
-	private boolean sorted;
+	private final boolean sorted;
 	
 	public IterableBeansComparer(MatchableFactory<T> matchableFactory,
-			BeanPropertyComparerProvider comparerProvider) {
+			BeanPropertyComparerProvider comparerProvider,
+			boolean sorted) {
+		
+		this(matchableFactory, comparerProvider, sorted, null);
+	}
+	
+	public IterableBeansComparer(MatchableFactory<T> matchableFactory,
+			BeanPropertyComparerProvider comparerProvider,
+			boolean sorted,
+			BeanCmprResultsHandler resultsHandler) {
 		
 		if (matchableFactory == null) {
 			throw new NullPointerException("MatchableFactory must be provided.");
@@ -35,11 +51,13 @@ implements MultiItemComparer<Iterable<? extends T>> {
 
 		this.matchableFactory = matchableFactory;
 		this.comparerProvider = comparerProvider;
+		this.sorted = sorted;
+		this.resultsHandler = resultsHandler;
 	}	
 	
 	@Override
-	public MultiItemComparison<Iterable<? extends T>> compare(Iterable<? extends T> x, 
-			Iterable<? extends T> y) {
+	public MultiItemComparison<Iterable<T>> compare(Iterable<T> x, 
+			Iterable<T> y) {
 
 		OrderedMatchablesComparer rec = new OrderedMatchablesComparer(
 				comparerProvider,
@@ -51,10 +69,10 @@ implements MultiItemComparer<Iterable<? extends T>> {
 		Iterable<MatchableGroup> yGroups = getIterableMatchables(y, 
 				matchableFactory, comparerProvider);
 				
-		MultiItemComparison<Iterable<? extends MatchableGroup>> groupComparison = 
+		MultiItemComparison<Iterable<MatchableGroup>> groupComparison = 
 				rec.compare(xGroups, yGroups);
 		
-		return new DelegatingMultiItemComparison<Iterable<? extends T>>(
+		return new DelegatingMultiItemComparison<Iterable<T>>(
 				x, y, groupComparison);
 	}
 	
@@ -81,15 +99,7 @@ implements MultiItemComparer<Iterable<? extends T>> {
 		return sorted;
 	}
 
-	public void setSorted(boolean sorted) {
-		this.sorted = sorted;
-	}
-
 	public BeanCmprResultsHandler getResultsHandler() {
 		return resultsHandler;
-	}
-
-	public void setResultsHandler(BeanCmprResultsHandler resultsHandler) {
-		this.resultsHandler = resultsHandler;
 	}
 }

@@ -1,10 +1,13 @@
 package org.oddjob.beancmpr.comparers;
 
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.matchables.InferredTypeCompare;
 
 /**
  * The result of attempting to compare two values where one or both
  * of the values is null.
+ * 
+ * @see InferredTypeCompare
  * 
  * @author rob
  *

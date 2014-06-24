@@ -3,8 +3,11 @@ package org.oddjob.beancmpr.matchables;
 import org.oddjob.beancmpr.Comparison;
 
 /**
- * The {@link Comparison}s between the values of two {@link Matchable}s.
+ * A {@link Comparison}s that is the result of a number of comparisons 
+ * between two things. The things will often be two {@link Matchable}s.
  * 
+ * @see MultiValueComparer
+ *  
  * @author Rob
  *
  */

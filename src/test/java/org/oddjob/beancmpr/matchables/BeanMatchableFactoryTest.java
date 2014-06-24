@@ -44,8 +44,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
-				definition, accessor);
+		BeanMatchableFactory<Object> factory = 
+				new BeanMatchableFactory<Object>(definition, accessor);
 		
 		Snack snack = new Snack();
 		
@@ -76,7 +76,22 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		MatchableMetaData metaData = result.getMetaData();
 		
+		String[] keyMeta = Iterables.toArray(metaData.getKeyProperties(), 
+				String.class);
+		String[] valueMeta = Iterables.toArray(metaData.getValueProperties(), 
+				String.class);
+		String[] otherMeta = Iterables.toArray(metaData.getOtherProperties(), 
+				String.class);
+		
+		assertEquals(2, keyMeta.length);
+		assertEquals("fruit", keyMeta[0]);
+		assertEquals("colour", keyMeta[1]);
+		
+		assertEquals(0, valueMeta.length);
+		assertEquals(0, otherMeta.length);
+		
 		assertEquals(String.class, metaData.getPropertyType("fruit"));
+		assertEquals(String.class, metaData.getPropertyType("colour"));
 	}
 	
 	public void testCreateValues() {
@@ -88,8 +103,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
-				definition, accessor);
+		BeanMatchableFactory<Object> factory = 
+				new BeanMatchableFactory<Object>(definition, accessor);
 		
 		Snack snack = new Snack();
 		
@@ -117,6 +132,26 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		assertEquals("apple", values[0]);
 		assertEquals("red", values[1]);
+		
+		MatchableMetaData metaData = result.getMetaData();
+		
+		String[] keyMeta = Iterables.toArray(metaData.getKeyProperties(), 
+				String.class);
+		String[] valueMeta = Iterables.toArray(metaData.getValueProperties(), 
+				String.class);
+		String[] otherMeta = Iterables.toArray(metaData.getOtherProperties(), 
+				String.class);
+		
+		assertEquals(0, keyMeta.length);
+		
+		assertEquals(2, valueMeta.length);
+		assertEquals("fruit", valueMeta[0]);
+		assertEquals("colour", valueMeta[1]);
+		
+		assertEquals(0, otherMeta.length);
+		
+		assertEquals(String.class, metaData.getPropertyType("fruit"));
+		assertEquals(String.class, metaData.getPropertyType("colour"));
 	}
 	
 	public void testCreateOthers() {
@@ -129,36 +164,60 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
-				definition, accessor);
+		BeanMatchableFactory<Object> factory = 
+				new BeanMatchableFactory<Object>(definition, accessor);
 		
 		Snack snack = new Snack();
 		
 		Matchable result;
 		Object[] values;
-		
+		Object[] others;
 		
 		result = factory.createMatchable(snack);
 		
-		values = Iterables.toArray(result.getOthers(), Object.class);
+		values = Iterables.toArray(result.getValues(), Object.class);
+		assertEquals(1, values.length);
+		assertSame(snack, values[0]);
 		
-		assertEquals(2, values.length);
+		others = Iterables.toArray(result.getOthers(), Object.class);
 		
-		assertEquals(null, values[0]);
-		assertEquals(null, values[1]);
+		assertEquals(2, others.length);
+		
+		assertEquals(null, others[0]);
+		assertEquals(null, others[1]);
 		
 		snack.setFruit("apple");
 		snack.setColour("red");
 		
 		result = factory.createMatchable(snack);
 		
-		values = Iterables.toArray(result.getOthers(), Object.class);
+		others = Iterables.toArray(result.getOthers(), Object.class);
 		
-		assertEquals(2, values.length);
+		assertEquals(2, others.length);
 		
-		assertEquals("apple", values[0]);
-		assertEquals("red", values[1]);
+		assertEquals("apple", others[0]);
+		assertEquals("red", others[1]);
 		
+		MatchableMetaData metaData = result.getMetaData();
+		
+		String[] keyMeta = Iterables.toArray(metaData.getKeyProperties(), 
+				String.class);
+		String[] valueMeta = Iterables.toArray(metaData.getValueProperties(), 
+				String.class);
+		String[] otherMeta = Iterables.toArray(metaData.getOtherProperties(), 
+				String.class);
+		
+		assertEquals(0, keyMeta.length);
+		
+		assertEquals(1, valueMeta.length);
+		assertEquals("value", valueMeta[0]);
+		
+		assertEquals(2, otherMeta.length);
+		assertEquals("fruit", otherMeta[0]);
+		assertEquals("colour", otherMeta[1]);
+		
+		assertEquals(String.class, metaData.getPropertyType("fruit"));
+		assertEquals(String.class, metaData.getPropertyType("colour"));
 	}
 	
 	public static class ThingWithPrimitive {
@@ -179,8 +238,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
-				definition, accessor);
+		BeanMatchableFactory<Object> factory = 
+				new BeanMatchableFactory<Object>(definition, accessor);
 
 		
 		ThingWithPrimitive thing = new ThingWithPrimitive();
@@ -214,9 +273,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 				null
 				);
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
-				definition, accessor);
-
+		BeanMatchableFactory<Object> factory = 
+				new BeanMatchableFactory<Object>(definition, accessor);
 		
 		Matchable matchable = factory.createMatchable(bean);
 		

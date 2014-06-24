@@ -11,7 +11,7 @@ import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
  *
  */
 public class ArrayComparerType 
-implements ComparerFactory<ArrayComparer> {
+implements ComparerFactory<Object[]> {
 
 	private ComparersByTypeFactory comparersByType;
 

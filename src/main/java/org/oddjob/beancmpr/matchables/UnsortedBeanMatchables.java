@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 
 /**
@@ -90,35 +89,7 @@ implements Iterable<MatchableGroup> {
 				final Map.Entry<SimpleMatchKey, List<Matchable>> next = 
 					iterator.next();
 				
-				return new MatchableGroup() {
-					
-					@Override
-					public Iterable<?> getKeys() {
-						return next.getKey().getKeys();
-					}
-					
-					@Override
-					public Iterable<Matchable> getGroup() {
-						return next.getValue();
-					}
-					
-					@Override
-					public MatchableMetaData getMetaData() {
-						return next.getValue().get(0).getMetaData();
-					}
-					
-					@Override
-					public int getSize() {
-						return next.getValue().size();
-					}
-					
-					@Override
-					public String toString() {
-						return MatchableGroup.class.getSimpleName() + 
-							": " + Iterables.toString(getKeys()) + ", size=" + getSize();
-					}
-
-				};
+				return new ListMatchableGroup(next.getValue());
 			}
 			
 			@Override

@@ -1,50 +1,59 @@
 package org.oddjob.beancmpr.beans;
 
-import org.oddjob.arooa.reflect.PropertyAccessor;
-import org.oddjob.beancmpr.Comparer;
-import org.oddjob.beancmpr.SimpleMatchDefinition;
+import org.oddjob.beancmpr.BeanCompareJob2;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
-import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
+import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableComparer;
 import org.oddjob.beancmpr.matchables.MatchableComparerFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
+import org.oddjob.beancmpr.matchables.MultiValueComparer;
+import org.oddjob.beancmpr.matchables.MultiValueComparison;
+import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 
 /**
  * A comparer that is able to compare two beans.
+ * <p>
+ * Note that this comparer implements {@link MultiItemComparer} even though
+ * it will only ever one of each bean. This is so {@link BeanComparerType}
+ * can implement {@link MultiItemComparerFactory} and so be one of
+ * the comparer types that can be provided to {@link BeanCompareJob2} to
+ * allow this job two compare just two objects as well as lists and maps.
  * 
  * @author rob
  *
  */
-public class BeanComparer implements Comparer<Object> {
+public class BeanComparer<T> 
+implements MultiItemComparer<T>, MultiValueComparer<T> {
 
-	private final PropertyAccessor accessor;
-	
-	private final String[] valueProperties;
-	
 	private final BeanPropertyComparerProvider comparerProvider;
 	
-	private MatchableFactory<Object> matchableFactory;
+	private final BeanCmprResultsHandler resultHandler;
 	
+	/** The thing that will create the {@link Matchable}s from the beans. */
+	private final MatchableFactory<T> matchableFactory;
+	
+	/** The thing that will compare the two {@link Matchable}s created by
+	 * the {@link MatchableFactory}. */
 	private MatchableComparer comparer;
 	
 	/**
 	 * Create a new instance.
 	 * 
-	 * @param valueProperties
-	 * @param accessor
+	 * @param matchableFactory
 	 * @param comparerProvider
+	 * @param resultHandler
 	 */
-	public BeanComparer(String[] valueProperties,
-			PropertyAccessor accessor,
-			BeanPropertyComparerProvider comparerProvider) {
-		this.valueProperties = valueProperties;
-		this.accessor = accessor;
+	public BeanComparer(MatchableFactory<T> matchableFactory,
+			BeanPropertyComparerProvider comparerProvider,
+			BeanCmprResultsHandler resultHandler) {
+		this.matchableFactory = matchableFactory;
 		this.comparerProvider = comparerProvider;
+		this.resultHandler = resultHandler;
 	}
 	
 	@Override
-	public BeanComparison compare(Object x, Object y) {
+	public BeanComparison<T> compare(T x, T y) {
 
 		if (x == null || y == null) {
 			throw new NullPointerException("X or Y is null.");
@@ -54,37 +63,26 @@ public class BeanComparer implements Comparer<Object> {
 			throw new IllegalStateException("Parent Comparers Not Yet Injected!");
 		}
 		
-		if (matchableFactory == null) {
-
-			String[] properties = 
-					BeanComparer.this.valueProperties;
-
-			if (properties == null) {
-				properties = accessor.getBeanOverview(
-						x.getClass()).getProperties();
-			}
-
-			matchableFactory = new BeanMatchableFactory(
-					new SimpleMatchDefinition(
-							null, properties, null), 
-							accessor);
-		}
-
 		Matchable matchableX = 
 			matchableFactory.createMatchable(x);
 		Matchable matchableY = 
 			matchableFactory.createMatchable(y);
 
 		if (comparer == null) {
-			comparer = 
-				new MatchableComparerFactory(
+			comparer = new MatchableComparerFactory(
 						comparerProvider).createComparerFor(
 								matchableX.getMetaData(), 
 								matchableY.getMetaData());							
 		}
+
+		MultiValueComparison<Matchable> comparison =
+				comparer.compare(matchableX, matchableY);
 		
-		return new BeanComparison(x, y, 
-				comparer.compare(matchableX, matchableY));
+		if (resultHandler != null) {
+			resultHandler.compared(comparison);
+		}
+
+		return new BeanComparison<T>(x, y, comparison);
 	}					
 	
 	@Override

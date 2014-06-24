@@ -193,10 +193,10 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 		
 		this.counts = rec.compare(
 				getIterableMatchables(inX, 
-					new BeanMatchableFactory(definition, accessor),
+					new BeanMatchableFactory<Object>(definition, accessor),
 					comparerProvider), 
 				getIterableMatchables(inY, 
-					new BeanMatchableFactory(definition, accessor),
+					new BeanMatchableFactory<Object>(definition, accessor),
 					comparerProvider));
 		
 		logger.info("Xs Missing " + getXMissingCount() +

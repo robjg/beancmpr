@@ -5,13 +5,17 @@ import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
-import org.oddjob.beancmpr.Comparer;
+import org.oddjob.beancmpr.SimpleMatchDefinition;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 import org.oddjob.beancmpr.composite.ComparerFactory;
 import org.oddjob.beancmpr.composite.ComparersByNameFactory;
 import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
+import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
+import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
+import org.oddjob.beancmpr.matchables.MatchableFactory;
+import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 
 /**
  * A bean that wraps a {@link BeanComparer}.
@@ -19,10 +23,13 @@ import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
  * @author rob
  *
  */
-public class BeanComparerType implements ArooaSessionAware, 
-		ComparerFactory<Comparer<Object>> {
+public class BeanComparerType<T>
+implements ArooaSessionAware, ComparerFactory<T>, 
+		MultiItemComparerFactory<T> {
 	
-	private String[] matchProperties;
+	private String[] values;
+	
+	private String[] others;
 	
 	private PropertyAccessor accessor;
 	
@@ -36,9 +43,16 @@ public class BeanComparerType implements ArooaSessionAware,
 		this.accessor = session.getTools().getPropertyAccessor();
 	}
 	
-
+	
 	@Override
-	public Comparer<Object> createComparerWith(ComparersByType parentComparersByType) {
+	public BeanComparer<T> createComparerWith(ComparersByType parentComparersByType) {
+		return createComparerWith(parentComparersByType, null);
+	}
+	
+	@Override
+	public BeanComparer<T> createComparerWith(
+			ComparersByType parentComparersByType,
+			BeanCmprResultsHandler resultHandler) {
 		
 		ComparersByNameOrTypeFactory comparerProviderFactory =
 				new ComparersByNameOrTypeFactory(
@@ -48,18 +62,32 @@ public class BeanComparerType implements ArooaSessionAware,
 				comparerProviderFactory.createWith
 					(parentComparersByType);
 		
-		return new BeanComparer(matchProperties, accessor, comparerProvider);
+		MatchableFactory<T> matchableFactory = new BeanMatchableFactory<T>(
+				new SimpleMatchDefinition(
+						null, values, null), 
+						accessor);
+		
+		return new BeanComparer<T>(matchableFactory, 
+				comparerProvider, resultHandler);
 	}
 
-	public String[] getMatchProperties() {
-		return matchProperties;
+	public String[] getValues() {
+		return values;
 	}
 
 	@ArooaAttribute
-	public void setMatchProperties(String[] matchProperties) {
-		this.matchProperties = matchProperties;
+	public void setValues(String[] values) {
+		this.values = values;
 	}
 
+	public String[] getOthers() {
+		return others;
+	}
+	
+	@ArooaAttribute
+	public void setOthers(String[] others) {
+		this.others = others;
+	}
 
 	public ComparersByTypeFactory getComparersByType() {
 		return comparersByType;

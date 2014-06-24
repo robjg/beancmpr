@@ -14,7 +14,7 @@ public interface Matchable {
 	/**
 	 * Get the keys.
 	 * 
-	 * @return The keys.
+	 * @return The keys. Never null.
 	 * 
 	 */
 	public Iterable<?> getKeys();
@@ -22,7 +22,7 @@ public interface Matchable {
 	/**
 	 * Get the values for comparison.
 	 * 
-	 * @return The values to compare.
+	 * @return The values to compare. Never null.
 	 * 
 	 */
 	public Iterable<?> getValues();
@@ -30,7 +30,7 @@ public interface Matchable {
 	/**
 	 * Get the others.
 	 * 
-	 * @return The others.
+	 * @return The others. Never null.
 	 * 
 	 */
 	public Iterable<?> getOthers();

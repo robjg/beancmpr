@@ -36,7 +36,7 @@ public class ComparersByTypeListTest extends TestCase {
 		MyComparer comparer = new MyComparer();
 		
 		test.setSpecialisations(MyType.class.getName(), 
-				new ComparerFactoryAdaptor<Comparer<?>>(comparer));
+				new ComparerFactoryAdaptor<MyType>(comparer));
 		
 		ComparersByType comparersByType = 
 				test.createComparersByTypeWith(null);
@@ -51,7 +51,7 @@ public class ComparersByTypeListTest extends TestCase {
 		ComparersByTypeList test = new ComparersByTypeList();
 		
 		test.setSpecialisations(Integer.class.getName(), 
-				new ComparerFactoryAdaptor<Comparer<?>>(
+				new ComparerFactoryAdaptor<Number>(
 						new NumericComparer()));
 		
 		ComparersByType comparersByType = 
@@ -67,7 +67,7 @@ public class ComparersByTypeListTest extends TestCase {
 		ComparersByTypeList test = new ComparersByTypeList();
 		
 		test.setSpecialisations(Object.class.getName(),
-				new ComparerFactoryAdaptor<Comparer<?>>(new MyComparer()));
+				new ComparerFactoryAdaptor<MyType>(new MyComparer()));
 		
 		try {
 			test.createComparersByTypeWith(null);

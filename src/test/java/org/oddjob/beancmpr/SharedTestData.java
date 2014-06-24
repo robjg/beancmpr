@@ -1,13 +1,18 @@
 package org.oddjob.beancmpr;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SharedTestData {
 
 	public List<Fruit> fruitX = new ArrayList<Fruit>();
 	public List<Fruit> fruitY = new ArrayList<Fruit>();
 		
+	public Map<Long, Fruit> fruitMapX = new HashMap<>();
+	public Map<Long, Fruit> fruitMapY = new HashMap<>();
+	
 	
 	public static class Fruit {
 		
@@ -68,6 +73,7 @@ public class SharedTestData {
 		fruit.setPrice(54.56);
 		
 		fruitX.add(fruit);
+		fruitMapX.put(fruit.getId(), fruit);
 	}
 	
 	{
@@ -79,6 +85,7 @@ public class SharedTestData {
 		fruit.setPrice(23.24);
 		
 		fruitX.add(fruit);
+		fruitMapX.put(fruit.getId(), fruit);
 	}
 	
 	{
@@ -90,6 +97,7 @@ public class SharedTestData {
 		fruit.setPrice(70.95);
 		
 		fruitX.add(fruit);
+		fruitMapX.put(fruit.getId(), fruit);
 	}
 	
 	{
@@ -101,6 +109,7 @@ public class SharedTestData {
 		fruit.setPrice(54.57);
 		
 		fruitY.add(fruit);
+		fruitMapY.put(fruit.getId(), fruit);
 	}
 	
 	{
@@ -112,6 +121,7 @@ public class SharedTestData {
 		fruit.setPrice(23.25);
 		
 		fruitY.add(fruit);
+		fruitMapY.put(fruit.getId(), fruit);
 	}
 	
 	{
@@ -123,5 +133,27 @@ public class SharedTestData {
 		fruit.setPrice(80.05);
 		
 		fruitY.add(fruit);
+		fruitMapY.put(fruit.getId(), fruit);
 	}	
+	
+	public List<Fruit> getFruitX() {
+		return fruitX;
+	}
+	
+	public List<Fruit> getFruitY() {
+		return fruitY;
+	}
+	
+	public Map<Long, Fruit> getFruitMapX() {
+		return fruitMapX;
+	}
+	
+	public Map<Long, Fruit> getFruitMapY() {
+		return fruitMapY;
+	}
+	
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
 }

@@ -1,13 +1,10 @@
 package org.oddjob.beancmpr.beans;
 
-import java.util.Map;
-
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
-import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
 import org.oddjob.beancmpr.composite.ComparerFactory;
@@ -16,14 +13,13 @@ import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
-import org.oddjob.beancmpr.matchables.MapMatchableFactory;
+import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
-import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 
-public class MapComparerType<K, V> 
-implements ComparerFactory<Map<K, V>>, 
-		MultiItemComparerFactory<Map<K , V>>,
+public class IterableBeansComparerType<T> 
+implements ComparerFactory<Iterable<T>>, 
+		MultiItemComparerFactory<Iterable<T>>,
 		ArooaSessionAware {
 
 	private PropertyAccessor accessor;
@@ -48,14 +44,14 @@ implements ComparerFactory<Map<K, V>>,
 	}
 
 	@Override
-	public Comparer<Map<K, V>> createComparerWith(
+	public IterableBeansComparer<T> createComparerWith(
 			ComparersByType parentComparersByType) {
 	
 		return createComparerWith(parentComparersByType, null);
 	}
 		
 	@Override
-	public MultiItemComparer<Map<K, V>> createComparerWith(
+	public IterableBeansComparer<T> createComparerWith(
 			ComparersByType parentComparersByType,
 			BeanCmprResultsHandler resultHandler) {
 		
@@ -66,10 +62,10 @@ implements ComparerFactory<Map<K, V>>,
 		MatchDefinition matchDefinition = new SimpleMatchDefinition(
 				keys, values, others);
 		
-		MatchableFactory<Map.Entry<K, V>> matchableFactory = 
-				new MapMatchableFactory<K, V>(matchDefinition, accessor);
+		MatchableFactory<T> matchableFactory = 
+				new BeanMatchableFactory<T>(matchDefinition, accessor);
 	
-		return new MapComparer<K, V>(matchableFactory, 
+		return new IterableBeansComparer<T>(matchableFactory, 
 				comparerProviderFactory.createWith(parentComparersByType),
 				sorted,
 				resultHandler);

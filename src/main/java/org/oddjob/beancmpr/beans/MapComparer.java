@@ -3,34 +3,54 @@ package org.oddjob.beancmpr.beans;
 import java.util.Map;
 
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
+import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
+import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
 import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
-public class MapComparer 
-implements MultiItemComparer<Map<?, ?>> {
+/**
+ * Compare two maps. The contents of the maps are converted to 
+ * {@link Matchable}s in order to make the comparison.
+ * 
+ * @author rob
+ *
+ * @param <K> The type of the key in the maps.
+ * @param <V> The type of the value in the maps.
+ */
+public class MapComparer<K, V> 
+implements MultiItemComparer<Map<K, V>> {
 
-	private final IterableBeansComparer<Map.Entry<?, ?>> comparer;
+	private final IterableBeansComparer<Map.Entry<K,V>> comparer;
 	
-	public MapComparer(MatchableFactory<Map.Entry<?, ?>> matchableFactory,
+	public MapComparer(MatchableFactory<Map.Entry<K, V>> matchableFactory,
 			BeanPropertyComparerProvider comparerProvider,
 			boolean sorted) {
 		
-		this.comparer = 
-				new IterableBeansComparer<Map.Entry<?, ?>>(
-						matchableFactory, comparerProvider);
+		this(matchableFactory, comparerProvider, sorted, null);
+	}
+	
+	public MapComparer(MatchableFactory<Map.Entry<K, V>> matchableFactory,
+			BeanPropertyComparerProvider comparerProvider,
+			boolean sorted,
+			BeanCmprResultsHandler resultHandler) {
 		
-		comparer.setSorted(sorted);
+		this.comparer = 
+				new IterableBeansComparer<Map.Entry<K,V>>(
+						matchableFactory, comparerProvider,
+						sorted,
+						resultHandler);
 	}
 		
 	@Override
-	public MultiItemComparison<Map<?, ?>> compare(Map<?, ?> x, Map<?, ?> y) {
+	public MultiItemComparison<Map<K, V>> compare(
+			Map<K, V> x, Map<K, V> y) {
 
-		MultiItemComparison<Iterable<? extends Map.Entry<?, ?>>> comparison = 
+		MultiItemComparison<Iterable<Map.Entry<K, V>>> comparison = 
 				comparer.compare(x.entrySet(), y.entrySet());
 		
-		return new DelegatingMultiItemComparison<Map<?,?>>(x, y, comparison);
+		return new DelegatingMultiItemComparison<Map<K,V>>(x, y, comparison);
 	}
 		
 	@Override

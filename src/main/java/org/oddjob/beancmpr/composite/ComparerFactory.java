@@ -2,7 +2,8 @@ package org.oddjob.beancmpr.composite;
 
 import org.oddjob.beancmpr.Comparer;
 
-public interface ComparerFactory<T extends Comparer<?>> {
+public interface ComparerFactory<T> {
 
-	public T createComparerWith(ComparersByType comparersByType);
+	public Comparer<T> createComparerWith(
+			ComparersByType comparersByType);
 }

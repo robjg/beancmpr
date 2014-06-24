@@ -99,7 +99,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
+		BeanMatchableFactory<Fruit> factory = new BeanMatchableFactory<>(
 				definition, accessor);
 		
 		BeanPropertyComparerProvider comparerProvider = new ComparersByNameOrType();
@@ -108,16 +108,16 @@ public class OrderedMatchablesComparerTest extends TestCase {
 				new Fruit("orange", 2),
 				new Fruit("apple", 2));
 		
-		UnsortedBeanMatchables<Object> xs = 
-			new UnsortedBeanMatchables<Object>(fruitX, factory,
+		UnsortedBeanMatchables<Fruit> xs = 
+			new UnsortedBeanMatchables<>(fruitX, factory,
 					comparerProvider);
 		
 		List<Fruit> fruitY = Arrays.asList(
 				new Fruit("banana", 3),
 				new Fruit("kiwi", 3));
 		
-		UnsortedBeanMatchables<Object> ys = 
-			new UnsortedBeanMatchables<Object>(fruitY, factory,
+		UnsortedBeanMatchables<Fruit> ys = 
+			new UnsortedBeanMatchables<>(fruitY, factory,
 					comparerProvider);
 
 		Results results = new Results();
@@ -156,7 +156,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 				
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
+		BeanMatchableFactory<Fruit> factory = new BeanMatchableFactory<>(
 				definition, accessor);
 		
 		BeanPropertyComparerProvider comparerProvider = new ComparersByNameOrType();
@@ -166,8 +166,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 				new Fruit("pear", 4),
 				new Fruit("apple", 6));
 		
-		UnsortedBeanMatchables<Object> xs = 
-			new UnsortedBeanMatchables<Object>(fruitX, factory,
+		UnsortedBeanMatchables<Fruit> xs = 
+			new UnsortedBeanMatchables<>(fruitX, factory,
 					comparerProvider);
 				
 		List<Fruit> fruitY = Arrays.asList(
@@ -175,8 +175,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 				new Fruit("apple", 5),
 				new Fruit("orange", 3));
 				
-		UnsortedBeanMatchables<Object> ys = 
-			new UnsortedBeanMatchables<Object>(fruitY, factory,
+		UnsortedBeanMatchables<Fruit> ys = 
+			new UnsortedBeanMatchables<>(fruitY, factory,
 					comparerProvider);
 
 		Results results = new Results();
@@ -209,7 +209,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
+		BeanMatchableFactory<Fruit> factory = new BeanMatchableFactory<>(
 				definition, accessor);		
 
 		BeanPropertyComparerProvider comparerProvider = new ComparersByNameOrType();
@@ -218,8 +218,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 				new Fruit("apple", 4),
 				new Fruit("banana", 5));
 				
-		UnsortedBeanMatchables<Object> xs = 
-			new UnsortedBeanMatchables<Object>(fruitX, factory,
+		UnsortedBeanMatchables<Fruit> xs = 
+			new UnsortedBeanMatchables<>(fruitX, factory,
 					comparerProvider);
 		
 		
@@ -229,8 +229,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 				new Fruit("banana", 5),
 				new Fruit("orange", 2));
 				
-		UnsortedBeanMatchables<Object> ys = 
-			new UnsortedBeanMatchables<Object>(fruitY, factory,
+		UnsortedBeanMatchables<Fruit> ys = 
+			new UnsortedBeanMatchables<>(fruitY, factory,
 					comparerProvider);
 		
 		Results results = new Results();
@@ -267,7 +267,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
+		BeanMatchableFactory<Fruit> factory = new BeanMatchableFactory<>(
 				definition, accessor);		
 
 		BeanPropertyComparerProvider comparerProvider = new ComparersByNameOrType();
@@ -278,8 +278,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 				new Fruit("kiwi", 5)
 			);
 				
-		UnsortedBeanMatchables<Object> xs = 
-			new UnsortedBeanMatchables<Object>(fruitX, factory,
+		UnsortedBeanMatchables<Fruit> xs = 
+			new UnsortedBeanMatchables<>(fruitX, factory,
 					comparerProvider);
 		
 		
@@ -291,8 +291,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 				new Fruit("apple", 5)
 			);
 				
-		UnsortedBeanMatchables<Object> ys = 
-			new UnsortedBeanMatchables<Object>(fruitY, factory,
+		UnsortedBeanMatchables<Fruit> ys = 
+			new UnsortedBeanMatchables<>(fruitY, factory,
 					comparerProvider);
 		
 		Results results = new Results();
@@ -302,7 +302,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 						null, new DefaultComparersByType()),
 				results);
 		
-		MultiItemComparison<Iterable<? extends MatchableGroup>> multiItemComparison =
+		MultiItemComparison<Iterable<MatchableGroup>> multiItemComparison =
 				test.compare(xs, ys);
 		
 		assertEquals(1, multiItemComparison.getDifferentCount());
@@ -367,7 +367,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
+		BeanMatchableFactory<Fruit> factory = new BeanMatchableFactory<>(
 				definition, accessor);		
 
 		BeanPropertyComparerProvider comparerProvider = new ComparersByNameOrType();
@@ -376,8 +376,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 				new FruitByBigDecimal(new BigDecimal(1), "apple", 4),
 				new FruitByBigDecimal(new BigDecimal(2), "banana", 5));
 				
-		UnsortedBeanMatchables<Object> xs = 
-			new UnsortedBeanMatchables<Object>(fruitX, factory,
+		UnsortedBeanMatchables<Fruit> xs = 
+			new UnsortedBeanMatchables<>(fruitX, factory,
 					comparerProvider);
 		
 		
@@ -385,8 +385,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 				new FruitByInteger(1, "apple", 4),
 				new FruitByInteger(3, "banana", 5));
 				
-		UnsortedBeanMatchables<Object> ys = 
-			new UnsortedBeanMatchables<Object>(fruitY, factory,
+		UnsortedBeanMatchables<Fruit> ys = 
+			new UnsortedBeanMatchables<>(fruitY, factory,
 					comparerProvider);
 		
 		Results results = new Results();
@@ -395,7 +395,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 				new ComparersByNameOrType(),
 				results);
 
-		MultiItemComparison<Iterable<? extends MatchableGroup>> comparison = 
+		MultiItemComparison<Iterable<MatchableGroup>> comparison = 
 				test.compare(xs, ys);
 		
 		assertEquals(2, comparison.getResult());

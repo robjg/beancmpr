@@ -28,8 +28,16 @@ public class SimpleArraysResultHandler implements BeanCmprResultsHandler {
 			return keys;
 		}
 		
+		public Object getKey(int index) {
+			return keys[index];
+		}
+		
 		public Comparison<?>[] getComparisons() {
 			return comparisons;
+		}
+		
+		public Comparison<?> getComparison(int index) {
+			return comparisons[index];
 		}
 	}
 	

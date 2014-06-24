@@ -109,34 +109,7 @@ public class SortedBeanMatchables<T> implements Iterable<MatchableGroup> {
 							"No next - did you call hasNext()?");
 				}
 				
-				return new MatchableGroup() {
-					
-					@Override
-					public int getSize() {
-						return group.size();
-					}
-					
-					@Override
-					public Iterable<?> getKeys() {
-						return group.get(0).getKeys();
-					}
-					
-					@Override
-					public Iterable<Matchable> getGroup() {
-						return group;
-					}
-					
-					@Override
-					public MatchableMetaData getMetaData() {
-						return metaData;
-					}
-					
-					@Override
-					public String toString() {
-						return MatchableGroup.class.getSimpleName() + 
-							", " + Iterables.toString(getKeys());
-					}
-				};
+				return new ListMatchableGroup(group);
 			}
 			
 			@Override

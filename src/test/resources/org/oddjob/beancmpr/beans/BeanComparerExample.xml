@@ -64,7 +64,7 @@
                     <comparersByProperty>
                         <beancmpr:comparers-map>
                             <comparerForProperty>
-                                <beancmpr:bean-comparer key="fruit"/>
+                                <beancmpr:bean-comparer key="fruit" values="type, colour"/>
                             </comparerForProperty>
                         </beancmpr:comparers-map>
                     </comparersByProperty>

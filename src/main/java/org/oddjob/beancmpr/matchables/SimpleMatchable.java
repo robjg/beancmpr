@@ -1,5 +1,6 @@
 package org.oddjob.beancmpr.matchables;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,9 +28,26 @@ public class SimpleMatchable implements Matchable {
 	public SimpleMatchable(List<?> keys, List<?> values, 
 			List<?> others, MatchableMetaData metaData) {
 		
-		this.keys = keys;
-		this.values = values;
-		this.others = others;
+		if (keys == null) {
+			this.keys = Collections.emptyList();
+		}
+		else {
+			this.keys = keys;
+		}
+		
+		if (values == null) {
+			this.values = Collections.emptyList();
+		}
+		else {
+			this.values = values;
+		}
+		
+		if (others == null) {
+			this.others = Collections.emptyList();
+		}
+		else {
+			this.others = others;
+		}
 		
 		this.metaData = metaData; 
 	}

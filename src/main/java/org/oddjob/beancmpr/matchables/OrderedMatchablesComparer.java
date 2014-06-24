@@ -18,7 +18,7 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparison;
  *
  */
 public class OrderedMatchablesComparer 
-implements MultiItemComparer<Iterable<? extends MatchableGroup>> {
+implements MultiItemComparer<Iterable<MatchableGroup>> {
 	
 	private final ComparisonGatheringProcessor matchProcessor;
 	
@@ -49,9 +49,9 @@ implements MultiItemComparer<Iterable<? extends MatchableGroup>> {
 	}
 	
 	@Override
-	public MultiItemComparison<Iterable<? extends MatchableGroup>> compare(
-			Iterable<? extends MatchableGroup> x, 
-			Iterable<? extends MatchableGroup> y)
+	public MultiItemComparison<Iterable<MatchableGroup>> compare(
+			Iterable<MatchableGroup> x, 
+			Iterable<MatchableGroup> y)
 	throws ComparisonStoppedException {
 			
 		Iterator<? extends MatchableGroup> matchablesX = x.iterator();
@@ -123,7 +123,7 @@ implements MultiItemComparer<Iterable<? extends MatchableGroup>> {
 			currentY = null;
 		}
 				
-		return new DelegatingMultiItemComparison<Iterable<? extends MatchableGroup>>(
+		return new DelegatingMultiItemComparison<Iterable<MatchableGroup>>(
 				x, y,
 				matchProcessor);
 	}

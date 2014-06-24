@@ -81,6 +81,8 @@ public class BeanComparerBeanTest extends TestCase {
 		
 		OddjobLookup lookup = new OddjobLookup(oddjob);
 		
+		assertEquals(4, (int) lookup.lookup("compare.comparedCount", 
+				int.class));	
 		assertEquals(2, (int) lookup.lookup("compare.matchedCount", 
 				int.class));	
 		

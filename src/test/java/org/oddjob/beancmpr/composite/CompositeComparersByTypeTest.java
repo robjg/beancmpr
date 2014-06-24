@@ -12,7 +12,7 @@ import junit.framework.TestCase;
 public class CompositeComparersByTypeTest extends TestCase {
 
 	private class OurComparerFactory 
-	implements ComparerFactory<OurComparer> {
+	implements ComparerFactory<Integer> {
 
 		@Override
 		public OurComparer createComparerWith(ComparersByType comparersByType) {

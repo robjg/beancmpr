@@ -1,6 +1,7 @@
 package org.oddjob.beancmpr.matchables;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,13 +17,19 @@ import org.oddjob.beancmpr.MatchDefinition;
  * @author rob
  *
  */
-public class BeanMatchableFactory implements MatchableFactory<Object> {
+public class BeanMatchableFactory<T> implements MatchableFactory<T> {
 
+	/** The name of the matchable value when the value is the entire value 
+	 * of the entry. */
+	public static final String VALUE_NAME = "value";
+	
 	private final MatchDefinition definition;
 	
 	private final PropertyAccessor accessor;
 	
-	private MatchableMetaData metaData;
+	private final MatchableFactory<T> delegate;
+	
+	private volatile MatchableMetaData metaData;
 	
 	/**
 	 * Create a new instance.
@@ -30,32 +37,55 @@ public class BeanMatchableFactory implements MatchableFactory<Object> {
 	 * @param definition
 	 * @param accessor
 	 */
-	public BeanMatchableFactory(MatchDefinition definition,
+	public BeanMatchableFactory(final MatchDefinition definition,
 			PropertyAccessor accessor) {
 		this.definition = definition;
 		this.accessor = accessor;
+		
+		if (definition.getKeyProperties() == null &&
+				definition.getValueProperties() == null) {
+			
+			delegate = new MatchableFactory<T>() {
+				@Override
+				public Matchable createMatchable(T bean) {
+					List<?> keys = null;
+					List<?> comparables = Arrays.asList(bean);
+					List<?> others = strip(bean, definition.getOtherProperties());
+					
+					return new SimpleMatchable(keys, comparables, others, 
+							metaData);
+				}
+			};
+		}
+		else {
+			
+			delegate = new MatchableFactory<T>() {
+				@Override
+				public Matchable createMatchable(T bean) {
+			
+					List<?> keys= strip(bean, definition.getKeyProperties());		
+					List<?> comparables = strip(bean, definition.getValueProperties());
+					List<?> others = strip(bean, definition.getOtherProperties());
+					
+					return new SimpleMatchable(keys, comparables, others, 
+							metaData);
+				}
+			};
+		}
 	}
 	
 	@Override
-	public Matchable createMatchable(Object bean) {
+	public Matchable createMatchable(T bean) {
 
 		if (bean == null) {
-			return null;
+			throw new NullPointerException("Bean is null.");
 		}
 		
 		if (metaData == null) {
-			metaData = new SimpleMatchableMeta(definition, 
-					typesFor(bean));
+			metaData = metaDataFor(bean);
 		}
 		
-		List<?> keys = strip(bean, definition.getKeyProperties());		
-		List<?> comparables = strip(bean, definition.getValueProperties());
-		List<?> others = strip(bean, definition.getOtherProperties());
-		
-		SimpleMatchable matchable = 
-			new SimpleMatchable(keys, comparables, others, metaData);
-		
-		return matchable;
+		return delegate.createMatchable(bean);
 	}
 	
 	/**
@@ -66,14 +96,13 @@ public class BeanMatchableFactory implements MatchableFactory<Object> {
 	 * 
 	 * @return The property values. Never null.
 	 */
-	@SuppressWarnings("unchecked")
-	private <T> List<T> strip(Object bean, Iterable<String> names) {
+	private List<?> strip(Object bean, Iterable<String> names) {
 		
-		List<T> values = new ArrayList<T>();
+		List<Object> values = new ArrayList<Object>();
 		
 		if (names != null) {
 			for (String name : names) {
-				values.add((T) accessor.getProperty(bean, name));
+				values.add(accessor.getProperty(bean, name));
 			}
 		}
 		
@@ -81,24 +110,37 @@ public class BeanMatchableFactory implements MatchableFactory<Object> {
 	}
 	
 	/**
-	 * Create a property to type map.
+	 * Create the meta data.
 	 * 
-	 * @param bean
-	 * @return
+	 * @param bean An object on which to base the meta data.
+	 * 
+	 * @return The meta data. Never null.
 	 */
-	private Map<String, Class<?>> typesFor(Object bean) {
-		
+	private MatchableMetaData metaDataFor(Object bean) {
+				
 		Map<String, Class<?>> types = new HashMap<String, Class<?>>();
 		
 		ArooaClass arooaClass = accessor.getClassName(bean);
 		
 		BeanOverview overview = arooaClass.getBeanOverview(accessor);
-
-		addTypes(definition.getKeyProperties(), overview, types);
-		addTypes(definition.getValueProperties(), overview, types);
-		addTypes(definition.getOtherProperties(), overview, types);
 		
-		return types;
+		if (definition.getValueProperties() == null && 
+				definition.getKeyProperties() == null) {
+			
+			types.put(VALUE_NAME, bean.getClass());
+			addTypes(definition.getOtherProperties(), overview, types);
+			
+			return new SimpleMatchableMeta(null, Arrays.asList(VALUE_NAME), 
+					definition.getOtherProperties(), types);
+		}
+		else {
+
+			addTypes(definition.getKeyProperties(), overview, types);
+			addTypes(definition.getValueProperties(), overview, types);
+			addTypes(definition.getOtherProperties(), overview, types);
+			
+			return new SimpleMatchableMeta(definition, types);
+		}
 	}	
 	
 	/**

@@ -20,7 +20,7 @@ public class ComparersByPropertyOrTypeFactoryTest extends TestCase {
 		numericComparer.setPercentageTolerance(100);
 		
 		list.setSpecialisations("double", 
-				new ComparerFactoryAdaptor<Comparer<?>>(numericComparer));
+				new ComparerFactoryAdaptor<Number>(numericComparer));
 		
 		ComparersByNameOrTypeFactory test = 
 				new ComparersByNameOrTypeFactory(null, list);

@@ -1,7 +1,10 @@
 package org.oddjob.beancmpr.beans;
 
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.matchables.Matchable;
+import org.oddjob.beancmpr.matchables.MatchableComparision;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
 /**
  * The result of comparing two beans.
@@ -9,15 +12,30 @@ import org.oddjob.beancmpr.matchables.MultiValueComparison;
  * @author rob
  *
  */
-public class BeanComparison implements MultiValueComparison<Object> {
+public class BeanComparison<T> 
+implements MultiValueComparison<T>, MultiItemComparison<T> {
 
-	private final Object x;
+	private final T x;
 	
-	private final Object y;
+	private final T y;
+	
 	
 	private final MultiValueComparison<?> delegate;
 	
-	public BeanComparison(Object x, Object y,
+	/**
+	 * Create a new instance.
+	 * <p>
+	 * This instance of a comparison of two beans relies on a delegate for
+	 * the actual results of the comparison. This is because in the 
+	 * current implementation the actual comparison is done by creating
+	 * {@link Matchable} objects from the beans, and so the delegate
+	 * will be an {@link MatchableComparision}.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param delegate
+	 */
+	public BeanComparison(T x, T y,
 				MultiValueComparison<?> delegate) {
 		this.x = x;
 		this.y = y;
@@ -27,12 +45,12 @@ public class BeanComparison implements MultiValueComparison<Object> {
 	
 	
 	@Override
-	public Object getX() {
+	public T getX() {
 		return x;
 	}
 	
 	@Override
-	public Object getY() {
+	public T getY() {
 		return y;
 	}
 	
@@ -49,5 +67,35 @@ public class BeanComparison implements MultiValueComparison<Object> {
 	@Override
 	public Iterable<Comparison<?>> getValueComparisons() {
 		return delegate.getValueComparisons();
+	}
+	
+	@Override
+	public int getComparedCount() {
+		return 1;
+	}
+	
+	@Override
+	public int getBreaksCount() {
+		return getResult() == 0 ? 0 : 1;
+	}
+	
+	@Override
+	public int getDifferentCount() {
+		return getResult() == 0 ? 0 : 1;
+	}
+	
+	@Override
+	public int getMatchedCount() {
+		return getResult() == 0 ? 1 : 0;
+	}
+	
+	@Override
+	public int getXMissingCount() {
+		return 0;
+	}
+	
+	@Override
+	public int getYMissingCount() {
+		return 0;
 	}
 }

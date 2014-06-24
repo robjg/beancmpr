@@ -9,7 +9,7 @@ import java.util.Iterator;
  * @author rob
  *
  */
-public class SimpleMatchKey implements Comparable<SimpleMatchKey>{
+public class SimpleMatchKey implements MatchKey<SimpleMatchKey> {
 
 	private final Iterable<?> keys;
 
@@ -26,10 +26,12 @@ public class SimpleMatchKey implements Comparable<SimpleMatchKey>{
 		this.comparator = comparator;
 	}
 	
+	@Override
 	public Iterable<?> getKeys() {
 		return keys;
 	}
 	
+	@Override
 	public boolean equals(Object other) {
 		if (other == this)
 		    return true;
@@ -40,6 +42,7 @@ public class SimpleMatchKey implements Comparable<SimpleMatchKey>{
 		return compareTo((SimpleMatchKey) other) == 0;
 	}
 
+	@Override
 	public int hashCode() {
 		int hashCode = 1;
 		Iterator<?> i = keys.iterator();
@@ -50,6 +53,7 @@ public class SimpleMatchKey implements Comparable<SimpleMatchKey>{
 		return hashCode;
 	}
 
+	@Override
 	public int compareTo(SimpleMatchKey other) throws ClassCastException {
 		
 		return comparator.compare(keys, other.getKeys());

@@ -11,7 +11,7 @@ import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
  *
  */
 public class IterableComparerType<T> 
-implements ComparerFactory<IterableComparer<T>> {
+implements ComparerFactory<Iterable<? extends T>> {
 
 	private ComparersByTypeFactory comparersByType;
 	
