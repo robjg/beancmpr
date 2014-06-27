@@ -46,7 +46,7 @@ public class SortedBeanMatchablesTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
+		BeanMatchableFactory<Fruit> factory = new BeanMatchableFactory<>(
 				definition, accessor);
 		
 		List<Fruit> fruits = new ArrayList<Fruit>();
@@ -59,7 +59,7 @@ public class SortedBeanMatchablesTest extends TestCase {
 		fruits.add(bean2);
 		fruits.add(bean3);
 		
-		Iterable<MatchableGroup> test = new SortedBeanMatchables<Object>(
+		Iterable<MatchableGroup> test = new SortedBeanMatchables<Fruit>(
 				fruits, factory, new ComparersByNameOrType());
 		
 		MatchableGroup[] groups = Iterables.toArray(
@@ -97,7 +97,7 @@ public class SortedBeanMatchablesTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
+		BeanMatchableFactory<Fruit> factory = new BeanMatchableFactory<>(
 				definition, accessor);
 		
 		List<Fruit> fruits = new ArrayList<Fruit>();
@@ -110,7 +110,7 @@ public class SortedBeanMatchablesTest extends TestCase {
 		fruits.add(bean2);
 		fruits.add(bean3);
 		
-		Iterable<MatchableGroup> test = new SortedBeanMatchables<Object>(
+		Iterable<MatchableGroup> test = new SortedBeanMatchables<Fruit>(
 				fruits, factory, new ComparersByNameOrType());
 		
 		MatchableGroup[] groups = Iterables.toArray(
@@ -145,7 +145,7 @@ public class SortedBeanMatchablesTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
+		BeanMatchableFactory<Fruit> factory = new BeanMatchableFactory<>(
 				definition, accessor);
 		
 		List<Fruit> fruits = new ArrayList<Fruit>();
@@ -158,7 +158,7 @@ public class SortedBeanMatchablesTest extends TestCase {
 		fruits.add(bean2);
 		fruits.add(bean3);
 		
-		Iterable<MatchableGroup> test = new SortedBeanMatchables<Object>(
+		Iterable<MatchableGroup> test = new SortedBeanMatchables<Fruit>(
 				fruits, factory, new ComparersByNameOrType());
 		
 		Iterator<MatchableGroup> iter = test.iterator();

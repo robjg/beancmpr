@@ -19,7 +19,7 @@ public class IterableComparerTest extends TestCase {
 		
 		Iterable<String> y = Arrays.asList("b", "c", "a");
 		
-		MultiItemComparison<Iterable<? extends String>> comparison = 
+		MultiItemComparison<Iterable<String>> comparison = 
 				test.compare(x, y);
 		
 		assertEquals(0, comparison.getResult());
@@ -38,7 +38,7 @@ public class IterableComparerTest extends TestCase {
 		
 		Iterable<String> y = Arrays.asList("b", "c", "d");
 		
-		MultiItemComparison<Iterable<? extends String>> comparison = 
+		MultiItemComparison<Iterable<String>> comparison = 
 				test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
@@ -57,7 +57,7 @@ public class IterableComparerTest extends TestCase {
 		
 		Iterable<String> y = Arrays.asList("b", "c", "a");
 		
-		MultiItemComparison<Iterable<? extends String>> comparison = 
+		MultiItemComparison<Iterable<String>> comparison = 
 				test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
@@ -76,7 +76,7 @@ public class IterableComparerTest extends TestCase {
 		
 		Iterable<String> y = Arrays.asList("b", "c");
 		
-		MultiItemComparison<Iterable<? extends String>> comparison = 
+		MultiItemComparison<Iterable<String>> comparison = 
 				test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);
@@ -91,14 +91,14 @@ public class IterableComparerTest extends TestCase {
 	 */
 	public void testGenericSanityCheck() {
 		
-		IterableComparer<Number> test = 
-				new IterableComparer<Number>(new DefaultComparersByType());
+		IterableComparer<Integer> test = 
+				new IterableComparer<Integer>(new DefaultComparersByType());
 		
 		Iterable<Integer> x = Arrays.asList(4, 1 , 9);
 		
 		Iterable<Integer> y = Arrays.asList(1 , 9, 5);
 		
-		MultiItemComparison<Iterable<? extends Number>> comparison = 
+		MultiItemComparison<Iterable<Integer>> comparison = 
 				test.compare(x, y);
 		
 		assertEquals(false, comparison.getResult() == 0);

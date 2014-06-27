@@ -1,15 +1,20 @@
 package org.oddjob.beancmpr;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
+import org.oddjob.beancmpr.beans.BeanArrayComparerType;
+import org.oddjob.beancmpr.beans.BeanComparerType;
+import org.oddjob.beancmpr.beans.IterableBeansComparerType;
+import org.oddjob.beancmpr.beans.MapComparerType;
 import org.oddjob.beancmpr.composite.DefaultComparersByType;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
-import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
+import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
 import org.oddjob.beancmpr.results.BeanCreatingResultHandler;
 import org.oddjob.beancmpr.results.PlaysWithBeanbus;
@@ -91,6 +96,13 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 	final public void run() {
 		
 		
+		if (inX == null) {
+			throw new NullPointerException("No X");
+		}
+		if (inY == null) {
+			throw new NullPointerException("No Y");
+		}		
+		
 		if (to != null) {
 			
 			if (results == null) {
@@ -108,9 +120,14 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 			}
 		}
 		
+		MultiItemComparerFactory<T> comparerFactory = this.comparer;
+		if (comparerFactory == null) {
+			comparerFactory = inferComparerFactory();
+		}
+		
 		MultiItemComparer<T> comparer = this.comparer.createComparerWith(
 				new DefaultComparersByType(), results);
-				
+		
 		this.counts = comparer.compare(inX, inY);
 		
 		logger.info("Xs Missing " + getXMissingCount() +
@@ -118,6 +135,42 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 				", Different " + getDifferentCount() + 
 				", Same " + getMatchedCount());
 	}	
+	
+	@SuppressWarnings("unchecked")
+	protected MultiItemComparerFactory<T> inferComparerFactory() {
+
+		if (inX instanceof Map && inY instanceof Map) {
+			
+			MapComparerType<Object, Object> comparerFactory = 
+					new MapComparerType<>();
+			comparerFactory.setArooaSession(session);
+			
+			return (MultiItemComparerFactory<T>) comparerFactory;
+		}
+		
+		if (inX instanceof Iterable && inY instanceof Iterable) {
+			
+			IterableBeansComparerType<Iterable<?>> comparerFactory = 
+					new IterableBeansComparerType<>();
+			comparerFactory.setArooaSession(session);
+			
+			return (MultiItemComparerFactory<T>) comparerFactory;
+		}
+		
+		if (inX.getClass().isArray() && inY.getClass().isArray()) {
+			
+			BeanArrayComparerType<Object[]> comparerFactory = 
+					new BeanArrayComparerType<>();
+			comparerFactory.setArooaSession(session);
+			
+			return (MultiItemComparerFactory<T>) comparerFactory;
+		}
+		
+		BeanComparerType<T> comparerFactory = new BeanComparerType<>();
+		comparerFactory.setArooaSession(session);
+		
+		return comparerFactory;
+	}
 	
 	public String getName() {
 		return name;

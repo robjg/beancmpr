@@ -50,8 +50,8 @@ public class MatchableComparerFactory {
 			throw new NullPointerException("MetaData must not be null.");
 		}
 	
-		final List<InferredTypeCompare<?>> compares = 
-				new ArrayList<InferredTypeCompare<?>>();
+		final List<NullSafeComparer<?>> compares = 
+				new ArrayList<NullSafeComparer<?>>();
 		
 		for (String propertyName: xMetaData.getValueProperties()) {
 
@@ -63,7 +63,12 @@ public class MatchableComparerFactory {
 			Comparer<?> comparer = comparerProvider.comparerFor(propertyName, 
 					propertyType);
 			
-			compares.add(createWithinferdType(comparer, propertyName));
+			if (comparer == null) {
+				throw new NullPointerException("No comparer for name " +
+						propertyName + ", type " + propertyType);
+			}
+			
+			compares.add(createWithInferdType(comparer, propertyName));
 		}		
 		
 		return new MatchableComparer() {
@@ -78,16 +83,16 @@ public class MatchableComparerFactory {
 
 				List<Comparison<?>> comparisons = new ArrayList<Comparison<?>>();		
 				
-				ValuePairIterable<InferredTypeCompare<?>, ?> values = 
-					new ValuePairIterable<InferredTypeCompare<?>, Object>(
+				ValuePairIterable<NullSafeComparer<?>, ?> values = 
+					new ValuePairIterable<NullSafeComparer<?>, Object>(
 						compares, x.getValues(), y.getValues());
 			
-				for (ValuePairIterable.ValuePair<InferredTypeCompare<?>, ?> set : values) {
+				for (ValuePairIterable.ValuePair<NullSafeComparer<?>, ?> set : values) {
 
 					Object valueX = set.getValueX();
 					Object valueY = set.getValueY();
 					
-					InferredTypeCompare<?> common = set.getCommon();
+					NullSafeComparer<?> common = set.getCommon();
 					
 					Comparison<?> comparison = 
 						common.castAndCompare(valueX, valueY);
@@ -106,10 +111,10 @@ public class MatchableComparerFactory {
 		};
 	}
 
-	private static <T> InferredTypeCompare<T> createWithinferdType(
+	private static <T> NullSafeComparer<T> createWithInferdType(
 			Comparer<T> comparer, String propertyName) {
 		
-		return new InferredTypeCompare<T>(comparer, propertyName);
+		return new NullSafeComparer<T>(comparer, propertyName);
 	}
 	
 }

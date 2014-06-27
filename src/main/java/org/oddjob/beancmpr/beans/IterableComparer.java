@@ -7,11 +7,11 @@ import java.util.List;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.composite.ComparersByType;
-import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
 import org.oddjob.beancmpr.multiitem.MultiItemComparisonCountsImutable;
+import org.oddjob.beancmpr.multiitem.MultiItemComparisonFromCounts;
 
 /**
  * Compares to {@code Iterable}s.
@@ -20,7 +20,7 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparisonCountsImutable;
  *
  */
 public class IterableComparer<T> 
-implements MultiItemComparer<Iterable<? extends T>>{
+implements MultiItemComparer<Iterable<T>>{
 
 	private final ComparersByType comparers;
 	
@@ -32,8 +32,8 @@ implements MultiItemComparer<Iterable<? extends T>>{
 	}
 	
 	@Override
-	public MultiItemComparison<Iterable<? extends T>> compare(
-			Iterable<? extends T> x, Iterable<? extends T> y) {
+	public MultiItemComparison<Iterable<T>> compare(
+			Iterable<T> x, Iterable<T> y) {
 		
 		if (x == null || y == null) {
 			throw new NullPointerException("X or Y is null.");
@@ -105,7 +105,7 @@ implements MultiItemComparer<Iterable<? extends T>>{
 						xsMissing + ysMissing + different, 
 						xsMissing + ysMissing + different + same);
 		
-		return new DelegatingMultiItemComparison<Iterable<? extends T>>(
+		return new MultiItemComparisonFromCounts<Iterable<T>>(
 				x, y, counts);
 	}
 	

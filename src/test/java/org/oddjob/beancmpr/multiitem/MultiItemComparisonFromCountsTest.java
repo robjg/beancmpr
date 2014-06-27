@@ -1,12 +1,12 @@
-package org.oddjob.beancmpr.comparers;
-
-import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
-import org.oddjob.beancmpr.multiitem.MultiItemComparison;
-import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
+package org.oddjob.beancmpr.multiitem;
 
 import junit.framework.TestCase;
 
-public class DelegatingMultiItemComparisonTest extends TestCase {
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
+import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
+import org.oddjob.beancmpr.multiitem.MultiItemComparisonFromCounts;
+
+public class MultiItemComparisonFromCountsTest extends TestCase {
 
 	private class Stats implements MultiItemComparisonCounts {
 		
@@ -66,26 +66,26 @@ public class DelegatingMultiItemComparisonTest extends TestCase {
 	public void testIsEqual() {
 		
 		MultiItemComparison<Object> test1 = 
-				new DelegatingMultiItemComparison<Object>(null, null, 
+				new MultiItemComparisonFromCounts<Object>(null, null, 
 						new Stats(0, 0, 0, 3));
 		
 		assertEquals(0, test1.getResult());
 		
 		MultiItemComparison<Object> test2 = 
-				new DelegatingMultiItemComparison<Object>(null, null, 
+				new MultiItemComparisonFromCounts<Object>(null, null, 
 						new Stats(1, 0, 0, 3));
 		
 		assertTrue(new Integer(test2.getResult()).toString(), 
 				test2.getResult() > 0);
 		
 		MultiItemComparison<Object> test3 = 
-				new DelegatingMultiItemComparison<Object>(null, null, 
+				new MultiItemComparisonFromCounts<Object>(null, null, 
 						new Stats(0, 1, 0, 3));
 		
 		assertTrue("Result is "+ test3.getResult(), test3.getResult() != 0);
 		
 		MultiItemComparison<Object> test4 = 
-				new DelegatingMultiItemComparison<Object>(null, null, 
+				new MultiItemComparisonFromCounts<Object>(null, null, 
 						new Stats(0, 0, 1, 3));
 		
 		assertTrue(test4.getResult() != 0);		
@@ -95,7 +95,7 @@ public class DelegatingMultiItemComparisonTest extends TestCase {
 	public void testNumbers() {
 		
 		MultiItemComparison<Object> test = 
-				new DelegatingMultiItemComparison<Object>(null, null, 
+				new MultiItemComparisonFromCounts<Object>(null, null, 
 						new Stats(1, 2, 3, 4));
 		
 		assertEquals(1, test.getXMissingCount());

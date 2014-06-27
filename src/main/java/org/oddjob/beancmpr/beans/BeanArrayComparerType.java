@@ -1,29 +1,27 @@
 package org.oddjob.beancmpr.beans;
 
+import java.util.Arrays;
+
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
-import org.oddjob.arooa.reflect.PropertyAccessor;
-import org.oddjob.beancmpr.MatchDefinition;
-import org.oddjob.beancmpr.SimpleMatchDefinition;
 import org.oddjob.beancmpr.composite.ComparerFactory;
 import org.oddjob.beancmpr.composite.ComparersByNameFactory;
-import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
-import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
-import org.oddjob.beancmpr.matchables.MatchableFactory;
+import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
-public class IterableBeansComparerType<T> 
-implements ComparerFactory<Iterable<T>>,
-		MultiItemComparerFactory<Iterable<T>>,
+public class BeanArrayComparerType<T> 
+implements ComparerFactory<T[]>,
+		MultiItemComparerFactory<T[]>,
 		ArooaSessionAware {
 
-	private PropertyAccessor accessor;
+	private ArooaSession session;
 	
 	private String[] keys;
 	
@@ -41,46 +39,66 @@ implements ComparerFactory<Iterable<T>>,
 	@ArooaHidden
 	@Override
 	public void setArooaSession(ArooaSession session) {
-		this.accessor = session.getTools().getPropertyAccessor();
+		this.session = session;
 	}
 
+	
 	@Override
-	public MultiItemComparer<Iterable<T>> createComparerWith(
+	public MultiItemComparer<T[]> createComparerWith(
 			ComparersByType parentComparersByType) {
 	
 		if (keys == null && values == null && others == null) {
-
-			IterableComparerType<T> iterableComparer = 
-					new IterableComparerType<>();
-			iterableComparer.setComparersByType(comparersByType);
 			
-			return iterableComparer.createComparerWith(parentComparersByType);
-		}
-		else {
+			ArrayComparerType<T> arrayComparerType = new ArrayComparerType<>();
+			arrayComparerType.setComparersByType(comparersByType);
 			
-			return createComparerWith(parentComparersByType, null);
+			return arrayComparerType.createComparerWith(parentComparersByType);
 		}
+		
+		return createComparerWith(parentComparersByType, null);
 	}
 		
 	@Override
-	public IterableBeansComparer<T> createComparerWith(
+	public MultiItemComparer<T[]> createComparerWith(
 			ComparersByType parentComparersByType,
 			BeanCmprResultsHandler resultHandler) {
 		
-		ComparersByNameOrTypeFactory comparerProviderFactory =
-				new ComparersByNameOrTypeFactory(
-						comparersByName, comparersByType);
 		
-		MatchDefinition matchDefinition = new SimpleMatchDefinition(
-				keys, values, others);
+		IterableBeansComparerType<T> iterableBeansComparerType = 
+				new IterableBeansComparerType<>();
+				
+		if (session != null) {
+			iterableBeansComparerType.setArooaSession(session);
+		}
 		
-		MatchableFactory<T> matchableFactory = 
-				new BeanMatchableFactory<T>(matchDefinition, accessor);
+		iterableBeansComparerType.setComparersByName(comparersByName);
+		iterableBeansComparerType.setComparersByType(comparersByType);
+		iterableBeansComparerType.setKeys(keys);
+		iterableBeansComparerType.setValues(values);
+		iterableBeansComparerType.setOthers(others);
+		iterableBeansComparerType.setSorted(sorted);
+		
+		final IterableBeansComparer<T> iterableBeansComparer = 
+				iterableBeansComparerType.createComparerWith(
+						parentComparersByType, resultHandler);
 	
-		return new IterableBeansComparer<T>(matchableFactory, 
-				comparerProviderFactory.createWith(parentComparersByType),
-				sorted,
-				resultHandler);
+		return new MultiItemComparer<T[]>() {
+			@Override
+			public MultiItemComparison<T[]> compare(T[] x, T[] y) {
+				
+				Iterable<T> xIt = Arrays.asList(x);
+				Iterable<T> yIt = Arrays.asList(y);
+				
+				return new DelegatingMultiItemComparison<
+						T[]>(x, y, iterableBeansComparer.compare(xIt, yIt));
+			}
+			
+			@Override
+			public Class<?> getType() {
+				return Object[].class;
+			}
+		};
+		
 	}
 	
 	public String[] getKeys() {

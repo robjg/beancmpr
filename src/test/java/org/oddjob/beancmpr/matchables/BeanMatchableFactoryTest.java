@@ -287,4 +287,35 @@ public class BeanMatchableFactoryTest extends TestCase {
 		assertEquals("apple", values[0]);
 		assertEquals(42, values[1]);
 	}
+	
+	public void testGivenNoPropertiesSingleValueCreated() {
+		
+		MatchDefinition definition = new SimpleMatchDefinition(
+				null, null, null);
+		
+		BeanMatchableFactory<String> test = 
+				new BeanMatchableFactory<String>(definition, null);
+		
+		Matchable matchable = test.createMatchable("red");
+		
+		Object[] values = Iterables.toArray(matchable.getValues(), Object.class);
+		
+		assertEquals("red", values[0]);
+		assertEquals(1, values.length);
+			
+		MatchableMetaData meta = matchable.getMetaData();
+
+		String[] valueProperties = Iterables.toArray(
+				meta.getValueProperties(), String.class);
+		
+		assertEquals("value", valueProperties[0]);
+		assertEquals(1, valueProperties.length);
+		
+		assertEquals(String.class, meta.getPropertyType("value"));
+		
+		assertEquals(0, Iterables.toArray(
+				meta.getKeyProperties()).length);
+		assertEquals(0, Iterables.toArray(
+				meta.getOtherProperties()).length);
+	}
 }

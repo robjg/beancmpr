@@ -20,6 +20,8 @@
     <arooa:bean-def element='comparers-map'
       className='org.oddjob.beancmpr.composite.ComparersByNameType'/>
       
+    <arooa:bean-def element='array-comparer'
+      className='org.oddjob.beancmpr.beans.IterableBeansComparerType'/>
     <arooa:bean-def element='bean-comparer'
       className='org.oddjob.beancmpr.beans.BeanComparerType'/>
     <arooa:bean-def element='comparable-comparer'

@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.beans.BeanArrayComparerType;
 import org.oddjob.beancmpr.comparers.NumericComparer;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeList;
@@ -62,7 +63,7 @@ public class ComparersByTypeListTest extends TestCase {
 		assertEquals(Number.class, comparer.getType());
 	}
 	
-	public void testregisterBySubTypeFails() {
+	public void testRegisterBySubTypeFails() {
 		
 		ComparersByTypeList test = new ComparersByTypeList();
 		
@@ -74,7 +75,31 @@ public class ComparersByTypeListTest extends TestCase {
 			fail("Should fail.");
 		} catch (IllegalArgumentException e) {
 			// expected
+			assertEquals("Can't add specialised comparer for " + 
+					MyType.class + " as it is not assignable from " +
+					Object.class,
+					e.getMessage());
 		}
 		
+	}
+	
+	public void testProvidesArrayComparerForArraysOfElementSubType() {
+		
+		ComparersByTypeList test = new ComparersByTypeList();
+		
+		
+		test.setComparers(0, new BeanArrayComparerType<>());
+		
+		ComparersByType comparers = test.createComparersByTypeWith(
+				new DefaultComparersByType());
+		
+		Comparer<String[]> comparer = comparers.comparerFor(String[].class);
+		
+		assertNotNull(comparer);
+		
+		Comparison<String[]> comparision = comparer.compare(
+				new String[] { "green" }, new String[] { "green" });
+		
+		assertEquals(0, comparision.getResult());
 	}
 }

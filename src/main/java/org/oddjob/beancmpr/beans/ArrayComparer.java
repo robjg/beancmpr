@@ -13,8 +13,8 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparison;
  * @author rob
  *
  */
-public class ArrayComparer 
-implements MultiItemComparer<Object[]>{
+public class ArrayComparer<T> 
+implements MultiItemComparer<T[]>{
 
 	private final ComparersByType comparers;
 
@@ -26,19 +26,22 @@ implements MultiItemComparer<Object[]>{
 	}
 	
 	@Override
-	public MultiItemComparison<Object[]> compare(final Object[] x, final Object[] y) {
+	public MultiItemComparison<T[]> compare(final T[] x, final T[] y) {
 		
 		if (x == null || y == null) {
 			throw new NullPointerException("X or Y is null.");
 		}
 	
-		IterableComparer<Object> iterableComparer = 
-				new IterableComparer<Object>(comparers);
+		IterableComparer<T> iterableComparer = 
+				new IterableComparer<T>(comparers);
 		
-		final MultiItemComparison<Iterable<? extends Object>> iterableComparison = 
-				iterableComparer.compare(Arrays.asList(x), Arrays.asList(y));
+		Iterable<T> itX = Arrays.asList(x);
+		Iterable<T>	itY = Arrays.asList(y);
 		
-		return new DelegatingMultiItemComparison<Object[]>(x, y, iterableComparison);
+		final MultiItemComparison<Iterable<T>> iterableComparison = 
+				iterableComparer.compare(itX, itY);
+		
+		return new DelegatingMultiItemComparison<T[]>(x, y, iterableComparison);
 	}
 	
 	@Override

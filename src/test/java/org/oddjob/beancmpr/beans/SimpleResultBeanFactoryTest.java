@@ -67,7 +67,6 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 				Arrays.asList("green"),
 				new MyMetaData());
 
-		@SuppressWarnings("unchecked")
 		Iterable<? extends Comparison<?>> comparisons =
 				Arrays.asList(new EqualityComparison<Integer>(
 						new Integer(2), new Integer(3)));
@@ -119,7 +118,6 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 				Arrays.asList("green"),
 				new MyMetaData());
 		
-		@SuppressWarnings("unchecked")
 		Iterable<? extends Comparison<?>> comparisons =
 				Arrays.asList(new EqualityComparison<Object>("A", "A"));
 		

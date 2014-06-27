@@ -185,4 +185,22 @@ public class BeanComparerTypeTest extends TestCase {
 		assertEquals(1, comparisons[0].getResult());
 		assertEquals(0, comparisons[1].getResult());
 	}
+	
+	public void testWhenCompareValuesAreNullThrowNullPointerException() {
+		
+		ArooaSession session = new StandardArooaSession();
+		
+		BeanComparerType<Fruit> test = new BeanComparerType<>();
+		test.setArooaSession(session);
+		
+		BeanComparer<Fruit> comparer = test.createComparerWith(null);
+		
+		try {
+			comparer.compare(null, null);
+			fail("Should throw NPE.");
+		}
+		catch (NullPointerException e) {
+			// expected
+		}
+	}
 }

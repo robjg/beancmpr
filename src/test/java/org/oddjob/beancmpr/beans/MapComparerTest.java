@@ -35,13 +35,15 @@ public class MapComparerTest extends TestCase {
 		MatchDefinition definition = new SimpleMatchDefinition(
 				null, null, null);
 		
-		MapMatchableFactory matchableFactory = new MapMatchableFactory(definition, accessor);
+		MapMatchableFactory<String, Integer> matchableFactory = 
+				new MapMatchableFactory<>(definition, accessor);
 		
-		MapComparer test = new MapComparer(matchableFactory, 
+		MapComparer<String, Integer> test = new MapComparer<>(matchableFactory, 
 				new ComparersByNameOrTypeFactory().createWith(null),
 				false);
 		
-		MultiItemComparison<Map<?, ?>> result = test.compare(map1, map2);
+		MultiItemComparison<Map<String, Integer>> result = 
+				test.compare(map1, map2);
 
 		assertEquals(3, result.getResult());
 		

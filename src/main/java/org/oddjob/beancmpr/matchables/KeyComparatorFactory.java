@@ -42,8 +42,8 @@ public class KeyComparatorFactory {
 	public Comparator<Iterable<?>> createComparerFor(
 			MatchableMetaData xMetaData, MatchableMetaData yMetaData) {
 		
-		final List<InferredTypeCompare<?>> compares = 
-				new ArrayList<InferredTypeCompare<?>>();
+		final List<NullSafeComparer<?>> compares = 
+				new ArrayList<NullSafeComparer<?>>();
 		
 		if (xMetaData == null || yMetaData == null) {
 			throw new NullPointerException("Matchable Meta Data must not be null.");
@@ -76,16 +76,16 @@ public class KeyComparatorFactory {
 					throw new NullPointerException("Keys must not be null.");
 				}
 
-				ValuePairIterable<InferredTypeCompare<?>, ?> values = 
-					new ValuePairIterable<InferredTypeCompare<?>, Object>(
+				ValuePairIterable<NullSafeComparer<?>, ?> values = 
+					new ValuePairIterable<NullSafeComparer<?>, Object>(
 						compares, x, y);
 			
-				for (ValuePairIterable.ValuePair<InferredTypeCompare<?>, ?> set : values) {
+				for (ValuePairIterable.ValuePair<NullSafeComparer<?>, ?> set : values) {
 
 					Object valueX = set.getValueX();
 					Object valueY = set.getValueY();
 					
-					InferredTypeCompare<?> common = set.getCommon();
+					NullSafeComparer<?> common = set.getCommon();
 					
 					Comparison<?> comparison = 
 						common.castAndCompare(valueX, valueY);
@@ -101,10 +101,10 @@ public class KeyComparatorFactory {
 		};
 	}
 
-	private static <T> InferredTypeCompare<T> createWithinferdType(
+	private static <T> NullSafeComparer<T> createWithinferdType(
 			Comparer<T> comparer, String propertyName) {
 		
-		return new InferredTypeCompare<T>(comparer, propertyName);
+		return new NullSafeComparer<T>(comparer, propertyName);
 	}
 	
 }

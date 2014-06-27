@@ -1,5 +1,7 @@
 package org.oddjob.beancmpr.beans;
 
+import java.util.Arrays;
+
 import junit.framework.TestCase;
 
 import org.oddjob.arooa.ArooaSession;
@@ -7,13 +9,14 @@ import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.SharedTestData;
 import org.oddjob.beancmpr.SharedTestData.Fruit;
 import org.oddjob.beancmpr.composite.DefaultComparersByType;
+import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 import org.oddjob.beancmpr.results.MatchResultType;
 import org.oddjob.beancmpr.results.RowSetResultHandler;
 
 public class IterableBeansComparerTypeTest extends TestCase {
 	
-	public void testUniqueKeyExample() {
+	public void testCompareListsOfFruitBeansWithTypeAsKeyAndValuesToCompare() {
 		
 		ArooaSession session = new StandardArooaSession();
 		
@@ -88,7 +91,7 @@ public class IterableBeansComparerTypeTest extends TestCase {
 		assertEquals(false, results.next());
 	}
 	
-	public void testKeyedOnTypeExample() {
+	public void testCompareListOfFruitKeyedOnNoneUniqueTypeWithAdditionalValue() {
 		
 		ArooaSession session = new StandardArooaSession();
 		
@@ -103,7 +106,7 @@ public class IterableBeansComparerTypeTest extends TestCase {
 		test.setValues(new String[] { "quantity" });
 		test.setOthers(new String[] { "colour" });
 		
-		IterableBeansComparer<Fruit> comparer = test.createComparerWith(
+		MultiItemComparer<Iterable<Fruit>> comparer = test.createComparerWith(
 				new DefaultComparersByType());
 		
 		MultiItemComparison<Iterable<Fruit>> comparison = 
@@ -116,5 +119,35 @@ public class IterableBeansComparerTypeTest extends TestCase {
 		assertEquals(0, comparison.getXMissingCount());
 		assertEquals(0, comparison.getYMissingCount());
 		
+	}
+	
+	public void testCompareEqualListsOfStrings() {
+		
+		ArooaSession session = new StandardArooaSession();
+		
+		Iterable<String> x = Arrays.asList("red", "blue", "green");
+		
+		Iterable<String> y = Arrays.asList("green", "red", "blue");
+		
+		IterableBeansComparerType<String> test = 
+				new IterableBeansComparerType<>();
+		
+		test.setArooaSession(session);
+		
+		MultiItemComparer<Iterable<String>> comparer = test.createComparerWith(
+				new DefaultComparersByType());
+		
+		MultiItemComparison<Iterable<String>> comparison = 
+				comparer.compare(x, y);
+		
+		assertEquals(0, comparison.getResult());
+		assertEquals("Equal, 3 matched", comparison.getSummaryText());
+		
+		assertEquals(3, comparison.getComparedCount());
+		assertEquals(0, comparison.getBreaksCount());
+		assertEquals(3, comparison.getMatchedCount());
+		assertEquals(0, comparison.getDifferentCount());
+		assertEquals(0, comparison.getXMissingCount());
+		assertEquals(0, comparison.getYMissingCount());
 	}
 }

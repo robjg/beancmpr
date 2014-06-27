@@ -47,7 +47,7 @@ public class ComparersByPropertyOrTypeTest extends TestCase {
 		
 		ArooaSession session = new StandardArooaSession();
 		
-		BeanComparerType beanComparer = new BeanComparerType();
+		BeanComparerType<Object> beanComparer = new BeanComparerType<>();
 		beanComparer.setValues(new String[] { "quantity" }); 
 		beanComparer.setArooaSession(session);
 		

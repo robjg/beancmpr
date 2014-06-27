@@ -54,10 +54,10 @@ implements MultiItemComparer<Iterable<T>> {
 		this.sorted = sorted;
 		this.resultsHandler = resultsHandler;
 	}	
-	
+		
 	@Override
-	public MultiItemComparison<Iterable<T>> compare(Iterable<T> x, 
-			Iterable<T> y) {
+	public MultiItemComparison<Iterable<T>> compare(
+			Iterable<T> x, Iterable<T> y) {
 
 		OrderedMatchablesComparer rec = new OrderedMatchablesComparer(
 				comparerProvider,

@@ -10,13 +10,13 @@ import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
  * @author rob
  *
  */
-public class ArrayComparerType 
-implements ComparerFactory<Object[]> {
+public class ArrayComparerType<T> 
+implements ComparerFactory<T[]> {
 
 	private ComparersByTypeFactory comparersByType;
-
+	
 	@Override
-	public ArrayComparer createComparerWith(
+	public ArrayComparer<T> createComparerWith(
 			ComparersByType defaultComparersByType) {
 		
 		if (defaultComparersByType == null) {
@@ -33,7 +33,7 @@ implements ComparerFactory<Object[]> {
 						defaultComparersByType);
 		}
 		
-		return new ArrayComparer(comparersByType);
+		return new ArrayComparer<T>(comparersByType);
 	}	
 	
 	public void setComparersByType(ComparersByTypeFactory comparersByType) {

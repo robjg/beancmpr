@@ -82,9 +82,9 @@ public class ComparersByTypeList implements ComparersByTypeFactory {
 			}
 			else {
 				throw new IllegalArgumentException(
-						"Can't add a comparer for " +
+						"Can't add specialised comparer for " +
 						comparer.getType() + 
-						" as it is not type compatible with " + 
+						" as it is not assignable from " + 
 						theClass);
 			}
 		}

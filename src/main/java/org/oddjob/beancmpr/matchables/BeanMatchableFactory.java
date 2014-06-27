@@ -120,21 +120,26 @@ public class BeanMatchableFactory<T> implements MatchableFactory<T> {
 				
 		Map<String, Class<?>> types = new HashMap<String, Class<?>>();
 		
-		ArooaClass arooaClass = accessor.getClassName(bean);
-		
-		BeanOverview overview = arooaClass.getBeanOverview(accessor);
-		
 		if (definition.getValueProperties() == null && 
 				definition.getKeyProperties() == null) {
 			
 			types.put(VALUE_NAME, bean.getClass());
-			addTypes(definition.getOtherProperties(), overview, types);
+			
+			if (definition.getOtherProperties() != null) {
+				ArooaClass arooaClass = accessor.getClassName(bean);
+				BeanOverview overview = arooaClass.getBeanOverview(accessor);
+				
+				addTypes(definition.getOtherProperties(), overview, types);				
+			}
 			
 			return new SimpleMatchableMeta(null, Arrays.asList(VALUE_NAME), 
 					definition.getOtherProperties(), types);
 		}
 		else {
 
+			ArooaClass arooaClass = accessor.getClassName(bean);
+			BeanOverview overview = arooaClass.getBeanOverview(accessor);
+			
 			addTypes(definition.getKeyProperties(), overview, types);
 			addTypes(definition.getValueProperties(), overview, types);
 			addTypes(definition.getOtherProperties(), overview, types);

@@ -16,32 +16,17 @@ implements MultiItemComparison<T> {
 	
 	private final T y;
 	
-	private final MultiItemComparisonCounts multiItemStats;
-	
-	private final int result;
-	
-	private final String summaryText;
+	private final MultiItemComparison<?> delegate;
 	
 	public DelegatingMultiItemComparison(
 			T x,
 			T y,
-			MultiItemComparisonCounts multiItemStats) {
+			MultiItemComparison<?> delegate) {
 		
 		this.x = x;
 		this.y = y;
 		
-		this.multiItemStats = multiItemStats;
-		
-		this.result = multiItemStats.getBreaksCount();
-		
-		if (this.result == 0) {
-			this.summaryText = "Equal, " + multiItemStats.getMatchedCount() + 
-					" matched";
-		}
-		else {
-			this.summaryText = "" + multiItemStats.getBreaksCount() +
-					" differences";
-		}
+		this.delegate = delegate;
 	}
 
 	@Override
@@ -56,41 +41,41 @@ implements MultiItemComparison<T> {
 	
 	@Override
 	public int getResult() {
-		return result;
+		return delegate.getResult();
 	}
 	
 	@Override
 	public String getSummaryText() {
-		return summaryText;
+		return delegate.getSummaryText();
 	}
 	
 	@Override
 	public int getXMissingCount() {
-		return multiItemStats.getXMissingCount();
+		return delegate.getXMissingCount();
 	}
 	
 	@Override
 	public int getYMissingCount() {
-		return multiItemStats.getYMissingCount();
+		return delegate.getYMissingCount();
 	}
 	
 	@Override
 	public int getMatchedCount() {
-		return multiItemStats.getMatchedCount();
+		return delegate.getMatchedCount();
 	}
 	
 	@Override
 	public int getDifferentCount() {
-		return multiItemStats.getDifferentCount();
+		return delegate.getDifferentCount();
 	}
 	
 	@Override
 	public int getBreaksCount() {
-		return multiItemStats.getBreaksCount();
+		return delegate.getBreaksCount();
 	}
 	
 	@Override
 	public int getComparedCount() {
-		return multiItemStats.getComparedCount();
+		return delegate.getComparedCount();
 	}
 }

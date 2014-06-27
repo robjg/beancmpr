@@ -6,9 +6,9 @@ import java.util.Iterator;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.ComparisonStoppedException;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
-import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
+import org.oddjob.beancmpr.multiitem.MultiItemComparisonFromCounts;
 
 /**
  * Compares two {@code Iterable}s of {@link MatchableGroup}s.
@@ -123,7 +123,7 @@ implements MultiItemComparer<Iterable<MatchableGroup>> {
 			currentY = null;
 		}
 				
-		return new DelegatingMultiItemComparison<Iterable<MatchableGroup>>(
+		return new MultiItemComparisonFromCounts<Iterable<MatchableGroup>>(
 				x, y,
 				matchProcessor);
 	}

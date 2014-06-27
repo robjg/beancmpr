@@ -71,7 +71,6 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		Comparison<Integer> comparison = new EqualityComparison<Integer>(
 				new Integer(2), new Integer(3));
 		
-		@SuppressWarnings("unchecked")
 		Iterable<? extends Comparison<?>> comparisons =
 				Arrays.asList(comparison);
 		
@@ -126,7 +125,6 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		Comparison<Object> comparison = 
 				new EqualityComparison<Object>("A", "A");
 		
-		@SuppressWarnings("unchecked")
 		Iterable<? extends Comparison<?>> comparisons =
 				Arrays.asList(comparison);
 		

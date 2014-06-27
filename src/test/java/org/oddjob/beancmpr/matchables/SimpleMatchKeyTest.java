@@ -145,10 +145,9 @@ public class SimpleMatchKeyTest extends TestCase {
 				new ComparersByNameOrType()).createComparerFor(
 						metaData1, metaData2);		
 		
-		@SuppressWarnings("unchecked")
 		SimpleMatchKey key1 = new SimpleMatchKey(
 				Arrays.asList("banana", new Integer(42), new Double(15.3) ), comparator);
-		@SuppressWarnings("unchecked")
+		
 		SimpleMatchKey key2 = new SimpleMatchKey(
 				Arrays.asList("banana", new BigInteger("42"), 15.3 ), comparator);
 		

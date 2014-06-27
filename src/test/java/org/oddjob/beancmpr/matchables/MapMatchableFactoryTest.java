@@ -25,8 +25,8 @@ public class MapMatchableFactoryTest extends TestCase {
 		
 		map.put("apple", 42);
 		
-		MapMatchableFactory test = 
-				new MapMatchableFactory(definition, accessor);
+		MapMatchableFactory<String, Integer> test = 
+				new MapMatchableFactory<>(definition, accessor);
 		
 		Iterator<Map.Entry<String, Integer>> it = map.entrySet().iterator();
 		
@@ -93,8 +93,8 @@ public class MapMatchableFactoryTest extends TestCase {
 		
 		map.put(new Fruit(), new Fruit());
 		
-		MapMatchableFactory test = 
-				new MapMatchableFactory(definition, accessor);
+		MapMatchableFactory<Fruit, Fruit> test = 
+				new MapMatchableFactory<>(definition, accessor);
 		
 		Iterator<Map.Entry<Fruit, Fruit>> it = map.entrySet().iterator();
 		

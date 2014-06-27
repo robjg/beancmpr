@@ -13,7 +13,7 @@ import org.oddjob.beancmpr.comparers.NullComparison;
  *
  * @param <T>
  */
-public class InferredTypeCompare<T> {
+public class NullSafeComparer<T> {
 
 	private final Comparer<T> comparer;
 
@@ -23,9 +23,9 @@ public class InferredTypeCompare<T> {
 	 * Create a new instance.
 	 * 
 	 * @param comparer A comparer. Must not be null.
-	 * @param propertyName The property name. Used to look up a Comparer.
+	 * @param propertyName The property name. Used for error message.
 	 */
-	public InferredTypeCompare(Comparer<T> comparer, String propertyName) {
+	public NullSafeComparer(Comparer<T> comparer, String propertyName) {
 		if (comparer == null) {
 			throw new NullPointerException("No Comparer");
 		}

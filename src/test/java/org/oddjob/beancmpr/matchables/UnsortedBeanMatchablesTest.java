@@ -54,7 +54,7 @@ public class UnsortedBeanMatchablesTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory factory = new BeanMatchableFactory(
+		BeanMatchableFactory<Fruit> factory = new BeanMatchableFactory<>(
 				definition, accessor);
 		
 		List<Fruit> fruit = new ArrayList<Fruit>();
@@ -77,7 +77,7 @@ public class UnsortedBeanMatchablesTest extends TestCase {
 		
 		fruit.add(bean3);
 		
-		UnsortedBeanMatchables<Object> test = new UnsortedBeanMatchables<Object>(				
+		UnsortedBeanMatchables<Fruit> test = new UnsortedBeanMatchables<Fruit>(				
 				fruit, factory, new ComparersByNameOrType());
 
 		MatchableGroup[] groups = Iterables.toArray(

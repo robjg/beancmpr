@@ -124,10 +124,9 @@ public class KeyComparatorFactoryTest extends TestCase {
 				(Iterable<String>) Arrays.asList("fruit", "quantity"), 
 				classList(String.class, Integer.class));
 		
-		@SuppressWarnings("unchecked")
 		Matchable x = new MyMatchable(Arrays.asList("apple", new BigInteger("42")),
 				xMetaData);
-		@SuppressWarnings("unchecked")
+		
 		Matchable y = new MyMatchable(Arrays.asList("apple", new Integer(42)),
 				yMetaData);
 				
@@ -153,10 +152,9 @@ public class KeyComparatorFactoryTest extends TestCase {
 				(Iterable<String>) Arrays.asList("fruit", "quantity"), 
 				classList(String.class, BigInteger.class));
 		
-		@SuppressWarnings("unchecked")
 		Matchable x = new MyMatchable(Arrays.asList("apple", new BigInteger("42")),
 				xMetaData);
-		@SuppressWarnings("unchecked")
+		
 		Matchable y = new MyMatchable(Arrays.asList("apple", (BigInteger) null),
 				yMetaData);
 				

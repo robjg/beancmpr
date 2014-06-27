@@ -33,7 +33,7 @@ public class DefaultComparersByType implements ComparersByType {
 		
 		doPut(new NumericComparer(), map);
 		doPut(new DateComparer(), map);
-		doPut(new ArrayComparerType().createComparerWith(this), map);
+		doPut(new ArrayComparerType<Object>().createComparerWith(this), map);
 		doPut(new IterableComparerType<Object>().createComparerWith(this), map);
 		doPut(new EqualityComparer(), map);
 		
