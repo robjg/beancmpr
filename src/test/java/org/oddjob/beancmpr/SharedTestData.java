@@ -7,11 +7,11 @@ import java.util.Map;
 
 public class SharedTestData {
 
-	public List<Fruit> fruitX = new ArrayList<Fruit>();
-	public List<Fruit> fruitY = new ArrayList<Fruit>();
+	private List<Fruit> fruitX = new ArrayList<Fruit>();
+	private List<Fruit> fruitY = new ArrayList<Fruit>();
 		
-	public Map<Long, Fruit> fruitMapX = new HashMap<>();
-	public Map<Long, Fruit> fruitMapY = new HashMap<>();
+	private Map<Long, Fruit> fruitMapX = new HashMap<>();
+	private Map<Long, Fruit> fruitMapY = new HashMap<>();
 	
 	
 	public static class Fruit {
@@ -136,11 +136,19 @@ public class SharedTestData {
 		fruitMapY.put(fruit.getId(), fruit);
 	}	
 	
-	public List<Fruit> getFruitX() {
+	public Fruit[] getArrayFruitX() {
+		return fruitX.toArray(new Fruit[fruitX.size()]);
+	}
+	
+	public Fruit[] getArrayFruitY() {
+		return fruitY.toArray(new Fruit[fruitY.size()]);
+	}
+
+	public List<Fruit> getListFruitX() {
 		return fruitX;
 	}
 	
-	public List<Fruit> getFruitY() {
+	public List<Fruit> getListFruitY() {
 		return fruitY;
 	}
 	

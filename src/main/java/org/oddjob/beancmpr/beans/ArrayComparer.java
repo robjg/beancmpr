@@ -1,7 +1,5 @@
 package org.oddjob.beancmpr.beans;
 
-import java.util.Arrays;
-
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
@@ -10,12 +8,15 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 /**
  * Compares to Arrays of Objects.
  * 
+ * @see ArrayComparerFactory
+ * 
  * @author rob
  *
  */
-public class ArrayComparer<T> 
-implements MultiItemComparer<T[]>{
+public class ArrayComparer 
+implements MultiItemComparer<Object>{
 
+	/** Comparers for the element comparison. */
 	private final ComparersByType comparers;
 
 	public ArrayComparer(ComparersByType comparers) {
@@ -26,22 +27,22 @@ implements MultiItemComparer<T[]>{
 	}
 	
 	@Override
-	public MultiItemComparison<T[]> compare(final T[] x, final T[] y) {
+	public MultiItemComparison<Object> compare(final Object x, final Object y) {
 		
 		if (x == null || y == null) {
 			throw new NullPointerException("X or Y is null.");
 		}
 	
-		IterableComparer<T> iterableComparer = 
-				new IterableComparer<T>(comparers);
+		IterableComparer<Object> iterableComparer = 
+				new IterableComparer<>(comparers);
+
+		Iterable<Object> xIt = new ArrayIterable(x);
+		Iterable<Object> yIt = new ArrayIterable(y);
 		
-		Iterable<T> itX = Arrays.asList(x);
-		Iterable<T>	itY = Arrays.asList(y);
+		final MultiItemComparison<Iterable<Object>> iterableComparison = 
+				iterableComparer.compare(xIt, yIt);
 		
-		final MultiItemComparison<Iterable<T>> iterableComparison = 
-				iterableComparer.compare(itX, itY);
-		
-		return new DelegatingMultiItemComparison<T[]>(x, y, iterableComparison);
+		return new DelegatingMultiItemComparison<Object>(x, y, iterableComparison);
 	}
 	
 	@Override

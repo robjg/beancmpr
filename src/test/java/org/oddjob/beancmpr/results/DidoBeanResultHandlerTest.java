@@ -21,8 +21,8 @@ public class DidoBeanResultHandlerTest extends TestCase {
 		
 		BeanCompareJob beanCompare = new BeanCompareJob();
 		beanCompare.setArooaSession(new StandardArooaSession());
-		beanCompare.setInX(testData.fruitX);
-		beanCompare.setInY(testData.fruitY);
+		beanCompare.setInX(testData.getListFruitX());
+		beanCompare.setInY(testData.getListFruitY());
 		beanCompare.setKeyProperties(new String[] {"type"});
 		beanCompare.setValueProperties(new String[] {"quantity", "price"});
 		beanCompare.setResults(new DidoBeanResultHandler());
@@ -67,8 +67,8 @@ public class DidoBeanResultHandlerTest extends TestCase {
 		
 		BeanCompareJob beanCompare = new BeanCompareJob();
 		beanCompare.setArooaSession(new StandardArooaSession());
-		beanCompare.setInX(testData.fruitX);
-		beanCompare.setInY(testData.fruitY);
+		beanCompare.setInX(testData.getListFruitX());
+		beanCompare.setInY(testData.getListFruitY());
 		beanCompare.setKeyProperties(new String[] {"id"});
 		beanCompare.setValueProperties(new String[] {"type"});
 		beanCompare.setResults(new DidoBeanResultHandler());

@@ -1,7 +1,5 @@
 package org.oddjob.beancmpr.beans;
 
-import java.util.Arrays;
-
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
@@ -16,23 +14,85 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
-public class BeanArrayComparerType<T> 
-implements ComparerFactory<T[]>,
-		MultiItemComparerFactory<T[]>,
+/**
+ * @oddjob.description Compares an Array of Java Beans. If no Java Bean 
+ * properties are specified for the comparison then a comparison of the 
+ * elements is made using a comparer defined for the class of the elements, 
+ * or a default comparer if none is specified.
+ * 
+ * @oddjob.example
+ * 
+ * Comparing various arrays of things.
+ * 
+ * {@oddjob.xml.resource org/oddjob/beancmpr/beans/BeanArrayExamples.xml}
+ * 
+ * The output is:
+ * 
+ * {@oddjob.text.resource org/oddjob/beancmpr/beans/BeanArayExamplesOut.txt}
+ * 
+ * 
+ * @see ArrayComparerFactory
+ * 
+ * @author rob
+ *
+ * @param <T> The type of the elements of the array.
+ */
+public class BeanArrayComparerType 
+implements ComparerFactory<Object>,
+		MultiItemComparerFactory<Object>,
 		ArooaSessionAware {
 
+	/** The session provided by the Arooa framework. */
 	private ArooaSession session;
 	
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description The key property names. The key
+	 * properties decided if another bean is missing or not. 
+	 * @oddjob.required No. 
+	 */
 	private String[] keys;
 	
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description The value property names. The value properties
+	 * decide if two beans match when their keys match. 
+	 * @oddjob.required No. 
+	 */
 	private String[] values;
 	
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description Other property names. Other properties
+	 * may be of interest on reports but take no part in the matching
+	 * process. 
+	 * @oddjob.required No. 
+	 */
 	private String[] others;
 	
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description Are the arrays sorted. If arrays are sorted
+	 * then key comparision will be much quicker. 
+	 * @oddjob.required No. Defaults to false.
+	 */
 	private boolean sorted;
 	
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description Comparers for comparing the properties of the
+	 * beans. These comparers will override any other comparers defined
+	 * in the comparer hierarchy for their type. 
+	 * @oddjob.required No. 
+	 */
 	private ComparersByTypeFactory comparersByType;
 	
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description Comparers for comparing the properties of the
+	 * beans defined for properties of a given name. 
+	 * @oddjob.required No. 
+	 */
 	private ComparersByNameFactory comparersByName;
 	
 	
@@ -44,12 +104,12 @@ implements ComparerFactory<T[]>,
 
 	
 	@Override
-	public MultiItemComparer<T[]> createComparerWith(
+	public MultiItemComparer<Object> createComparerWith(
 			ComparersByType parentComparersByType) {
 	
 		if (keys == null && values == null && others == null) {
 			
-			ArrayComparerType<T> arrayComparerType = new ArrayComparerType<>();
+			ArrayComparerFactory arrayComparerType = new ArrayComparerFactory();
 			arrayComparerType.setComparersByType(comparersByType);
 			
 			return arrayComparerType.createComparerWith(parentComparersByType);
@@ -59,12 +119,12 @@ implements ComparerFactory<T[]>,
 	}
 		
 	@Override
-	public MultiItemComparer<T[]> createComparerWith(
+	public MultiItemComparer<Object> createComparerWith(
 			ComparersByType parentComparersByType,
 			BeanCmprResultsHandler resultHandler) {
 		
 		
-		IterableBeansComparerType<T> iterableBeansComparerType = 
+		IterableBeansComparerType<Object> iterableBeansComparerType = 
 				new IterableBeansComparerType<>();
 				
 		if (session != null) {
@@ -78,19 +138,19 @@ implements ComparerFactory<T[]>,
 		iterableBeansComparerType.setOthers(others);
 		iterableBeansComparerType.setSorted(sorted);
 		
-		final IterableBeansComparer<T> iterableBeansComparer = 
+		final IterableBeansComparer<Object> iterableBeansComparer = 
 				iterableBeansComparerType.createComparerWith(
 						parentComparersByType, resultHandler);
 	
-		return new MultiItemComparer<T[]>() {
+		return new MultiItemComparer<Object>() {
 			@Override
-			public MultiItemComparison<T[]> compare(T[] x, T[] y) {
+			public MultiItemComparison<Object> compare(Object x, Object y) {
 				
-				Iterable<T> xIt = Arrays.asList(x);
-				Iterable<T> yIt = Arrays.asList(y);
+				Iterable<Object> xIt = new ArrayIterable(x);
+				Iterable<Object> yIt = new ArrayIterable(y);
 				
 				return new DelegatingMultiItemComparison<
-						T[]>(x, y, iterableBeansComparer.compare(xIt, yIt));
+						Object>(x, y, iterableBeansComparer.compare(xIt, yIt));
 			}
 			
 			@Override

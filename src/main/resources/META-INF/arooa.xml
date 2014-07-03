@@ -21,7 +21,7 @@
       className='org.oddjob.beancmpr.composite.ComparersByNameType'/>
       
     <arooa:bean-def element='array-comparer'
-      className='org.oddjob.beancmpr.beans.IterableBeansComparerType'/>
+      className='org.oddjob.beancmpr.beans.BeanArrayComparerType'/>
     <arooa:bean-def element='bean-comparer'
       className='org.oddjob.beancmpr.beans.BeanComparerType'/>
     <arooa:bean-def element='comparable-comparer'

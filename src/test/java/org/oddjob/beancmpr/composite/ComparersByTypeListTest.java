@@ -88,7 +88,7 @@ public class ComparersByTypeListTest extends TestCase {
 		ComparersByTypeList test = new ComparersByTypeList();
 		
 		
-		test.setComparers(0, new BeanArrayComparerType<>());
+		test.setComparers(0, new BeanArrayComparerType());
 		
 		ComparersByType comparers = test.createComparersByTypeWith(
 				new DefaultComparersByType());

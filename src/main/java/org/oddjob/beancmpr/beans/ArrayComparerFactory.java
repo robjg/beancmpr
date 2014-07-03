@@ -3,20 +3,25 @@ package org.oddjob.beancmpr.beans;
 import org.oddjob.beancmpr.composite.ComparerFactory;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
+import org.oddjob.beancmpr.composite.DefaultComparersByType;
 
 /**
- * Compares to Arrays of Objects.
+ * Compares to Arrays of Objects. Provide a default comparer for Arrays
+ * in {@link DefaultComparersByType} and used from 
+ * {@link BeanArrayComparerType} when there are no properties specified
+ * for the compare.
  * 
  * @author rob
  *
  */
-public class ArrayComparerType<T> 
-implements ComparerFactory<T[]> {
+public class ArrayComparerFactory 
+implements ComparerFactory<Object> {
 
+	/** Comparers for the comparison of the elements. */
 	private ComparersByTypeFactory comparersByType;
 	
 	@Override
-	public ArrayComparer<T> createComparerWith(
+	public ArrayComparer createComparerWith(
 			ComparersByType defaultComparersByType) {
 		
 		if (defaultComparersByType == null) {
@@ -33,7 +38,7 @@ implements ComparerFactory<T[]> {
 						defaultComparersByType);
 		}
 		
-		return new ArrayComparer<T>(comparersByType);
+		return new ArrayComparer(comparersByType);
 	}	
 	
 	public void setComparersByType(ComparersByTypeFactory comparersByType) {

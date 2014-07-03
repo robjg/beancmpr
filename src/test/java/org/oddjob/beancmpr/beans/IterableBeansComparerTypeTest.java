@@ -37,7 +37,7 @@ public class IterableBeansComparerTypeTest extends TestCase {
 				new DefaultComparersByType(), results);
 		
 		MultiItemComparison<Iterable<Fruit>> comparison = 
-				comparer.compare(testData.getFruitX(), testData.getFruitY());
+				comparer.compare(testData.getListFruitX(), testData.getListFruitY());
 		
 		assertEquals(4, comparison.getComparedCount());
 		assertEquals(4, comparison.getBreaksCount());
@@ -110,7 +110,7 @@ public class IterableBeansComparerTypeTest extends TestCase {
 				new DefaultComparersByType());
 		
 		MultiItemComparison<Iterable<Fruit>> comparison = 
-				comparer.compare(testData.getFruitX(), testData.getFruitY());
+				comparer.compare(testData.getListFruitX(), testData.getListFruitY());
 		
 		assertEquals(3, comparison.getComparedCount());
 		assertEquals(1, comparison.getBreaksCount());

@@ -47,8 +47,8 @@ public class BeanCompareJobTest extends TestCase {
 		oddjob.setConfiguration(new XMLConfiguration(
 				"org/oddjob/beancmpr/BeanCompareJobExample1.xml", 
 				getClass().getClassLoader()));
-		oddjob.setExport("listX", new ArooaObject(data.fruitX));
-		oddjob.setExport("listY", new ArooaObject(data.fruitY));
+		oddjob.setExport("listX", new ArooaObject(data.getListFruitX()));
+		oddjob.setExport("listY", new ArooaObject(data.getListFruitY()));
 		oddjob.setExport("sorted", new ArooaObject(false));
 		
 		oddjob.run();
@@ -68,8 +68,8 @@ public class BeanCompareJobTest extends TestCase {
 		oddjob.setConfiguration(new XMLConfiguration(
 				"org/oddjob/beancmpr/BeanCompareJobExample2.xml", 
 				getClass().getClassLoader()));
-		oddjob.setExport("listX", new ArooaObject(data.fruitX));
-		oddjob.setExport("listY", new ArooaObject(data.fruitY));
+		oddjob.setExport("listX", new ArooaObject(data.getListFruitX()));
+		oddjob.setExport("listY", new ArooaObject(data.getListFruitY()));
 		oddjob.setExport("sorted", new ArooaObject(false));
 		
 		oddjob.run();
@@ -89,8 +89,8 @@ public class BeanCompareJobTest extends TestCase {
 		oddjob.setConfiguration(new XMLConfiguration(
 				"org/oddjob/beancmpr/BeanCompareJobExample1.xml", 
 				getClass().getClassLoader()));
-		oddjob.setExport("listX", new ArooaObject(data.fruitX));
-		oddjob.setExport("listY", new ArooaObject(data.fruitY));
+		oddjob.setExport("listX", new ArooaObject(data.getListFruitX()));
+		oddjob.setExport("listY", new ArooaObject(data.getListFruitY()));
 		oddjob.setExport("sorted", new ArooaObject(true));
 		
 		oddjob.run();
@@ -110,8 +110,8 @@ public class BeanCompareJobTest extends TestCase {
 		oddjob.setConfiguration(new XMLConfiguration(
 				"org/oddjob/beancmpr/BeanCompareJobExample2.xml", 
 				getClass().getClassLoader()));
-		oddjob.setExport("listX", new ArooaObject(data.fruitX));
-		oddjob.setExport("listY", new ArooaObject(data.fruitY));
+		oddjob.setExport("listX", new ArooaObject(data.getListFruitX()));
+		oddjob.setExport("listY", new ArooaObject(data.getListFruitY()));
 		oddjob.setExport("sorted", new ArooaObject(true));
 		
 		oddjob.run();

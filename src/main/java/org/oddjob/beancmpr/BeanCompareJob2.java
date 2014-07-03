@@ -125,7 +125,7 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 			comparerFactory = inferComparerFactory();
 		}
 		
-		MultiItemComparer<T> comparer = this.comparer.createComparerWith(
+		MultiItemComparer<T> comparer = comparerFactory.createComparerWith(
 				new DefaultComparersByType(), results);
 		
 		this.counts = comparer.compare(inX, inY);
@@ -159,8 +159,8 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 		
 		if (inX.getClass().isArray() && inY.getClass().isArray()) {
 			
-			BeanArrayComparerType<Object[]> comparerFactory = 
-					new BeanArrayComparerType<>();
+			BeanArrayComparerType comparerFactory = 
+					new BeanArrayComparerType();
 			comparerFactory.setArooaSession(session);
 			
 			return (MultiItemComparerFactory<T>) comparerFactory;
