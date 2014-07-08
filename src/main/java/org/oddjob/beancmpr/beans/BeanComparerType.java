@@ -62,9 +62,13 @@ implements ArooaSessionAware, ComparerFactory<T>,
 				comparerProviderFactory.createWith
 					(parentComparersByType);
 		
+		if (values == null) {
+			 values = new String[] { BeanMatchableFactory.SELF_TOKEN };
+		}
+		
 		MatchableFactory<T> matchableFactory = new BeanMatchableFactory<T>(
 				new SimpleMatchDefinition(
-						null, values, null), 
+						null, values, others), 
 						accessor);
 		
 		return new BeanComparer<T>(matchableFactory, 

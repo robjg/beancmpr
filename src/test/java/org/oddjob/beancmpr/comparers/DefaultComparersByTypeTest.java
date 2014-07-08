@@ -22,5 +22,9 @@ public class DefaultComparersByTypeTest extends TestCase {
 		
 		Comparer<String[]> arrayComparer = test.comparerFor(String[].class);
 		assertEquals(Object[].class, arrayComparer.getType());
+		
+		// Note that int[] is not and instance of Object[].
+		Comparer<?> intArrayComparer = test.comparerFor(int[].class);
+		assertEquals(EqualityComparer.class, intArrayComparer.getClass());
 	}
 }

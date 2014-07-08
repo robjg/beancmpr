@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <sequential>
+            <jobs>
+                <sequential name="Int Array Example">
+                    <jobs>
+                        <beancmpr:compare2 id="compare-int-arrays" xmlns:beancmpr="oddjob:beancmpr">
+                            <inX>
+                                <convert>
+                                    <to>
+                                        <class name="[I"/>
+                                    </to>
+                                    <value>
+                                        <tokenizer text="1, 2, 4, 5"/>
+                                    </value>
+                                </convert>
+                            </inX>
+                            <inY>
+                                <convert>
+                                    <to>
+                                        <class name="[I"/>
+                                    </to>
+                                    <value>
+                                        <tokenizer text="5, 4, 3, 1, 7"/>
+                                    </value>
+                                </convert>
+                            </inY>
+                            <results>
+                                <beancmpr:bean-results>
+                                    <out>
+                                        <list/>
+                                    </out>
+                                </beancmpr:bean-results>
+                            </results>
+                        </beancmpr:compare2>
+                        <echo><![CDATA[
+Int Array Comparison
+====================
+]]></echo>
+                        <bean-report>
+                            <beans>
+                                <value value="${compare-int-arrays.results.out}"/>
+                            </beans>
+                        </bean-report>
+                    </jobs>
+                </sequential>
+                <sequential name="Bean Array Example">
+                    <jobs>
+                        <bean class="org.oddjob.beancmpr.SharedTestData" id="test-data"/>
+                        <beancmpr:compare2 id="compare-bean-arrays" xmlns:beancmpr="oddjob:beancmpr">
+                            <inX>
+                                <value value="${test-data.arrayFruitX}"/>
+                            </inX>
+                            <inY>
+                                <value value="${test-data.arrayFruitY}"/>
+                            </inY>
+                            <comparer>
+                                <beancmpr:array-comparer keys="id" others="colour" values="type, quantity, price">
+                                    <comparersByType>
+                                        <beancmpr:comparers-list>
+                                            <specialisations>
+                                                <beancmpr:numeric-comparer deltaTolerance="0.05" key="double"/>
+                                            </specialisations>
+                                        </beancmpr:comparers-list>
+                                    </comparersByType>
+                                </beancmpr:array-comparer>
+                            </comparer>
+                            <results>
+                                <beancmpr:bean-results>
+                                    <out>
+                                        <list/>
+                                    </out>
+                                </beancmpr:bean-results>
+                            </results>
+                        </beancmpr:compare2>
+                        <echo><![CDATA[
+Array Of Beans Comparison
+=========================
+]]></echo>
+                        <bean-report>
+                            <beans>
+                                <value value="${compare-bean-arrays.results.out}"/>
+                            </beans>
+                        </bean-report>
+                    </jobs>
+                </sequential>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>

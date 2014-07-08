@@ -71,6 +71,10 @@ implements ComparerFactory<Iterable<T>>,
 				new ComparersByNameOrTypeFactory(
 						comparersByName, comparersByType);
 		
+		if (keys == null && values == null) {
+			 keys = new String[] { BeanMatchableFactory.SELF_TOKEN };
+		}
+		
 		MatchDefinition matchDefinition = new SimpleMatchDefinition(
 				keys, values, others);
 		

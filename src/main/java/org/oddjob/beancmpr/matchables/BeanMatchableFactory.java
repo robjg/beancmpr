@@ -1,10 +1,10 @@
 package org.oddjob.beancmpr.matchables;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.oddjob.arooa.reflect.ArooaClass;
 import org.oddjob.arooa.reflect.BeanOverview;
@@ -23,11 +23,11 @@ public class BeanMatchableFactory<T> implements MatchableFactory<T> {
 	 * of the entry. */
 	public static final String VALUE_NAME = "value";
 	
+	public static final String SELF_TOKEN = "@SELF";
+	
 	private final MatchDefinition definition;
 	
 	private final PropertyAccessor accessor;
-	
-	private final MatchableFactory<T> delegate;
 	
 	private volatile MatchableMetaData metaData;
 	
@@ -41,37 +41,6 @@ public class BeanMatchableFactory<T> implements MatchableFactory<T> {
 			PropertyAccessor accessor) {
 		this.definition = definition;
 		this.accessor = accessor;
-		
-		if (definition.getKeyProperties() == null &&
-				definition.getValueProperties() == null) {
-			
-			delegate = new MatchableFactory<T>() {
-				@Override
-				public Matchable createMatchable(T bean) {
-					List<?> keys = null;
-					List<?> comparables = Arrays.asList(bean);
-					List<?> others = strip(bean, definition.getOtherProperties());
-					
-					return new SimpleMatchable(keys, comparables, others, 
-							metaData);
-				}
-			};
-		}
-		else {
-			
-			delegate = new MatchableFactory<T>() {
-				@Override
-				public Matchable createMatchable(T bean) {
-			
-					List<?> keys= strip(bean, definition.getKeyProperties());		
-					List<?> comparables = strip(bean, definition.getValueProperties());
-					List<?> others = strip(bean, definition.getOtherProperties());
-					
-					return new SimpleMatchable(keys, comparables, others, 
-							metaData);
-				}
-			};
-		}
 	}
 	
 	@Override
@@ -85,7 +54,12 @@ public class BeanMatchableFactory<T> implements MatchableFactory<T> {
 			metaData = metaDataFor(bean);
 		}
 		
-		return delegate.createMatchable(bean);
+		List<?> keys= strip(bean, definition.getKeyProperties());		
+		List<?> comparables = strip(bean, definition.getValueProperties());
+		List<?> others = strip(bean, definition.getOtherProperties());
+		
+		return new SimpleMatchable(keys, comparables, others, 
+				metaData);
 	}
 	
 	/**
@@ -102,7 +76,12 @@ public class BeanMatchableFactory<T> implements MatchableFactory<T> {
 		
 		if (names != null) {
 			for (String name : names) {
-				values.add(accessor.getProperty(bean, name));
+				if (SELF_TOKEN.equals(name)) {
+					values.add(bean);
+				}
+				else {
+					values.add(accessor.getProperty(bean, name));
+				}
 			}
 		}
 		
@@ -119,33 +98,20 @@ public class BeanMatchableFactory<T> implements MatchableFactory<T> {
 	private MatchableMetaData metaDataFor(Object bean) {
 				
 		Map<String, Class<?>> types = new HashMap<String, Class<?>>();
+		AtomicReference<BeanOverview> overview = new AtomicReference<>();
 		
-		if (definition.getValueProperties() == null && 
-				definition.getKeyProperties() == null) {
-			
-			types.put(VALUE_NAME, bean.getClass());
-			
-			if (definition.getOtherProperties() != null) {
-				ArooaClass arooaClass = accessor.getClassName(bean);
-				BeanOverview overview = arooaClass.getBeanOverview(accessor);
-				
-				addTypes(definition.getOtherProperties(), overview, types);				
-			}
-			
-			return new SimpleMatchableMeta(null, Arrays.asList(VALUE_NAME), 
-					definition.getOtherProperties(), types);
-		}
-		else {
-
-			ArooaClass arooaClass = accessor.getClassName(bean);
-			BeanOverview overview = arooaClass.getBeanOverview(accessor);
-			
-			addTypes(definition.getKeyProperties(), overview, types);
-			addTypes(definition.getValueProperties(), overview, types);
-			addTypes(definition.getOtherProperties(), overview, types);
-			
-			return new SimpleMatchableMeta(definition, types);
-		}
+		List<String> keys = new ArrayList<>();
+		List<String> values = new ArrayList<>();
+		List<String> others = new ArrayList<>();
+		
+		addTypes(bean, definition.getKeyProperties(), 
+				overview, keys, types);
+		addTypes(bean, definition.getValueProperties(), 
+				overview, values, types);
+		addTypes(bean, definition.getOtherProperties(), 
+				overview, others, types);
+		
+		return new SimpleMatchableMeta(keys, values, others, types);
 	}	
 	
 	/**
@@ -155,11 +121,25 @@ public class BeanMatchableFactory<T> implements MatchableFactory<T> {
 	 * @param overview
 	 * @param types
 	 */
-	private void addTypes(Iterable<String> propertyNames, 
-			BeanOverview overview, Map<String, Class<?>> types) {
+	private void addTypes(Object bean, Iterable<String> propertyNames, 
+			AtomicReference<BeanOverview> overview, 
+			List<String> propertyNamesOut,
+			Map<String, Class<?>> types) {
+		
 		if (propertyNames != null) {
 			for (String name : propertyNames) {
-				types.put(name, overview.getPropertyType(name));
+				if (SELF_TOKEN.equals(name)) {
+					types.put(VALUE_NAME, bean.getClass());
+					propertyNamesOut.add(VALUE_NAME);
+				}
+				else {
+					if (overview.get() == null) {
+						ArooaClass arooaClass = accessor.getClassName(bean);
+						overview.set(arooaClass.getBeanOverview(accessor));
+					}
+					types.put(name, overview.get().getPropertyType(name));
+					propertyNamesOut.add(name);
+				}
 			}
 		}		
 	}

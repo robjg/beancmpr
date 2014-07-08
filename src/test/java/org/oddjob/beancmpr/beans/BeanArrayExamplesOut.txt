@@ -2,13 +2,14 @@
 Int Array Comparison
 ====================
 
-matchResultType  xValue  yValue  valueComparison
----------------  ------  ------  ---------------
-EQUAL            1       1       
-EQUAL            4       4       
-EQUAL            5       5       
-NOT_EQUAL        2       3       2<>3
-x_MISSING                7       
+matchResultType  value
+---------------  -----
+EQUAL            1
+y_MISSING        2
+x_MISSING        3
+EQUAL            4
+EQUAL            5
+x_MISSING        7
 
 Array Of Beans Comparison
 =========================

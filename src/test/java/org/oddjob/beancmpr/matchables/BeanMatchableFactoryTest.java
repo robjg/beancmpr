@@ -158,7 +158,7 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
 				null,
-				null,
+				new String[] { BeanMatchableFactory.SELF_TOKEN },
 				new String[] { "fruit", "colour" }
 				);
 		
@@ -288,25 +288,31 @@ public class BeanMatchableFactoryTest extends TestCase {
 		assertEquals(42, values[1]);
 	}
 	
-	public void testGivenNoPropertiesSingleValueCreated() {
+	public void testValueAsSelfThenValueCreatedWithSelf() {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
-				null, null, null);
+				null, new String[] { BeanMatchableFactory.SELF_TOKEN }, null);
 		
 		BeanMatchableFactory<String> test = 
 				new BeanMatchableFactory<String>(definition, null);
 		
 		Matchable matchable = test.createMatchable("red");
 		
-		Object[] values = Iterables.toArray(matchable.getValues(), Object.class);
+		Object[] keys = Iterables.toArray(matchable.getKeys());
+		Object[] values = Iterables.toArray(matchable.getValues());
+		Object[] others = Iterables.toArray(matchable.getOthers());
 		
+		assertEquals(0, keys.length);
 		assertEquals("red", values[0]);
 		assertEquals(1, values.length);
-			
+		assertEquals(0, others.length);
+		
 		MatchableMetaData meta = matchable.getMetaData();
-
 		String[] valueProperties = Iterables.toArray(
 				meta.getValueProperties(), String.class);
+		
+		assertEquals(0, Iterables.toArray(
+				meta.getKeyProperties()).length);
 		
 		assertEquals("value", valueProperties[0]);
 		assertEquals(1, valueProperties.length);
@@ -314,7 +320,40 @@ public class BeanMatchableFactoryTest extends TestCase {
 		assertEquals(String.class, meta.getPropertyType("value"));
 		
 		assertEquals(0, Iterables.toArray(
-				meta.getKeyProperties()).length);
+				meta.getOtherProperties()).length);
+	}
+	
+	public void testKeyAsSelfThenKeyCreatedWithSelf() {
+		
+		MatchDefinition definition = new SimpleMatchDefinition(
+				new String[] { BeanMatchableFactory.SELF_TOKEN }, null, null);
+		
+		BeanMatchableFactory<String> test = 
+				new BeanMatchableFactory<String>(definition, null);
+		
+		Matchable matchable = test.createMatchable("red");
+		
+		Object[] keys = Iterables.toArray(matchable.getKeys());
+		Object[] values = Iterables.toArray(matchable.getValues());
+		Object[] others = Iterables.toArray(matchable.getOthers());
+		
+		assertEquals("red", keys[0]);
+		assertEquals(1, keys.length);
+		assertEquals(0, values.length);
+		assertEquals(0, others.length);
+		
+		MatchableMetaData meta = matchable.getMetaData();
+
+		String[] keyProperties = Iterables.toArray(
+				meta.getKeyProperties(), String.class);
+		
+		assertEquals("value", keyProperties[0]);
+		assertEquals(1, keyProperties.length);
+		
+		assertEquals(String.class, meta.getPropertyType("value"));
+		
+		assertEquals(0, Iterables.toArray(
+				meta.getValueProperties()).length);
 		assertEquals(0, Iterables.toArray(
 				meta.getOtherProperties()).length);
 	}
