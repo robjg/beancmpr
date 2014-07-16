@@ -35,8 +35,7 @@ implements MultiItemComparison<T> {
 		this.result = multiItemStats.getBreaksCount();
 		
 		if (this.result == 0) {
-			this.summaryText = "Equal, " + multiItemStats.getMatchedCount() + 
-					" matched";
+			this.summaryText = "";
 		}
 		else {
 			this.summaryText = "" + multiItemStats.getBreaksCount() +

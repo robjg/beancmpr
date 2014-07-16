@@ -47,6 +47,6 @@ implements MultiItemComparer<Object>{
 	
 	@Override
 	public Class<?> getType() {
-		return Object[].class;
+		return Object.class;
 	}	
 }

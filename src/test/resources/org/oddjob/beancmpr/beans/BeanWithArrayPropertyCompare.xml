@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <sequential>
+            <jobs>
+                <bean class="org.oddjob.beancmpr.beans.BeanArrayComparerTypeTest$ArrayPropertyTestData" id="test-data"/>
+                <beancmpr:compare2 id="compare" xmlns:beancmpr="oddjob:beancmpr">
+                    <inX>
+                        <value value="${test-data.x}"/>
+                    </inX>
+                    <inY>
+                        <value value="${test-data.y}"/>
+                    </inY>
+                    <comparer>
+                        <beancmpr:bean-comparer values="numbers">
+                            <comparersByProperty>
+                                <beancmpr:comparers-map>
+                                    <comparerForProperty>
+                                        <beancmpr:array-comparer key="numbers">
+                                            <comparersByType>
+                                                <beancmpr:comparers-list>
+                                                    <specialisations>
+                                                        <beancmpr:numeric-comparer deltaTolerance="1.0" key="double"/>
+                                                    </specialisations>
+                                                </beancmpr:comparers-list>
+                                            </comparersByType>
+                                        </beancmpr:array-comparer>
+                                    </comparerForProperty>
+                                </beancmpr:comparers-map>
+                            </comparersByProperty>
+                        </beancmpr:bean-comparer>
+                    </comparer>
+                    <results>
+                        <beancmpr:bean-results>
+                            <out>
+                                <list/>
+                            </out>
+                        </beancmpr:bean-results>
+                    </results>
+                </beancmpr:compare2>
+                <bean-report>
+                    <beans>
+                        <value value="${compare.results.out}"/>
+                    </beans>
+                </bean-report>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>

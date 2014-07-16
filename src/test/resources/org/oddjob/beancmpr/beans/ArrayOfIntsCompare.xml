@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+  <job>
+    <sequential name="Int Array Example">
+      <jobs>
+        <beancmpr:compare2 id="compare-int-arrays"
+          xmlns:beancmpr="oddjob:beancmpr">
+          <inX>
+            <convert>
+              <to>
+                <class name="[I" />
+              </to>
+              <value>
+                <tokenizer text="1, 2, 4, 5" />
+              </value>
+            </convert>
+          </inX>
+          <inY>
+            <convert>
+              <to>
+                <class name="[I" />
+              </to>
+              <value>
+                <tokenizer text="5, 4, 3, 1, 7" />
+              </value>
+            </convert>
+          </inY>
+          <results>
+            <beancmpr:bean-results>
+              <out>
+                <list />
+              </out>
+            </beancmpr:bean-results>
+          </results>
+        </beancmpr:compare2>
+        <bean-report>
+          <beans>
+            <value value="${compare-int-arrays.results.out}" />
+          </beans>
+        </bean-report>
+      </jobs>
+    </sequential>
+  </job>
+</oddjob>

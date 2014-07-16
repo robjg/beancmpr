@@ -22,13 +22,35 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparison;
  * 
  * @oddjob.example
  * 
- * Comparing various arrays of things.
+ * Comparing two arrays of beans. Properties of the beans are used to make
+ * the comparison.
  * 
- * {@oddjob.xml.resource org/oddjob/beancmpr/beans/BeanArrayExamples.xml}
+ * {@oddjob.xml.resource org/oddjob/beancmpr/beans/ArrayOfBeansCompareByProperties.xml}
  * 
  * The output is:
  * 
- * {@oddjob.text.resource org/oddjob/beancmpr/beans/BeanArayExamplesOut.txt}
+ * {@oddjob.text.resource org/oddjob/beancmpr/beans/ArrayOfBeansCompareByPropertiesOut.txt}
+ * 
+ * @oddjob.example
+ * 
+ * Comparing two arrays of ints.
+ * 
+ * {@oddjob.xml.resource org/oddjob/beancmpr/beans/ArrayOfIntsCompare.xml}
+ * 
+ * The output is:
+ * 
+ * {@oddjob.text.resource org/oddjob/beancmpr/beans/ArrayOfIntsCompareOut.txt}
+ * 
+ * @oddjob.example
+ * 
+ * Specifying how to compare an array that is the property of two beans
+ * being compared.
+ * 
+ * {@oddjob.xml.resource org/oddjob/beancmpr/beans/BeanWithArrayPropertyCompare.xml}
+ * 
+ * The output is:
+ * 
+ * {@oddjob.text.resource org/oddjob/beancmpr/beans/BeanWithArrayPropertyCompareOut.txt}
  * 
  * 
  * @see ArrayComparerFactory

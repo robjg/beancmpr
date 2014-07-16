@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.oddjob.beancmpr.Comparer;
-import org.oddjob.beancmpr.beans.ArrayComparerFactory;
+import org.oddjob.beancmpr.beans.ArrayComparer;
 import org.oddjob.beancmpr.beans.IterableComparerType;
 import org.oddjob.beancmpr.comparers.ComparableComparer;
 import org.oddjob.beancmpr.comparers.DateComparer;
@@ -21,6 +21,9 @@ public class DefaultComparersByType implements ComparersByType {
 
 	private final InternalComparersByType comparers;
 	
+	/**
+	 * Create a new instance.
+	 */
 	public DefaultComparersByType() {
 		
 		Map<Class<?>, Comparer<?>> map = 
@@ -33,7 +36,6 @@ public class DefaultComparersByType implements ComparersByType {
 		
 		doPut(new NumericComparer(), map);
 		doPut(new DateComparer(), map);
-		doPut(new ArrayComparerFactory().createComparerWith(this), map);
 		doPut(new IterableComparerType<Object>().createComparerWith(this), map);
 		doPut(new EqualityComparer(), map);
 		
@@ -47,8 +49,14 @@ public class DefaultComparersByType implements ComparersByType {
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Comparer<T> comparerFor(Class<T> type) {
-		return comparers.comparerFor(type);
+		if (type.isArray()) {
+			return (Comparer<T>) new ArrayComparer(this);
+		}
+		else {
+			return comparers.comparerFor(type);
+		}
 	}	
 }

@@ -95,7 +95,7 @@ public class ComparersByTypeList implements ComparersByTypeFactory {
 			byClass.put(comparer.getType(), comparer);
 		}
 		
-		return new InternalComparersByType(byClass);
+		return comparersByType;
 	}
 
 }

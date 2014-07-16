@@ -6,6 +6,7 @@ import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
 import org.oddjob.Oddjob;
+import org.oddjob.OddjobLookup;
 import org.oddjob.tools.ConsoleCapture;
 import org.oddjob.tools.OddjobTestHelper;
 
@@ -15,10 +16,10 @@ public class BeanArrayComparerTypeTest extends TestCase {
 			BeanArrayComparerTypeTest.class);
 	
 	
-	public void testArraysOfInts() throws Exception {
+	public void testArrayOfIntsExample() throws Exception {
 		
 		File file = new File(getClass().getResource(
-				"BeanArrayExamples.xml").getFile());
+				"ArrayOfIntsCompare.xml").getFile());
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setFile(file);
@@ -37,13 +38,112 @@ public class BeanArrayComparerTypeTest extends TestCase {
 		String[] lines = console.getLines();
 		
 		String[] expected = OddjobTestHelper.streamToLines(getClass(
-				).getResourceAsStream("BeanArrayExamplesOut.txt"));
+				).getResourceAsStream("ArrayOfIntsCompareOut.txt"));
 		
 		for (int i = 0; i < expected.length; ++i) {
 			assertEquals(expected[i].trim(), lines[i].trim());
 		}
 		
 		oddjob.destroy();
+	}
+
+	public void testArrayOfBeansCompareByPropertiesExample() throws Exception {
+		
+		File file = new File(getClass().getResource(
+				"ArrayOfBeansCompareByProperties.xml").getFile());
+		
+		Oddjob oddjob = new Oddjob();
+		oddjob.setFile(file);
+		
+		ConsoleCapture console = new ConsoleCapture();
+		console.capture(Oddjob.CONSOLE);
+		
+		oddjob.run();
+		
+		console.close();
+		
+		assertEquals(true, oddjob.lastStateEvent().getState().isComplete());
+
+		console.dump(logger);
+		
+		String[] lines = console.getLines();
+		
+		String[] expected = OddjobTestHelper.streamToLines(getClass(
+				).getResourceAsStream("ArrayOfBeansCompareByPropertiesOut.txt"));
+		
+		for (int i = 0; i < expected.length; ++i) {
+			assertEquals(expected[i].trim(), lines[i].trim());
+		}
+		
+		oddjob.destroy();
+	}
+
+	
+	public void testBeanWithArrayPropertyCompare() throws Exception {
+		
+		File file = new File(getClass().getResource(
+				"BeanWithArrayPropertyCompare.xml").getFile());
+		
+		Oddjob oddjob = new Oddjob();
+		oddjob.setFile(file);
+		
+		ConsoleCapture console = new ConsoleCapture();
+		console.capture(Oddjob.CONSOLE);
+		
+		oddjob.run();
+		
+		console.close();
+		
+		assertEquals(true, oddjob.lastStateEvent().getState().isComplete());
+
+		console.dump(logger);
+		
+		OddjobLookup lookup = new OddjobLookup(oddjob);
+		
+		int result = lookup.lookup("compare.breaksCount", int.class);
+		
+		assertEquals(0, result);
+		
+		oddjob.destroy();
+	}
+	
+	
+	public static class ArrayPropertyTestData {
+		
+		final BeanWithArrayProperty x = new BeanWithArrayProperty(new double[] {
+			50.1, 70.2, 30.5 }, "X");
+		
+		final BeanWithArrayProperty y = new BeanWithArrayProperty(new double[] {
+			50.5, 70.4, 30.1 }, "Y");
+		
+		public BeanWithArrayProperty getX() {
+			return x;
+		}
+		
+		public BeanWithArrayProperty getY() {
+			return y;
+		}
+	}
+	
+	public static class BeanWithArrayProperty {
+		
+		final String name;
+		
+		final double[] numbers;
+		
+		public BeanWithArrayProperty(double[] numbers, String name) {
+			this.numbers = numbers;
+			this.name = name;
+		}
+		
+		public double[] getNumbers() {
+			return numbers;
+		}
+		
+		@Override
+		public String toString() {
+			return "Bean" + name;
+		}
 	}
 }
 

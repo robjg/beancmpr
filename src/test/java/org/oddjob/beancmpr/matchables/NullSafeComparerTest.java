@@ -3,7 +3,10 @@ package org.oddjob.beancmpr.matchables;
 import junit.framework.TestCase;
 
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.beans.ArrayComparer;
 import org.oddjob.beancmpr.comparers.NumericComparer;
+import org.oddjob.beancmpr.composite.DefaultComparersByType;
+import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
 public class NullSafeComparerTest extends TestCase {
 
@@ -37,5 +40,20 @@ public class NullSafeComparerTest extends TestCase {
 		
 		assertEquals(true, result.getResult() == 0);
 		assertEquals("", result.getSummaryText());
+	}
+	
+	public void testCompareTwoPrimativeArrays() {
+		
+		NullSafeComparer<Object> test = new NullSafeComparer<>(
+				new ArrayComparer(new DefaultComparersByType()), 
+				"somearray");
+		
+		Comparison<Object> result = test.castAndCompare(
+				new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 });
+		
+		assertEquals(0, result.getResult());
+		
+		assertTrue(result instanceof MultiItemComparison);
+		
 	}
 }

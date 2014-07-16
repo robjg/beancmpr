@@ -56,7 +56,8 @@ public class NullSafeComparer<T> {
 		}
 		catch (ClassCastException e) {
 			throw new ClassCastException("Failed to cast X property [" + propertyName + 
-					"] value [" + rawX + "] to class [" + type + "]");
+					"] value [" + rawX + "] to class [" + type + "] for comparer [" +
+					comparer + "]");
 		}
 				
 		try {
@@ -65,7 +66,8 @@ public class NullSafeComparer<T> {
 		}
 		catch (ClassCastException e) {
 			throw new ClassCastException("Failed to cast Y property [" + propertyName + 
-					"] value [" + rawY + "] to type [" + type + "]");
+					"] value [" + rawY + "] to type [" + type + "] for comparer [" +
+					comparer + "]");
 		}
 			
 		if (x == null || y == null) {

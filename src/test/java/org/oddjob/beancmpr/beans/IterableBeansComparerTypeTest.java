@@ -141,7 +141,7 @@ public class IterableBeansComparerTypeTest extends TestCase {
 				comparer.compare(x, y);
 		
 		assertEquals(0, comparison.getResult());
-		assertEquals("Equal, 3 matched", comparison.getSummaryText());
+		assertEquals("", comparison.getSummaryText());
 		
 		assertEquals(3, comparison.getComparedCount());
 		assertEquals(0, comparison.getBreaksCount());

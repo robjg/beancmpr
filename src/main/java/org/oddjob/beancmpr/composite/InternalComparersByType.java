@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.oddjob.beancmpr.Comparer;
 
 /**
- * Used by {@link ComparersByTypeList}.
+ * Used by {@link ComparersByTypeList} and {@link DefaultComparersByType}.
  * 
  * @author rob
  *
@@ -24,6 +24,11 @@ class InternalComparersByType implements ComparersByType {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> Comparer<T> comparerFor(Class<T> type) {
+		
+		Comparer<T> exactMatch = (Comparer<T>) comparers.get(type);
+		if (exactMatch != null) {
+			return exactMatch;
+		}
 		
 		for (Map.Entry<Class<?>, Comparer<?>> entry : 
 				comparers.entrySet()) {

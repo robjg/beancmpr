@@ -18,7 +18,7 @@ public class ArrayComparerTest extends TestCase {
 		MultiItemComparison<Object> comparison = test.compare(x, y);
 		
 		assertTrue(comparison.getResult() == 0);
-		assertEquals("Equal, 5 matched", comparison.getSummaryText());
+		assertEquals("", comparison.getSummaryText());
 		
 		assertEquals(5, comparison.getMatchedCount());
 		assertEquals(5, comparison.getComparedCount());
