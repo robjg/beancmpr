@@ -18,7 +18,7 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparer;
  * it will only ever one of each bean. This is so {@link BeanComparerType}
  * can implement {@link MultiItemComparerFactory} and so be one of
  * the comparer types that can be provided to {@link BeanCompareJob2} to
- * allow this job two compare just two objects as well as lists and maps.
+ * allow this job to compare just two objects as well as lists and maps.
  * 
  * @author rob
  *

@@ -18,7 +18,46 @@ import org.oddjob.beancmpr.matchables.MatchableFactory;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 
 /**
- * A bean that wraps a {@link BeanComparer}.
+ * @oddjob.description Provides a definition for how to compare two Beans 
+ * by the properties of the beans, or how to compare two Object just by 
+ * their values.
+ * <p>
+ * 
+ * @oddjob.example
+ * 
+ * Comparing two number. The comparer declares a numeric comparer for
+ * doubles with a tolerance of 0.1 so the two numbers are deemed equal.
+ * 
+ * {@oddjob.xml.resource org/oddjob/beancmpr/beans/BeanComparerForTwoNumbers.xml}
+ * 
+ * The output is:
+ * 
+ * {@oddjob.text.resource org/oddjob/beancmpr/beans/BeanComparerForTwoNumbersOut.txt}
+ * 
+ * @oddjob.example
+ * 
+ * Comparing two bean by their properties. A case insensitve text comparer is
+ * specified for type but not for colour so the beans do not match on colour.
+ * 
+ * {@oddjob.xml.resource org/oddjob/beancmpr/beans/BeanComparerForTwoBeans.xml}
+ * 
+ * The output is:
+ * 
+ * {@oddjob.text.resource org/oddjob/beancmpr/beans/BeanComparerForTwoBeansOut.txt}
+ * 
+ * @oddjob.example
+ * 
+ * Specifying a Bean Comparer for the Property of a Bean. Here we specify the
+ * comparer to be used for the fruit property of a Snack class.
+ * 
+ * {@oddjob.xml.resource org/oddjob/beancmpr/beans/BeanComparerForProperty.xml}
+ * 
+ * The output is:
+ * 
+ * {@oddjob.text.resource org/oddjob/beancmpr/beans/BeanComparerForPropertyOut.txt}
+ * 
+ * 
+ * @see BeanComparer.
  * 
  * @author rob
  *
@@ -27,6 +66,12 @@ public class BeanComparerType<T>
 implements ArooaSessionAware, ComparerFactory<T>, 
 		MultiItemComparerFactory<T> {
 	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description Names of properties to use for the comparison.
+	 * @oddjob.required No. If no property names are given then the
+	 * objects themselves are used for the comparison. 
+	 */
 	private String[] values;
 	
 	private String[] others;

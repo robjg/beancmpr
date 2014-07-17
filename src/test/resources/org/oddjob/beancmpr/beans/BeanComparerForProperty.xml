@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+  <job>
+    <sequential>
+      <jobs>
+        <variables id="vars">
+          <listA>
+            <list>
+              <values>
+                <bean
+                  class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Snack"
+                  id="1">
+                  <fruit>
+                    <bean
+                      class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Fruit"
+                      type="banana" />
+                  </fruit>
+                </bean>
+                <bean
+                  class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Snack"
+                  id="2">
+                  <fruit>
+                    <bean
+                      class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Fruit"
+                      colour="green" type="APPLE" />
+                  </fruit>
+                </bean>
+                <bean
+                  class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Snack"
+                  id="3">
+                  <fruit>
+                    <bean
+                      class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Fruit"
+                      colour="pear" type="red" />
+                  </fruit>
+                </bean>
+              </values>
+            </list>
+          </listA>
+          <listB>
+            <list>
+              <values>
+                <bean
+                  class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Snack"
+                  id="1">
+                  <fruit>
+                    <bean
+                      class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Fruit"
+                      type="banana" />
+                  </fruit>
+                </bean>
+                <bean
+                  class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Snack"
+                  id="2">
+                  <fruit>
+                    <bean
+                      class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Fruit"
+                      colour="green" type="apple" />
+                  </fruit>
+                </bean>
+                <bean
+                  class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Snack"
+                  id="3">
+                  <fruit>
+                    <bean
+                      class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Fruit"
+                      colour="pear" type="green" />
+                  </fruit>
+                </bean>
+              </values>
+            </list>
+          </listB>
+        </variables>
+        <beancmpr:compare2 id="compare"
+          xmlns:beancmpr="oddjob:beancmpr">
+          <inX>
+            <value value="${vars.listA}" />
+          </inX>
+          <inY>
+            <value value="${vars.listB}" />
+          </inY>
+          <results>
+            <beancmpr:bean-results>
+              <out>
+                <list />
+              </out>
+            </beancmpr:bean-results>
+          </results>
+          <comparer>
+            <beancmpr:iterable-comparer keys="id" values="fruit">
+              <comparersByName>
+                <beancmpr:comparers-map>
+                  <comparerForProperty>
+                    <beancmpr:bean-comparer key="fruit"
+                      values="type, colour" />
+                  </comparerForProperty>
+                </beancmpr:comparers-map>
+              </comparersByName>
+              <comparersByType>
+                <beancmpr:comparers-list>
+                  <comparers>
+                    <beancmpr:text-comparer
+                      ignoreCase="true" />
+                  </comparers>
+                </beancmpr:comparers-list>
+              </comparersByType>
+            </beancmpr:iterable-comparer>
+          </comparer>
+        </beancmpr:compare2>
+        <bean-report>
+          <beans>
+            <value value="${compare.results.out}" />
+          </beans>
+        </bean-report>
+      </jobs>
+    </sequential>
+  </job>
+</oddjob>
