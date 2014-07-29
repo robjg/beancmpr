@@ -14,6 +14,8 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparison;
  * Compare two maps. The contents of the maps are converted to 
  * {@link Matchable}s in order to make the comparison.
  * 
+ * @see MapComparerType
+ * 
  * @author rob
  *
  * @param <K> The type of the key in the maps.

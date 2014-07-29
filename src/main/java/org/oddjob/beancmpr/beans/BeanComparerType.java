@@ -19,7 +19,7 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 
 /**
  * @oddjob.description Provides a definition for how to compare two Beans 
- * by the properties of the beans, or how to compare two Object just by 
+ * by the properties of the beans, or how to compare two Objects just by 
  * their values.
  * <p>
  * 

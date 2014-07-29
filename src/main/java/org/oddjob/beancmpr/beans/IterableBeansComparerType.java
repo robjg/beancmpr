@@ -18,6 +18,22 @@ import org.oddjob.beancmpr.matchables.MatchableFactory;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 
+/**
+ * @oddjob.description Compares two Iterables of Java Beans. Iterables will
+ * typeically be lists or sets. If no Java Bean 
+ * properties are specified for the comparison then a comparison of the 
+ * elements is made using a comparer defined for the class of the elements, 
+ * or a default comparer if none is specified.
+ * 
+ * @oddjob.example
+ * 
+ * {@link BeanArrayComparerType} has an example of comparing two lists
+ * of beans.
+ * 
+ * @author rob
+ *
+ * @param <T>
+ */
 public class IterableBeansComparerType<T> 
 implements ComparerFactory<Iterable<T>>,
 		MultiItemComparerFactory<Iterable<T>>,

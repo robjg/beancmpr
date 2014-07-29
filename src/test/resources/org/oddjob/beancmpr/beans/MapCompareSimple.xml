@@ -3,41 +3,44 @@
     <job>
         <sequential>
             <jobs>
-                <beancmpr:compare id="compare-maps" keyProperties="colour" valueProperties="fruitMap" xmlns:beancmpr="oddjob:beancmpr">
+                <variables id="test-data">
+                    <mapX>
+                        <bean class="org.oddjob.beancmpr.beans.MapComparerTypeTest$FruitMap1">
+                            <fruit>
+                                <value key="apple" value="42"/>
+                                <value key="pear" value="15"/>
+                                <value key="avacardo" value="7"/>
+                            </fruit>
+                        </bean>
+                    </mapX>
+                    <mapY>
+                        <bean class="org.oddjob.beancmpr.beans.MapComparerTypeTest$FruitMap1">
+                            <fruit>
+                                <value key="APPLE" value="17"/>
+                                <value key="PEAR" value="15"/>
+                                <value key="KIWI" value="5"/>
+                            </fruit>
+                        </bean>
+                    </mapY>
+                </variables>
+                <beancmpr:compare2 id="compare-maps" xmlns:beancmpr="oddjob:beancmpr">
                     <inX>
-                        <list>
-                            <values>
-                                <bean class="org.oddjob.beancmpr.beans.MapComparerTypeTest$MapBean1" colour="green">
-                                    <fruitMap>
-                                        <bean class="org.oddjob.beancmpr.beans.MapComparerTypeTest$FruitMap1">
-                                            <fruit>
-                                                <value key="apple" value="42"/>
-                                                <value key="pear" value="15"/>
-                                                <value key="avacardo" value="7"/>
-                                            </fruit>
-                                        </bean>
-                                    </fruitMap>
-                                </bean>
-                            </values>
-                        </list>
+                        <value value="${test-data.mapX}"/>
                     </inX>
                     <inY>
-                        <list>
-                            <values>
-                                <bean class="org.oddjob.beancmpr.beans.MapComparerTypeTest$MapBean1" colour="green">
-                                    <fruitMap>
-                                        <bean class="org.oddjob.beancmpr.beans.MapComparerTypeTest$FruitMap1">
-                                            <fruit>
-                                                <value key="apple" value="17"/>
-                                                <value key="pear" value="15"/>
-                                                <value key="kiwi" value="5"/>
-                                            </fruit>
-                                        </bean>
-                                    </fruitMap>
-                                </bean>
-                            </values>
-                        </list>
+                        <value value="${test-data.mapY}"/>
                     </inY>
+                    <comparer>
+                        <beancmpr:map-comparer>
+                            <comparersByType>
+                                <beancmpr:comparers-list>
+                                    <comparers>
+                                        <beancmpr:text-comparer ignoreCase="true"/>
+                                    </comparers>
+                                </beancmpr:comparers-list>
+                            </comparersByType>
+                        </beancmpr:map-comparer>
+                    </comparer>
                     <results>
                         <beancmpr:bean-results>
                             <out>
@@ -45,14 +48,7 @@
                             </out>
                         </beancmpr:bean-results>
                     </results>
-                    <comparersByType>
-                        <beancmpr:comparers-list>
-                            <comparers>
-                                <beancmpr:map-comparer/>
-                            </comparers>
-                        </beancmpr:comparers-list>
-                    </comparersByType>
-                </beancmpr:compare>
+                </beancmpr:compare2>
                 <bean-report>
                     <beans>
                         <value value="${compare-maps.results.out}"/>

@@ -14,6 +14,7 @@ import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.arooa.types.ValueFactory;
 import org.oddjob.state.ParentState;
 import org.oddjob.tools.ConsoleCapture;
+import org.oddjob.tools.OddjobTestHelper;
 
 public class MapComparerTypeTest extends TestCase {
 
@@ -28,39 +29,20 @@ public class MapComparerTypeTest extends TestCase {
 				"  ----------------------------");
 	};
 	
-	public static class MapBean1 {
-		
-		private String colour;
-		
-		private Map<String, Integer> fruitMap;
-
-		public String getColour() {
-			return colour;
-		}
-
-		public void setColour(String colour) {
-			this.colour = colour;
-		}
-
-		public Map<String, Integer> getFruitMap() {
-			return fruitMap;
-		}
-
-		public void setFruitMap(Map<String, Integer> fruitMap) {
-			this.fruitMap = fruitMap;
-		}
-	}
-	
 	public static class FruitMap1 implements ValueFactory<Map<String, Integer>> {
 	
 		private final Map<String, Integer> map = 
 				new HashMap<String, Integer>();
 		
 		@Override
-		public Map<String, Integer> toValue() throws ArooaConversionException {
+		public Map<String, Integer> toValue() {
 			return map;
 		}
 		
+		public Map<String, Integer> getTheMap() {
+			return map;
+		}
+				
 		public void setFruit(String key, Integer value) {
 			if (value == null) {
 				map.remove(key);
@@ -92,8 +74,59 @@ public class MapComparerTypeTest extends TestCase {
 		
 		String[] lines = console.getLines();
 		
-		assertEquals("Failed matching: " + lines[2], 
-				true, lines[2].matches("NOT_EQUAL .* 3 differences\\s*"));
+		String[] expected = OddjobTestHelper.streamToLines(getClass(
+				).getResourceAsStream("MapCompareSimpleOut.txt"));
+		
+		for (int i = 0; i < expected.length; ++i) {
+			assertEquals(expected[i].trim(), lines[i].trim());
+		}
+		
+		assertEquals(6, lines.length);
+		
+		oddjob.destroy();
+	}	
+	
+	public static class MapBean1 {
+		
+		private Map<String, Integer> fruitMap;
+
+		public Map<String, Integer> getFruitMap() {
+			return fruitMap;
+		}
+
+		public void setFruitMap(Map<String, Integer> fruitMap) {
+			this.fruitMap = fruitMap;
+		}
+	}
+	
+	
+	public void testMapCompareForBeanPropertyExample() {
+		
+		File file = new File(getClass().getResource(
+				"MapCompareOfBeanProperty.xml").getFile());
+		
+		Oddjob oddjob = new Oddjob();
+		oddjob.setFile(file);
+
+		ConsoleCapture console = new ConsoleCapture();
+		console.capture(Oddjob.CONSOLE);
+				
+		oddjob.run();
+		
+		assertEquals(ParentState.COMPLETE, 
+				oddjob.lastStateEvent().getState());
+		
+		console.close();
+		console.dump(logger);
+		
+		String[] lines = console.getLines();
+		
+		String[] expected = OddjobTestHelper.streamToLines(getClass(
+				).getResourceAsStream("MapCompareOfBeanPropertyOut.txt"));
+		
+		for (int i = 0; i < expected.length; ++i) {
+			assertEquals(expected[i].trim(), lines[i].trim());
+		}
 		
 		assertEquals(3, lines.length);
 		
@@ -209,26 +242,18 @@ public class MapComparerTypeTest extends TestCase {
 		}
 	}
 	
-	public static class MapBean2 {
-		
-		private int batch;
+	public static class MapBean2 implements ValueFactory<Map<KeyBean, ValueBean>> {
 		
 		private Map<KeyBean, ValueBean> fruitMap;
 
-		public Map<KeyBean, ValueBean> getFruitMap() {
+		@Override
+		public Map<KeyBean, ValueBean> toValue()
+				throws ArooaConversionException {
 			return fruitMap;
 		}
 
 		public void setFruitMap(Map<KeyBean, ValueBean> fruitMap) {
 			this.fruitMap = fruitMap;
-		}
-
-		public int getBatch() {
-			return batch;
-		}
-
-		public void setBatch(int batch) {
-			this.batch = batch;
 		}
 	}
 	
@@ -253,12 +278,15 @@ public class MapComparerTypeTest extends TestCase {
 		
 		String[] lines = console.getLines();
 		
-		assertEquals("Failed matching: " + lines[2], 
-				true, lines[2].matches("NOT_EQUAL .* 3 differences\\s*"));
+		String[] expected = OddjobTestHelper.streamToLines(getClass(
+				).getResourceAsStream("MapCompareComplexOut.txt"));
 		
-		assertEquals(3, lines.length);
+		for (int i = 0; i < expected.length; ++i) {
+			assertEquals(expected[i].trim(), lines[i].trim());
+		}
+				
+		assertEquals(7, lines.length);
 		
 		oddjob.destroy();		
-	}
-	
+	}	
 }

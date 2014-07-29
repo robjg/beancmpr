@@ -5,7 +5,13 @@ import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
 
 /**
- * Compares to {@code Iterable}s.
+ * Compares two {@code Iterable}s using object comparison not bean
+ * comparison.
+ * <p>
+ * This has been subsumed into {@link IterableBeansComparerType} and
+ * can probably be refactored away completely in future releases.
+ * 
+ * @see IterableComparer
  * 
  * @author rob
  *

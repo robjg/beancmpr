@@ -6,6 +6,7 @@ import java.util.Map;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.beans.ArrayComparer;
 import org.oddjob.beancmpr.beans.IterableComparerType;
+import org.oddjob.beancmpr.beans.MapComparerType;
 import org.oddjob.beancmpr.comparers.ComparableComparer;
 import org.oddjob.beancmpr.comparers.DateComparer;
 import org.oddjob.beancmpr.comparers.EqualityComparer;
@@ -36,7 +37,10 @@ public class DefaultComparersByType implements ComparersByType {
 		
 		doPut(new NumericComparer(), map);
 		doPut(new DateComparer(), map);
+		
 		doPut(new IterableComparerType<Object>().createComparerWith(this), map);
+		doPut(new MapComparerType<Object, Object>().createComparerWith(this), map);
+		
 		doPut(new EqualityComparer(), map);
 		
 		this.comparers = new InternalComparersByType(map);

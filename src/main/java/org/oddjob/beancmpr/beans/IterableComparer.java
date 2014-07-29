@@ -14,7 +14,9 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparisonCountsImutable;
 import org.oddjob.beancmpr.multiitem.MultiItemComparisonFromCounts;
 
 /**
- * Compares to {@code Iterable}s.
+ * Compares two {@code Iterable}s.
+ * 
+ * @see IterableBeansComparerType
  * 
  * @author rob
  *

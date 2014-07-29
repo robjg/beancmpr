@@ -20,6 +20,8 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparer;
  * the comparer types that can be provided to {@link BeanCompareJob2} to
  * allow this job to compare just two objects as well as lists and maps.
  * 
+ * @see BeanComparerType
+ * 
  * @author rob
  *
  */
