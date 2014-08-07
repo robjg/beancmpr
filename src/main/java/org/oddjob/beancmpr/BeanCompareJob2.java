@@ -27,7 +27,7 @@ import org.oddjob.beancmpr.results.PlaysWithBeanbus;
  * 
  * A simple example.
  * 
- * {@oddjob.xml.resource org/oddjob/dido/match/MatchExample2.xml}
+ * {@oddjob.xml.resource org/oddjob/beancmpr/BeanCompareJob2Example1.xml}
  * 
  * 
  * @author rob

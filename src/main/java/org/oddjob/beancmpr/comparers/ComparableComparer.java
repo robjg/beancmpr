@@ -6,6 +6,8 @@ import org.oddjob.beancmpr.Comparison;
 /**
  * A generic {@link Comparer} for comparables.
  * <p>
+ * @oddjob.description 
+ * 
  * 
  * @author Rob
  *

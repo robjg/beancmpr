@@ -34,11 +34,11 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparer;
  * a text comparer which is case insensitive and this is used for comparison
  * of the keys.
  * 
- * {@oddjob.xml.resource org/oddjob/beancmpr/beans/MapComparerSimple.xml}
+ * {@oddjob.xml.resource org/oddjob/beancmpr/beans/MapCompareSimple.xml}
  * 
  * The output is:
  * 
- * {@oddjob.text.resource org/oddjob/beancmpr/beans/MapComparerSimpleOut.txt}
+ * {@oddjob.text.resource org/oddjob/beancmpr/beans/MapCompareSimpleOut.txt}
  * 
  * @oddjob.example
  * 

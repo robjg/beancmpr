@@ -27,12 +27,6 @@ import org.oddjob.beancmpr.results.PlaysWithBeanbus;
  * @oddjob.description A job that takes two streams of beans and
  * attempts to match the beans according to their properties.
  * 
- * @oddjob.example
- * 
- * A simple example.
- * 
- * {@oddjob.xml.resource org/oddjob/dido/match/MatchExample2.xml}
- * 
  * 
  * @author rob
  *
