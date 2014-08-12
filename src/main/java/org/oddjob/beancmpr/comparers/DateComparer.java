@@ -6,12 +6,37 @@ import java.util.Date;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 
-public class DateComparer implements Comparer<Date>{
+/**
+ * @oddjob.description A Comparer that will allow a comparison between
+ * two Java dates with a millisecond tolerance.
+ * 
+ * @author rob
+ *
+ */
+public class DateComparer implements Comparer<Date> {
 
+	/**
+	 * @oddjob.property
+	 * @oddjob.description The difference as a number of milliseconds that
+	 * can exist between two dates for them still to be considered equal.
+	 * @oddjob.required No. Default to 0.
+	 */
 	private long tolerance;
 	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description The format for the date and time when reporting a 
+	 * date difference.
+	 * @oddjob.required No.
+	 */
 	private String dateFormat;
 	
+	/**
+	 * @oddjob.property type
+	 * @oddjob.description The base class this is a comparer for. 
+	 * Used internally.
+	 * 
+	 */
 	@Override
 	public Class<?> getType() {
 		return Date.class;

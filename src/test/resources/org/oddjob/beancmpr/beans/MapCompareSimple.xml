@@ -33,11 +33,11 @@
                     <comparer>
                         <beancmpr:map-comparer>
                             <comparersByType>
-                                <beancmpr:comparers-list>
+                                <beancmpr:comparers-by-type>
                                     <comparers>
                                         <beancmpr:text-comparer ignoreCase="true"/>
                                     </comparers>
-                                </beancmpr:comparers-list>
+                                </beancmpr:comparers-by-type>
                             </comparersByType>
                         </beancmpr:map-comparer>
                     </comparer>

@@ -12,17 +12,43 @@ import org.oddjob.beancmpr.Comparer;
 
 /**
  * An implementation of {@link ComparersByType} backed by a {@code List}.
+ * <p>
+ * @oddjob.description Allows comparers to be defined by the type of 
+ * thing they are comparing. 
+ * <p>
+ * Comparers can be listed using the <code>comparers</code> property
+ * which provides a new configuration for all types the comparer is for,
+ * or the <code>specialisations</code> property which allows a comparer
+ * to be targeted at a particular class.
  * 
  * @author rob
  * 
  */
 public class ComparersByTypeList implements ComparersByTypeFactory {
 
+	/**
+	 * @oddjob.property
+	 * @oddjob.description The class loader to use to resolve the type
+	 * of a specialisation.
+	 * @oddjob.required No. This will be set from Oddjob automatically.
+	 */
 	private ClassLoader classLoader;
 
+	/**
+	 * @oddjob.property
+	 * @oddjob.description Comparers listed. A comparer here will override
+	 * the default comparer for a give type.
+	 * @oddjob.required No.
+	 */
 	private final List<ComparerFactory<?>> comparers = 
 			new ArrayList<ComparerFactory<?>>();
 	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description Comparers specialised by class name. The key
+	 * povides the class a comparer is for.
+	 * @oddjob.required No.
+	 */
 	private final Map<String, ComparerFactory<?>> specialisations = 
 			new LinkedHashMap<String, ComparerFactory<?>>();
 

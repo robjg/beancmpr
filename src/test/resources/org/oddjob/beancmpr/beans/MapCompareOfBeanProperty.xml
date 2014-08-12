@@ -38,19 +38,19 @@
                     </inY>
                     <comparer>
                         <beancmpr:bean-comparer values="fruitMap">
-                            <comparersByProperty>
-                                <beancmpr:comparers-map>
+                            <comparersByName>
+                                <beancmpr:comparers-by-name>
                                     <comparerForProperty>
                                         <beancmpr:map-comparer key="fruitMap"/>
                                     </comparerForProperty>
-                                </beancmpr:comparers-map>
-                            </comparersByProperty>
+                                </beancmpr:comparers-by-name>
+                            </comparersByName>
                             <comparersByType>
-                                <beancmpr:comparers-list>
+                                <beancmpr:comparers-by-type>
                                     <comparers>
                                         <beancmpr:text-comparer ignoreCase="true"/>
                                     </comparers>
-                                </beancmpr:comparers-list>
+                                </beancmpr:comparers-by-type>
                             </comparersByType>
                         </beancmpr:bean-comparer>
                     </comparer>

@@ -16,12 +16,12 @@
             <beancmpr:array-comparer keys="id"
               others="colour" values="type, quantity, price">
               <comparersByType>
-                <beancmpr:comparers-list>
+                <beancmpr:comparers-by-type>
                   <specialisations>
                     <beancmpr:numeric-comparer
                       deltaTolerance="0.05" key="double" />
                   </specialisations>
-                </beancmpr:comparers-list>
+                </beancmpr:comparers-by-type>
               </comparersByType>
             </beancmpr:array-comparer>
           </comparer>

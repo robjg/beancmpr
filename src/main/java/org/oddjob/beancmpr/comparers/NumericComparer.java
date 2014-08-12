@@ -5,12 +5,12 @@ import java.text.DecimalFormat;
 import org.oddjob.beancmpr.Comparer;
 
 /**
- * A {@link Comparer} for numbers that supports tolerances and provides
+ * @oddjob.description A Comparer for numbers that supports tolerances and provides
  * the comparison as a difference between the numbers and as a percentage 
  * change between numbers.
  * <p>
  * The change is considered as going from x to y. If x is 200 and y is 190, the
- * delta is -10, and the percentage chnage is 5%.
+ * delta is -10, and the percentage change is 5%.
  * <p>
  * Two numbers are only considered different if their delta is more
  * the given tolerance or more. The tolerance may be specified as either a 
@@ -27,14 +27,43 @@ import org.oddjob.beancmpr.Comparer;
  */
 public class NumericComparer implements Comparer<Number> {
 
+	/**
+	 * @oddjob.property
+	 * @oddjob.description The absolute difference to allow for two numbers
+	 * to still be considered equal.
+	 * @oddjob.required No. Defaults to 0.
+	 */
 	private volatile double deltaTolerance;
 	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description The decimal format to use for reporting a 
+	 * difference.
+	 * @oddjob.required No.
+	 */
 	private volatile String deltaFormat;
 	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description The difference specified as percentage to allow
+	 * for two numbers to still be considered equal.
+	 * @oddjob.required No. Defaults to 0.
+	 */
 	private volatile double percentageTolerance;
 	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description The decimal format to use for reporting a 
+	 * percentage difference.
+	 * @oddjob.required No.
+	 */
 	private volatile String percentageFormat;
 	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description Treat two Not a Numbers as being equal when true.
+	 * @oddjob.required No. Defaults to false.
+	 */
 	private volatile boolean twoNaNsEqual;
 	
 	/*
@@ -90,6 +119,12 @@ public class NumericComparer implements Comparer<Number> {
 		return new NumericComparisonImpl(x, y, result, delta, percentage);
 	}
 	
+	/**
+	 * @oddjob.property type
+	 * @oddjob.description The base class this is a comparer for. 
+	 * Used internally.
+	 * 
+	 */
 	@Override
 	public Class<Number> getType() {
 		return Number.class;

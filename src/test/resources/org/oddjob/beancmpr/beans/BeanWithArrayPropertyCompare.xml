@@ -13,21 +13,21 @@
                     </inY>
                     <comparer>
                         <beancmpr:bean-comparer values="numbers">
-                            <comparersByProperty>
-                                <beancmpr:comparers-map>
+                            <comparersByName>
+                                <beancmpr:comparers-by-name>
                                     <comparerForProperty>
                                         <beancmpr:array-comparer key="numbers">
                                             <comparersByType>
-                                                <beancmpr:comparers-list>
+                                                <beancmpr:comparers-by-type>
                                                     <specialisations>
                                                         <beancmpr:numeric-comparer deltaTolerance="1.0" key="double"/>
                                                     </specialisations>
-                                                </beancmpr:comparers-list>
+                                                </beancmpr:comparers-by-type>
                                             </comparersByType>
                                         </beancmpr:array-comparer>
                                     </comparerForProperty>
-                                </beancmpr:comparers-map>
-                            </comparersByProperty>
+                                </beancmpr:comparers-by-name>
+                            </comparersByName>
                         </beancmpr:bean-comparer>
                     </comparer>
                     <results>

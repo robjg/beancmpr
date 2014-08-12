@@ -8,6 +8,7 @@ import org.oddjob.beancmpr.composite.ComparerFactory;
 import org.oddjob.beancmpr.composite.ComparersByNameFactory;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
+import org.oddjob.beancmpr.composite.ComparersByTypeList;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
@@ -104,7 +105,8 @@ implements ComparerFactory<Object>,
 	 * @oddjob.property
 	 * @oddjob.description Comparers for comparing the properties of the
 	 * beans. These comparers will override any other comparers defined
-	 * in the comparer hierarchy for their type. 
+	 * in the comparer hierarchy for their type. This property is most
+	 * often set with a {@link ComparersByTypeList}.
 	 * @oddjob.required No. 
 	 */
 	private ComparersByTypeFactory comparersByType;
@@ -112,7 +114,8 @@ implements ComparerFactory<Object>,
 	/** 
 	 * @oddjob.property
 	 * @oddjob.description Comparers for comparing the properties of the
-	 * beans defined for properties of a given name. 
+	 * beans defined by the name of the property. This property is most
+	 * often set with a {@link ComparersByNameType}.
 	 * @oddjob.required No. 
 	 */
 	private ComparersByNameFactory comparersByName;

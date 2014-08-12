@@ -24,11 +24,11 @@
                                 </beancmpr:bean-results>
                             </results>
                             <comparersByType>
-                                <beancmpr:comparers-list>
+                                <beancmpr:comparers-by-type>
                                     <specialisations>
                                         <beancmpr:numeric-comparer key="java.lang.Double" deltaTolerance="0.5"/>
                                     </specialisations>
-                                </beancmpr:comparers-list>
+                                </beancmpr:comparers-by-type>
                             </comparersByType>
                         </beancmpr:compare>
                         <bus:bean-copy xmlns:bus="oddjob:beanbus">

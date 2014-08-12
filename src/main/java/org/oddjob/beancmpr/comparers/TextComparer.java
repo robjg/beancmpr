@@ -7,16 +7,29 @@ import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 
 /**
+ * @oddjob.description A comparer for text. This comparer allows a 
+ * comparison ignoring whitespace and or case.
  * 
  * @author rob
- *
  */
 public class TextComparer implements Comparer<String> {
 	
 	private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+");
 	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description Ignore the case of the text during a comparison
+	 * when true.
+	 * @oddjob.required No. Default to false.
+	 */
 	private boolean ignoreCase;
 	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description Ignore leading or trailing whitespace during a 
+	 * comparison when true.
+	 * @oddjob.required No. Default to false.
+	 */
 	private boolean ignoreWhitespace;
 	
 	@Override
@@ -71,6 +84,12 @@ public class TextComparer implements Comparer<String> {
 		};
 	}
 
+	/**
+	 * @oddjob.property type
+	 * @oddjob.description The base class this is a comparer for. 
+	 * Used internally.
+	 * 
+	 */
 	@Override
 	public Class<?> getType() {
 		return String.class;

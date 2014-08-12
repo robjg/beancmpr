@@ -21,14 +21,14 @@
           </results>
           <comparer>
             <beancmpr:bean-comparer values="type, colour">
-              <comparersByProperty>
-                <beancmpr:comparers-map>
+              <comparersByName>
+                <beancmpr:comparers-by-name>
                   <comparerForProperty>
                     <beancmpr:text-comparer key="type"
                       ignoreCase="true" />
                   </comparerForProperty>
-                </beancmpr:comparers-map>
-              </comparersByProperty>
+                </beancmpr:comparers-by-name>
+              </comparersByName>
             </beancmpr:bean-comparer>
           </comparer>
         </beancmpr:compare2>

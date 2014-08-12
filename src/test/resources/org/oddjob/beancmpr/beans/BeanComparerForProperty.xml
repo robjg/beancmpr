@@ -89,20 +89,20 @@
           <comparer>
             <beancmpr:iterable-comparer keys="id" values="fruit">
               <comparersByName>
-                <beancmpr:comparers-map>
+                <beancmpr:comparers-by-name>
                   <comparerForProperty>
                     <beancmpr:bean-comparer key="fruit"
                       values="type, colour" />
                   </comparerForProperty>
-                </beancmpr:comparers-map>
+                </beancmpr:comparers-by-name>
               </comparersByName>
               <comparersByType>
-                <beancmpr:comparers-list>
+                <beancmpr:comparers-by-type>
                   <comparers>
                     <beancmpr:text-comparer
                       ignoreCase="true" />
                   </comparers>
-                </beancmpr:comparers-list>
+                </beancmpr:comparers-by-type>
               </comparersByType>
             </beancmpr:iterable-comparer>
           </comparer>

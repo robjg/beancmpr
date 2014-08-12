@@ -27,11 +27,11 @@
                     <comparer>
                         <beancmpr:bean-comparer>
                             <comparersByType>
-                                <beancmpr:comparers-list>
+                                <beancmpr:comparers-by-type>
                                     <specialisations>
                                         <beancmpr:numeric-comparer deltaTolerance="0.1" key="double"/>
                                     </specialisations>
-                                </beancmpr:comparers-list>
+                                </beancmpr:comparers-by-type>
                             </comparersByType>
                         </beancmpr:bean-comparer>
                     </comparer>

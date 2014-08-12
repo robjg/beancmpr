@@ -12,6 +12,7 @@ import org.oddjob.beancmpr.composite.ComparersByNameFactory;
 import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
+import org.oddjob.beancmpr.composite.ComparersByTypeList;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
@@ -74,13 +75,35 @@ implements ArooaSessionAware, ComparerFactory<T>,
 	 */
 	private String[] values;
 	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description Names of properties that to use for the comparison.
+	 * @oddjob.required No. If no property names are given then the
+	 * objects themselves are used for the comparison. 
+	 */
 	private String[] others;
 	
-	private PropertyAccessor accessor;
-	
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description Comparers for comparing the properties of the
+	 * beans. These comparers will override any other comparers defined
+	 * in the comparer hierarchy for their type. This property is most
+	 * often set with a {@link ComparersByTypeList}.
+	 * @oddjob.required No. 
+	 */
 	private ComparersByTypeFactory comparersByType;
 	
-	private ComparersByNameFactory comparersByProperty;
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description Comparers for comparing the properties of the
+	 * beans defined by the name of the property. This property is most
+	 * often set with a {@link ComparersByNameType}.
+	 * @oddjob.required No. 
+	 */
+	private ComparersByNameFactory comparersByName;
+	
+	/** Used to access the properties of the beans. */
+	private PropertyAccessor accessor;
 	
 	@ArooaHidden
 	@Override
@@ -101,7 +124,7 @@ implements ArooaSessionAware, ComparerFactory<T>,
 		
 		ComparersByNameOrTypeFactory comparerProviderFactory =
 				new ComparersByNameOrTypeFactory(
-						comparersByProperty, comparersByType);
+						comparersByName, comparersByType);
 						
 		BeanPropertyComparerProvider comparerProvider = 
 				comparerProviderFactory.createWith
@@ -148,13 +171,13 @@ implements ArooaSessionAware, ComparerFactory<T>,
 	}
 
 
-	public ComparersByNameFactory getComparersByProperty() {
-		return comparersByProperty;
+	public ComparersByNameFactory getComparersByName() {
+		return comparersByName;
 	}
 
 
-	public void setComparersByProperty(ComparersByNameFactory comparersByProperty) {
-		this.comparersByProperty = comparersByProperty;
+	public void setComparersByName(ComparersByNameFactory comparersByProperty) {
+		this.comparersByName = comparersByProperty;
 	}
 
 }

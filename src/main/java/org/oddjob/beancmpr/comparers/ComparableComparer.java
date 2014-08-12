@@ -4,10 +4,9 @@ import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 
 /**
- * A generic {@link Comparer} for comparables.
- * <p>
- * @oddjob.description 
- * 
+ * @oddjob.description A generic Comparer for Java Comparables. This is
+ * one of the default comparers, it is unlikely to that is is 
+ * used as an override.
  * 
  * @author Rob
  *
@@ -48,6 +47,12 @@ implements Comparer<T> {
 		};
 	}
 	
+	/**
+	 * @oddjob.property type
+	 * @oddjob.description The base class this is a comparer for. 
+	 * Used internally.
+	 * 
+	 */
 	@Override
 	public Class<?> getType() {
 		return Comparable.class;

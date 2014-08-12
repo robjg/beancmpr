@@ -14,6 +14,15 @@ import org.oddjob.beancmpr.matchables.MatchableMetaData;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
 import org.oddjob.beancmpr.matchables.ValueIterable;
 
+/**
+ * @oddjob.description A handler that will generate results in format
+ * used by Dido. Dido (Data In Data Out) is currently experimental.
+ * It can be found at <a href="http://sourceforge.net/projects/di-do>
+ * http://sourceforge.net/projects/di-do</a>.
+ * 
+ * @author rob
+ *
+ */
 public class DidoBeanResultHandler 
 implements BeanCmprResultsHandler, PlaysWithBeanbus {
 

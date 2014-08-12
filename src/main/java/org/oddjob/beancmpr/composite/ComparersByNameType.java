@@ -4,9 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.oddjob.beancmpr.Comparer;
+import org.oddjob.beancmpr.beans.BeanArrayComparerType;
+import org.oddjob.beancmpr.beans.BeanComparerType;
+import org.oddjob.beancmpr.beans.IterableBeansComparerType;
+import org.oddjob.beancmpr.beans.MapComparerType;
 
 /**
- * @oddjob.description Collects {@link Comparer}s by property name.
+ * @oddjob.description Allows comparers to be specified by the names of 
+ * a properties. This type is used by comparers such as 
+ * {@link BeanArrayComparerType}, {@link IterableBeansComparerType},
+ * {@link BeanComparerType}, or {@link MapComparerType}.
  * 
  * @author rob
  *
@@ -16,7 +23,8 @@ implements ComparersByNameFactory {
 
 	/**
 	 * @oddjob.property
-	 * @oddjob.description Map of name to the comparer type.
+	 * @oddjob.description Comparer keys by property name.
+	 * @oddjob.required No. But pointless if missing.
 	 */
 	public final Map<String, ComparerFactory<?>> comparersByName = 
 		new HashMap<String, ComparerFactory<?>>();

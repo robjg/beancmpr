@@ -12,6 +12,7 @@ import org.oddjob.beancmpr.composite.ComparersByNameFactory;
 import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
+import org.oddjob.beancmpr.composite.ComparersByTypeList;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
@@ -39,18 +40,59 @@ implements ComparerFactory<Iterable<T>>,
 		MultiItemComparerFactory<Iterable<T>>,
 		ArooaSessionAware {
 
+	/** Used to access bean properties. */
 	private PropertyAccessor accessor;
 	
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description The key property names. The key
+	 * properties decided if another bean is missing or not. 
+	 * @oddjob.required No. 
+	 */
 	private String[] keys;
 	
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description The value property names. The value properties
+	 * decide if two beans match when their keys match. 
+	 * @oddjob.required No. 
+	 */
 	private String[] values;
 	
+	/**
+	 * @oddjob.property
+	 * @oddjob.description Other property names. Other properties
+	 * may be of interest on reports but take no part in the matching
+	 * process. 
+	 * @oddjob.required No. 
+	 */
 	private String[] others;
 	
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description Are the collections sorted. If arrays are sorted
+	 * then key comparision will be much quicker. 
+	 * @oddjob.required No. Defaults to false.
+	 */
 	private boolean sorted;
 	
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description Comparers for comparing the properties of the
+	 * beans. These comparers will override any other comparers defined
+	 * in the comparer hierarchy for their type. This property is most
+	 * often set with a {@link ComparersByTypeList}.
+	 * @oddjob.required No. 
+	 */
 	private ComparersByTypeFactory comparersByType;
 	
+	/** 
+	 * @oddjob.property
+	 * @oddjob.description Comparers for comparing the properties of the
+	 * beans defined by the name of the property. This property is most
+	 * often set with a {@link ComparersByNameType}.
+	 * @oddjob.required No. 
+	 */
 	private ComparersByNameFactory comparersByName;
 	
 	
