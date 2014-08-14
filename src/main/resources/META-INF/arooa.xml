@@ -21,17 +21,21 @@
       className='org.oddjob.beancmpr.composite.ComparersByNameType'/>
       
     <arooa:bean-def element='array-comparer'
-      className='org.oddjob.beancmpr.beans.BeanArrayComparerType'/>
+      className='org.oddjob.beancmpr.beans.BeanArrayComparerType'
+      designFactory='org.oddjob.beancmpr.beans.IterableBeansComparerDF'/>
     <arooa:bean-def element='bean-comparer'
-      className='org.oddjob.beancmpr.beans.BeanComparerType'/>
+      className='org.oddjob.beancmpr.beans.BeanComparerType'
+      designFactory='org.oddjob.beancmpr.beans.BeanComparerDF'/>
     <arooa:bean-def element='comparable-comparer'
       className='org.oddjob.beancmpr.comparers.ComparableComparer'/>
     <arooa:bean-def element='date-comparer'
       className='org.oddjob.beancmpr.comparers.DateComparer'/>
-    <arooa:bean-def element='iterable-comparer'
-      className='org.oddjob.beancmpr.beans.IterableBeansComparerType'/>
+    <arooa:bean-def element='collection-comparer'
+      className='org.oddjob.beancmpr.beans.IterableBeansComparerType'
+      designFactory='org.oddjob.beancmpr.beans.IterableBeansComparerDF'/>
     <arooa:bean-def element='map-comparer'
-      className='org.oddjob.beancmpr.beans.MapComparerType'/>
+      className='org.oddjob.beancmpr.beans.MapComparerType'
+      designFactory='org.oddjob.beancmpr.beans.IterableBeansComparerDF'/>
     <arooa:bean-def element='equality-comparer'
       className='org.oddjob.beancmpr.comparers.EqualityComparer'/>
     <arooa:bean-def element='numeric-comparer'

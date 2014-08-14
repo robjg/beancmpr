@@ -87,7 +87,7 @@
             </beancmpr:bean-results>
           </results>
           <comparer>
-            <beancmpr:iterable-comparer keys="id" values="fruit">
+            <beancmpr:collection-comparer keys="id" values="fruit">
               <comparersByName>
                 <beancmpr:comparers-by-name>
                   <comparerForProperty>
@@ -104,7 +104,7 @@
                   </comparers>
                 </beancmpr:comparers-by-type>
               </comparersByType>
-            </beancmpr:iterable-comparer>
+            </beancmpr:collection-comparer>
           </comparer>
         </beancmpr:compare2>
         <bean-report>
