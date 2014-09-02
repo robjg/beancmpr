@@ -3,7 +3,7 @@
     <job>
         <sequential>
             <jobs>
-                <beancmpr:compare2 id="compare" xmlns:beancmpr="oddjob:beancmpr">
+                <beancmpr:compare id="compare" xmlns:beancmpr="oddjob:beancmpr">
                     <inX>
                         <convert>
                             <to>
@@ -42,7 +42,7 @@
                             </out>
                         </beancmpr:bean-results>
                     </results>
-                </beancmpr:compare2>
+                </beancmpr:compare>
                 <bean-report>
                     <beans>
                         <value value="${compare.results.out}"/>

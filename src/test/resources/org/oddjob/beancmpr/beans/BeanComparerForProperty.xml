@@ -71,7 +71,7 @@
             </list>
           </listB>
         </variables>
-        <beancmpr:compare2 id="compare"
+        <beancmpr:compare id="compare"
           xmlns:beancmpr="oddjob:beancmpr">
           <inX>
             <value value="${vars.listA}" />
@@ -106,7 +106,7 @@
               </comparersByType>
             </beancmpr:collection-comparer>
           </comparer>
-        </beancmpr:compare2>
+        </beancmpr:compare>
         <bean-report>
           <beans>
             <value value="${compare.results.out}" />

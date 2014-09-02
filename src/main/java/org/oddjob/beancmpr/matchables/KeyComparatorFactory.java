@@ -32,14 +32,14 @@ public class KeyComparatorFactory {
 	}
 	
 	/**
-	 * Create a comparer.
+	 * Create a Comparator.
 	 * 
 	 * @param xMetaData The X meta data.
 	 * @param yMetaData The Y meta data.
 	 * 
 	 * @return A Comparator. Never null.
 	 */
-	public Comparator<Iterable<?>> createComparerFor(
+	public Comparator<Iterable<?>> createComparatorFor(
 			MatchableMetaData xMetaData, MatchableMetaData yMetaData) {
 		
 		final List<NullSafeComparer<?>> compares = 

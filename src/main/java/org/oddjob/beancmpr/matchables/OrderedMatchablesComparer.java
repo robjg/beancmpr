@@ -98,7 +98,7 @@ implements MultiItemComparer<Iterable<MatchableGroup>> {
 			}
 			if (keyComparator == null) {
 				keyComparator = new KeyComparatorFactory(
-						comparerProvider).createComparerFor(
+						comparerProvider).createComparatorFor(
 								currentX.getMetaData(), currentY.getMetaData());
 			}
 			

@@ -6,10 +6,13 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.BeanCompareJob;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.SharedTestData;
+import org.oddjob.beancmpr.SharedTestData.Fruit;
+import org.oddjob.beancmpr.beans.IterableBeansComparerType;
 
 public class DidoBeanResultHandlerTest extends TestCase {
 
@@ -19,14 +22,18 @@ public class DidoBeanResultHandlerTest extends TestCase {
 				
 		List<Object> results = new ArrayList<Object>();
 		
-		BeanCompareJob beanCompare = new BeanCompareJob();
-		beanCompare.setArooaSession(new StandardArooaSession());
+		IterableBeansComparerType<Fruit> iterableComparer = 
+				new IterableBeansComparerType<>();
+		iterableComparer.setArooaSession(new StandardArooaSession());
+		iterableComparer.setKeys(new String[] {"type"});
+		iterableComparer.setValues(new String[] {"quantity", "price"});
+				
+		BeanCompareJob<Iterable<Fruit>> beanCompare = new BeanCompareJob<>();
 		beanCompare.setInX(testData.getListFruitX());
 		beanCompare.setInY(testData.getListFruitY());
-		beanCompare.setKeyProperties(new String[] {"type"});
-		beanCompare.setValueProperties(new String[] {"quantity", "price"});
 		beanCompare.setResults(new DidoBeanResultHandler());
 		beanCompare.acceptDestination(results);
+		beanCompare.setComparer(iterableComparer);
 		
 		beanCompare.run();
 		
@@ -60,19 +67,26 @@ public class DidoBeanResultHandlerTest extends TestCase {
 	}
 	
 	public void testSomeMissing() {
+
+		ArooaSession session = new StandardArooaSession();
 		
 		SharedTestData testData = new SharedTestData();
 				
 		List<Object> results = new ArrayList<Object>();
 		
-		BeanCompareJob beanCompare = new BeanCompareJob();
-		beanCompare.setArooaSession(new StandardArooaSession());
+		IterableBeansComparerType<Fruit> iterableComparer = 
+				new IterableBeansComparerType<>();
+		iterableComparer.setArooaSession(session);
+		iterableComparer.setKeys(new String[] {"id"});
+		iterableComparer.setValues(new String[] {"type"});
+				
+		BeanCompareJob<Iterable<Fruit>> beanCompare = new BeanCompareJob<>();
+		beanCompare.setArooaSession(session);
 		beanCompare.setInX(testData.getListFruitX());
 		beanCompare.setInY(testData.getListFruitY());
-		beanCompare.setKeyProperties(new String[] {"id"});
-		beanCompare.setValueProperties(new String[] {"type"});
 		beanCompare.setResults(new DidoBeanResultHandler());
 		beanCompare.acceptDestination(results);
+		beanCompare.setComparer(iterableComparer);
 		
 		beanCompare.run();
 		

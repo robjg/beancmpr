@@ -16,10 +16,10 @@ import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
-import org.oddjob.beancmpr.matchables.MapMatchableFactory;
-import org.oddjob.beancmpr.matchables.MatchableFactory;
-import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
+import org.oddjob.beancmpr.matchables.MapMatchableFactoryProvider;
+import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
+import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 
 /**
  * @oddjob.description Provides a Comparer that can compare two maps. The maps
@@ -147,10 +147,10 @@ implements ComparerFactory<Map<K, V>>,
 		MatchDefinition matchDefinition = new SimpleMatchDefinition(
 				keys, values, others);
 		
-		MatchableFactory<Map.Entry<K, V>> matchableFactory = 
-				new MapMatchableFactory<K, V>(matchDefinition, accessor);
-	
-		return new MapComparer<K, V>(matchableFactory, 
+		MatchableFactoryProvider<Map.Entry<K, V>> matchableFactoryProvider = 
+				new MapMatchableFactoryProvider<>(matchDefinition, accessor);
+		
+		return new MapComparer<K, V>(matchableFactoryProvider, 
 				comparerProviderFactory.createWith(parentComparersByType),
 				sorted,
 				resultHandler);

@@ -1,7 +1,5 @@
 package org.oddjob.beancmpr;
 
-import java.util.Arrays;
-
 import junit.framework.TestCase;
 
 import org.apache.commons.beanutils.DynaBean;
@@ -27,10 +25,6 @@ public class BeanCompareDFTest extends TestCase {
 			"<beancmpr:compare xmlns:beancmpr='oddjob:beancmpr'" +
 			"     name='A Test'" +
 			"	  id='this'" +
-			"     keyProperties='date, tradeId, instrument'" +
-			"     valueProperties='price, quantity'" +
-			"     otherProperties='exchange, broker'" +
-			"     sorted='true'" +
 			"   >" +
 			"   <inX>" +
 			"    <list/>" +
@@ -41,7 +35,7 @@ public class BeanCompareDFTest extends TestCase {
 			"   <results>" +
 			"     <beancmpr:bean-results/>" +
 			"   </results>" +
-			"</beancmpr:compare >";
+			"</beancmpr:compare>";
 		
     	ArooaDescriptor descriptor = 
     		new OddjobDescriptorFactory().createDescriptor(null);
@@ -54,7 +48,7 @@ public class BeanCompareDFTest extends TestCase {
 		
 		design = parser.getDesign();
 		
-		assertEquals(BeanCompareDesign.class, design.getClass());
+		assertEquals(BeanCompareDesign2.class, design.getClass());
 		
     	StandardFragmentParser fragmentParser = new StandardFragmentParser(
     			new OddjobSessionFactory().createSession());    	
@@ -65,17 +59,10 @@ public class BeanCompareDFTest extends TestCase {
 		DynaBean test = (DynaBean) fragmentParser.getRoot();
 		
 		assertEquals("A Test", test.get("name"));
-		assertEquals("[date, tradeId, instrument]", 
-				Arrays.toString((String[]) test.get("keyProperties")));
-		assertEquals("[price, quantity]", 
-				Arrays.toString((String[]) test.get("valueProperties")));
-		assertEquals("[exchange, broker]", 
-				Arrays.toString((String[]) test.get("otherProperties")));
 		
 		assertNotNull(test.get("inX"));
 		assertNotNull(test.get("inY"));
 		assertNotNull(test.get("results"));
-		assertEquals(true, test.get("sorted"));
 				
 	}
 

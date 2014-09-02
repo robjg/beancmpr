@@ -1,12 +1,16 @@
 beancmpr 0.1.0
 ===============
 
-A utility for comparing collections of Java Beans.
+Bean Compare is a utility for comparing Java Objects including Java 
+Beans, Collections, Arrays and Maps. 
+
+Bean Compare is intended to be used as an Oddjob Oddball but can be
+used stand alone in code. 
 
 Requirements
 ------------
 
-Requires Arooa 1.3 and Java 1.6
+Requires Arooa 1.4 and Java 1.7
 
 Installation
 ------------
@@ -19,7 +23,3 @@ or:
 
 2. Unzip into Oddjob's oddballs directory and restart Oddjob.
 
-Documentation
--------------
-
-TBD.

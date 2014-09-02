@@ -133,7 +133,7 @@
             </bean>
           </mapY>
         </variables>
-        <beancmpr:compare2 id="compare-maps"
+        <beancmpr:compare id="compare-maps"
           xmlns:beancmpr="oddjob:beancmpr">
           <inX>
             <value value="${test-data.mapX}" />
@@ -161,7 +161,7 @@
               </comparersByType>
             </beancmpr:map-comparer>
           </comparer>
-        </beancmpr:compare2>
+        </beancmpr:compare>
         <bean-report>
           <beans>
             <value value="${compare-maps.results.out}" />

@@ -11,7 +11,7 @@ import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
 import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
-import org.oddjob.beancmpr.matchables.MapMatchableFactory;
+import org.oddjob.beancmpr.matchables.MapMatchableFactoryProvider;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
 public class MapComparerTest extends TestCase {
@@ -35,10 +35,11 @@ public class MapComparerTest extends TestCase {
 		MatchDefinition definition = new SimpleMatchDefinition(
 				null, null, null);
 		
-		MapMatchableFactory<String, Integer> matchableFactory = 
-				new MapMatchableFactory<>(definition, accessor);
+		MapMatchableFactoryProvider<String, Integer> matchableFactoryProvider = 
+				new MapMatchableFactoryProvider<>(definition, accessor);
 		
-		MapComparer<String, Integer> test = new MapComparer<>(matchableFactory, 
+		MapComparer<String, Integer> test = new MapComparer<>(
+				matchableFactoryProvider, 
 				new ComparersByNameOrTypeFactory().createWith(null),
 				false);
 		

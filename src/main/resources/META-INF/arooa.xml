@@ -48,21 +48,6 @@
     <arooa:bean-def element='compare'
       className='org.oddjob.beancmpr.BeanCompareJob' 
       designFactory='org.oddjob.beancmpr.BeanCompareDF'>
-      <properties>
-        <arooa:property name="to" annotation="org.oddjob.beanbus.Destination"/>
-      </properties>
-      <annotations>
-        <arooa:annotation name="org.oddjob.framework.SoftReset"
-          method="reset" />
-        <arooa:annotation name="org.oddjob.framework.HardReset"
-          method="reset" />
-        <arooa:annotation name="org.oddjob.beanbus.Destination"
-          method="acceptDestination" parameterTypes="java.util.Collection"/>
-      </annotations>
-    </arooa:bean-def>
-    <arooa:bean-def element='compare2'
-      className='org.oddjob.beancmpr.BeanCompareJob2' 
-      designFactory='org.oddjob.beancmpr.BeanCompare2DF'>
       <annotations>
         <arooa:annotation name="org.oddjob.framework.SoftReset"
           method="reset" />

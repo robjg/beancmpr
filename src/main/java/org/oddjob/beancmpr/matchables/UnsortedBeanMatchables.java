@@ -31,7 +31,7 @@ implements Iterable<MatchableGroup> {
 	 * 
 	 * @param iterable The beans
 	 * @param factory The factory to create the {link Matchable}s.
-	 * @param comparerProvider Provide comparers.
+	 * @param comparerProvider Provide comparers to create key comparator.
 	 */
 	public UnsortedBeanMatchables(Iterable<? extends T> iterable, 
 			MatchableFactory<T> factory,
@@ -52,7 +52,7 @@ implements Iterable<MatchableGroup> {
 				MatchableMetaData metaData = matchable.getMetaData();
 				
 				keyComparator = new KeyComparatorFactory(
-						comparerProvider).createComparerFor(
+						comparerProvider).createComparatorFor(
 								metaData, metaData);
 			}
 						

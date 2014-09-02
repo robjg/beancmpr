@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.oddjob.arooa.reflect.ArooaClass;
 import org.oddjob.arooa.reflect.BeanOverview;
@@ -97,52 +96,75 @@ public class BeanMatchableFactory<T> implements MatchableFactory<T> {
 	 */
 	private MatchableMetaData metaDataFor(Object bean) {
 				
-		Map<String, Class<?>> types = new HashMap<String, Class<?>>();
-		AtomicReference<BeanOverview> overview = new AtomicReference<>();
+		TypeAdder types = new TypeAdder(bean);
 		
 		List<String> keys = new ArrayList<>();
 		List<String> values = new ArrayList<>();
 		List<String> others = new ArrayList<>();
 		
-		addTypes(bean, definition.getKeyProperties(), 
-				overview, keys, types);
-		addTypes(bean, definition.getValueProperties(), 
-				overview, values, types);
-		addTypes(bean, definition.getOtherProperties(), 
-				overview, others, types);
+		types.addTypes(definition.getKeyProperties(), keys);
+		types.addTypes(definition.getValueProperties(), values);
+		types.addTypes(definition.getOtherProperties(), others);
 		
-		return new SimpleMatchableMeta(keys, values, others, types);
+		return new SimpleMatchableMeta(keys, values, others, 
+				types.getTypes());
 	}	
 	
 	/**
-	 * Used by the above.
-	 * 
-	 * @param propertyNames
-	 * @param overview
-	 * @param types
+	 * Used by the above to accumulate property types for the key,
+	 * value, and other properties.
 	 */
-	private void addTypes(Object bean, Iterable<String> propertyNames, 
-			AtomicReference<BeanOverview> overview, 
-			List<String> propertyNamesOut,
-			Map<String, Class<?>> types) {
+	private class TypeAdder {
 		
-		if (propertyNames != null) {
-			for (String name : propertyNames) {
-				if (SELF_TOKEN.equals(name)) {
-					types.put(VALUE_NAME, bean.getClass());
-					propertyNamesOut.add(VALUE_NAME);
-				}
-				else {
-					if (overview.get() == null) {
-						ArooaClass arooaClass = accessor.getClassName(bean);
-						overview.set(arooaClass.getBeanOverview(accessor));
+		private final Object bean;
+		
+		private final Map<String, Class<?>> types = new HashMap<String, Class<?>>();
+		
+		private BeanOverview overview;
+		
+		TypeAdder(Object bean) {
+			this.bean = bean;
+		}
+		
+		/**
+		 * @param propertyNames
+		 * @param propertyNamesOut
+		 */
+			
+		void addTypes(
+				Iterable<String> propertyNames, 
+				List<String> propertyNamesOut) {
+			
+			if (propertyNames != null) {
+				for (String name : propertyNames) {
+					if (SELF_TOKEN.equals(name)) {
+						types.put(VALUE_NAME, bean.getClass());
+						propertyNamesOut.add(VALUE_NAME);
 					}
-					types.put(name, overview.get().getPropertyType(name));
-					propertyNamesOut.add(name);
+					else {
+						types.put(name, getBeanOverview().getPropertyType(name));
+						propertyNamesOut.add(name);
+					}
 				}
 			}
-		}		
-	}
+		}
 		
+		BeanOverview getBeanOverview() {
+			if (overview == null) {
+				if (accessor == null) {
+					throw new NullPointerException(
+							"No Property Accessor. Set Arooa Session.");
+				}
+				ArooaClass arooaClass = accessor.getClassName(bean);
+				overview = arooaClass.getBeanOverview(accessor);
+			}
+			return overview;
+		}
+	
+		Map<String, Class<?>> getTypes() {
+			return types;
+		}
+		
+	}	
 }
 

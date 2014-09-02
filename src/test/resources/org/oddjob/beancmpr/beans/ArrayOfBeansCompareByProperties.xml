@@ -4,7 +4,7 @@
     <sequential name="Bean Array Example">
       <jobs>
         <bean class="org.oddjob.beancmpr.SharedTestData" id="test-data" />
-        <beancmpr:compare2 id="compare-bean-arrays"
+        <beancmpr:compare id="compare-bean-arrays"
           xmlns:beancmpr="oddjob:beancmpr">
           <inX>
             <value value="${test-data.arrayFruitX}" />
@@ -32,7 +32,7 @@
               </out>
             </beancmpr:bean-results>
           </results>
-        </beancmpr:compare2>
+        </beancmpr:compare>
         <bean-report>
           <beans>
             <value value="${compare-bean-arrays.results.out}" />

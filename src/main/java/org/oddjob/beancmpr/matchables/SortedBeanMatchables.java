@@ -10,7 +10,7 @@ import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 
 /**
- * An adapter that converts an {@code Iterable} of bean to 
+ * An adapter that converts an {@code Iterable} of beans to 
  * an {@code Iterable} of {@link MatchableGroup}s suitable for use by
  * an {@link OrderedMatchablesComparer}.
  * <p>
@@ -22,12 +22,23 @@ import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
  */
 public class SortedBeanMatchables<T> implements Iterable<MatchableGroup> {
 	
+	/** The thing we are wrapping as a {@link MatchableGroup} */
 	private final Iterable<? extends T> iterable;
 	
+	/** This will create the {@link Matchable} from the elements of the
+	 * iterable. */
 	private final MatchableFactory<T> factory;
 	
+	/** Used to create the Comparator for the key. */
 	private final BeanPropertyComparerProvider comparerProvider;
 	
+	/**
+	 * Create a new instance.
+	 * 
+	 * @param iterable
+	 * @param factory
+	 * @param comparerProivder
+	 */
 	public SortedBeanMatchables(Iterable<? extends T> iterable, 
 			MatchableFactory<T> factory,
 			BeanPropertyComparerProvider comparerProivder) {
@@ -76,7 +87,7 @@ public class SortedBeanMatchables<T> implements Iterable<MatchableGroup> {
 						metaData = next.getMetaData();
 						
 						keyComparator = new KeyComparatorFactory(
-								comparerProvider).createComparerFor(
+								comparerProvider).createComparatorFor(
 										metaData, metaData);
 					}
 					

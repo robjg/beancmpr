@@ -1,6 +1,6 @@
 package org.oddjob.beancmpr.beans;
 
-import org.oddjob.beancmpr.BeanCompareJob2;
+import org.oddjob.beancmpr.BeanCompareJob;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.Matchable;
@@ -17,7 +17,7 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparer;
  * Note that this comparer implements {@link MultiItemComparer} even though
  * it will only ever one of each bean. This is so {@link BeanComparerType}
  * can implement {@link MultiItemComparerFactory} and so be one of
- * the comparer types that can be provided to {@link BeanCompareJob2} to
+ * the comparer types that can be provided to {@link BeanCompareJob} to
  * allow this job to compare just two objects as well as lists and maps.
  * 
  * @see BeanComparerType

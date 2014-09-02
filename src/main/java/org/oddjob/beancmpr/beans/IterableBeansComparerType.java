@@ -10,12 +10,14 @@ import org.oddjob.beancmpr.SimpleMatchDefinition;
 import org.oddjob.beancmpr.composite.ComparerFactory;
 import org.oddjob.beancmpr.composite.ComparersByNameFactory;
 import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
+import org.oddjob.beancmpr.composite.ComparersByNameType;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
 import org.oddjob.beancmpr.composite.ComparersByTypeList;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
-import org.oddjob.beancmpr.matchables.MatchableFactory;
+import org.oddjob.beancmpr.matchables.BeanMatchableFactoryProvider;
+import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 
@@ -136,10 +138,11 @@ implements ComparerFactory<Iterable<T>>,
 		MatchDefinition matchDefinition = new SimpleMatchDefinition(
 				keys, values, others);
 		
-		MatchableFactory<T> matchableFactory = 
-				new BeanMatchableFactory<T>(matchDefinition, accessor);
-	
-		return new IterableBeansComparer<T>(matchableFactory, 
+		MatchableFactoryProvider<T> matchableFactoryProvider =
+				new BeanMatchableFactoryProvider<>(matchDefinition, accessor);
+		
+		return new IterableBeansComparer<T>(
+				matchableFactoryProvider, 
 				comparerProviderFactory.createWith(parentComparersByType),
 				sorted,
 				resultHandler);

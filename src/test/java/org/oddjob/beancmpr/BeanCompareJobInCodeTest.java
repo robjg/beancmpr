@@ -6,6 +6,7 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.oddjob.arooa.standard.StandardArooaSession;
+import org.oddjob.beancmpr.beans.IterableBeansComparerType;
 import org.oddjob.beancmpr.results.MatchResultType;
 import org.oddjob.beancmpr.results.SimpleArraysResultHandler;
 
@@ -50,11 +51,15 @@ public class BeanCompareJobInCodeTest extends TestCase {
 		
 		SimpleArraysResultHandler results = new SimpleArraysResultHandler();
 		
-		BeanCompareJob test = new BeanCompareJob();
-		test.setArooaSession(new StandardArooaSession());
+		IterableBeansComparerType<Fruit> iterableComparer = 
+				new IterableBeansComparerType<>();
+		iterableComparer.setArooaSession(new StandardArooaSession());
+		iterableComparer.setKeys(new String[] { "type", "colour" });
+		iterableComparer.setSorted(true);
+				
+		BeanCompareJob<Iterable<Fruit>> test = new BeanCompareJob<>();
 		test.setResults(results);
-		test.setKeyProperties(new String[] { "type", "colour" });
-		test.setSorted(true);
+		test.setComparer(iterableComparer);
 		
 		test.setInX(x);
 		test.setInY(y);
@@ -122,11 +127,15 @@ public class BeanCompareJobInCodeTest extends TestCase {
 		
 		SimpleArraysResultHandler results = new SimpleArraysResultHandler();
 		
-		BeanCompareJob test = new BeanCompareJob();
-		test.setArooaSession(new StandardArooaSession());
+		IterableBeansComparerType<Fruit> iterableComparer = 
+				new IterableBeansComparerType<>();
+		iterableComparer.setArooaSession(new StandardArooaSession());
+		iterableComparer.setKeys(new String[] { "type", "colour" });
+		iterableComparer.setSorted(true);
+
+		BeanCompareJob<Iterable<Fruit>> test = new BeanCompareJob<>();
 		test.setResults(results);
-		test.setKeyProperties(new String[] { "type", "colour" });
-		test.setSorted(true);
+		test.setComparer(iterableComparer);
 		
 		test.setInX(x);
 		test.setInY(y);

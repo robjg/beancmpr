@@ -3,7 +3,7 @@
   <job>
     <sequential>
       <jobs>
-        <beancmpr:compare2 id="compare" xmlns:beancmpr="oddjob:beancmpr">
+        <beancmpr:compare id="compare" xmlns:beancmpr="oddjob:beancmpr">
           <inX>
             <bean class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Fruit"
               colour="green" type="apple" />
@@ -31,7 +31,7 @@
               </comparersByName>
             </beancmpr:bean-comparer>
           </comparer>
-        </beancmpr:compare2>
+        </beancmpr:compare>
         <bean-report>
           <beans>
             <value value="${compare.results.out}" />

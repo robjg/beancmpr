@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <oddjob>
-    <job>
-        <sequential>
-            <jobs>
-                <variables id="vars">
-                    <connection>
-                        <connection driver="org.hsqldb.jdbcDriver" url="jdbc:hsqldb:mem:test" username="sa"/>
-                    </connection>
-                </variables>
-                <sql name="Create tables">
-                    <connection>
-                        <value value="${vars.connection}"/>
-                    </connection>
-                    <input>
-                        <buffer><![CDATA[
+  <job>
+    <sequential>
+      <jobs>
+        <variables id="vars">
+          <connection>
+            <connection driver="org.hsqldb.jdbcDriver" url="jdbc:hsqldb:mem:test"
+              username="sa" />
+          </connection>
+        </variables>
+        <sql name="Create tables">
+          <connection>
+            <value value="${vars.connection}" />
+          </connection>
+          <input>
+            <buffer><![CDATA[
 	        	            
 create table FRUIT1(
       ID bigint, 
@@ -58,89 +59,99 @@ insert into FRUIT2
     (3, 'Orange', 2, 'orange')
 
 ]]></buffer>
-                    </input>
-                </sql>
-                <sql id="query1" name="Select from table 1">
-                    <connection>
-                        <value value="${vars.connection}"/>
-                    </connection>
-                    <input>
-                        <buffer><![CDATA[
+          </input>
+        </sql>
+        <sql id="query1" name="Select from table 1">
+          <connection>
+            <value value="${vars.connection}" />
+          </connection>
+          <input>
+            <buffer><![CDATA[
 	        	            
 select ID, TYPE, QUANTITY, COLOUR from FRUIT1]]></buffer>
-                    </input>
-                    <results>
-                        <sql-results-bean/>
-                    </results>
-                </sql>
-                <sql id="query2" name="Select from table 2">
-                    <connection>
-                        <value value="${vars.connection}"/>
-                    </connection>
-                    <input>
-                        <buffer><![CDATA[
+          </input>
+          <results>
+            <sql-results-bean />
+          </results>
+        </sql>
+        <sql id="query2" name="Select from table 2">
+          <connection>
+            <value value="${vars.connection}" />
+          </connection>
+          <input>
+            <buffer><![CDATA[
 	        	            
 select ID, TYPE, QUANTITY, COLOUR from FRUIT2]]></buffer>
-                    </input>
-                    <results>
-                        <sql-results-bean/>
-                    </results>
-                </sql>
-                <beancmpr:compare id="compare-by-id" keyProperties="ID" name="Compare By ID" valueProperties="TYPE, QUANTITY, COLOUR" xmlns:beancmpr="oddjob:beancmpr">
-                    <inX>
-                        <value value="${query1.results.rows}"/>
-                    </inX>
-                    <inY>
-                        <value value="${query2.results.rows}"/>
-                    </inY>
-                    <results>
-                      <beancmpr:bean-results>
-                        <out>
-                            <list/>
-                        </out>                    
-                      </beancmpr:bean-results>
-                    </results>
-                </beancmpr:compare>
-                <bean-report>
-                    <beans>
-                        <value value="${compare-by-id.results.out}"/>
-                    </beans>
-                    <output>
-                        <identify id="by-id-results">
-                            <value>
-                                <buffer/>
-                            </value>
-                        </identify>
-                    </output>
-                </bean-report>
-                <beancmpr:compare id="compare-by-type" keyProperties="TYPE" name="Compare By Type" otherProperties="COLOUR" valueProperties="QUANTITY" xmlns:beancmpr="oddjob:beancmpr">
-                    <inX>
-                        <value value="${query1.results.rows}"/>
-                    </inX>
-                    <inY>
-                        <value value="${query2.results.rows}"/>
-                    </inY>
-                    <results>
-                      <beancmpr:bean-results>
-                        <out>
-                            <list/>
-                        </out>                    
-                      </beancmpr:bean-results>
-                    </results>
-                </beancmpr:compare>
-                <bean-report>
-                    <beans>
-                        <value value="${compare-by-type.results.out}"/>
-                    </beans>
-                    <output>
-                        <identify id="by-type-results">
-                            <value>
-                                <buffer/>
-                            </value>
-                        </identify>
-                    </output>
-                </bean-report>
-            </jobs>
-        </sequential>
-    </job>
+          </input>
+          <results>
+            <sql-results-bean />
+          </results>
+        </sql>
+        <beancmpr:compare id="compare-by-id" name="Compare By ID"
+          xmlns:beancmpr="oddjob:beancmpr">
+          <inX>
+            <value value="${query1.results.rows}" />
+          </inX>
+          <inY>
+            <value value="${query2.results.rows}" />
+          </inY>
+          <comparer>
+            <beancmpr:array-comparer
+              keys="ID" values="TYPE, QUANTITY, COLOUR" />
+          </comparer>
+          <results>
+            <beancmpr:bean-results>
+              <out>
+                <list />
+              </out>
+            </beancmpr:bean-results>
+          </results>
+        </beancmpr:compare>
+        <bean-report>
+          <beans>
+            <value value="${compare-by-id.results.out}" />
+          </beans>
+          <output>
+            <identify id="by-id-results">
+              <value>
+                <buffer />
+              </value>
+            </identify>
+          </output>
+        </bean-report>
+        <beancmpr:compare id="compare-by-type" name="Compare By Type"
+          xmlns:beancmpr="oddjob:beancmpr">
+          <inX>
+            <value value="${query1.results.rows}" />
+          </inX>
+          <inY>
+            <value value="${query2.results.rows}" />
+          </inY>
+          <comparer>
+            <beancmpr:array-comparer
+              keys="TYPE" others="COLOUR" values="QUANTITY" />
+          </comparer>
+          <results>
+            <beancmpr:bean-results>
+              <out>
+                <list/>
+              </out>
+            </beancmpr:bean-results>
+          </results>
+        </beancmpr:compare>
+        <bean-report>
+          <beans>
+            <value value="${compare-by-type.results.out}" />
+          </beans>
+          <output>
+            <identify id="by-type-results">
+              <value>
+                <buffer />
+              </value>
+            </identify>
+          </output>
+        </bean-report>
+      </jobs>
+    </sequential>
+  </job>
 </oddjob>

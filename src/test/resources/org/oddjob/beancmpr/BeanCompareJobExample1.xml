@@ -1,38 +1,40 @@
 <oddjob>
-    <job>
-        <sequential>
-            <jobs>
-                <beancmpr:compare xmlns:beancmpr="oddjob:beancmpr" 
-                        id="comparison" sorted="${sorted}"
-                        keyProperties="id" 
-                        valueProperties="type, quantity, colour">                
-                    <inX>
-                        <value value="${listX}"/>
-                    </inX>
-                    <inY>
-                        <value value="${listY}"/>
-                    </inY>
-                    <results>
-                      <beancmpr:bean-results>
-                        <out>
-                            <list/>
-                        </out>                    
-                      </beancmpr:bean-results>
-                    </results>
-                </beancmpr:compare>
-                <bean-report>
-                    <beans>
-                        <value value="${comparison.results.out}"/>
-                    </beans>
-                    <output>
-                        <identify id="results">
-                            <value>
-                                <buffer/>
-                            </value>
-                        </identify>
-                    </output>
-                </bean-report>
-            </jobs>
-        </sequential>
-    </job>
+  <job>
+    <sequential>
+      <jobs>
+        <beancmpr:compare xmlns:beancmpr="oddjob:beancmpr"
+          id="comparison">
+          <inX>
+            <value value="${listX}" />
+          </inX>
+          <inY>
+            <value value="${listY}" />
+          </inY>
+          <results>
+            <beancmpr:bean-results>
+              <out>
+                <list />
+              </out>
+            </beancmpr:bean-results>
+          </results>
+          <comparer>
+            <beancmpr:collection-comparer
+              sorted="${sorted}" keys="id" values="type, quantity, colour" />
+          </comparer>
+        </beancmpr:compare>
+        <bean-report>
+          <beans>
+            <value value="${comparison.results.out}" />
+          </beans>
+          <output>
+            <identify id="results">
+              <value>
+                <buffer />
+              </value>
+            </identify>
+          </output>
+        </bean-report>
+      </jobs>
+    </sequential>
+  </job>
 </oddjob>

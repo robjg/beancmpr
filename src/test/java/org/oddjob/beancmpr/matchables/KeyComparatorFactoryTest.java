@@ -81,7 +81,7 @@ public class KeyComparatorFactoryTest extends TestCase {
 		MyMatchable y = new MyMatchable(Arrays.asList("apple", "red"),
 				metaData);
 		
-		Comparator<Iterable<?>> comparer = test.createComparerFor(
+		Comparator<Iterable<?>> comparer = test.createComparatorFor(
 				x.getMetaData(), y.getMetaData());
 		
 		int result = comparer.compare(x.getKeys(), y.getKeys());
@@ -103,7 +103,7 @@ public class KeyComparatorFactoryTest extends TestCase {
 		Matchable y = new MyMatchable(Arrays.asList("apple", "green"),
 				metaData);
 				
-		Comparator<Iterable<?>> comparator = test.createComparerFor(
+		Comparator<Iterable<?>> comparator = test.createComparatorFor(
 				x.getMetaData(), y.getMetaData());
 		
 		int result = comparator.compare(x.getKeys(), y.getKeys());
@@ -130,7 +130,7 @@ public class KeyComparatorFactoryTest extends TestCase {
 		Matchable y = new MyMatchable(Arrays.asList("apple", new Integer(42)),
 				yMetaData);
 				
-		Comparator<Iterable<?>> comparator = test.createComparerFor(
+		Comparator<Iterable<?>> comparator = test.createComparatorFor(
 				x.getMetaData(), y.getMetaData());
 		
 		int result = comparator.compare(x.getKeys(), y.getKeys());
@@ -158,7 +158,7 @@ public class KeyComparatorFactoryTest extends TestCase {
 		Matchable y = new MyMatchable(Arrays.asList("apple", (BigInteger) null),
 				yMetaData);
 				
-		Comparator<Iterable<?>> comparator = test.createComparerFor(
+		Comparator<Iterable<?>> comparator = test.createComparatorFor(
 				x.getMetaData(), y.getMetaData());
 		
 		int result = comparator.compare(x.getKeys(), y.getKeys());

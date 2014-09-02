@@ -3,7 +3,7 @@
   <job>
     <sequential name="Int Array Example">
       <jobs>
-        <beancmpr:compare2 id="compare-int-arrays"
+        <beancmpr:compare id="compare-int-arrays"
           xmlns:beancmpr="oddjob:beancmpr">
           <inX>
             <convert>
@@ -32,7 +32,7 @@
               </out>
             </beancmpr:bean-results>
           </results>
-        </beancmpr:compare2>
+        </beancmpr:compare>
         <bean-report>
           <beans>
             <value value="${compare-int-arrays.results.out}" />

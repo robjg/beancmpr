@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.BeanCompareJob;
+import org.oddjob.jobs.BeanReportJob;
 
 public class ResultFactoryDifferentTypesTest extends TestCase {
 
@@ -66,25 +67,31 @@ public class ResultFactoryDifferentTypesTest extends TestCase {
 	
 	public void testComparisonFirst() {
 		
-		List<Bean1> bean1s = Arrays.asList(
+		List<Object> bean1s = Arrays.asList(new Object[] {
 				new Bean1(1, 2.5),
-				new Bean1(2, 3.5));
+				new Bean1(2, 3.5) });
 		
-		List<Bean2> bean2s = Arrays.asList(
+		List<Object> bean2s = Arrays.asList(new Object[] {
 				new Bean2(1, new BigDecimal(2.6)),
-				new Bean2(3, new BigDecimal(4.5)));
+				new Bean2(3, new BigDecimal(4.5)) });
 		
 		List<Object> results = new ArrayList<Object>();
 				
 		ArooaSession session = new StandardArooaSession();
 		
-		BeanCompareJob comparer = new BeanCompareJob();
+		IterableBeansComparerType<Object> iterableComparer = 
+				new IterableBeansComparerType<>();
+				
+		iterableComparer.setArooaSession(session);
+		iterableComparer.setKeys(new String[] {"id"});
+		iterableComparer.setValues(new String[] {"quantity"});
+		
+		BeanCompareJob<Iterable<Object>> comparer = new BeanCompareJob<>();
 		comparer.setArooaSession(session);
 		comparer.acceptDestination(results);
 		comparer.setInX(bean1s);
 		comparer.setInY(bean2s);
-		comparer.setKeyProperties(new String[] {"id"});
-		comparer.setValueProperties(new String[] {"quantity"});
+		comparer.setComparer(iterableComparer);
 		
 		comparer.run();
 		
@@ -93,25 +100,31 @@ public class ResultFactoryDifferentTypesTest extends TestCase {
 	
 	public void testXMissingFirst() {
 		
-		List<Bean1> bean1s = Arrays.asList(
+		List<Object> bean1s = Arrays.asList(new Object[] {
 				new Bean1(2, 2.5),
-				new Bean1(3, 3.5));
+				new Bean1(3, 3.5) });
 		
-		List<Bean2> bean2s = Arrays.asList(
+		List<Object> bean2s = Arrays.asList(new Object[] {
 				new Bean2(1, new BigDecimal(2.6)),
-				new Bean2(3, new BigDecimal(4.5)));
+				new Bean2(3, new BigDecimal(4.5)) });
 		
 		List<Object> results = new ArrayList<Object>();
 				
 		ArooaSession session = new StandardArooaSession();
 		
-		BeanCompareJob comparer = new BeanCompareJob();
+		IterableBeansComparerType<Object> iterableComparer = 
+				new IterableBeansComparerType<>();
+				
+		iterableComparer.setArooaSession(session);
+		iterableComparer.setKeys(new String[] {"id"});
+		iterableComparer.setValues(new String[] {"quantity"});
+				
+		BeanCompareJob<Iterable<Object>> comparer = new BeanCompareJob<>();
 		comparer.setArooaSession(session);
 		comparer.acceptDestination(results);
 		comparer.setInX(bean1s);
 		comparer.setInY(bean2s);
-		comparer.setKeyProperties(new String[] {"id"});
-		comparer.setValueProperties(new String[] {"quantity"});
+		comparer.setComparer(iterableComparer);
 		
 		comparer.run();
 		
@@ -120,27 +133,38 @@ public class ResultFactoryDifferentTypesTest extends TestCase {
 	
 	public void testYMissingFirst() {
 		
-		List<Bean1> bean1s = Arrays.asList(
+		List<Object> bean1s = Arrays.asList(new Object[] {
 				new Bean1(1, 2.5),
-				new Bean1(3, 3.5));
+				new Bean1(3, 3.5) });
 		
-		List<Bean2> bean2s = Arrays.asList(
+		List<Object> bean2s = Arrays.asList(new Object[] {
 				new Bean2(2, new BigDecimal(2.6)),
-				new Bean2(3, new BigDecimal(4.5)));
+				new Bean2(3, new BigDecimal(4.5)) });
 		
 		List<Object> results = new ArrayList<Object>();
 				
 		ArooaSession session = new StandardArooaSession();
 		
-		BeanCompareJob comparer = new BeanCompareJob();
+		IterableBeansComparerType<Object> iterableComparer = 
+				new IterableBeansComparerType<>();
+
+		iterableComparer.setArooaSession(session);
+		iterableComparer.setKeys(new String[] {"id"});
+		iterableComparer.setValues(new String[] {"quantity"});
+				
+		BeanCompareJob<Iterable<Object>> comparer = new BeanCompareJob<>();
 		comparer.setArooaSession(session);
 		comparer.acceptDestination(results);
 		comparer.setInX(bean1s);
 		comparer.setInY(bean2s);
-		comparer.setKeyProperties(new String[] {"id"});
-		comparer.setValueProperties(new String[] {"quantity"});
+		comparer.setComparer(iterableComparer);
 		
 		comparer.run();
+		
+		BeanReportJob report = new BeanReportJob();
+		report.setArooaSession(session);
+		report.setBeans(results);
+		report.run();
 		
 		assertEquals(3, results.size());
 	}

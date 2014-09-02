@@ -1,24 +1,20 @@
 package org.oddjob.beancmpr;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.oddjob.arooa.ArooaSession;
-import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
-import org.oddjob.arooa.reflect.PropertyAccessor;
-import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
-import org.oddjob.beancmpr.composite.ComparersByNameFactory;
-import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
-import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
+import org.oddjob.beancmpr.beans.BeanArrayComparerType;
+import org.oddjob.beancmpr.beans.BeanComparerType;
+import org.oddjob.beancmpr.beans.IterableBeansComparerType;
+import org.oddjob.beancmpr.beans.MapComparerType;
+import org.oddjob.beancmpr.composite.DefaultComparersByType;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
-import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
-import org.oddjob.beancmpr.matchables.MatchableFactory;
-import org.oddjob.beancmpr.matchables.MatchableGroup;
-import org.oddjob.beancmpr.matchables.OrderedMatchablesComparer;
-import org.oddjob.beancmpr.matchables.SortedBeanMatchables;
-import org.oddjob.beancmpr.matchables.UnsortedBeanMatchables;
+import org.oddjob.beancmpr.multiitem.MultiItemComparer;
+import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
 import org.oddjob.beancmpr.results.BeanCreatingResultHandler;
 import org.oddjob.beancmpr.results.PlaysWithBeanbus;
@@ -27,14 +23,22 @@ import org.oddjob.beancmpr.results.PlaysWithBeanbus;
  * @oddjob.description A job that takes two streams of beans and
  * attempts to match the beans according to their properties.
  * 
+ * @oddjob.example
+ * 
+ * A simple example.
+ * 
+ * {@oddjob.xml.resource org/oddjob/beancmpr/BeanCompareJob2Example1.xml}
+ * 
  * 
  * @author rob
  *
  */
-public class BeanCompareJob 
-implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
+public class BeanCompareJob<T> 
+implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 
 	private static final Logger logger = Logger.getLogger(BeanCompareJob.class);
+	
+	private ArooaSession session;
 	
 	/**
 	 * @oddjob.property
@@ -45,74 +49,18 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 	
 	/**
 	 * @oddjob.property
-	 * @oddjob.description The key properties. A comma separated list of
-	 * the properties of the beans that will be used to decide which can
-	 * be matched.
-	 * @oddjob.required No.
+	 * @oddjob.description A source of beans.
+	 * @oddjob.required Yes.
 	 */
-	private String[] keyProperties;
-	
-	/**
-	 * @oddjob.property
-	 * @oddjob.description The value properties. A comma separated list of
-	 * the properties of the beans that will be used to match the two 
-	 * beans against each other.
-	 * @oddjob.required No.
-	 */
-	private String[] valueProperties;
-	
-	/**
-	 * @oddjob.property
-	 * @oddjob.description Other properties. A comma separated list of
-	 * the properties of the beans that aren't used in the match but
-	 * will be passed through to the results.
-	 * @oddjob.required No.
-	 */
-	private String[] otherProperties;
-	
-	/**
-	 * @oddjob.property
-	 * @oddjob.description Used to specify additional comparers to the
-	 * default ones. If a comparer is specified for an existing type it
-	 * takes precedence.
-	 * @oddjob.required No.
-	 */
-	private ComparersByTypeFactory comparersByType;
-	
-	/**
-	 * @oddjob.property
-	 * @oddjob.description Used to specify comparers that will be used for 
-	 * particular properties of the beans.
-	 * @oddjob.required No.
-	 */
-	private ComparersByNameFactory comparersByProperty;
-	
-	/** From the {@link #setArooaSession}. */
-	private ArooaSession session;
+	private T inX;
 	
 	/**
 	 * @oddjob.property
 	 * @oddjob.description A source of beans.
 	 * @oddjob.required Yes.
 	 */
-	private Iterable<?> inX;
+	private T inY;
 	
-	/**
-	 * @oddjob.property
-	 * @oddjob.description A source of beans.
-	 * @oddjob.required Yes.
-	 */
-	private Iterable<?> inY;
-	
-	/**
-	 * @oddjob.property
-	 * @oddjob.description Are the input Iterables sorted? If they
-	 * are then they will be read immediately, if not they will be 
-	 * copied and sorted.
-	 * @oddjob.required No. Defaults to false.
-	 */
-	private boolean sorted;
-		
 	/**
 	 * @oddjob.property
 	 * @oddjob.description Something to handle results. Typically a 
@@ -128,6 +76,8 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 	 * @oddjob.required No.
 	 */
 	private Collection<? super Object> to;
+	
+	private MultiItemComparerFactory<T> comparer;
 	
 	/** Counts. */
 	private MultiItemComparisonCounts counts;
@@ -145,25 +95,14 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 	@Override
 	final public void run() {
 		
+		
 		if (inX == null) {
 			throw new NullPointerException("No X");
 		}
 		if (inY == null) {
 			throw new NullPointerException("No Y");
-		}
+		}		
 		
-		PropertyAccessor accessor = session.getTools().getPropertyAccessor();
-		
-		MatchDefinition definition = new SimpleMatchDefinition(
-				getKeyProperties(), getValueProperties(), 
-				getOtherProperties());
-		
-		logger.debug("Using definition: " + definition + ".");
-		
-		BeanPropertyComparerProvider comparerProvider =
-			new ComparersByNameOrTypeFactory(
-					comparersByProperty, comparersByType).createWith(null);
-			
 		if (to != null) {
 			
 			if (results == null) {
@@ -181,17 +120,15 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 			}
 		}
 		
-		OrderedMatchablesComparer rec = new OrderedMatchablesComparer(
-				comparerProvider,
-				results);
+		MultiItemComparerFactory<T> comparerFactory = this.comparer;
+		if (comparerFactory == null) {
+			comparerFactory = inferComparerFactory();
+		}
 		
-		this.counts = rec.compare(
-				getIterableMatchables(inX, 
-					new BeanMatchableFactory<Object>(definition, accessor),
-					comparerProvider), 
-				getIterableMatchables(inY, 
-					new BeanMatchableFactory<Object>(definition, accessor),
-					comparerProvider));
+		MultiItemComparer<T> comparer = comparerFactory.createComparerWith(
+				new DefaultComparersByType(), results);
+		
+		this.counts = comparer.compare(inX, inY);
 		
 		logger.info("Xs Missing " + getXMissingCount() +
 				", Ys Missing " + getYMissingCount() + 
@@ -199,17 +136,40 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 				", Same " + getMatchedCount());
 	}	
 	
-	private Iterable<MatchableGroup> getIterableMatchables(
-			Iterable<?> in, MatchableFactory<Object> factory,
-			BeanPropertyComparerProvider comparerProvider) {
-		if (sorted) {
-			return new SortedBeanMatchables<Object>(in, factory, 
-					comparerProvider);
+	@SuppressWarnings("unchecked")
+	protected MultiItemComparerFactory<T> inferComparerFactory() {
+
+		if (inX instanceof Map && inY instanceof Map) {
+			
+			MapComparerType<Object, Object> comparerFactory = 
+					new MapComparerType<>();
+			comparerFactory.setArooaSession(session);
+			
+			return (MultiItemComparerFactory<T>) comparerFactory;
 		}
-		else {
-			return new UnsortedBeanMatchables<Object>(in, factory,
-					comparerProvider);
+		
+		if (inX instanceof Iterable && inY instanceof Iterable) {
+			
+			IterableBeansComparerType<Iterable<?>> comparerFactory = 
+					new IterableBeansComparerType<>();
+			comparerFactory.setArooaSession(session);
+			
+			return (MultiItemComparerFactory<T>) comparerFactory;
 		}
+		
+		if (inX.getClass().isArray() && inY.getClass().isArray()) {
+			
+			BeanArrayComparerType comparerFactory = 
+					new BeanArrayComparerType();
+			comparerFactory.setArooaSession(session);
+			
+			return (MultiItemComparerFactory<T>) comparerFactory;
+		}
+		
+		BeanComparerType<T> comparerFactory = new BeanComparerType<>();
+		comparerFactory.setArooaSession(session);
+		
+		return comparerFactory;
 	}
 	
 	public String getName() {
@@ -220,73 +180,22 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 		this.name = name;
 	}
 
-	public Iterable<?> getInX() {
+	public T getInX() {
 		return inX;
 	}
 
-	public void setInX(Iterable<?> x) {
+	public void setInX(T x) {
 		this.inX = x;
 	}
 
-	public Iterable<?> getInY() {
+	public T getInY() {
 		return inY;
 	}
 
-	public void setInY(Iterable<?> y) {
+	public void setInY(T y) {
 		this.inY = y;
 	}
 
-	public String[] getValueProperties() {
-		return valueProperties;
-	}
-
-	@ArooaAttribute
-	public void setValueProperties(String[] matchProperties) {
-		this.valueProperties = matchProperties;
-	}
-
-	public String[] getKeyProperties() {
-		return keyProperties;
-	}
-
-	@ArooaAttribute
-	public void setKeyProperties(String[] keys1) {
-		this.keyProperties = keys1;
-	}
-
-	public String[] getOtherProperties() {
-		return otherProperties;
-	}
-
-	@ArooaAttribute
-	public void setOtherProperties(String[] others) {
-		this.otherProperties = others;
-	}
-
-	public ComparersByTypeFactory getComparersByType() {
-		return comparersByType;
-	}
-
-	public void setComparersByType(ComparersByTypeFactory comparersByType) {
-		this.comparersByType = comparersByType;
-	}
-
-	public ComparersByNameFactory getComparersByProperty() {
-		return comparersByProperty;
-	}
-
-	public void setComparersByProperty(ComparersByNameFactory comparersByProperty) {
-		this.comparersByProperty = comparersByProperty;
-	}
-
-	public boolean isSorted() {
-		return sorted;
-	}
-
-	public void setSorted(boolean sorted) {
-		this.sorted = sorted;
-	}
-	
 	public BeanCmprResultsHandler getResults() {
 		return results;
 	}
@@ -342,6 +251,15 @@ implements ArooaSessionAware, Runnable, MultiItemComparisonCounts {
 		else {
 			return name;
 		}
+	}
+
+	public MultiItemComparerFactory<T> getComparer() {
+		return comparer;
+	}
+
+	public void setComparer(
+			MultiItemComparerFactory<T> comparer) {
+		this.comparer = comparer;
 	}
 
 }

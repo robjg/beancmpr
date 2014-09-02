@@ -3,6 +3,7 @@ package org.oddjob.beancmpr.beans;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
+import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
 import org.oddjob.beancmpr.matchables.MatchableGroup;
 import org.oddjob.beancmpr.matchables.OrderedMatchablesComparer;
 import org.oddjob.beancmpr.matchables.SortedBeanMatchables;
@@ -21,35 +22,42 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 public class IterableBeansComparer<T>
 implements MultiItemComparer<Iterable<T>> {
 
-	private final MatchableFactory<T> matchableFactory;
+	/** Provider a {@link MatchableFactory}. */
+	private final MatchableFactoryProvider<T> matchableFactoryProvider;
 	
+	/** Provide comparers for property names or by type. */
 	private final BeanPropertyComparerProvider comparerProvider;
 	
+	/** Handler results. */
 	private final BeanCmprResultsHandler resultsHandler;
 	
+	/** Are the iterables sorted? */
 	private final boolean sorted;
 	
-	public IterableBeansComparer(MatchableFactory<T> matchableFactory,
+	
+	public IterableBeansComparer(
+			MatchableFactoryProvider<T> matchableFactoryProvider,
 			BeanPropertyComparerProvider comparerProvider,
 			boolean sorted) {
 		
-		this(matchableFactory, comparerProvider, sorted, null);
+		this(matchableFactoryProvider, comparerProvider, sorted, null);
 	}
 	
-	public IterableBeansComparer(MatchableFactory<T> matchableFactory,
+	public IterableBeansComparer(
+			MatchableFactoryProvider<T> matchableFactoryProvider,
 			BeanPropertyComparerProvider comparerProvider,
 			boolean sorted,
 			BeanCmprResultsHandler resultsHandler) {
 		
-		if (matchableFactory == null) {
-			throw new NullPointerException("MatchableFactory must be provided.");
+		if (matchableFactoryProvider == null) {
+			throw new NullPointerException("MatchDefinition must be provided.");
 		}
 		
 		if (comparerProvider == null) {
 			throw new NullPointerException("ComparerProvider must be provided.");
 		}
 
-		this.matchableFactory = matchableFactory;
+		this.matchableFactoryProvider = matchableFactoryProvider;
 		this.comparerProvider = comparerProvider;
 		this.sorted = sorted;
 		this.resultsHandler = resultsHandler;
@@ -64,10 +72,12 @@ implements MultiItemComparer<Iterable<T>> {
 				resultsHandler);
 		
 		Iterable<MatchableGroup> xGroups = getIterableMatchables(x, 
-				matchableFactory, comparerProvider);
+				matchableFactoryProvider.provideFactory(), 
+				comparerProvider);
 		
 		Iterable<MatchableGroup> yGroups = getIterableMatchables(y, 
-				matchableFactory, comparerProvider);
+				matchableFactoryProvider.provideFactory(), 
+				comparerProvider);
 				
 		MultiItemComparison<Iterable<MatchableGroup>> groupComparison = 
 				rec.compare(xGroups, yGroups);
@@ -76,6 +86,14 @@ implements MultiItemComparer<Iterable<T>> {
 				x, y, groupComparison);
 	}
 	
+	/**
+	 * Helper method to provide the {@link MatchableGroup}s.
+	 * 
+	 * @param in
+	 * @param factory
+	 * @param comparerProvider
+	 * @return
+	 */
 	private Iterable<MatchableGroup> getIterableMatchables(
 			Iterable<? extends T> in, MatchableFactory<T> factory,
 			BeanPropertyComparerProvider comparerProvider) {

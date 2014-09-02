@@ -5,7 +5,7 @@ import java.util.Map;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableFactory;
+import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
 import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
@@ -24,23 +24,42 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 public class MapComparer<K, V> 
 implements MultiItemComparer<Map<K, V>> {
 
+	/** Comparer to delegate to with the map entries. */
 	private final IterableBeansComparer<Map.Entry<K,V>> comparer;
 	
-	public MapComparer(MatchableFactory<Map.Entry<K, V>> matchableFactory,
+	/**
+	 * Create a new instance. 
+	 * 
+	 * @param matchableFactoryProvider
+	 * @param comparerProvider
+	 * @param sorted
+	 */
+	public MapComparer(
+			MatchableFactoryProvider<Map.Entry<K,V>> matchableFactoryProvider,
 			BeanPropertyComparerProvider comparerProvider,
 			boolean sorted) {
 		
-		this(matchableFactory, comparerProvider, sorted, null);
+		this(matchableFactoryProvider, comparerProvider, sorted, null);
 	}
 	
-	public MapComparer(MatchableFactory<Map.Entry<K, V>> matchableFactory,
+	/**
+	 * Create a new instance.
+	 * 
+	 * @param matchableFactoryProvider
+	 * @param comparerProvider
+	 * @param sorted
+	 * @param resultHandler
+	 */
+	public MapComparer(
+			MatchableFactoryProvider<Map.Entry<K,V>> matchableFactoryProvider,
 			BeanPropertyComparerProvider comparerProvider,
 			boolean sorted,
 			BeanCmprResultsHandler resultHandler) {
 		
 		this.comparer = 
 				new IterableBeansComparer<Map.Entry<K,V>>(
-						matchableFactory, comparerProvider,
+						matchableFactoryProvider, 
+						comparerProvider,
 						sorted,
 						resultHandler);
 	}
@@ -60,6 +79,11 @@ implements MultiItemComparer<Map<K, V>> {
 		return Map.class;
 	}
 
+	/**
+	 * Is this comparer for a sorted map.
+	 * 
+	 * @return
+	 */
 	public boolean isSorted() {
 		return comparer.isSorted();
 	}
