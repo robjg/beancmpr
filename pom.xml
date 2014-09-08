@@ -6,6 +6,8 @@
   <name>Bean Compare</name>
   <description>Bean Comparison Libary</description>
   <properties>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
     <maven.test.failure.ignore>false</maven.test.failure.ignore>
     <lib.dir>${project.build.directory}/lib</lib.dir>
     <spring.framework.version>3.1.1.RELEASE</spring.framework.version>
