@@ -47,7 +47,7 @@ public class ComparersByNameOrType implements BeanPropertyComparerProvider {
 		Comparer<T> comparer = null;
 		if (comparersByName != null) {
 			comparer = 
-				(Comparer<T>) comparersByName.getComparerForProperty(
+				(Comparer<T>) comparersByName.getComparerForName(
 						property);
 		}
 		

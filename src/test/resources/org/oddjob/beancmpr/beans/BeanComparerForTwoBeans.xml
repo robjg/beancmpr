@@ -23,10 +23,10 @@
             <beancmpr:bean-comparer values="type, colour">
               <comparersByName>
                 <beancmpr:comparers-by-name>
-                  <comparerForProperty>
+                  <comparers>
                     <beancmpr:text-comparer key="type"
                       ignoreCase="true" />
-                  </comparerForProperty>
+                  </comparers>
                 </beancmpr:comparers-by-name>
               </comparersByName>
             </beancmpr:bean-comparer>

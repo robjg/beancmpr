@@ -90,10 +90,10 @@
             <beancmpr:collection-comparer keys="id" values="fruit">
               <comparersByName>
                 <beancmpr:comparers-by-name>
-                  <comparerForProperty>
+                  <comparers>
                     <beancmpr:bean-comparer key="fruit"
                       values="type, colour" />
-                  </comparerForProperty>
+                  </comparers>
                 </beancmpr:comparers-by-name>
               </comparersByName>
               <comparersByType>

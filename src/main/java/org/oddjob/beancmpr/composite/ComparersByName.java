@@ -17,5 +17,5 @@ public interface ComparersByName {
 	 * @param propertyName The property name.
 	 * @return The comparer. Will be null if none is specified for .
 	 */
-	public Comparer<?> getComparerForProperty(String propertyName);
+	public Comparer<?> getComparerForName(String propertyName);
 }

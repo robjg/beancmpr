@@ -30,11 +30,11 @@ implements ComparersByNameFactory {
 		new HashMap<String, ComparerFactory<?>>();
 
 
-	public void setComparerForProperty(String property, ComparerFactory<?> comparer) {
+	public void setComparers(String property, ComparerFactory<?> comparer) {
 		comparersByName.put(property, comparer);
 	}
 	
-	public ComparerFactory<?> getComparerForProperty(String propertyName) {
+	public ComparerFactory<?> getComparers(String propertyName) {
 		return comparersByName.get(propertyName);
 	}
 	
@@ -68,7 +68,7 @@ class InternalComparersByName implements ComparersByName {
 	}
 	
 	@Override
-	public Comparer<?> getComparerForProperty(String propertyName) {
+	public Comparer<?> getComparerForName(String propertyName) {
 		return comparersByName.get(propertyName);
 	}
 }

@@ -40,9 +40,9 @@
                         <beancmpr:bean-comparer values="fruitMap">
                             <comparersByName>
                                 <beancmpr:comparers-by-name>
-                                    <comparerForProperty>
+                                    <comparers>
                                         <beancmpr:map-comparer key="fruitMap"/>
-                                    </comparerForProperty>
+                                    </comparers>
                                 </beancmpr:comparers-by-name>
                             </comparersByName>
                             <comparersByType>

@@ -15,7 +15,7 @@
                         <beancmpr:bean-comparer values="numbers">
                             <comparersByName>
                                 <beancmpr:comparers-by-name>
-                                    <comparerForProperty>
+                                    <comparers>
                                         <beancmpr:array-comparer key="numbers">
                                             <comparersByType>
                                                 <beancmpr:comparers-by-type>
@@ -25,7 +25,7 @@
                                                 </beancmpr:comparers-by-type>
                                             </comparersByType>
                                         </beancmpr:array-comparer>
-                                    </comparerForProperty>
+                                    </comparers>
                                 </beancmpr:comparers-by-name>
                             </comparersByName>
                         </beancmpr:bean-comparer>

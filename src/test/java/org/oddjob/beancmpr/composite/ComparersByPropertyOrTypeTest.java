@@ -53,7 +53,7 @@ public class ComparersByPropertyOrTypeTest extends TestCase {
 		
 		ComparersByNameType comparersByNameType =
 				new ComparersByNameType();
-		comparersByNameType.setComparerForProperty("fruit", beanComparer);
+		comparersByNameType.setComparers("fruit", beanComparer);
 
 		ComparersByTypeList comparersByTypeList = new ComparersByTypeList();
 		comparersByTypeList.setSpecialisations("java.lang.Integer", 
