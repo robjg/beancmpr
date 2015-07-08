@@ -8,6 +8,7 @@
   <description>Bean Comparison Libary</description>
 
   <properties>
+    <distMgmtSnapshotsId>sonatype-nexus-snapshots</distMgmtSnapshotsId>
     <distMgmtSnapshotsName>Sonatype Nexus Snapshots</distMgmtSnapshotsName>
     <distMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots</distMgmtSnapshotsUrl>
     <maven.compiler.source>1.7</maven.compiler.source>
@@ -21,7 +22,7 @@
   
   <distributionManagement>
     <snapshotRepository>
-      <id>sonatype-nexus-snapshots</id>
+      <id>${distMgmtSnapshotsId}</id>
       <name>${distMgmtSnapshotsName}</name>
       <url>${distMgmtSnapshotsUrl}</url>
     </snapshotRepository>
