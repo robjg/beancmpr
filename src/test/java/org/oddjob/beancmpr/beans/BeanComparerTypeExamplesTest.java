@@ -35,11 +35,10 @@ public class BeanComparerTypeExamplesTest extends TestCase {
 		oddjob.setFile(file);
 		
 		ConsoleCapture console = new ConsoleCapture();
-		console.capture(Oddjob.CONSOLE);
-		
-		oddjob.run();
-		
-		console.close();
+		try (ConsoleCapture.Close close = console.captureConsole()) {
+			
+			oddjob.run();
+		}
 		
 		assertEquals(true, oddjob.lastStateEvent().getState().isComplete());
 
@@ -94,11 +93,10 @@ public class BeanComparerTypeExamplesTest extends TestCase {
 		oddjob.setFile(file);
 		
 		ConsoleCapture console = new ConsoleCapture();
-		console.capture(Oddjob.CONSOLE);
-		
-		oddjob.run();
-		
-		console.close();
+		try (ConsoleCapture.Close close = console.captureConsole()) {
+			
+			oddjob.run();
+		}
 		
 		assertEquals(true, oddjob.lastStateEvent().getState().isComplete());
 
@@ -150,11 +148,10 @@ public class BeanComparerTypeExamplesTest extends TestCase {
 		oddjob.setFile(file);
 		
 		ConsoleCapture console = new ConsoleCapture();
-		console.capture(Oddjob.CONSOLE);
-		
-		oddjob.run();
-		
-		console.close();
+		try (ConsoleCapture.Close close = console.captureConsole()) {
+			
+			oddjob.run();
+		}
 		
 		assertEquals(ParentState.COMPLETE, 
 				oddjob.lastStateEvent().getState());
