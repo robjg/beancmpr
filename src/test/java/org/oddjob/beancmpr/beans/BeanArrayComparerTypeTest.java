@@ -4,15 +4,16 @@ import java.io.File;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
 import org.oddjob.tools.ConsoleCapture;
 import org.oddjob.tools.OddjobTestHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BeanArrayComparerTypeTest extends TestCase {
 
-	private static final Logger logger = Logger.getLogger(
+	private static final Logger logger = LoggerFactory.getLogger(
 			BeanArrayComparerTypeTest.class);
 	
 	
