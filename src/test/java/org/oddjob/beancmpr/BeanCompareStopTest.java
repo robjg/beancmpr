@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
 import org.oddjob.FailedToStopException;
 import org.oddjob.Iconic;
 import org.oddjob.Oddjob;
@@ -18,10 +17,12 @@ import org.oddjob.state.ParentState;
 import org.oddjob.state.StateEvent;
 import org.oddjob.tools.IconSteps;
 import org.oddjob.tools.StateSteps;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BeanCompareStopTest extends TestCase {
 
-	private static final Logger logger = Logger.getLogger(BeanCompareStopTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(BeanCompareStopTest.class);
 	
 	@Override
 	protected void setUp() throws Exception {

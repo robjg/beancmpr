@@ -5,7 +5,6 @@ import java.net.URL;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
@@ -13,10 +12,12 @@ import org.oddjob.arooa.ArooaParseException;
 import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.arooa.reflect.ArooaPropertyException;
 import org.oddjob.state.ParentState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BeanCompareComparersTest extends TestCase {
 
-	private static final Logger logger = Logger.getLogger(BeanCompareComparersTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(BeanCompareComparersTest.class);
 	
 	@Override
 	protected void setUp() throws Exception {

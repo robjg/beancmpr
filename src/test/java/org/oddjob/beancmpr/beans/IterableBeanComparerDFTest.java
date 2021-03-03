@@ -8,7 +8,6 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
 import org.oddjob.OddjobDescriptorFactory;
 import org.oddjob.arooa.ArooaDescriptor;
 import org.oddjob.arooa.ArooaParseException;
@@ -19,12 +18,14 @@ import org.oddjob.arooa.design.view.ViewMainHelper;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.arooa.xml.XMLConfiguration;
 import org.oddjob.tools.OddjobTestHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 public class IterableBeanComparerDFTest extends TestCase {
-	private static final Logger logger = Logger.getLogger(IterableBeanComparerDFTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(IterableBeanComparerDFTest.class);
 	
 	public void setUp() {
 		logger.debug("========================== " + getName() + "===================" );

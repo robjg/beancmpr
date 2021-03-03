@@ -6,7 +6,6 @@ import java.text.ParseException;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.oddjob.Oddjob;
@@ -15,10 +14,12 @@ import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.arooa.reflect.ArooaPropertyException;
 import org.oddjob.arooa.xml.XMLConfiguration;
 import org.oddjob.state.ParentState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OddjobExamplesTest extends TestCase {
 
-	private static final Logger logger = Logger.getLogger(OddjobExamplesTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(OddjobExamplesTest.class);
 	
 	@Override
 	protected void setUp() throws Exception {

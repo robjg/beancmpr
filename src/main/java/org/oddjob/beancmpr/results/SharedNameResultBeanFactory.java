@@ -1,6 +1,5 @@
 package org.oddjob.beancmpr.results;
 
-import org.apache.log4j.Logger;
 import org.oddjob.arooa.beanutils.MagicBeanClassCreator;
 import org.oddjob.arooa.reflect.ArooaClass;
 import org.oddjob.arooa.reflect.BeanOverview;
@@ -10,6 +9,8 @@ import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableMetaData;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
 import org.oddjob.beancmpr.results.MatchResultType.Type;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -22,7 +23,7 @@ import org.oddjob.beancmpr.results.MatchResultType.Type;
 abstract public class SharedNameResultBeanFactory extends AbstractResultBeanFactory
 implements ResultBeanFactory {
 
-	private static final Logger logger = Logger.getLogger(
+	private static final Logger logger = LoggerFactory.getLogger(
 			SharedNameResultBeanFactory.class);
 	
 	public static final String MATCH_RESULT_TYPE_PROPERTY = "matchResultType";

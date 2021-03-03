@@ -3,7 +3,6 @@ package org.oddjob.beancmpr;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
@@ -18,6 +17,8 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
 import org.oddjob.beancmpr.results.BeanCreatingResultHandler;
 import org.oddjob.beancmpr.results.PlaysWithBeanbus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @oddjob.description A job that takes two streams of beans and
@@ -36,7 +37,7 @@ import org.oddjob.beancmpr.results.PlaysWithBeanbus;
 public class BeanCompareJob<T> 
 implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 
-	private static final Logger logger = Logger.getLogger(BeanCompareJob.class);
+	private static final Logger logger = LoggerFactory.getLogger(BeanCompareJob.class);
 	
 	private ArooaSession session;
 	

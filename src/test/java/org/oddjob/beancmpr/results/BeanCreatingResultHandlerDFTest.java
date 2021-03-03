@@ -4,7 +4,6 @@ import java.text.ParseException;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
 import org.oddjob.OddjobDescriptorFactory;
 import org.oddjob.OddjobSessionFactory;
 import org.oddjob.arooa.ArooaDescriptor;
@@ -19,12 +18,14 @@ import org.oddjob.arooa.xml.XMLConfiguration;
 import org.oddjob.beancmpr.results.BeanCreatingResultDesign;
 import org.oddjob.beancmpr.results.BeanCreatingResultHandler;
 import org.oddjob.beancmpr.results.SimpleResultBeanFactoryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 public class BeanCreatingResultHandlerDFTest extends TestCase {
-	private static final Logger logger = Logger.getLogger(BeanCreatingResultHandlerDFTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(BeanCreatingResultHandlerDFTest.class);
 	
 	public void setUp() {
 		logger.debug("========================== " + getName() + "===================" );

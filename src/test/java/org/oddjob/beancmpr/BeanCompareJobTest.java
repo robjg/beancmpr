@@ -2,16 +2,17 @@ package org.oddjob.beancmpr;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
 import org.oddjob.arooa.types.ArooaObject;
 import org.oddjob.arooa.xml.XMLConfiguration;
 import org.oddjob.state.ParentState;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BeanCompareJobTest extends TestCase {
 
-	private static final Logger logger = Logger.getLogger(BeanCompareJobTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(BeanCompareJobTest.class);
 	
 	@Override
 	protected void setUp() throws Exception {

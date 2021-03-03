@@ -7,7 +7,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.arooa.utils.Iterables;
@@ -18,11 +17,13 @@ import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 import org.oddjob.beancmpr.composite.ComparersByNameOrType;
 import org.oddjob.beancmpr.composite.DefaultComparersByType;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OrderedMatchablesComparerTest extends TestCase {
 	
-	private static final Logger logger = 
-			Logger.getLogger(OrderedMatchablesComparerTest.class);
+	private static final Logger logger =
+			LoggerFactory.getLogger(OrderedMatchablesComparerTest.class);
 	
 	public static class Fruit {
 		

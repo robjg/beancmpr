@@ -1,8 +1,9 @@
 package org.oddjob.beancmpr.beans;
 
-import org.apache.log4j.Logger;
 import org.oddjob.arooa.utils.ClassUtils;
 import org.oddjob.beancmpr.results.SharedNameResultBeanFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Help with Property Types.
@@ -12,7 +13,7 @@ import org.oddjob.beancmpr.results.SharedNameResultBeanFactory;
  */
 public class PropertyTypeHelper {
 	
-	private static final Logger logger = Logger.getLogger(
+	private static final Logger logger = LoggerFactory.getLogger(
 			SharedNameResultBeanFactory.class);
 
 	/**

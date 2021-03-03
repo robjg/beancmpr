@@ -2,8 +2,9 @@ package org.oddjob.beancmpr.composite;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.oddjob.beancmpr.Comparer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Used by {@link ComparersByTypeList} and {@link DefaultComparersByType}.
@@ -13,7 +14,7 @@ import org.oddjob.beancmpr.Comparer;
  */
 class InternalComparersByType implements ComparersByType {
 
-	private static final Logger logger = Logger.getLogger(InternalComparersByType.class);
+	private static final Logger logger = LoggerFactory.getLogger(InternalComparersByType.class);
 	
 	private final Map<Class<?>, Comparer<?>> comparers;
 	

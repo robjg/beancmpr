@@ -7,15 +7,16 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.BeanCompareJob;
 import org.oddjob.jobs.BeanReportJob;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ResultFactoryDifferentTypesTest extends TestCase {
 
-	private static final Logger logger = Logger.getLogger(
+	private static final Logger logger = LoggerFactory.getLogger(
 			ResultFactoryDifferentTypesTest.class);
 	
 	@Override
