@@ -1,7 +1,0 @@
-matchResultType  colour  fruit       xQuantity  yQuantity  quantityComparison  xPrice  yPrice  priceComparison
----------------  ------  ----------  ---------  ---------  ------------------  ------  ------  ---------------
-y_MISSING        green   apple       42                                        13.9            
-x_MISSING        green   pear                   24                                     12.5    
-EQUAL            pink    gratefruit  2          2                              42.0    42.0    
-EQUAL            red     apple       30         30                             15.9    16.1    
-NOT_EQUAL        yellow  banana      5          6          5<>6                16.0    16.0    

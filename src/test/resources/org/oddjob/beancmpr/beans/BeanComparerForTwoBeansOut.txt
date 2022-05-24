@@ -1,3 +1,0 @@
-matchResultType  xType  yType  typeComparison  xColour  yColour  colourComparison
----------------  -----  -----  --------------  -------  -------  ----------------
-NOT_EQUAL        apple  APPLE                  green    GREEN    green<>GREEN

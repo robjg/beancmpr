@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <sequential>
+            <jobs>
+                <variables id="test-data">
+                    <mapX>
+                        <bean class="org.oddjob.beancmpr.beans.MapComparerTypeTest$FruitMap1">
+                            <fruit>
+                                <value key="apple" value="42"/>
+                                <value key="pear" value="15"/>
+                                <value key="avacardo" value="7"/>
+                            </fruit>
+                        </bean>
+                    </mapX>
+                    <mapY>
+                        <bean class="org.oddjob.beancmpr.beans.MapComparerTypeTest$FruitMap1">
+                            <fruit>
+                                <value key="APPLE" value="17"/>
+                                <value key="PEAR" value="15"/>
+                                <value key="KIWI" value="5"/>
+                            </fruit>
+                        </bean>
+                    </mapY>
+                </variables>
+                <beancmpr:compare id="compare-maps" xmlns:beancmpr="oddjob:beancmpr">
+                    <inX>
+                        <value value="${test-data.mapX}"/>
+                    </inX>
+                    <inY>
+                        <value value="${test-data.mapY}"/>
+                    </inY>
+                    <comparer>
+                        <beancmpr:map-comparer>
+                            <comparersByType>
+                                <beancmpr:comparers-by-type>
+                                    <comparers>
+                                        <beancmpr:text-comparer ignoreCase="true"/>
+                                    </comparers>
+                                </beancmpr:comparers-by-type>
+                            </comparersByType>
+                        </beancmpr:map-comparer>
+                    </comparer>
+                    <results>
+                        <beancmpr:bean-results>
+                            <out>
+                                <list/>
+                            </out>
+                        </beancmpr:bean-results>
+                    </results>
+                </beancmpr:compare>
+                <bean-report>
+                    <beans>
+                        <value value="${compare-maps.results.out}"/>
+                    </beans>
+                </bean-report>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>

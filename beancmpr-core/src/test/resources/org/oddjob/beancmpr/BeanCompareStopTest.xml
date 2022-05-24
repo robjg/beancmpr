@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <sequential>
+            <jobs>
+                <variables id="vars">
+                    <queue1>
+                        <bean class="org.oddjob.beancmpr.BeanCompareStopTest$SlowIterable"/>
+                    </queue1>
+                    <queue2>
+                        <bean class="org.oddjob.beancmpr.BeanCompareStopTest$SlowIterable"/>
+                    </queue2>
+                </variables>
+                <beancmpr:compare id="compare-job" xmlns:beancmpr="oddjob:beancmpr">
+                    <inX>
+                        <value value="${vars.queue1}"/>
+                    </inX>
+                    <inY>
+                        <value value="${vars.queue2}"/>
+                    </inY>
+                    <comparer>
+                      <beancmpr:collection-comparer
+                      keys="type" values="colour" />
+                    </comparer>
+                </beancmpr:compare>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>

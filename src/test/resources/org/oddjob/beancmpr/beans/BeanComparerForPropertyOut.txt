@@ -1,5 +1,0 @@
-matchResultType  id  xFruit                           yFruit                           fruitComparison
----------------  --  -------------------------------  -------------------------------  ----------------
-EQUAL            1   Fruit: type=banana, colour=null  Fruit: type=banana, colour=null  2/2 values equal
-EQUAL            2   Fruit: type=APPLE, colour=green  Fruit: type=apple, colour=green  2/2 values equal
-NOT_EQUAL        3   Fruit: type=red, colour=pear     Fruit: type=green, colour=pear   1/2 values equal

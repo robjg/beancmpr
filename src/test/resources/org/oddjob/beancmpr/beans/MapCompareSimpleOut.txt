@@ -1,6 +1,0 @@
-matchResultType  key       xValue  yValue  valueComparison
----------------  --------  ------  ------  ---------------
-NOT_EQUAL        apple     42      17      42<>17
-y_MISSING        avacardo  7               
-x_MISSING        KIWI              5       
-EQUAL            pear      15      15      

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <sequential>
+            <jobs>
+                <beancmpr:compare id="compare" xmlns:beancmpr="oddjob:beancmpr">
+                    <inX>
+                        <convert>
+                            <to>
+                                <class name="double"/>
+                            </to>
+                            <value>
+                                <value value="5.2"/>
+                            </value>
+                        </convert>
+                    </inX>
+                    <inY>
+                        <convert>
+                            <to>
+                                <class name="double"/>
+                            </to>
+                            <value>
+                                <value value="5.3"/>
+                            </value>
+                        </convert>
+                    </inY>
+                    <comparer>
+                        <beancmpr:bean-comparer>
+                            <comparersByType>
+                                <beancmpr:comparers-by-type>
+                                    <specialisations>
+                                        <beancmpr:numeric-comparer deltaTolerance="0.1" key="double"/>
+                                    </specialisations>
+                                </beancmpr:comparers-by-type>
+                            </comparersByType>
+                        </beancmpr:bean-comparer>
+                    </comparer>
+                    <results>
+                        <beancmpr:bean-results>
+                            <out>
+                                <list/>
+                            </out>
+                        </beancmpr:bean-results>
+                    </results>
+                </beancmpr:compare>
+                <bean-report>
+                    <beans>
+                        <value value="${compare.results.out}"/>
+                    </beans>
+                </bean-report>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>

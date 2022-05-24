@@ -1,3 +1,0 @@
-matchResultType  xNumbers     yNumbers     numbersComparison
----------------  -----------  -----------  -----------------
-EQUAL            [D@4ba6b85d  [D@2e920878  

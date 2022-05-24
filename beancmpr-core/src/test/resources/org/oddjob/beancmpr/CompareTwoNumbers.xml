@@ -1,0 +1,12 @@
+<oddjob>
+  <job>
+    <beancmpr>
+      <inX>
+         <value value="4"/>
+      </inX>
+      <inY>
+         <value value="5"/>
+      </inY>
+    </beancmpr>
+  </job>
+</oddjob>

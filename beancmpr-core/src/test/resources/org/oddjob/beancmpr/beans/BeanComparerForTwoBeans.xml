@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+  <job>
+    <sequential>
+      <jobs>
+        <beancmpr:compare id="compare" xmlns:beancmpr="oddjob:beancmpr">
+          <inX>
+            <bean class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Fruit"
+              colour="green" type="apple" />
+          </inX>
+          <inY>
+            <bean class="org.oddjob.beancmpr.beans.BeanComparerTypeExamplesTest$Fruit"
+              colour="GREEN" type="APPLE" />
+          </inY>
+          <results>
+            <beancmpr:bean-results>
+              <out>
+                <list />
+              </out>
+            </beancmpr:bean-results>
+          </results>
+          <comparer>
+            <beancmpr:bean-comparer values="type, colour">
+              <comparersByName>
+                <beancmpr:comparers-by-name>
+                  <comparers>
+                    <beancmpr:text-comparer key="type"
+                      ignoreCase="true" />
+                  </comparers>
+                </beancmpr:comparers-by-name>
+              </comparersByName>
+            </beancmpr:bean-comparer>
+          </comparer>
+        </beancmpr:compare>
+        <bean-report>
+          <beans>
+            <value value="${compare.results.out}" />
+          </beans>
+        </bean-report>
+      </jobs>
+    </sequential>
+  </job>
+</oddjob>

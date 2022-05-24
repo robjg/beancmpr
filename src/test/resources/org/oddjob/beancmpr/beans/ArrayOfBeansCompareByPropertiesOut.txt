@@ -1,6 +1,0 @@
-matchResultType  id  xType   yType   typeComparison  xQuantity  yQuantity  quantityComparison  xPrice  yPrice  priceComparison  xColour  yColour
----------------  --  ------  ------  --------------  ---------  ---------  ------------------  ------  ------  ---------------  -------  -------
-EQUAL            1   Apple   Apple                   4          4                              54.56   54.57                    green    red
-NOT_EQUAL        2   Banana  Banana                  3          4          3<>4                23.24   23.25                    yellow   yellow
-x_MISSING        3           Orange                             2                                      80.05                             orange
-y_MISSING        5   Orange                          2                                         70.95                            orange   

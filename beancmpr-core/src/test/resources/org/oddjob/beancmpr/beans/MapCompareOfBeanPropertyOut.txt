@@ -1,0 +1,3 @@
+matchResultType  xFruitMap            yFruitMap            fruitMapComparison
+---------------  -------------------  -------------------  ------------------
+EQUAL            {apple=42, pear=15}  {APPLE=42, PEAR=15}  

@@ -1,0 +1,3 @@
+matchResultType  xValue  yValue  valueComparison
+---------------  ------  ------  ---------------
+EQUAL            5.2     5.3     
