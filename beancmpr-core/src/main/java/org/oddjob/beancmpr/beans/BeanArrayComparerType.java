@@ -58,7 +58,6 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparison;
  * 
  * @author rob
  *
- * @param <T> The type of the elements of the array.
  */
 public class BeanArrayComparerType 
 implements ComparerFactory<Object>,
@@ -115,7 +114,7 @@ implements ComparerFactory<Object>,
 	 * @oddjob.property
 	 * @oddjob.description Comparers for comparing the properties of the
 	 * beans defined by the name of the property. This property is most
-	 * often set with a {@link ComparersByNameType}.
+	 * often set with a {@link org.oddjob.beancmpr.composite.ComparersByNameType}.
 	 * @oddjob.required No. 
 	 */
 	private ComparersByNameFactory comparersByName;
@@ -174,8 +173,7 @@ implements ComparerFactory<Object>,
 				Iterable<Object> xIt = new ArrayIterable(x);
 				Iterable<Object> yIt = new ArrayIterable(y);
 				
-				return new DelegatingMultiItemComparison<
-						Object>(x, y, iterableBeansComparer.compare(xIt, yIt));
+				return new DelegatingMultiItemComparison<>(x, y, iterableBeansComparer.compare(xIt, yIt));
 			}
 			
 			@Override

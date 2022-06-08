@@ -56,9 +56,9 @@ implements MultiItemComparer<Map<K, V>> {
 			boolean sorted,
 			BeanCmprResultsHandler resultHandler) {
 		
-		this.comparer = 
-				new IterableBeansComparer<Map.Entry<K,V>>(
-						matchableFactoryProvider, 
+		this.comparer =
+				new IterableBeansComparer<>(
+						matchableFactoryProvider,
 						comparerProvider,
 						sorted,
 						resultHandler);
@@ -71,7 +71,7 @@ implements MultiItemComparer<Map<K, V>> {
 		MultiItemComparison<Iterable<Map.Entry<K, V>>> comparison = 
 				comparer.compare(x.entrySet(), y.entrySet());
 		
-		return new DelegatingMultiItemComparison<Map<K,V>>(x, y, comparison);
+		return new DelegatingMultiItemComparison<>(x, y, comparison);
 	}
 		
 	@Override
@@ -82,7 +82,7 @@ implements MultiItemComparer<Map<K, V>> {
 	/**
 	 * Is this comparer for a sorted map.
 	 * 
-	 * @return
+	 * @return True if the map is sorted, false otherwise.
 	 */
 	public boolean isSorted() {
 		return comparer.isSorted();

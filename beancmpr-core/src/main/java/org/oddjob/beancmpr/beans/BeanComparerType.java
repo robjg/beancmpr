@@ -134,12 +134,12 @@ implements ArooaSessionAware, ComparerFactory<T>,
 			 values = new String[] { BeanMatchableFactory.SELF_TOKEN };
 		}
 		
-		MatchableFactory<T> matchableFactory = new BeanMatchableFactory<T>(
+		MatchableFactory<T> matchableFactory = new BeanMatchableFactory<>(
 				new SimpleMatchDefinition(
-						null, values, others), 
-						accessor);
+						null, values, others),
+				accessor);
 		
-		return new BeanComparer<T>(matchableFactory, 
+		return new BeanComparer<>(matchableFactory,
 				comparerProvider, resultHandler);
 	}
 

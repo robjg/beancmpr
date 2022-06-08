@@ -4,6 +4,6 @@ import org.oddjob.beancmpr.Comparer;
 
 public interface ComparerFactory<T> {
 
-	public Comparer<T> createComparerWith(
+	Comparer<T> createComparerWith(
 			ComparersByType comparersByType);
 }

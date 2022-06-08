@@ -48,16 +48,16 @@ public class NullSafeComparer<T> {
 		@SuppressWarnings("unchecked")
 		Class<T> type = (Class<T>) comparer.getType();
 
-		T x = null;
-		T y = null;
-			
+		T x;
+		T y;
+
 		try {
 			x = type.cast(rawX);
 		}
 		catch (ClassCastException e) {
 			throw new ClassCastException("Failed to cast X property [" + propertyName + 
-					"] value [" + rawX + "] to class [" + type + "] for comparer [" +
-					comparer + "]");
+					"] value [" + rawX + "] of tpe [" + rawX.getClass().getName() +
+					"] to type [" + type.getName() + "] for comparer [" + comparer + "]");
 		}
 				
 		try {
@@ -66,12 +66,12 @@ public class NullSafeComparer<T> {
 		}
 		catch (ClassCastException e) {
 			throw new ClassCastException("Failed to cast Y property [" + propertyName + 
-					"] value [" + rawY + "] to type [" + type + "] for comparer [" +
-					comparer + "]");
+					"] value [" + rawY + "] of type [" + rawY.getClass().getName() +
+					"] to type [" + type.getName() + "] for comparer [" + comparer + "]");
 		}
-			
+
 		if (x == null || y == null) {
-			return new NullComparison<T>(x, y);
+			return new NullComparison<>(x, y);
 		}
 		else {
 			return comparer.compare(x, y);

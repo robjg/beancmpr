@@ -8,7 +8,7 @@ package org.oddjob.beancmpr.matchables;
  * 
  * @author rob
  *
- * @param <T>
+ * @param <T> The type to create a Matchable from.
  */
 public interface MatchableFactoryProvider<T> {
 
@@ -17,5 +17,5 @@ public interface MatchableFactoryProvider<T> {
 	 * 
 	 * @return A factory. never null.
 	 */
-	public MatchableFactory<T> provideFactory();
+	MatchableFactory<T> provideFactory();
 }

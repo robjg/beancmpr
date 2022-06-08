@@ -1,22 +1,15 @@
-package org.oddjob.beancmpr.beans;
+package beancmpr.dido.beans;
 
-import org.oddjob.arooa.ArooaSession;
-import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
-import org.oddjob.arooa.deploy.annotations.ArooaHidden;
-import org.oddjob.arooa.life.ArooaSessionAware;
-import org.oddjob.arooa.reflect.PropertyAccessor;
+import beancmpr.dido.matchables.DidoMatchableFactoryProvider;
+import dido.data.GenericData;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
-import org.oddjob.beancmpr.composite.ComparerFactory;
-import org.oddjob.beancmpr.composite.ComparersByNameFactory;
-import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
-import org.oddjob.beancmpr.composite.ComparersByNameType;
-import org.oddjob.beancmpr.composite.ComparersByType;
-import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
-import org.oddjob.beancmpr.composite.ComparersByTypeList;
+import org.oddjob.beancmpr.beans.BeanArrayComparerType;
+import org.oddjob.beancmpr.beans.IterableBeansComparer;
+import org.oddjob.beancmpr.beans.IterableComparerType;
+import org.oddjob.beancmpr.composite.*;
 import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
-import org.oddjob.beancmpr.matchables.BeanMatchableFactoryProvider;
 import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
@@ -35,17 +28,12 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
  * 
  * @author rob
  *
- * @param <T>
  */
-public class IterableBeansComparerType<T> 
-implements ComparerFactory<Iterable<T>>,
-		MultiItemComparerFactory<Iterable<T>>,
-		ArooaSessionAware {
+public class IterableDataComparerType
+implements ComparerFactory<Iterable<GenericData<String>>>,
+		MultiItemComparerFactory<Iterable<GenericData<String>>> {
 
-	/** Used to access bean properties. */
-	private PropertyAccessor accessor;
-	
-	/** 
+	/**
 	 * @oddjob.property
 	 * @oddjob.description The key property names. The key
 	 * properties decided if another bean is missing or not. 
@@ -97,20 +85,14 @@ implements ComparerFactory<Iterable<T>>,
 	 */
 	private ComparersByNameFactory comparersByName;
 	
-	
-	@ArooaHidden
-	@Override
-	public void setArooaSession(ArooaSession session) {
-		this.accessor = session.getTools().getPropertyAccessor();
-	}
 
 	@Override
-	public MultiItemComparer<Iterable<T>> createComparerWith(
+	public MultiItemComparer<Iterable<GenericData<String>>> createComparerWith(
 			ComparersByType parentComparersByType) {
 	
 		if (keys == null && values == null && others == null) {
 
-			IterableComparerType<T> iterableComparer = 
+			IterableComparerType<GenericData<String>> iterableComparer =
 					new IterableComparerType<>();
 			iterableComparer.setComparersByType(comparersByType);
 			
@@ -123,7 +105,7 @@ implements ComparerFactory<Iterable<T>>,
 	}
 		
 	@Override
-	public IterableBeansComparer<T> createComparerWith(
+	public IterableBeansComparer<GenericData<String>> createComparerWith(
 			ComparersByType parentComparersByType,
 			BeanCmprResultsHandler resultHandler) {
 		
@@ -138,8 +120,8 @@ implements ComparerFactory<Iterable<T>>,
 		MatchDefinition matchDefinition = new SimpleMatchDefinition(
 				keys, values, others);
 		
-		MatchableFactoryProvider<T> matchableFactoryProvider =
-				new BeanMatchableFactoryProvider<>(matchDefinition, accessor);
+		MatchableFactoryProvider<GenericData<String>> matchableFactoryProvider =
+				new DidoMatchableFactoryProvider(matchDefinition);
 		
 		return new IterableBeansComparer<>(
 				matchableFactoryProvider,
@@ -152,7 +134,6 @@ implements ComparerFactory<Iterable<T>>,
 		return keys;
 	}
 
-	@ArooaAttribute
 	public void setKeys(String[] keys) {
 		this.keys = keys;
 	}
@@ -161,7 +142,6 @@ implements ComparerFactory<Iterable<T>>,
 		return values;
 	}
 
-	@ArooaAttribute
 	public void setValues(String[] values) {
 		this.values = values;
 	}
@@ -170,7 +150,6 @@ implements ComparerFactory<Iterable<T>>,
 		return others;
 	}
 
-	@ArooaAttribute
 	public void setOthers(String[] others) {
 		this.others = others;
 	}

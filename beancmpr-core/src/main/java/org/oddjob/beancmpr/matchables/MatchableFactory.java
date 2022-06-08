@@ -16,6 +16,6 @@ public interface MatchableFactory<T> {
 	 * 
 	 * @return The Matchable. Will be null if the object is null.
 	 */
-	public Matchable createMatchable(T object);
+	Matchable createMatchable(T object);
 	
 }

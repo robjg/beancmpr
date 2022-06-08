@@ -15,14 +15,14 @@ public interface MatchDefinition {
 	 * 
 	 * @return The names of the key properties. May be null.
 	 */
-	public Iterable<String> getKeyProperties();
+	Iterable<String> getKeyProperties();
 	
 	/**
 	 * The names of the properties of the values that will be compared.
 	 * 
 	 * @return The names of the properties for comparison. May be null.
 	 */
-	public Iterable<String> getValueProperties();
+	Iterable<String> getValueProperties();
 		
 		
 	/**
@@ -32,6 +32,6 @@ public interface MatchDefinition {
 	 * 
 	 * @return The names of other properties. May be null.
 	 */
-	public Iterable<String> getOtherProperties();
+	Iterable<String> getOtherProperties();
 	
 }

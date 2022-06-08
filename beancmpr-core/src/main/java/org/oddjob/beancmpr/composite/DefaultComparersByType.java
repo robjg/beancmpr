@@ -27,8 +27,8 @@ public class DefaultComparersByType implements ComparersByType {
 	 */
 	public DefaultComparersByType() {
 		
-		Map<Class<?>, Comparer<?>> map = 
-				new LinkedHashMap<Class<?>, Comparer<?>>();
+		Map<Class<?>, Comparer<?>> map =
+				new LinkedHashMap<>();
 		
 		map.put(Integer.class, new ComparableComparer<Integer>());
 		map.put(Long.class, new ComparableComparer<Long>());
@@ -38,8 +38,8 @@ public class DefaultComparersByType implements ComparersByType {
 		doPut(new NumericComparer(), map);
 		doPut(new DateComparer(), map);
 		
-		doPut(new IterableComparerType<Object>().createComparerWith(this), map);
-		doPut(new MapComparerType<Object, Object>().createComparerWith(this), map);
+		doPut(new IterableComparerType<>().createComparerWith(this), map);
+		doPut(new MapComparerType<>().createComparerWith(this), map);
 		
 		doPut(new EqualityComparer(), map);
 		

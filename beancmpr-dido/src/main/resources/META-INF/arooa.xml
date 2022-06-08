@@ -1,0 +1,14 @@
+<arooa:descriptor xmlns:arooa="http://rgordon.co.uk/oddjob/arooa"
+  prefix="didocmpr" namespace="oddjob:didocmpr">
+  <values>
+    <arooa:bean-def element='collection-comparer'
+      className='beancmpr.dido.beans.IterableDataComparerType'
+      designFactory='org.oddjob.beancmpr.beans.IterableBeansComparerDF'>
+      <properties>
+        <arooa:property name="keys" annotation="org.oddjob.arooa.deploy.annotations.ArooaAttribute"/>
+        <arooa:property name="values" annotation="org.oddjob.arooa.deploy.annotations.ArooaAttribute"/>
+        <arooa:property name="others" annotation="org.oddjob.arooa.deploy.annotations.ArooaAttribute"/>
+      </properties>
+    </arooa:bean-def>
+  </values>
+</arooa:descriptor>

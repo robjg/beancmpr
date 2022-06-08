@@ -13,14 +13,14 @@ public interface Comparison<T> {
 	 * 
 	 * @return The x. Will not be null.
 	 */
-	public T getX();
+	T getX();
 	
 	/**
 	 * Get the y of the comparison.
 	 * 
 	 * @return The y. Will not be null.
 	 */
-	public T getY();
+	T getY();
 	
 	/**
 	 * The result of the comparison. 0 they are equal. -1 when x < y and
@@ -28,7 +28,7 @@ public interface Comparison<T> {
 	 * 
 	 * @return true/false.
 	 */
-	public int getResult();
+	int getResult();
 
 	/**
 	 * Provide a brief summary of the comparison.
@@ -44,5 +44,5 @@ public interface Comparison<T> {
 	 * 
 	 * @return A short text description of the comparison.
 	 */
-	public String getSummaryText();
+	String getSummaryText();
 }

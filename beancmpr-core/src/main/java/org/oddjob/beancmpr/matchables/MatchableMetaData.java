@@ -19,5 +19,5 @@ public interface MatchableMetaData extends MatchDefinition {
 	 * @param name The name of the property.
 	 * @return The type. Must not be null if the property exists.
 	 */
-	public Class<?> getPropertyType(String name);
+	Class<?> getPropertyType(String name);
 }
