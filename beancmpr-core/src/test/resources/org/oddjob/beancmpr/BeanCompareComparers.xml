@@ -76,7 +76,7 @@
             <beancmpr:compare id="check1"
               xmlns:beancmpr="oddjob:beancmpr">
               <inX>
-                <value value="${results1.beans}" />
+                <value value="${results1.beans.list}" />
               </inX>
               <inY>
                 <value value="${expected.expected1}" />
