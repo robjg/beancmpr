@@ -48,7 +48,7 @@ public class IterableBeansComparerTypeTest extends TestCase {
 		
 		assertEquals(true, results.next());
 		
-		assertEquals(MatchResultType.Type.NOT_EQUAL, results.getResultType());
+		assertEquals(MatchResultType.NOT_EQUAL, results.getResultType());
 		assertEquals(new Long(1), results.getKey(0));
 		
 		assertEquals("Apple", results.getComparison(0).getX());
@@ -66,7 +66,7 @@ public class IterableBeansComparerTypeTest extends TestCase {
 		
 		assertEquals(true, results.next());
 		
-		assertEquals(MatchResultType.Type.NOT_EQUAL, results.getResultType());
+		assertEquals(MatchResultType.NOT_EQUAL, results.getResultType());
 		assertEquals(new Long(2), results.getKey(0));
 		
 		assertEquals(0, results.getComparison(0).getResult());
@@ -80,12 +80,12 @@ public class IterableBeansComparerTypeTest extends TestCase {
 		
 		assertEquals(true, results.next());
 		
-		assertEquals(MatchResultType.Type.X_MISSING, results.getResultType());
+		assertEquals(MatchResultType.X_MISSING, results.getResultType());
 		assertEquals(new Long(3), results.getKey(0));
 		
 		assertEquals(true, results.next());
 		
-		assertEquals(MatchResultType.Type.Y_MISSING, results.getResultType());
+		assertEquals(MatchResultType.Y_MISSING, results.getResultType());
 		assertEquals(new Long(5), results.getKey(0));
 		
 		assertEquals(false, results.next());

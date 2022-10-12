@@ -1,17 +1,14 @@
 package org.oddjob.beancmpr.beans;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.composite.ComparersByType;
-import org.oddjob.beancmpr.multiitem.MultiItemComparer;
-import org.oddjob.beancmpr.multiitem.MultiItemComparison;
-import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
-import org.oddjob.beancmpr.multiitem.MultiItemComparisonCountsImutable;
-import org.oddjob.beancmpr.multiitem.MultiItemComparisonFromCounts;
+import org.oddjob.beancmpr.multiitem.*;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Compares two {@code Iterable}s.
@@ -36,12 +33,11 @@ implements MultiItemComparer<Iterable<T>>{
 	@Override
 	public MultiItemComparison<Iterable<T>> compare(
 			Iterable<T> x, Iterable<T> y) {
-		
-		if (x == null || y == null) {
-			throw new NullPointerException("X or Y is null.");
-		}
+
+		Objects.requireNonNull(x, "X is null");
+		Objects.requireNonNull(y, "Y is null.");
 				
-		List<T> yCopy = new ArrayList<T>();
+		List<T> yCopy = new ArrayList<>();
 		for (T o : y) {
 			yCopy.add(o);
 		}
@@ -107,7 +103,7 @@ implements MultiItemComparer<Iterable<T>>{
 						xsMissing + ysMissing + different, 
 						xsMissing + ysMissing + different + same);
 		
-		return new MultiItemComparisonFromCounts<Iterable<T>>(
+		return new MultiItemComparisonFromCounts<>(
 				x, y, counts);
 	}
 	

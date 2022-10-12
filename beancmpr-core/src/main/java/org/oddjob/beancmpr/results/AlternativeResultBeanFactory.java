@@ -23,7 +23,7 @@ implements ResultBeanFactory {
 		
 		@Override
 		protected Class<?> classForResultType() {
-			return MatchResultType.class;
+			return MatchResultTypeText.class;
 		}
 		
 		@Override
@@ -53,7 +53,7 @@ implements ResultBeanFactory {
 	
 	@Override
 	protected void populateMatchResultType(Object resultBean,
-			MatchResultType matchResultType) {
+			MatchResultTypeText matchResultType) {
 		
 		accessor.setProperty(resultBean, MATCH_RESULT_TYPE_PROPERTY, 
 				matchResultType);

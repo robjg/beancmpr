@@ -1,14 +1,13 @@
 package org.oddjob.beancmpr.composite;
 
+import org.oddjob.arooa.utils.ClassUtils;
+import org.oddjob.beancmpr.Comparer;
+
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.inject.Inject;
-
-import org.oddjob.arooa.utils.ClassUtils;
-import org.oddjob.beancmpr.Comparer;
 
 /**
  * An implementation of {@link ComparersByType} backed by a {@code List}.
@@ -40,8 +39,8 @@ public class ComparersByTypeList implements ComparersByTypeFactory {
 	 * the default comparer for a give type.
 	 * @oddjob.required No.
 	 */
-	private final List<ComparerFactory<?>> comparers = 
-			new ArrayList<ComparerFactory<?>>();
+	private final List<ComparerFactory<?>> comparers =
+			new ArrayList<>();
 	
 	/**
 	 * @oddjob.property
@@ -49,8 +48,8 @@ public class ComparersByTypeList implements ComparersByTypeFactory {
 	 * povides the class a comparer is for.
 	 * @oddjob.required No.
 	 */
-	private final Map<String, ComparerFactory<?>> specialisations = 
-			new LinkedHashMap<String, ComparerFactory<?>>();
+	private final Map<String, ComparerFactory<?>> specialisations =
+			new LinkedHashMap<>();
 
 	@Inject
 	public void setClassLoader(ClassLoader classLoader) {
@@ -79,8 +78,8 @@ public class ComparersByTypeList implements ComparersByTypeFactory {
 	public ComparersByType createComparersByTypeWith(
 			ComparersByType parentComparersByType) {
 		
-		Map<Class<?>, Comparer<?>> byClass = 
-				new LinkedHashMap<Class<?>, Comparer<?>>();
+		Map<Class<?>, Comparer<?>> byClass =
+				new LinkedHashMap<>();
 		
 		ComparersByType comparersByType = new CompositeComparersByType(
 				new InternalComparersByType(byClass), parentComparersByType);

@@ -9,7 +9,7 @@ import org.oddjob.beancmpr.composite.ComparersByNameFactory;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
 import org.oddjob.beancmpr.composite.ComparersByTypeList;
-import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
+import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
@@ -145,7 +145,7 @@ implements ComparerFactory<Object>,
 	@Override
 	public MultiItemComparer<Object> createComparerWith(
 			ComparersByType parentComparersByType,
-			BeanCmprResultsHandler resultHandler) {
+			CompareResultsHandler resultHandler) {
 		
 		
 		IterableBeansComparerType<Object> iterableBeansComparerType = 

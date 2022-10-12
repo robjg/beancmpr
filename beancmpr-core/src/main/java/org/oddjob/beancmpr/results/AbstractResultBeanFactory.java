@@ -1,14 +1,10 @@
 package org.oddjob.beancmpr.results;
 
-import java.util.Iterator;
-
 import org.oddjob.arooa.reflect.ArooaClass;
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableMetaData;
-import org.oddjob.beancmpr.matchables.MultiValueComparison;
-import org.oddjob.beancmpr.matchables.ValueIterable;
-import org.oddjob.beancmpr.matchables.ValuePairIterable;
+import org.oddjob.beancmpr.matchables.*;
+
+import java.util.Iterator;
 
 /**
  * Base implementation for creating result beans.
@@ -34,9 +30,9 @@ implements ResultBeanFactory {
 		Object result = resultClass.newInstance();		
 		
 		if (matchableComparison.getResult() == 0) {
-			populateMatchResultType(result, MatchResultType.Type.EQUAL);
+			populateMatchResultType(result, MatchResultType.EQUAL);
 		} else {
-			populateMatchResultType(result, MatchResultType.Type.NOT_EQUAL);
+			populateMatchResultType(result, MatchResultType.NOT_EQUAL);
 		}
 		
 		populateKeys(result, definition.getKeyProperties(), x.getKeys());
@@ -88,7 +84,7 @@ implements ResultBeanFactory {
 		
 		Object result = resultClass.newInstance();
 
-		populateMatchResultType(result, MatchResultType.Type.X_MISSING);
+		populateMatchResultType(result, MatchResultType.X_MISSING);
 			
 		populateKeys(result, definition.getKeyProperties(), y.getKeys());
 		
@@ -127,7 +123,7 @@ implements ResultBeanFactory {
 		
 		Object result = resultClass.newInstance();
 
-		populateMatchResultType(result, MatchResultType.Type.Y_MISSING);
+		populateMatchResultType(result, MatchResultType.Y_MISSING);
 		
 		populateKeys(result, definition.getKeyProperties(), x.getKeys());
 		
@@ -186,7 +182,7 @@ implements ResultBeanFactory {
 	}	
 
 	protected abstract void populateMatchResultType(
-			Object resultBean, MatchResultType.Type matchResultType);
+			Object resultBean, MatchResultType matchResultType);
 	
 	protected abstract void populateKeyProperty(Object resultBean, 
 			String property, Object value);

@@ -1,36 +1,33 @@
 package org.oddjob.beancmpr.beans;
 
-import java.util.Arrays;
-
 import junit.framework.TestCase;
-
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.comparers.EqualityComparison;
-import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableComparision;
-import org.oddjob.beancmpr.matchables.MockMatchableMetaData;
-import org.oddjob.beancmpr.matchables.MultiValueComparison;
-import org.oddjob.beancmpr.matchables.SimpleMatchable;
+import org.oddjob.beancmpr.matchables.*;
 import org.oddjob.beancmpr.results.AlternativeResultBeanFactory;
+
+import java.util.List;
 
 public class AlternativeResultBeanFactoryTest extends TestCase {
 
-	private class MyMetaData extends MockMatchableMetaData {
+	private static class MyMetaData extends MockMatchableMetaData {
 		
 		@Override
 		public Iterable<String> getKeyProperties() {
-			return Arrays.asList("fruit");
+			return List.of("fruit");
 		}
 		
 		@Override
 		public Iterable<String> getValueProperties() {
-			return Arrays.asList("quantity");
+			return List.of("quantity");
 		}
 		
 		@Override
 		public Iterable<String> getOtherProperties() {
-			return Arrays.asList("colour");
+			return List.of("colour");
 		}
 		
 		@Override
@@ -57,26 +54,25 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 						accessor, null, null);
 		
 		SimpleMatchable x = new SimpleMatchable(
-				Arrays.asList("Apple"), 
-				Arrays.asList(new Integer(2)),
-				Arrays.asList("red"),
+				List.of("Apple"),
+				List.of(2),
+				List.of("red"),
 				new MyMetaData());
 		
 		SimpleMatchable y = new SimpleMatchable(
-				Arrays.asList("Apple"), 
-				Arrays.asList(new Integer(3)),
-				Arrays.asList("green"),
+				List.of("Apple"),
+				List.of(3),
+				List.of("green"),
 				new MyMetaData());
 
-		Comparison<Integer> comparison = new EqualityComparison<Integer>(
-				new Integer(2), new Integer(3));
+		Comparison<Integer> comparison = new EqualityComparison<>(
+				2, 3);
 		
-		Iterable<? extends Comparison<?>> comparisons =
-				Arrays.asList(comparison);
-		
-		MultiValueComparison<Matchable> matchableComparison = 
-			new MatchableComparision(x, y, comparisons);
-		
+		MultiValueComparison<Matchable> matchableComparison =
+			MatchableComparison.accumulatorFor(x, y)
+					.add(comparison)
+					.complete();
+
 		Object bean = test.createComparisonResult(matchableComparison);
 		
 		assertEquals("NOT_EQUAL", 
@@ -85,10 +81,10 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		assertEquals("Apple", 
 				accessor.getProperty(bean, "fruit"));
 		
-		assertEquals(new Integer(2), 
+		assertEquals(2,
 				accessor.getProperty(bean, "xQuantity"));
 		
-		assertEquals(new Integer(3), 
+		assertEquals(3,
 				accessor.getProperty(bean, "yQuantity"));
 		
 		assertSame(comparison, 
@@ -111,25 +107,24 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 						accessor, "left", "right");
 		
 		SimpleMatchable x = new SimpleMatchable(
-				Arrays.asList("Apple"), 
-				Arrays.asList(new Integer(2)),
-				Arrays.asList("red"),
+				List.of("Apple"),
+				List.of(2),
+				List.of("red"),
 				new MyMetaData());
 		
 		SimpleMatchable y = new SimpleMatchable(
-				Arrays.asList("Apple"), 
-				Arrays.asList(new Integer(2)),
-				Arrays.asList("green"),
+				List.of("Apple"),
+				List.of(2),
+				List.of("green"),
 				new MyMetaData());
 		
-		Comparison<Object> comparison = 
-				new EqualityComparison<Object>("A", "A");
+		Comparison<Object> comparison =
+				new EqualityComparison<>("A", "A");
 		
-		Iterable<? extends Comparison<?>> comparisons =
-				Arrays.asList(comparison);
-		
-		MultiValueComparison<Matchable> matchableComparison = 
-			new MatchableComparision(x, y, comparisons);
+		MultiValueComparison<Matchable> matchableComparison =
+			MatchableComparison.accumulatorFor(x, y)
+					.add(comparison)
+					.complete();
 		
 		Object bean = test.createComparisonResult(matchableComparison);
 		
@@ -139,10 +134,10 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		assertEquals("Apple", 
 				accessor.getProperty(bean, "fruit"));
 		
-		assertEquals(new Integer(2), 
+		assertEquals(2,
 				accessor.getProperty(bean, "leftQuantity"));
 		
-		assertEquals(new Integer(2), 
+		assertEquals(2,
 				accessor.getProperty(bean, "rightQuantity"));
 		
 		assertSame(comparison, 
@@ -164,9 +159,9 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 				accessor, "a", "b");
 		
 		SimpleMatchable y = new SimpleMatchable(
-				Arrays.asList("Apple"), 
-				Arrays.asList(new Integer(3)),
-				Arrays.asList("green"),
+				List.of("Apple"),
+				List.of(3),
+				List.of("green"),
 				new MyMetaData());
 				
 		Object bean = test.createXMissingResult(y);
@@ -177,16 +172,16 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		assertEquals("Apple", 
 				accessor.getProperty(bean, "fruit"));
 		
-		assertEquals(null, 
-				accessor.getProperty(bean, "aQuantity"));
+		MatcherAssert.assertThat(accessor.getProperty(bean, "aQuantity"),
+				Matchers.nullValue());
 		
-		assertEquals(new Integer(3), 
+		assertEquals(3,
 				accessor.getProperty(bean, "bQuantity"));
 		
-		assertEquals(null, 
-				accessor.getProperty(bean, "quantityComparison"));
-		
-		assertEquals(null, 
+		MatcherAssert.assertThat(accessor.getProperty(bean, "quantityComparison"),
+				Matchers.nullValue());
+
+		assertEquals(null,
 				accessor.getProperty(bean, "aColour"));
 		
 		assertEquals("green", 
@@ -202,9 +197,9 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 				accessor, null, null);
 		
 		SimpleMatchable x = new SimpleMatchable(
-				Arrays.asList("Apple"), 
-				Arrays.asList(new Integer(2)),
-				Arrays.asList("red"),
+				List.of("Apple"),
+				List.of(2),
+				List.of("red"),
 				new MyMetaData());
 				
 		Object bean = test.createYMissingResult(x);
@@ -215,7 +210,7 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		assertEquals("Apple", 
 				accessor.getProperty(bean, "fruit"));
 		
-		assertEquals(new Integer(2), 
+		assertEquals(2,
 				accessor.getProperty(bean, "xQuantity"));
 		
 		assertEquals(null, 

@@ -1,12 +1,6 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import junit.framework.TestCase;
-
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.arooa.utils.Iterables;
@@ -19,6 +13,11 @@ import org.oddjob.beancmpr.composite.DefaultComparersByType;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class OrderedMatchablesComparerTest extends TestCase {
 	
@@ -45,18 +44,18 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		}
 	}
 	
-	private class Results implements BeanCmprResultsHandler {
+	private class Results implements CompareResultsHandler {
 		
-		List<Object[]> xsMissing = 
-			new ArrayList<Object[]>();
+		List<Object[]> xsMissing =
+				new ArrayList<>();
 		
-		List<Object[]> ysMissing = 
-			new ArrayList<Object[]>();
+		List<Object[]> ysMissing =
+				new ArrayList<>();
 		
-		List<Object[]> comparedKeys = new ArrayList<Object[]>();
+		List<Object[]> comparedKeys = new ArrayList<>();
 		
-		List<MultiValueComparison<Matchable>> comparisons = 
-			new ArrayList<MultiValueComparison<Matchable>>();
+		List<MultiValueComparison<Matchable>> comparisons =
+				new ArrayList<>();
 		
 		@Override
 		public void compared(MultiValueComparison<Matchable> comparison) {

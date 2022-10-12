@@ -2,7 +2,7 @@ package org.oddjob.beancmpr.beans;
 
 import org.oddjob.beancmpr.BeanCompareJob;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
-import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
+import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableComparer;
 import org.oddjob.beancmpr.matchables.MatchableComparerFactory;
@@ -30,7 +30,7 @@ implements MultiItemComparer<T>, MultiValueComparer<T> {
 
 	private final BeanPropertyComparerProvider comparerProvider;
 	
-	private final BeanCmprResultsHandler resultHandler;
+	private final CompareResultsHandler resultHandler;
 	
 	/** The thing that will create the {@link Matchable}s from the beans. */
 	private final MatchableFactory<T> matchableFactory;
@@ -48,7 +48,7 @@ implements MultiItemComparer<T>, MultiValueComparer<T> {
 	 */
 	public BeanComparer(MatchableFactory<T> matchableFactory,
 			BeanPropertyComparerProvider comparerProvider,
-			BeanCmprResultsHandler resultHandler) {
+			CompareResultsHandler resultHandler) {
 		this.matchableFactory = matchableFactory;
 		this.comparerProvider = comparerProvider;
 		this.resultHandler = resultHandler;

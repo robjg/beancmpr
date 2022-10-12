@@ -19,7 +19,7 @@ public interface ResultBeanFactory {
 	 * @param matchableComparison
 	 * @return
 	 */
-	public Object createComparisonResult(
+	Object createComparisonResult(
 			MultiValueComparison<Matchable> matchableComparison);	
 	
 	/**
@@ -28,7 +28,7 @@ public interface ResultBeanFactory {
 	 * @param y
 	 * @return
 	 */
-	public Object createXMissingResult(Matchable y);
+	Object createXMissingResult(Matchable y);
 	
 	/**
 	 * Create a result bean for a missing Y.
@@ -36,5 +36,5 @@ public interface ResultBeanFactory {
 	 * @param x
 	 * @return
 	 */
-	public Object createYMissingResult(Matchable x);
+	Object createYMissingResult(Matchable x);
 }

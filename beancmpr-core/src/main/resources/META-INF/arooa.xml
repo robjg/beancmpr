@@ -2,7 +2,7 @@
   prefix="beancmpr" namespace="oddjob:beancmpr">
   <conversions>
     <value value='org.oddjob.beancmpr.composite.ComparerFactoryConversion'/>
-  </conversions>  
+  </conversions>
   <values>
     <arooa:bean-def element='bean-results'
       className='org.oddjob.beancmpr.results.BeanCreatingResultHandler' 

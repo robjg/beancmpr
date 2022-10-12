@@ -1,14 +1,14 @@
 package org.oddjob.beancmpr.results;
 
-import java.util.Iterator;
-
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
+import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableGroup;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
 
-public class RowSetResultHandler implements BeanCmprResultsHandler {
+import java.util.Iterator;
+
+public class RowSetResultHandler implements CompareResultsHandler {
 
 	private final SimpleArraysResultHandler resultHandler =
 			new SimpleArraysResultHandler();
@@ -47,7 +47,7 @@ public class RowSetResultHandler implements BeanCmprResultsHandler {
 		}
 	}
 	
-	public MatchResultType.Type getResultType() {
+	public MatchResultType getResultType() {
 		return current.getResultType();
 	}
 	

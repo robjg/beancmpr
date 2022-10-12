@@ -1,11 +1,11 @@
 package org.oddjob.beancmpr.matchables;
 
+import org.oddjob.arooa.utils.ClassUtils;
+import org.oddjob.beancmpr.MatchDefinition;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.oddjob.arooa.utils.ClassUtils;
-import org.oddjob.beancmpr.MatchDefinition;
 
 /**
  * A simple implementation of {@link MatchableMetaData}.
@@ -51,10 +51,14 @@ public class SimpleMatchableMeta implements MatchableMetaData {
 		this.types = new HashMap<String, Class<?>>();
 		for (Map.Entry<String, Class<?>> entry: types.entrySet()) {
 			Class<?> type = entry.getValue();
+			String property = entry.getKey();
+			if (type == null) {
+				throw new IllegalArgumentException("No property " + property);
+			}
 			if (type.isPrimitive()) {
 				type = ClassUtils.wrapperClassForPrimitive(type);
 			}
-			this.types.put(entry.getKey(), type);
+			this.types.put(property, type);
 		}
 	}
 	

@@ -1,13 +1,13 @@
 package org.oddjob.beancmpr.composite;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.beans.BeanArrayComparerType;
 import org.oddjob.beancmpr.beans.BeanComparerType;
 import org.oddjob.beancmpr.beans.IterableBeansComparerType;
 import org.oddjob.beancmpr.beans.MapComparerType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @oddjob.description Allows comparers to be specified by the names of 
@@ -26,8 +26,8 @@ implements ComparersByNameFactory {
 	 * @oddjob.description Comparer keys by property name.
 	 * @oddjob.required No. But pointless if missing.
 	 */
-	public final Map<String, ComparerFactory<?>> comparersByName = 
-		new HashMap<String, ComparerFactory<?>>();
+	public final Map<String, ComparerFactory<?>> comparersByName =
+			new HashMap<>();
 
 
 	public void setComparers(String property, ComparerFactory<?> comparer) {
@@ -43,7 +43,7 @@ implements ComparersByNameFactory {
 			ComparersByType comparersByType) {
 		
 		Map<String, Comparer<?>> comparers =
-				new HashMap<String, Comparer<?>>();
+				new HashMap<>();
 		
 		for (Map.Entry<String, ComparerFactory<?>> entry : 
 				comparersByName.entrySet()) {

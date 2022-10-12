@@ -1,12 +1,12 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.beans.PropertyTypeHelper;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create a {@link MatchableComparer} base on the {@link Matchable}s 
@@ -50,8 +50,8 @@ public class MatchableComparerFactory {
 			throw new NullPointerException("MetaData must not be null.");
 		}
 	
-		final List<NullSafeComparer<?>> compares = 
-				new ArrayList<NullSafeComparer<?>>();
+		final List<NullSafeComparer<?>> compares =
+				new ArrayList<>();
 		
 		for (String propertyName: xMetaData.getValueProperties()) {
 
@@ -68,7 +68,7 @@ public class MatchableComparerFactory {
 						propertyName + ", type " + propertyType);
 			}
 			
-			compares.add(createWithInferdType(comparer, propertyName));
+			compares.add(createWithInferredType(comparer, propertyName));
 		}		
 		
 		return new MatchableComparer() {
@@ -81,11 +81,11 @@ public class MatchableComparerFactory {
 					throw new NullPointerException("Matchables must not be null.");
 				}
 
-				List<Comparison<?>> comparisons = new ArrayList<Comparison<?>>();		
-				
-				ValuePairIterable<NullSafeComparer<?>, ?> values = 
-					new ValuePairIterable<NullSafeComparer<?>, Object>(
-						compares, x.getValues(), y.getValues());
+				ValuePairIterable<NullSafeComparer<?>, ?> values =
+						new ValuePairIterable<>(
+								compares, x.getValues(), y.getValues());
+
+				MatchableComparison.Accumulator accumulator = MatchableComparison.accumulatorFor(x, y);
 			
 				for (ValuePairIterable.ValuePair<NullSafeComparer<?>, ?> set : values) {
 
@@ -97,10 +97,10 @@ public class MatchableComparerFactory {
 					Comparison<?> comparison = 
 						common.castAndCompare(valueX, valueY);
 					
-					comparisons.add(comparison);			
+					accumulator.add(comparison);
 				}		
 				
-				return new MatchableComparision(x, y, comparisons);
+				return accumulator.complete();
 			}
 			
 			@Override
@@ -111,10 +111,10 @@ public class MatchableComparerFactory {
 		};
 	}
 
-	private static <T> NullSafeComparer<T> createWithInferdType(
+	private static <T> NullSafeComparer<T> createWithInferredType(
 			Comparer<T> comparer, String propertyName) {
 		
-		return new NullSafeComparer<T>(comparer, propertyName);
+		return new NullSafeComparer<>(comparer, propertyName);
 	}
 	
 }

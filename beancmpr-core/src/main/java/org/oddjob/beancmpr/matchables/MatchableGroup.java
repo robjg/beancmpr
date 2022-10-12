@@ -13,14 +13,14 @@ public interface MatchableGroup {
 	 * 
 	 * @return The keys. Will not be null.
 	 */
-	public Iterable<?> getKeys();
+	Iterable<?> getKeys();
 	
 	/**
 	 * Get the meta data for {@link Matchable}s in this group.
 	 * 
 	 * @return The meta data. Will not be null.
 	 */
-	public MatchableMetaData getMetaData();
+	MatchableMetaData getMetaData();
 	
 	/**
 	 * Get the group.
@@ -28,12 +28,12 @@ public interface MatchableGroup {
 	 * @return An Iterable over the group. A group must contain at least
 	 * one {@link Matchable}.
 	 */
-	public Iterable<Matchable> getGroup();
+	Iterable<Matchable> getGroup();
 	
 	/**
 	 * Get the size of the group.
 	 * 
 	 * @return The size.
 	 */
-	public int getSize();
+	int getSize();
 }

@@ -2,7 +2,7 @@ package org.oddjob.beancmpr.beans;
 
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableComparision;
+import org.oddjob.beancmpr.matchables.MatchableComparison;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
@@ -29,7 +29,7 @@ implements MultiValueComparison<T>, MultiItemComparison<T> {
 	 * the actual results of the comparison. This is because in the 
 	 * current implementation the actual comparison is done by creating
 	 * {@link Matchable} objects from the beans, and so the delegate
-	 * will be an {@link MatchableComparision}.
+	 * will be an {@link MatchableComparison}.
 	 * 
 	 * @param x
 	 * @param y

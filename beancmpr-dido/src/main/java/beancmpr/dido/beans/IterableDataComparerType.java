@@ -8,7 +8,7 @@ import org.oddjob.beancmpr.beans.BeanArrayComparerType;
 import org.oddjob.beancmpr.beans.IterableBeansComparer;
 import org.oddjob.beancmpr.beans.IterableComparerType;
 import org.oddjob.beancmpr.composite.*;
-import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
+import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
@@ -107,7 +107,7 @@ implements ComparerFactory<Iterable<GenericData<String>>>,
 	@Override
 	public IterableBeansComparer<GenericData<String>> createComparerWith(
 			ComparersByType parentComparersByType,
-			BeanCmprResultsHandler resultHandler) {
+			CompareResultsHandler resultHandler) {
 		
 		ComparersByNameOrTypeFactory comparerProviderFactory =
 				new ComparersByNameOrTypeFactory(

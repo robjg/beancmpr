@@ -37,7 +37,7 @@ implements MultiItemComparer<Iterable<MatchableGroup>> {
 	 */
 	public OrderedMatchablesComparer(
 			BeanPropertyComparerProvider comparerProvider,
-			BeanCmprResultsHandler resultsHandler) {
+			CompareResultsHandler resultsHandler) {
 		
 		if (comparerProvider == null) {
 			throw new NullPointerException("ComparerProvider must be provded.");
@@ -196,7 +196,7 @@ implements MultiItemComparer<Iterable<MatchableGroup>> {
 		return Iterable.class;
 	}
 	
-	public BeanCmprResultsHandler getMatchProcessor() {
+	public CompareResultsHandler getMatchProcessor() {
 		return matchProcessor;
 	}
 

@@ -8,12 +8,12 @@ import org.oddjob.beancmpr.beans.BeanComparerType;
 import org.oddjob.beancmpr.beans.IterableBeansComparerType;
 import org.oddjob.beancmpr.beans.MapComparerType;
 import org.oddjob.beancmpr.composite.DefaultComparersByType;
-import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
+import org.oddjob.beancmpr.matchables.CompareResultsHandler;
+import org.oddjob.beancmpr.matchables.CompareResultsHandlerFactory;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
 import org.oddjob.beancmpr.results.BeanCreatingResultHandler;
-import org.oddjob.beancmpr.results.PlaysWithBeanbus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,10 +65,10 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 	/**
 	 * @oddjob.property
 	 * @oddjob.description Something to handle results. Typically a 
-	 * {@link BeanCmprResultsHandler}.
+	 * {@link CompareResultsHandler}.
 	 * @oddjob.required No.
 	 */
-	private BeanCmprResultsHandler results;
+	private CompareResultsHandlerFactory results;
 		
 	/**
 	 * @oddjob.property
@@ -102,32 +102,36 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 		}
 		if (inY == null) {
 			throw new NullPointerException("No Y");
-		}		
-		
-		if (to != null) {
-			
+		}
+
+		CompareResultsHandler resultsHandler;
+
+		if (to == null ) {
+			if (results == null) {
+				resultsHandler = null;
+			}
+			else {
+				resultsHandler = this.results.createResultsHandlerTo(null);
+			}
+		}
+		else {
 			if (results == null) {
 				BeanCreatingResultHandler results = new BeanCreatingResultHandler();
 				results.setArooaSession(session);
 				results.configured();
 				this.results = results;
-			}			
-			
-			if (results instanceof PlaysWithBeanbus) {
-				((PlaysWithBeanbus) results).setOut(to);
 			}
-			else {
-				logger.warn("The 'to' property is set but results will ignore it");
-			}
+
+			resultsHandler = results.createResultsHandlerTo(to);
 		}
-		
+
 		MultiItemComparerFactory<T> comparerFactory = this.comparer;
 		if (comparerFactory == null) {
 			comparerFactory = inferComparerFactory();
 		}
-		
+
 		MultiItemComparer<T> comparer = comparerFactory.createComparerWith(
-				new DefaultComparersByType(), results);
+				new DefaultComparersByType(), resultsHandler);
 		
 		this.counts = comparer.compare(inX, inY);
 		
@@ -197,11 +201,11 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 		this.inY = y;
 	}
 
-	public BeanCmprResultsHandler getResults() {
+	public CompareResultsHandlerFactory getResults() {
 		return results;
 	}
 
-	public void setResults(BeanCmprResultsHandler results) {
+	public void setResults(CompareResultsHandlerFactory results) {
 		this.results = results;
 	}
 

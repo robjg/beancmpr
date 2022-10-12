@@ -3,7 +3,7 @@ package org.oddjob.beancmpr.beans;
 import java.util.Map;
 
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
-import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
+import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
 import org.oddjob.beancmpr.multiitem.DelegatingMultiItemComparison;
@@ -54,7 +54,7 @@ implements MultiItemComparer<Map<K, V>> {
 			MatchableFactoryProvider<Map.Entry<K,V>> matchableFactoryProvider,
 			BeanPropertyComparerProvider comparerProvider,
 			boolean sorted,
-			BeanCmprResultsHandler resultHandler) {
+			CompareResultsHandler resultHandler) {
 		
 		this.comparer =
 				new IterableBeansComparer<>(

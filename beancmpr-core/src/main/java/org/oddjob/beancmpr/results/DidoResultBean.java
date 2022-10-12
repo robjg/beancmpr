@@ -1,9 +1,9 @@
 package org.oddjob.beancmpr.results;
 
-import java.util.Map;
-
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.matchables.MatchableMetaData;
+
+import java.util.Map;
 
 public class DidoResultBean {
 
@@ -17,7 +17,7 @@ public class DidoResultBean {
 
 	public DidoResultBean(
 			MatchableMetaData metaData,
-			MatchResultType.Type resultType,
+			MatchResultType resultType,
 			Map<String, Object> keys,
 			Map<String, Comparison<?>> comparisons) {
 		

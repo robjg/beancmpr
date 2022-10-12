@@ -1,9 +1,7 @@
 package org.oddjob.beancmpr.composite;
 
 import junit.framework.TestCase;
-
 import org.oddjob.arooa.ArooaSession;
-import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
@@ -25,11 +23,11 @@ public class ComparersByPropertyOrTypeTest extends TestCase {
 		}
 	}
 	
-	private class OurIntegercomparer implements Comparer<Integer> {
+	private static class OurIntegercomparer implements Comparer<Integer> {
 
 		@Override
 		public Comparison<Integer> compare(Integer x, Integer y) {
-			return new MockComparison<Integer>() {
+			return new MockComparison<>() {
 				@Override
 				public int getResult() {
 					return 0;
@@ -43,7 +41,7 @@ public class ComparersByPropertyOrTypeTest extends TestCase {
 		}
 	}
 	
-	public void testThatTypeComparersInjectedIntoPropertyComparers() throws ArooaConversionException {
+	public void testThatTypeComparersInjectedIntoPropertyComparers() {
 		
 		ArooaSession session = new StandardArooaSession();
 		
@@ -56,8 +54,8 @@ public class ComparersByPropertyOrTypeTest extends TestCase {
 		comparersByNameType.setComparers("fruit", beanComparer);
 
 		ComparersByTypeList comparersByTypeList = new ComparersByTypeList();
-		comparersByTypeList.setSpecialisations("java.lang.Integer", 
-				new ComparerFactoryAdaptor<Integer>(
+		comparersByTypeList.setSpecialisations("java.lang.Integer",
+				new ComparerFactoryAdaptor<>(
 						new OurIntegercomparer()));
 		
 		ComparersByType comparersByType = 

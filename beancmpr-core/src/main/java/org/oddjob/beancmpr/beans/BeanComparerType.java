@@ -13,7 +13,7 @@ import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
 import org.oddjob.beancmpr.composite.ComparersByTypeList;
-import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
+import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
@@ -120,7 +120,7 @@ implements ArooaSessionAware, ComparerFactory<T>,
 	@Override
 	public BeanComparer<T> createComparerWith(
 			ComparersByType parentComparersByType,
-			BeanCmprResultsHandler resultHandler) {
+			CompareResultsHandler resultHandler) {
 		
 		ComparersByNameOrTypeFactory comparerProviderFactory =
 				new ComparersByNameOrTypeFactory(

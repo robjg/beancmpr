@@ -15,7 +15,7 @@ import org.oddjob.beancmpr.composite.ComparersByNameFactory;
 import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
-import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
+import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.matchables.MapMatchableFactoryProvider;
 import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
@@ -138,7 +138,7 @@ implements ComparerFactory<Map<K, V>>,
 	@Override
 	public MultiItemComparer<Map<K, V>> createComparerWith(
 			ComparersByType parentComparersByType,
-			BeanCmprResultsHandler resultHandler) {
+			CompareResultsHandler resultHandler) {
 		
 		ComparersByNameOrTypeFactory comparerProviderFactory =
 				new ComparersByNameOrTypeFactory(

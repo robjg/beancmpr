@@ -1,11 +1,6 @@
 package org.oddjob.beancmpr.results;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import junit.framework.TestCase;
-
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.BeanCompareJob;
@@ -13,6 +8,10 @@ import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.SharedTestData;
 import org.oddjob.beancmpr.SharedTestData.Fruit;
 import org.oddjob.beancmpr.beans.IterableBeansComparerType;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class DidoBeanResultHandlerTest extends TestCase {
 

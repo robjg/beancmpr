@@ -14,7 +14,7 @@ import org.oddjob.beancmpr.composite.ComparersByNameType;
 import org.oddjob.beancmpr.composite.ComparersByType;
 import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
 import org.oddjob.beancmpr.composite.ComparersByTypeList;
-import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
+import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.BeanMatchableFactoryProvider;
 import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
@@ -125,7 +125,7 @@ implements ComparerFactory<Iterable<T>>,
 	@Override
 	public IterableBeansComparer<T> createComparerWith(
 			ComparersByType parentComparersByType,
-			BeanCmprResultsHandler resultHandler) {
+			CompareResultsHandler resultHandler) {
 		
 		ComparersByNameOrTypeFactory comparerProviderFactory =
 				new ComparersByNameOrTypeFactory(

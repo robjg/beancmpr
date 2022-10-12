@@ -17,7 +17,7 @@ public interface Matchable {
 	 * @return The keys. Never null.
 	 * 
 	 */
-	public Iterable<?> getKeys();
+	Iterable<?> getKeys();
 	
 	/**
 	 * Get the values for comparison.
@@ -25,7 +25,7 @@ public interface Matchable {
 	 * @return The values to compare. Never null.
 	 * 
 	 */
-	public Iterable<?> getValues();
+	Iterable<?> getValues();
 	
 	/**
 	 * Get the others.
@@ -33,12 +33,12 @@ public interface Matchable {
 	 * @return The others. Never null.
 	 * 
 	 */
-	public Iterable<?> getOthers();
+	Iterable<?> getOthers();
 	
 	/**
 	 * Get the meta data that describe this matchable.
 	 * 
 	 * @return The meta data. Will not be null.
 	 */
-	public MatchableMetaData getMetaData();
+	MatchableMetaData getMetaData();
 }

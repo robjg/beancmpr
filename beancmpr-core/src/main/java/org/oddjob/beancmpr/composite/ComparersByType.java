@@ -19,5 +19,5 @@ public interface ComparersByType {
 	 * 
 	 * @return The comparer or null if one can't be found for the type.
 	 */
-	public <T> Comparer<T> comparerFor(Class<T> type);	
+	<T> Comparer<T> comparerFor(Class<T> type);
 }

@@ -1,17 +1,12 @@
 package org.oddjob.beancmpr.composite;
 
 import junit.framework.TestCase;
-
-import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.comparers.NumericComparer;
-import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
-import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
-import org.oddjob.beancmpr.composite.ComparersByTypeList;
 
 public class ComparersByPropertyOrTypeFactoryTest extends TestCase {
 
-	public void testSpecialisedByTypeRetrieval() throws ArooaConversionException {
+	public void testSpecialisedByTypeRetrieval() {
 		
 		ComparersByTypeList list = new ComparersByTypeList();
 		list.setClassLoader(getClass().getClassLoader());
@@ -19,8 +14,8 @@ public class ComparersByPropertyOrTypeFactoryTest extends TestCase {
 		NumericComparer numericComparer = new NumericComparer();
 		numericComparer.setPercentageTolerance(100);
 		
-		list.setSpecialisations("double", 
-				new ComparerFactoryAdaptor<Number>(numericComparer));
+		list.setSpecialisations("double",
+				new ComparerFactoryAdaptor<>(numericComparer));
 		
 		ComparersByNameOrTypeFactory test = 
 				new ComparersByNameOrTypeFactory(null, list);

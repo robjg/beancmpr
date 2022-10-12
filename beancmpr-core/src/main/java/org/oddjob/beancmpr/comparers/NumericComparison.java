@@ -10,7 +10,7 @@ import org.oddjob.beancmpr.Comparison;
  */
 public interface NumericComparison extends Comparison<Number> {
 
-	 public double getPercentage();
+	 double getPercentage();
 	 
-	 public double getDelta();
+	 double getDelta();
 }

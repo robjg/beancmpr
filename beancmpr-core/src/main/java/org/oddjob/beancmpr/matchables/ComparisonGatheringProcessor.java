@@ -1,20 +1,20 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
- * A {@link BeanCmprResultsHandler} that counts matches, before passing the result
+ * A {@link CompareResultsHandler} that counts matches, before passing the result
  * onto a delegate.
  * 
  * @author rob
  *
  */
 public class ComparisonGatheringProcessor 
-implements BeanCmprResultsHandler, MultiItemComparisonCounts {
+implements CompareResultsHandler, MultiItemComparisonCounts {
 
-	private final BeanCmprResultsHandler delegate;
+	private final CompareResultsHandler delegate;
 	
 	private final AtomicInteger xMissingCount = new AtomicInteger();
 	
@@ -29,7 +29,7 @@ implements BeanCmprResultsHandler, MultiItemComparisonCounts {
 	 * 
 	 * @param delegate The handler this wraps. May be null.
 	 */
-	public ComparisonGatheringProcessor(BeanCmprResultsHandler delegate) {
+	public ComparisonGatheringProcessor(CompareResultsHandler delegate) {
 		this.delegate = delegate;
 	}
 	

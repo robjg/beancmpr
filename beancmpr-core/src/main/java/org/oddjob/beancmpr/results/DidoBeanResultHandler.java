@@ -2,6 +2,8 @@ package org.oddjob.beancmpr.results;
 
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.matchables.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,7 +21,9 @@ import java.util.function.Consumer;
  *
  */
 public class DidoBeanResultHandler 
-implements BeanCmprResultsHandler, PlaysWithBeanbus {
+implements CompareResultsHandler, CompareResultsHandlerFactory {
+
+	private static final Logger logger = LoggerFactory.getLogger(BeanCreatingResultHandler.class);
 
 	/**
 	 * @oddjob.property
@@ -65,6 +69,17 @@ implements BeanCmprResultsHandler, PlaysWithBeanbus {
 	}
 
 	@Override
+	public CompareResultsHandler createResultsHandlerTo(Consumer<Object> resultsConsumer) {
+		if (resultsConsumer != null) {
+			if (this.out != null) {
+				logger.warn("Overriding {} result consumer with {}.", this.out, resultsConsumer);
+			}
+			this.out = resultsConsumer;
+		}
+
+		return this;
+	}
+
 	public void setOut(Consumer<? super Object> out) {
 		this.out = out;
 	}
@@ -96,7 +111,7 @@ implements BeanCmprResultsHandler, PlaysWithBeanbus {
 				
 		return new DidoResultBean(
 				metaData,
-				MatchResultType.Type.X_MISSING,
+				MatchResultType.X_MISSING,
 				keyMap(metaData.getKeyProperties(),
 						y.getKeys()),
 				comparisonMap(metaData.getValueProperties(),
@@ -117,7 +132,7 @@ implements BeanCmprResultsHandler, PlaysWithBeanbus {
 		
 		return new DidoResultBean(
 				metaData,
-				MatchResultType.Type.Y_MISSING,
+				MatchResultType.Y_MISSING,
 				keyMap(metaData.getKeyProperties(),
 						x.getKeys()),
 				comparisonMap(metaData.getValueProperties(),
@@ -135,8 +150,8 @@ implements BeanCmprResultsHandler, PlaysWithBeanbus {
 		return new DidoResultBean(
 				metaData,
 				matchableComparison.getResult() == 0 ? 
-						MatchResultType.Type.EQUAL : 
-							MatchResultType.Type.NOT_EQUAL,
+						MatchResultType.EQUAL :
+							MatchResultType.NOT_EQUAL,
 				keyMap(metaData.getKeyProperties(), 
 						matchableComparison.getX().getKeys()),
 				comparisonMap(metaData.getValueProperties(),

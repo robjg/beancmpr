@@ -8,7 +8,6 @@ import org.oddjob.beancmpr.beans.PropertyTypeHelper;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableMetaData;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
-import org.oddjob.beancmpr.results.MatchResultType.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,11 +65,11 @@ implements ResultBeanFactory {
 	
 	@Override
 	protected final void populateMatchResultType(Object resultBean,
-			Type matchResultType) {
+			MatchResultType matchResultType) {
 		
 		switch (matchResultType) {
 		case X_MISSING: 
-			populateMatchResultType(resultBean, new MatchResultType.XMissing() {
+			populateMatchResultType(resultBean, new MatchResultTypeText.XMissing() {
 				@Override
 				public String getText() {
 					return xPropertyPrefix + "_MISSING";
@@ -78,7 +77,7 @@ implements ResultBeanFactory {
 			});
 			break;
 		case Y_MISSING: 
-			populateMatchResultType(resultBean, new MatchResultType.YMissing() {
+			populateMatchResultType(resultBean, new MatchResultTypeText.YMissing() {
 				@Override
 				public String getText() {
 					return yPropertyPrefix + "_MISSING";
@@ -86,7 +85,7 @@ implements ResultBeanFactory {
 			});
 			break;
 		case NOT_EQUAL: 
-			populateMatchResultType(resultBean, new MatchResultType.NotEqual() {
+			populateMatchResultType(resultBean, new MatchResultTypeText.NotEqual() {
 				@Override
 				public String getText() {
 					return "NOT_EQUAL";
@@ -94,7 +93,7 @@ implements ResultBeanFactory {
 			});
 			break;
 		case EQUAL: 
-			populateMatchResultType(resultBean, new MatchResultType.Equal() {
+			populateMatchResultType(resultBean, new MatchResultTypeText.Equal() {
 				@Override
 				public String getText() {
 					return "EQUAL";
@@ -105,7 +104,7 @@ implements ResultBeanFactory {
 	}
 	
 	abstract protected void populateMatchResultType(Object resultBean,
-			MatchResultType matchResultType);
+			MatchResultTypeText matchResultType);
 	
 	/**
 	 * Something that can prefix a property name.

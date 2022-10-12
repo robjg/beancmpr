@@ -5,7 +5,7 @@ package org.oddjob.beancmpr;
  * 
  * @author Rob
  *
- * @param T The type.
+ * @param <T> The type.
  */
 public interface Comparer<T> {
 
@@ -18,7 +18,7 @@ public interface Comparer<T> {
 	 * @return A Comparison. Will not be null.
 	 * 
 	 */
-	public Comparison<T> compare(T x, T y);
+	Comparison<T> compare(T x, T y);
 	
 	/**
 	 * The type of the things.  
@@ -31,5 +31,5 @@ public interface Comparer<T> {
 	 * 
 	 * @return The type. Must not be null.
 	 */
-	public Class<?> getType();
+	Class<?> getType();
 }

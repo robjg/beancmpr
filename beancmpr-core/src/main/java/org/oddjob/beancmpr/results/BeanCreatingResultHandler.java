@@ -1,16 +1,14 @@
 package org.oddjob.beancmpr.results;
 
-import java.util.Collection;
-import java.util.function.Consumer;
-
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
 import org.oddjob.arooa.life.ArooaSessionAware;
 import org.oddjob.arooa.reflect.PropertyAccessor;
-import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
-import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableGroup;
-import org.oddjob.beancmpr.matchables.MultiValueComparison;
+import org.oddjob.beancmpr.matchables.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.function.Consumer;
 
 /**
  * @oddjob.description Creates result beans for matches and adds them
@@ -20,7 +18,9 @@ import org.oddjob.beancmpr.matchables.MultiValueComparison;
  *
  */
 public class BeanCreatingResultHandler 
-implements BeanCmprResultsHandler, PlaysWithBeanbus, ArooaSessionAware {
+implements CompareResultsHandler, CompareResultsHandlerFactory, ArooaSessionAware {
+
+	private static final Logger logger = LoggerFactory.getLogger(BeanCreatingResultHandler.class);
 
 	/**
 	 * @oddjob.property
@@ -118,6 +118,17 @@ implements BeanCmprResultsHandler, PlaysWithBeanbus, ArooaSessionAware {
 	}
 
 	@Override
+	public CompareResultsHandler createResultsHandlerTo(Consumer<Object> resultsConsumer) {
+		if (resultsConsumer != null) {
+			if (this.out != null) {
+				logger.warn("Overriding {} result consumer with {}.", this.out, resultsConsumer);
+			}
+			this.out = resultsConsumer;
+		}
+
+		return this;
+	}
+
 	public void setOut(Consumer<? super Object> out) {
 		this.out = out;
 	}

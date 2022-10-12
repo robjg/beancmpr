@@ -1,30 +1,29 @@
 package org.oddjob.beancmpr.matchables;
 
 
-
 /**
  * Handles the result of comparing {@link Matchable}s.
  * 
- * @see OrderedMatchablesComparer.
+ * @see OrderedMatchablesComparer
  * 
  * @author Rob
  *
  */
-public interface BeanCmprResultsHandler {
+public interface CompareResultsHandler {
 	
 	/**
 	 * Data is missing from X.
 	 * 
 	 * @param ys The y data.
 	 */
-	public void xMissing(MatchableGroup ys);
+	void xMissing(MatchableGroup ys);
 	
 	/**
 	 * Data is missing from Y.
 	 * 
 	 * @param xs The x data.
 	 */
-	public void yMissing(MatchableGroup xs);
+	void yMissing(MatchableGroup xs);
 
 	/**
 	 * Two {@link Matchable}s have been compared
@@ -32,6 +31,6 @@ public interface BeanCmprResultsHandler {
 	 * 
 	 * @param comparison The result of the comparison.
 	 */
-	public void compared(MultiValueComparison<Matchable> comparison);
+	void compared(MultiValueComparison<Matchable> comparison);
 
 }

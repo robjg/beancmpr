@@ -10,5 +10,8 @@
         <arooa:property name="others" annotation="org.oddjob.arooa.deploy.annotations.ArooaAttribute"/>
       </properties>
     </arooa:bean-def>
+    <arooa:bean-def element='data-results'
+                    className='beancmpr.dido.results.GenericDataResultHandlerFactory'>
+    </arooa:bean-def>
   </values>
 </arooa:descriptor>

@@ -1,7 +1,7 @@
 package org.oddjob.beancmpr.beans;
 
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
-import org.oddjob.beancmpr.matchables.BeanCmprResultsHandler;
+import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
 import org.oddjob.beancmpr.matchables.MatchableGroup;
@@ -29,7 +29,7 @@ implements MultiItemComparer<Iterable<T>> {
 	private final BeanPropertyComparerProvider comparerProvider;
 	
 	/** Handler results. */
-	private final BeanCmprResultsHandler resultsHandler;
+	private final CompareResultsHandler resultsHandler;
 	
 	/** Are the iterables sorted? */
 	private final boolean sorted;
@@ -47,7 +47,7 @@ implements MultiItemComparer<Iterable<T>> {
 			MatchableFactoryProvider<T> matchableFactoryProvider,
 			BeanPropertyComparerProvider comparerProvider,
 			boolean sorted,
-			BeanCmprResultsHandler resultsHandler) {
+			CompareResultsHandler resultsHandler) {
 		
 		if (matchableFactoryProvider == null) {
 			throw new NullPointerException("MatchDefinition must be provided.");
@@ -82,7 +82,7 @@ implements MultiItemComparer<Iterable<T>> {
 		MultiItemComparison<Iterable<MatchableGroup>> groupComparison = 
 				rec.compare(xGroups, yGroups);
 		
-		return new DelegatingMultiItemComparison<Iterable<T>>(
+		return new DelegatingMultiItemComparison<>(
 				x, y, groupComparison);
 	}
 	
@@ -99,11 +99,11 @@ implements MultiItemComparer<Iterable<T>> {
 			BeanPropertyComparerProvider comparerProvider) {
 		
 		if (sorted) {
-			return new SortedBeanMatchables<T>(in, factory, 
+			return new SortedBeanMatchables<>(in, factory,
 					comparerProvider);
 		}
 		else {
-			return new UnsortedBeanMatchables<T>(in, factory,
+			return new UnsortedBeanMatchables<>(in, factory,
 					comparerProvider);
 		}
 	}
@@ -117,7 +117,7 @@ implements MultiItemComparer<Iterable<T>> {
 		return sorted;
 	}
 
-	public BeanCmprResultsHandler getResultsHandler() {
+	public CompareResultsHandler getResultsHandler() {
 		return resultsHandler;
 	}
 }

@@ -19,6 +19,6 @@ public interface MultiValueComparison<T> extends Comparison<T> {
 	 * 
 	 * @return
 	 */
-	public Iterable<Comparison<?>> getValueComparisons();
+	Iterable<Comparison<?>> getValueComparisons();
 
 }

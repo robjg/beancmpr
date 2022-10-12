@@ -1,8 +1,9 @@
 package org.oddjob.beancmpr.comparers;
 
-import java.text.DecimalFormat;
-
 import org.oddjob.beancmpr.Comparer;
+import org.oddjob.beancmpr.composite.ComparerFactory;
+
+import java.text.DecimalFormat;
 
 /**
  * @oddjob.description A Comparer for numbers that supports tolerances and provides
@@ -65,7 +66,17 @@ public class NumericComparer implements Comparer<Number> {
 	 * @oddjob.required No. Defaults to false.
 	 */
 	private volatile boolean twoNaNsEqual;
-	
+
+	public NumericComparer() {}
+
+	private NumericComparer(Options options) {
+		this.deltaTolerance = options.deltaTolerance;
+		this.deltaFormat = options.deltaFormat;
+		this.percentageFormat = options.percentageFormat;
+		this.percentageTolerance = options.percentageTolerance;
+		this.twoNaNsEqual = options.twoNaNsEqual;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.oddjob.beancmpr.Comparer#compare(java.lang.Object, java.lang.Object)
@@ -176,6 +187,57 @@ public class NumericComparer implements Comparer<Number> {
 			(percentageTolerance > 0 ? ", " + percentageTolerance + "%" : ""); 
 	}
 
+	public static Options with() {
+		return new Options();
+	}
+	public static class Options {
+
+		private double deltaTolerance;
+
+		private String deltaFormat;
+
+		private double percentageTolerance;
+
+		private String percentageFormat;
+
+		private boolean twoNaNsEqual;
+
+		public Options deltaTolerance(double deltaTolerance) {
+			this.deltaTolerance = deltaTolerance;
+			return this;
+		}
+
+		public Options deltaFormat(String deltaFormat) {
+			this.deltaFormat = deltaFormat;
+			return this;
+		}
+
+		public Options percentageTolerance(double percentageTolerance) {
+			this.percentageTolerance = percentageTolerance;
+			return this;
+		}
+
+		public Options percentageFormat(String percentageFormat) {
+			this.percentageFormat = percentageFormat;
+			return this;
+		}
+
+		public Options twoNaNsEqual(boolean twoNaNsEqual) {
+			this.twoNaNsEqual = twoNaNsEqual;
+			return this;
+		}
+
+		public ComparerFactory<Number> toFactory() {
+
+			return ignored -> toComparer();
+		}
+
+		public NumericComparer toComparer() {
+
+			return new NumericComparer(this);
+		}
+	}
+
 	/**
 	 * Implementation of the {@link NumericComparison}.
 	 */
@@ -236,7 +298,7 @@ public class NumericComparer implements Comparer<Number> {
 				else {
 					StringBuilder builder = new StringBuilder();
 					if (deltaFormat == null) {
-						builder.append(String.valueOf(delta));
+						builder.append(delta);
 					}
 					else {
 						builder.append(new DecimalFormat(
@@ -263,6 +325,6 @@ public class NumericComparer implements Comparer<Number> {
 		public String toString() {
 			return "NumericComparison " + getSummaryText();
 		}
-	};
+	}
 
 }
