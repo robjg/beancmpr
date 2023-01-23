@@ -2,35 +2,65 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <modules>
-        <module>beancmpr-core</module>
-        <module>beancmpr-dido</module>
-    </modules>
-
     <groupId>uk.co.rgordon</groupId>
     <artifactId>beancmpr</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Bean Compare</name>
-    <description>Bean Comparison Library</description>
+    <description>Data Comparison Library</description>
+    <url>https://github.com/robjg/beancmpr</url>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>rob</id>
+            <name>Rob</name>
+            <email>contact@rgordon.co.uk</email>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>beancmpr-core</module>
+        <module>beancmpr-dido</module>
+    </modules>
+
+    <scm>
+        <url>https://github.com/robjg/beancmpr</url>
+        <connection>scm:git:git://github.com/robjg/beancmpr.git</connection>
+    </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 
     <properties>
-        <distMgmtSnapshotsId>sonatype-nexus-snapshots</distMgmtSnapshotsId>
-        <distMgmtSnapshotsName>Sonatype Nexus Snapshots</distMgmtSnapshotsName>
-        <distMgmtSnapshotsUrl>https://oss.sonatype.org/content/repositories/snapshots</distMgmtSnapshotsUrl>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
 
-        <oddjob.version>1.6-SNAPSHOT</oddjob.version>
+        <oddjob.version>1.6.0</oddjob.version>
 
         <javax.inject.version>1</javax.inject.version>
 
         <hsql.version>2.6.1</hsql.version>
 
-        <slf4j.version>1.7.25</slf4j.version>
-        <logback.version>1.2.3</logback.version>
+        <slf4j.version>2.0.6</slf4j.version>
+        <logback.version>1.3.5</logback.version>
 
         <junit.version>4.13.2</junit.version>
         <junit5.version>5.7.0</junit5.version>
@@ -38,17 +68,20 @@
         <mockito.version>3.6.0</mockito.version>
     </properties>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>${distMgmtSnapshotsId}</id>
-            <name>${distMgmtSnapshotsName}</name>
-            <url>${distMgmtSnapshotsUrl}</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <dependencyManagement>
-
         <dependencies>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>uk.co.rgordon</groupId>
@@ -103,6 +136,13 @@
         </dependencies>
     </dependencyManagement>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -121,8 +161,21 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.2.1</version>
                 </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.4.1</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>3.0.1</version>
+                </plugin>
+
             </plugins>
         </pluginManagement>
 
@@ -148,5 +201,46 @@
 
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration> <!-- add this to disable checking -->
+                                    <additionalOptions>-Xdoclint:none</additionalOptions>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
