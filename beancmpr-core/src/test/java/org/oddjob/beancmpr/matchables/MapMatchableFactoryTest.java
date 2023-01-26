@@ -1,16 +1,15 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import junit.framework.TestCase;
-
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class MapMatchableFactoryTest extends TestCase {
 
@@ -21,7 +20,7 @@ public class MapMatchableFactoryTest extends TestCase {
 		MatchDefinition definition = new SimpleMatchDefinition(
 				null, null, null);
 		
-		Map<String, Integer> map = new HashMap<String, Integer>();
+		Map<String, Integer> map = new HashMap<>();
 		
 		map.put("apple", 42);
 		
@@ -39,7 +38,7 @@ public class MapMatchableFactoryTest extends TestCase {
 		
 		Object[] values = Iterables.toArray(matchable.getValues());
 		
-		assertEquals(new Integer(42), values[0]);
+		assertEquals(42, values[0]);
 		assertEquals(1, values.length);
 		
 		Object[] others = Iterables.toArray(matchable.getOthers());
@@ -89,7 +88,7 @@ public class MapMatchableFactoryTest extends TestCase {
 				new String[] { "colour" },
 				new String[] { "quantity" });
 		
-		Map<Fruit, Fruit> map = new HashMap<Fruit, Fruit>();
+		Map<Fruit, Fruit> map = new HashMap<>();
 		
 		map.put(new Fruit(), new Fruit());
 		
@@ -103,7 +102,7 @@ public class MapMatchableFactoryTest extends TestCase {
 		Object[] keys = Iterables.toArray(matchable.getKeys());
 		
 		assertEquals("green", keys[0]);
-		assertEquals(new Integer(42), keys[1]);
+		assertEquals(42, keys[1]);
 		assertEquals(2, keys.length);
 		
 		Object[] values = Iterables.toArray(matchable.getValues());
@@ -113,7 +112,7 @@ public class MapMatchableFactoryTest extends TestCase {
 		
 		Object[] others = Iterables.toArray(matchable.getOthers());
 		
-		assertEquals(new Integer(42), others[0]);
+		assertEquals(42, others[0]);
 		assertEquals(1, others.length);
 		
 		MatchableMetaData metaData = matchable.getMetaData();

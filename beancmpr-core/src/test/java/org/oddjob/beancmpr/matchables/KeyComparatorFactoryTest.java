@@ -1,26 +1,24 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import junit.framework.TestCase;
-
 import org.oddjob.beancmpr.composite.ComparersByNameOrType;
+
+import java.math.BigInteger;
+import java.util.*;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 
 public class KeyComparatorFactoryTest extends TestCase {
 
-	private class MyMetaData extends MockMatchableMetaData {
+	private static class MyMetaData extends MockMatchableMetaData {
 
-		final Map<String, Class<?>> propertiesAndType = 
-				new LinkedHashMap<String, Class<?>>();
+		final Map<String, Class<?>> propertiesAndType =
+				new LinkedHashMap<>();
 
 		public MyMetaData(Iterable<String> props, Iterable<Class<?>> types) {
-			ValueIterable<Class<?>> it = new ValueIterable<Class<?>>(props, types); 
+			ValueIterable<Class<?>> it = new ValueIterable<>(props, types);
 			for (ValueIterable.Value<Class<?>> v : it) {
 				propertiesAndType.put(v.getPropertyName(), v.getValue());
 			}
@@ -37,7 +35,7 @@ public class KeyComparatorFactoryTest extends TestCase {
 		}
 	}
 	
-	private class MyMatchable extends MockMatchable {
+	private static class MyMatchable extends MockMatchable {
 	
 		final Iterable<?> values;
 		
@@ -60,10 +58,8 @@ public class KeyComparatorFactoryTest extends TestCase {
 	}
 	
 	static List<Class<?>> classList(Class<?>... classes) {
-		List<Class<?>> classList = new ArrayList<Class<?>>();
-		for (Class<?> cl : classes) {
-			classList.add(cl);
-		}
+		List<Class<?>> classList = new ArrayList<>();
+		Collections.addAll(classList, classes);
 		return classList;
 	}
 	
@@ -73,10 +69,10 @@ public class KeyComparatorFactoryTest extends TestCase {
 				new ComparersByNameOrType());
 				
 		MatchableMetaData metaData = new MyMetaData(
-				(Iterable<String>) Arrays.asList("fruit", "colour"), 
+				Arrays.asList("fruit", "colour"),
 				classList(String.class, String.class));
 		
-		MyMatchable x = new MyMatchable(Arrays.asList("apple", "red"), 
+		MyMatchable x = new MyMatchable(Arrays.asList("apple", "red"),
 				metaData);
 		MyMatchable y = new MyMatchable(Arrays.asList("apple", "red"),
 				metaData);
@@ -95,7 +91,7 @@ public class KeyComparatorFactoryTest extends TestCase {
 				new ComparersByNameOrType());
 				
 		MatchableMetaData metaData = new MyMetaData(
-				(Iterable<String>) Arrays.asList("fruit", "colour"), 
+				Arrays.asList("fruit", "colour"),
 				classList(String.class, String.class));
 		
 		Matchable x = new MyMatchable(Arrays.asList("apple", "red"),
@@ -117,17 +113,17 @@ public class KeyComparatorFactoryTest extends TestCase {
 				new ComparersByNameOrType());
 				
 		MatchableMetaData xMetaData = new MyMetaData(
-				(Iterable<String>) Arrays.asList("fruit", "quantity"), 
+				Arrays.asList("fruit", "quantity"),
 				classList(String.class, BigInteger.class));
 		
 		MatchableMetaData yMetaData = new MyMetaData(
-				(Iterable<String>) Arrays.asList("fruit", "quantity"), 
+				Arrays.asList("fruit", "quantity"),
 				classList(String.class, Integer.class));
 		
 		Matchable x = new MyMatchable(Arrays.asList("apple", new BigInteger("42")),
 				xMetaData);
 		
-		Matchable y = new MyMatchable(Arrays.asList("apple", new Integer(42)),
+		Matchable y = new MyMatchable(Arrays.asList("apple", 42),
 				yMetaData);
 				
 		Comparator<Iterable<?>> comparator = test.createComparatorFor(
@@ -145,11 +141,11 @@ public class KeyComparatorFactoryTest extends TestCase {
 				new ComparersByNameOrType());
 				
 		MatchableMetaData xMetaData = new MyMetaData(
-				(Iterable<String>) Arrays.asList("fruit", "quantity"), 
+				Arrays.asList("fruit", "quantity"),
 				classList(String.class, BigInteger.class));
 		
 		MatchableMetaData yMetaData = new MyMetaData(
-				(Iterable<String>) Arrays.asList("fruit", "quantity"), 
+				Arrays.asList("fruit", "quantity"),
 				classList(String.class, BigInteger.class));
 		
 		Matchable x = new MyMatchable(Arrays.asList("apple", new BigInteger("42")),
@@ -163,10 +159,10 @@ public class KeyComparatorFactoryTest extends TestCase {
 		
 		int result = comparator.compare(x.getKeys(), y.getKeys());
 		
-		assertEquals(true, result > 0);
+		assertThat(result, greaterThan(0));
 		
 		result = comparator.compare(y.getKeys(), x.getKeys());
-		
-		assertEquals(true, result < 0);
+
+		assertThat(result, lessThan(0));
 	}
 }

@@ -1,21 +1,22 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import junit.framework.TestCase;
-
+import org.hamcrest.Matchers;
 import org.oddjob.beancmpr.composite.ComparersByNameOrType;
+
+import java.math.BigInteger;
+import java.util.*;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 public class SimpleMatchKeyTest extends TestCase {
 
-	private class SomeMetaData implements MatchableMetaData {
+	private static class SomeMetaData implements MatchableMetaData {
 		
-		Map<String, Class<?>> meta = 
-				new LinkedHashMap<String, Class<?>>();
+		Map<String, Class<?>> meta =
+				new LinkedHashMap<>();
 		
 		SomeMetaData add(String prop, Class<?> type) {
 			meta.put(prop, type);
@@ -53,14 +54,14 @@ public class SimpleMatchKeyTest extends TestCase {
 						metaData, metaData);
 		
 		SimpleMatchKey key1 = new SimpleMatchKey(
-				Arrays.asList("banana"), comparator);
+				List.of("banana"), comparator);
 		SimpleMatchKey key2 = new SimpleMatchKey(
-				Arrays.asList("apple"), comparator);
+				List.of("apple"), comparator);
 		
 		assertTrue(key1.compareTo(key2) > 0);
 		assertTrue(key2.compareTo(key1) < 0);
 		
-		assertFalse(key1.equals(key2));
+		assertThat(key1, not(key2));
 	}
 	
 	public void testDifferentTwoComponents() {
@@ -81,15 +82,15 @@ public class SimpleMatchKeyTest extends TestCase {
 		assertTrue(key1.compareTo(key2) > 0);
 		assertTrue(key2.compareTo(key1) < 0);
 		
-		assertFalse(key1.equals(key2));
+		assertThat(key1, not(key2));
 	}
 
 	public void testSameThreeComponents() {
 		
-		SomeMetaData metaData = new SomeMetaData().
-				add("fruit1", String.class).
-				add("fruit2", String.class).
-				add("fruit3", String.class);
+		SomeMetaData metaData = new SomeMetaData()
+				.add("fruit1", String.class)
+				.add("fruit2", String.class)
+				.add("fruit3", String.class);
 		
 		Comparator<Iterable<?>> comparator = new KeyComparatorFactory(
 				new ComparersByNameOrType()).createComparatorFor(
@@ -99,12 +100,12 @@ public class SimpleMatchKeyTest extends TestCase {
 				"orange", "banana", "apple"), comparator);
 		SimpleMatchKey key2 = new SimpleMatchKey(Arrays.asList(
 				"orange", "banana", "apple"), comparator);
+
+		assertThat(key1.compareTo(key2), is(0));
+		assertThat(key2.compareTo(key1), is(0));
 		
-		assertTrue(key1.compareTo(key2) == 0);
-		assertTrue(key2.compareTo(key1) == 0);
-		
-		assertTrue(key1.equals(key2));
-		assertEquals(key1.hashCode(), key2.hashCode());
+		assertThat(key1, is(key2));
+		assertThat(key1.hashCode(), is(key2.hashCode()));
 	}
 	
 	public void testDifferentOneComponentNull() {
@@ -122,11 +123,11 @@ public class SimpleMatchKeyTest extends TestCase {
 				Arrays.asList("banana", "banana", "apple" ), comparator);
 		SimpleMatchKey key2 = new SimpleMatchKey(
 				Arrays.asList("banana", null, "apple" ), comparator);
+
+		assertThat(key1.compareTo(key2), Matchers.greaterThan(0));
+		assertThat(key2.compareTo(key1), Matchers.lessThan(0));
 		
-		assertEquals(true, key1.compareTo(key2) > 0);
-		assertEquals(true, key2.compareTo(key1) < 0);
-		
-		assertFalse(key1.equals(key2));
+		assertThat(key1, not(key2));
 	}
 	
 	public void testWithDifferentTypes() {
@@ -146,14 +147,14 @@ public class SimpleMatchKeyTest extends TestCase {
 						metaData1, metaData2);		
 		
 		SimpleMatchKey key1 = new SimpleMatchKey(
-				Arrays.asList("banana", new Integer(42), new Double(15.3) ), comparator);
+				Arrays.asList("banana", 42, 15.3), comparator);
 		
 		SimpleMatchKey key2 = new SimpleMatchKey(
 				Arrays.asList("banana", new BigInteger("42"), 15.3 ), comparator);
-		
-		assertTrue(key1.compareTo(key2) == 0);
-		assertTrue(key2.compareTo(key1) == 0);
-		
-		assertTrue(key1.equals(key2));
+
+		assertThat(key1.compareTo(key2), is(0));
+		assertThat(key2.compareTo(key1), is(0));
+
+		assertThat(key1, is(key2));
 	}
 }

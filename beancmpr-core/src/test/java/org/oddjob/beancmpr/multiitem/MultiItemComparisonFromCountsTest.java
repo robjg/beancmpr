@@ -1,14 +1,13 @@
 package org.oddjob.beancmpr.multiitem;
 
 import junit.framework.TestCase;
+import org.hamcrest.Matchers;
 
-import org.oddjob.beancmpr.multiitem.MultiItemComparison;
-import org.oddjob.beancmpr.multiitem.MultiItemComparisonCounts;
-import org.oddjob.beancmpr.multiitem.MultiItemComparisonFromCounts;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class MultiItemComparisonFromCountsTest extends TestCase {
 
-	private class Stats implements MultiItemComparisonCounts {
+	private static class Stats implements MultiItemComparisonCounts {
 		
 		private final int xsMissing;
 		
@@ -65,27 +64,26 @@ public class MultiItemComparisonFromCountsTest extends TestCase {
 	
 	public void testIsEqual() {
 		
-		MultiItemComparison<Object> test1 = 
-				new MultiItemComparisonFromCounts<Object>(null, null, 
+		MultiItemComparison<Object> test1 =
+				new MultiItemComparisonFromCounts<>(null, null,
 						new Stats(0, 0, 0, 3));
 		
 		assertEquals(0, test1.getResult());
 		
-		MultiItemComparison<Object> test2 = 
-				new MultiItemComparisonFromCounts<Object>(null, null, 
+		MultiItemComparison<Object> test2 =
+				new MultiItemComparisonFromCounts<>(null, null,
 						new Stats(1, 0, 0, 3));
+
+		assertThat(test2.getResult(), Matchers.greaterThan(0));
 		
-		assertTrue(new Integer(test2.getResult()).toString(), 
-				test2.getResult() > 0);
-		
-		MultiItemComparison<Object> test3 = 
-				new MultiItemComparisonFromCounts<Object>(null, null, 
+		MultiItemComparison<Object> test3 =
+				new MultiItemComparisonFromCounts<>(null, null,
 						new Stats(0, 1, 0, 3));
 		
 		assertTrue("Result is "+ test3.getResult(), test3.getResult() != 0);
 		
-		MultiItemComparison<Object> test4 = 
-				new MultiItemComparisonFromCounts<Object>(null, null, 
+		MultiItemComparison<Object> test4 =
+				new MultiItemComparisonFromCounts<>(null, null,
 						new Stats(0, 0, 1, 3));
 		
 		assertTrue(test4.getResult() != 0);		
@@ -94,8 +92,8 @@ public class MultiItemComparisonFromCountsTest extends TestCase {
 	
 	public void testNumbers() {
 		
-		MultiItemComparison<Object> test = 
-				new MultiItemComparisonFromCounts<Object>(null, null, 
+		MultiItemComparison<Object> test =
+				new MultiItemComparisonFromCounts<>(null, null,
 						new Stats(1, 2, 3, 4));
 		
 		assertEquals(1, test.getXMissingCount());

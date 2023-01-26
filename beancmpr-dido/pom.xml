@@ -36,10 +36,6 @@
         <connection>scm:git:git://github.com/robjg/beancmpr.git</connection>
     </scm>
 
-    <properties>
-        <dido.version>1.0-SNAPSHOT</dido.version>
-    </properties>
-
     <dependencies>
 
         <dependency>

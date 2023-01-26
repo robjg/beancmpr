@@ -1,9 +1,11 @@
 package org.oddjob.beancmpr.comparers;
 
 import junit.framework.TestCase;
-
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.comparers.EqualityComparer;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.lessThan;
 
 public class EqualtiyComparerTest extends TestCase {
 
@@ -30,15 +32,15 @@ public class EqualtiyComparerTest extends TestCase {
 						return "B";
 					}
 				});
-				
-		assertTrue(comparison.getResult() < 0);
-		
+
+		assertThat(comparison.getResult(), lessThan(0));
+
 		assertEquals("A<>B", comparison.getSummaryText());
 		
-		comparison = test.compare(new Double(.5), new Double(0.25));
+		comparison = test.compare(.5, 0.25);
 				
-		assertTrue(comparison.getResult() > 0);
-		
+		assertThat(comparison.getResult(), greaterThan(0));
+
 		assertEquals("0.5<>0.25", comparison.getSummaryText());
 	}
 	
