@@ -1,25 +1,20 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.composite.ComparersByNameOrType;
-import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
-import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableFactory;
-import org.oddjob.beancmpr.matchables.MatchableGroup;
-import org.oddjob.beancmpr.matchables.UnsortedBeanMatchables;
 
-public class UnsortedBeanMatchablesTest extends TestCase {
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+class UnsortedBeanMatchablesTest extends TestCase {
 
 	public static class Fruit {
 		
@@ -45,7 +40,8 @@ public class UnsortedBeanMatchablesTest extends TestCase {
 	}
 		
 	
-	public void testIterating() {
+	@Test
+	void testIterating() {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
 				new String[] { "type" }, 
@@ -57,7 +53,7 @@ public class UnsortedBeanMatchablesTest extends TestCase {
 		BeanMatchableFactory<Fruit> factory = new BeanMatchableFactory<>(
 				definition, accessor);
 		
-		List<Fruit> fruit = new ArrayList<Fruit>();
+		List<Fruit> fruit = new ArrayList<>();
 		
 		Fruit bean1 = new Fruit();
 		bean1.setType("banana");
@@ -77,7 +73,7 @@ public class UnsortedBeanMatchablesTest extends TestCase {
 		
 		fruit.add(bean3);
 		
-		UnsortedBeanMatchables<Fruit> test = new UnsortedBeanMatchables<Fruit>(				
+		UnsortedBeanMatchables<Fruit> test = new UnsortedBeanMatchables<>(
 				fruit, factory, new ComparersByNameOrType());
 
 		MatchableGroup[] groups = Iterables.toArray(
@@ -116,19 +112,20 @@ public class UnsortedBeanMatchablesTest extends TestCase {
 		
 	}
 	
-	private class MockFactory implements MatchableFactory<Object> {
+	private static class MockFactory implements MatchableFactory<Object> {
 		@Override
 		public Matchable createMatchable(Object bean) {
 			throw new RuntimeException("Unexpected!");
 		}
 	}
 	
-	public void testEmptyIterator() {
+	@Test
+	void testEmptyIterator() {
 		
-		final UnsortedBeanMatchables<Object> test = 
-			new UnsortedBeanMatchables<Object>(
-				new ArrayList<Fruit>(), new MockFactory(),
-				new ComparersByNameOrType());
+		final UnsortedBeanMatchables<Object> test =
+				new UnsortedBeanMatchables<>(
+						new ArrayList<Fruit>(), new MockFactory(),
+						new ComparersByNameOrType());
 		
 		Iterator<MatchableGroup> iter = test.iterator();
 		

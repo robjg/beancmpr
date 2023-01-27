@@ -1,39 +1,35 @@
 package org.oddjob.beancmpr.beans;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.oddjob.Oddjob;
-import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.arooa.types.ValueFactory;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.state.ParentState;
 import org.oddjob.tools.ConsoleCapture;
 import org.oddjob.tools.OddjobTestHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class MapComparerTypeTest extends TestCase {
+import java.io.File;
+import java.util.*;
+
+class MapComparerTypeTest extends TestCase {
 
 	private static final Logger logger = LoggerFactory.getLogger(
 			MapComparerTypeTest.class);
-	
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		
-		logger.info("---------------------------  " + getName() + 
-				"  ----------------------------");
-	};
+
+	@BeforeEach
+	void init(TestInfo testInfo) {
+
+		logger.debug("========================== " + testInfo.getDisplayName() + "===================" );
+	}
 	
 	public static class FruitMap1 implements ValueFactory<Map<String, Integer>> {
 	
-		private final Map<String, Integer> map = 
-				new HashMap<String, Integer>();
+		private final Map<String, Integer> map =
+				new HashMap<>();
 		
 		@Override
 		public Map<String, Integer> toValue() {
@@ -54,10 +50,11 @@ public class MapComparerTypeTest extends TestCase {
 		}
 	}
 	
-	public void testSimpleMapExample() {
+	@Test
+	void testSimpleMapExample() {
 		
-		File file = new File(getClass().getResource(
-				"MapCompareSimple.xml").getFile());
+		File file = new File(Objects.requireNonNull(getClass().getResource(
+				"MapCompareSimple.xml")).getFile());
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setFile(file);
@@ -101,10 +98,11 @@ public class MapComparerTypeTest extends TestCase {
 	}
 	
 	
-	public void testMapCompareForBeanPropertyExample() {
+	@Test
+	void testMapCompareForBeanPropertyExample() {
 		
-		File file = new File(getClass().getResource(
-				"MapCompareOfBeanProperty.xml").getFile());
+		File file = new File(Objects.requireNonNull(getClass().getResource(
+				"MapCompareOfBeanProperty.xml")).getFile());
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setFile(file);
@@ -219,12 +217,12 @@ public class MapComparerTypeTest extends TestCase {
 	
 	public static class FruitMap2 implements ValueFactory<Map<KeyBean, ValueBean>> {
 		
-		private final List<FruitMapEntry> entries = 
-				new ArrayList<FruitMapEntry>();
+		private final List<FruitMapEntry> entries =
+				new ArrayList<>();
 		
 		@Override
-		public Map<KeyBean, ValueBean> toValue() throws ArooaConversionException {
-			Map<KeyBean, ValueBean> map = new HashMap<KeyBean, ValueBean>();
+		public Map<KeyBean, ValueBean> toValue() {
+			Map<KeyBean, ValueBean> map = new HashMap<>();
 			
 			for (FruitMapEntry entry : entries) {
 				map.put(entry.getKey(), entry.getValue());
@@ -248,8 +246,7 @@ public class MapComparerTypeTest extends TestCase {
 		private Map<KeyBean, ValueBean> fruitMap;
 
 		@Override
-		public Map<KeyBean, ValueBean> toValue()
-				throws ArooaConversionException {
+		public Map<KeyBean, ValueBean> toValue() {
 			return fruitMap;
 		}
 
@@ -258,10 +255,11 @@ public class MapComparerTypeTest extends TestCase {
 		}
 	}
 	
-	public void testComplexMapExample() {
+	@Test
+	void testComplexMapExample() {
 		
-		File file = new File(getClass().getResource(
-				"MapCompareComplex.xml").getFile());
+		File file = new File(Objects.requireNonNull(getClass().getResource(
+				"MapCompareComplex.xml")).getFile());
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setFile(file);

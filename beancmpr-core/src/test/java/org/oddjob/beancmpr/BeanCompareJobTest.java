@@ -1,7 +1,8 @@
 package org.oddjob.beancmpr;
 
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
 import org.oddjob.arooa.types.ArooaObject;
@@ -10,17 +11,15 @@ import org.oddjob.state.ParentState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BeanCompareJobTest extends TestCase {
+class BeanCompareJobTest extends TestCase {
 
 	private static final Logger logger = LoggerFactory.getLogger(BeanCompareJobTest.class);
-	
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		
-		logger.info("---------------------------  " + getName() + 
-				"  ----------------------------");
-	};
+
+	@BeforeEach
+	void init(TestInfo testInfo) {
+
+		logger.debug("========================== " + testInfo.getDisplayName() + "===================" );
+	}
 		
 	SharedTestData data = new SharedTestData();
 	
@@ -42,7 +41,8 @@ public class BeanCompareJobTest extends TestCase {
 		"EQUAL            Orange  2          2                              orange   orange" + EOL;
 
 	
-	public void testUnsortedKeysDifferent() throws Exception {
+	@Test
+	void testUnsortedKeysDifferent() throws Exception {
 							
 		Oddjob oddjob = new Oddjob();
 		oddjob.setConfiguration(new XMLConfiguration(
@@ -63,7 +63,8 @@ public class BeanCompareJobTest extends TestCase {
 		assertEquals(expectedKeysDifferent, results);
 	}
 	
-	public void testUnsortedKeysSame() throws Exception {
+	@Test
+	void testUnsortedKeysSame() throws Exception {
 						
 		Oddjob oddjob = new Oddjob();
 		oddjob.setConfiguration(new XMLConfiguration(
@@ -84,7 +85,8 @@ public class BeanCompareJobTest extends TestCase {
 		assertEquals(expectedKeysSame, results);
 	}
 	
-	public void testSortedKeysDifferent() throws Exception {
+	@Test
+	void testSortedKeysDifferent() throws Exception {
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setConfiguration(new XMLConfiguration(
@@ -105,7 +107,8 @@ public class BeanCompareJobTest extends TestCase {
 		assertEquals(expectedKeysDifferent, results);
 	}
 	
-	public void testSortedKeysSame() throws Exception {
+	@Test
+	void testSortedKeysSame() throws Exception {
 						
 		Oddjob oddjob = new Oddjob();
 		oddjob.setConfiguration(new XMLConfiguration(

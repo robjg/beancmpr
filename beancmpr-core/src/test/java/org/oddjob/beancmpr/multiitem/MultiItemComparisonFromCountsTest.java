@@ -1,11 +1,12 @@
 package org.oddjob.beancmpr.multiitem;
 
-import junit.framework.TestCase;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
+import org.oddjob.beancmpr.TestCase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class MultiItemComparisonFromCountsTest extends TestCase {
+class MultiItemComparisonFromCountsTest extends TestCase {
 
 	private static class Stats implements MultiItemComparisonCounts {
 		
@@ -62,7 +63,8 @@ public class MultiItemComparisonFromCountsTest extends TestCase {
 		
 	}
 	
-	public void testIsEqual() {
+	@Test
+	void testIsEqual() {
 		
 		MultiItemComparison<Object> test1 =
 				new MultiItemComparisonFromCounts<>(null, null,
@@ -90,7 +92,8 @@ public class MultiItemComparisonFromCountsTest extends TestCase {
 
 	}
 	
-	public void testNumbers() {
+	@Test
+	void testNumbers() {
 		
 		MultiItemComparison<Object> test =
 				new MultiItemComparisonFromCounts<>(null, null,

@@ -1,8 +1,9 @@
 package org.oddjob.beancmpr.composite;
 
-import junit.framework.TestCase;
 
-public class ComparersExamplesTest extends TestCase {
+import org.oddjob.beancmpr.TestCase;
+
+class ComparersExamplesTest extends TestCase {
 
 	public static class A {
 		

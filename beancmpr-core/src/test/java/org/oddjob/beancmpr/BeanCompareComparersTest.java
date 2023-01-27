@@ -1,7 +1,8 @@
 package org.oddjob.beancmpr;
 
-import junit.framework.TestCase;
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
 import org.oddjob.arooa.convert.ArooaConversionException;
@@ -14,19 +15,18 @@ import java.io.File;
 import java.net.URL;
 import java.util.Objects;
 
-public class BeanCompareComparersTest extends TestCase {
+class BeanCompareComparersTest extends TestCase {
 
 	private static final Logger logger = LoggerFactory.getLogger(BeanCompareComparersTest.class);
-	
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		
-		logger.info("---------------------------  " + getName() + 
-				"  ----------------------------");
+
+	@BeforeEach
+	void init(TestInfo testInfo) {
+
+		logger.debug("========================== " + testInfo.getDisplayName() + "===================" );
 	}
 
-	public void testBeanComparersExample() throws ArooaPropertyException, ArooaConversionException {
+	@Test
+	void testBeanComparersExample() throws ArooaPropertyException, ArooaConversionException {
 
 		URL config = Objects.requireNonNull(
 				getClass().getResource("BeanCompareComparers.xml"));
@@ -36,7 +36,7 @@ public class BeanCompareComparersTest extends TestCase {
 		
 		oddjob.run();
 		
-		Assert.assertEquals(ParentState.COMPLETE, 
+		assertEquals(ParentState.COMPLETE,
 				oddjob.lastStateEvent().getState());
 
 		OddjobLookup lookup = new OddjobLookup(

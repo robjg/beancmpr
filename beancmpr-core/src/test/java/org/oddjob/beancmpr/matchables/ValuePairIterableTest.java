@@ -1,7 +1,8 @@
 package org.oddjob.beancmpr.matchables;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.utils.Iterables;
+import org.oddjob.beancmpr.TestCase;
 
 import java.util.Arrays;
 
@@ -9,9 +10,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 
-public class ValuePairIterableTest extends TestCase {
+class ValuePairIterableTest extends TestCase {
 
-	public void testIterableOfIntegers() {
+	@Test
+	void testIterableOfIntegers() {
 		
 		ValuePairIterable<String, Integer> test =
 				new ValuePairIterable<>(
@@ -37,7 +39,8 @@ public class ValuePairIterableTest extends TestCase {
 		assertThat(sets[2].getValueY(), is(9));
 	}
 	
-	public void testWhenXisNull() {
+	@Test
+	void testWhenXisNull() {
 		
 		ValuePairIterable<String, Integer> test =
 				new ValuePairIterable<>(
@@ -63,7 +66,8 @@ public class ValuePairIterableTest extends TestCase {
 		assertThat(sets[2].getValueY(), is(9));
 	}
 	
-	public void testWhenYisNull() {
+	@Test
+	void testWhenYisNull() {
 		
 		ValuePairIterable<String, Integer> test =
 				new ValuePairIterable<>(

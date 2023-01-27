@@ -1,79 +1,77 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple implementation of a {@link Matchable}.
- * 
+ *
  * @author rob
  */
 public class SimpleMatchable implements Matchable {
 
-	private final List<?> keys;
-		
-	private final List<?> values;
-	
-	private final List<?> others;
-	
-	private final MatchableMetaData metaData;
-	
-	/**
-	 * Only Constructor.
-	 * 
-	 * @param keys The key values.
-	 * @param values The values to compare.
-	 * @param others Other values.
-	 */
-	public SimpleMatchable(List<?> keys, List<?> values, 
-			List<?> others, MatchableMetaData metaData) {
-		
-		if (keys == null) {
-			this.keys = Collections.emptyList();
-		}
-		else {
-			this.keys = keys;
-		}
-		
-		if (values == null) {
-			this.values = Collections.emptyList();
-		}
-		else {
-			this.values = values;
-		}
-		
-		if (others == null) {
-			this.others = Collections.emptyList();
-		}
-		else {
-			this.others = others;
-		}
-		
-		this.metaData = metaData; 
-	}
-	
-	@Override
-	public Iterable<?> getKeys() {
-		return keys;
-	}
-	
-	@Override
-	public Iterable<?> getValues() {
-		return values;
-	}
-	
-	@Override
-	public Iterable<?> getOthers() {
-		return others;
-	}
+    private final ImmutableCollection<?> keys;
 
-	public MatchableMetaData getMetaData() {
-		return metaData;
-	}
+    private final ImmutableCollection<?> values;
 
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + ", key=" + keys + 
-				", values = " + values + ", other=" + others;
-	}
+    private final ImmutableCollection<?> others;
+
+    private final MatchableMetaData metaData;
+
+    private SimpleMatchable(ImmutableCollection<?> keys, ImmutableCollection<?> values,
+                            ImmutableCollection<?> others, MatchableMetaData metaData) {
+
+        this.keys = keys;
+        this.values = values;
+        this.others = others;
+        this.metaData = metaData;
+    }
+
+    /**
+     * @param keys   The key values.
+     * @param values The values to compare.
+     * @param others Other values.
+     */
+    public SimpleMatchable(List<?> keys, List<?> values,
+                           List<?> others, MatchableMetaData metaData) {
+
+        this(keys == null ? ImmutableCollection.of() : ImmutableCollection.of(keys),
+                values == null ? ImmutableCollection.of() : ImmutableCollection.of(values),
+                others == null ? ImmutableCollection.of() : ImmutableCollection.of(others),
+                metaData);
+    }
+
+    public static Matchable of(ImmutableCollection<?> keys, ImmutableCollection<?> values,
+                     ImmutableCollection<?> others, MatchableMetaData metaData) {
+        return new SimpleMatchable(
+                Objects.requireNonNull(keys, "No Keys"),
+                Objects.requireNonNull(values, "No Values"),
+                Objects.requireNonNull(others, "No Others"),
+                Objects.requireNonNull(metaData, "No Metadata"));
+    }
+
+    @Override
+    public Iterable<?> getKeys() {
+        return keys;
+    }
+
+    @Override
+    public Iterable<?> getValues() {
+        return values;
+    }
+
+    @Override
+    public Iterable<?> getOthers() {
+        return others;
+    }
+
+    public MatchableMetaData getMetaData() {
+        return metaData;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + ", key=" + keys +
+                ", values = " + values + ", other=" + others;
+    }
 }

@@ -3,9 +3,14 @@ package org.oddjob.beancmpr.matchables;
 import java.util.List;
 import java.util.stream.Stream;
 
-public interface ImmutableCollection<T> extends Iterable<T> {
+/**
+ * Provides a Simple way creating more than an Iterable.
+ *
+ * @param <E> The element type.
+ */
+public interface ImmutableCollection<E> extends Iterable<E> {
 
-    Stream<T> stream();
+    Stream<E> stream();
 
     int size();
 

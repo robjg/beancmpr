@@ -1,15 +1,16 @@
 package org.oddjob.beancmpr.beans;
 
-import java.io.File;
-
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.tools.ConsoleCapture;
 import org.oddjob.tools.OddjobTestHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.Objects;
 
 public class BeanArrayComparerTypeTest extends TestCase {
 
@@ -17,16 +18,17 @@ public class BeanArrayComparerTypeTest extends TestCase {
 			BeanArrayComparerTypeTest.class);
 	
 	
-	public void testArrayOfIntsExample() throws Exception {
+	@Test
+	void testArrayOfIntsExample() {
 		
-		File file = new File(getClass().getResource(
-				"ArrayOfIntsCompare.xml").getFile());
+		File file = new File(Objects.requireNonNull(getClass().getResource(
+				"ArrayOfIntsCompare.xml")).getFile());
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setFile(file);
 		
 		ConsoleCapture console = new ConsoleCapture();
-		try (ConsoleCapture.Close close = console.captureConsole()) {
+		try (ConsoleCapture.Close ignored = console.captureConsole()) {
 			oddjob.run();
 		}
 		
@@ -46,16 +48,17 @@ public class BeanArrayComparerTypeTest extends TestCase {
 		oddjob.destroy();
 	}
 
-	public void testArrayOfBeansCompareByPropertiesExample() throws Exception {
+	@Test
+	void testArrayOfBeansCompareByPropertiesExample() {
 		
-		File file = new File(getClass().getResource(
-				"ArrayOfBeansCompareByProperties.xml").getFile());
+		File file = new File(Objects.requireNonNull(getClass().getResource(
+				"ArrayOfBeansCompareByProperties.xml")).getFile());
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setFile(file);
 		
 		ConsoleCapture console = new ConsoleCapture();
-		try (ConsoleCapture.Close close = console.captureConsole()) {
+		try (ConsoleCapture.Close ignored = console.captureConsole()) {
 
 			oddjob.run();
 		}
@@ -77,16 +80,16 @@ public class BeanArrayComparerTypeTest extends TestCase {
 	}
 
 	
-	public void testBeanWithArrayPropertyCompare() throws Exception {
+	@Test void testBeanWithArrayPropertyCompare() throws Exception {
 		
-		File file = new File(getClass().getResource(
-				"BeanWithArrayPropertyCompare.xml").getFile());
+		File file = new File(Objects.requireNonNull(getClass().getResource(
+				"BeanWithArrayPropertyCompare.xml")).getFile());
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setFile(file);
 		
 		ConsoleCapture console = new ConsoleCapture();
-		try (ConsoleCapture.Close close = console.captureConsole()) {
+		try (ConsoleCapture.Close ignored = console.captureConsole()) {
 			
 			oddjob.run();
 		}

@@ -1,14 +1,15 @@
 package org.oddjob.beancmpr.comparers;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.TestCase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-public class IntegerComparerTest extends TestCase {
+class IntegerComparerTest extends TestCase {
 
-	public void testIntegersEqual() {
+	@Test void testIntegersEqual() {
 	
 		ComparableComparer<Integer> test = new ComparableComparer<>();
 		
@@ -18,7 +19,8 @@ public class IntegerComparerTest extends TestCase {
 		assertEquals("", comparison.getSummaryText());
 	}
 	
-	public void testXBigger() {
+	@Test
+	void testXBigger() {
 		
 		ComparableComparer<Integer> test = new ComparableComparer<>();
 		
@@ -30,7 +32,8 @@ public class IntegerComparerTest extends TestCase {
 		assertThat(comparison.getY(), is(24));
 	}
 	
-	public void testYBigger() {
+	@Test
+	void testYBigger() {
 		
 		ComparableComparer<Integer> test = new ComparableComparer<>();
 		

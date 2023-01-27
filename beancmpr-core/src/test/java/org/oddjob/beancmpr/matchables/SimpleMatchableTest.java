@@ -1,15 +1,17 @@
 package org.oddjob.beancmpr.matchables;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.utils.Iterables;
+import org.oddjob.beancmpr.TestCase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SimpleMatchableTest extends TestCase {
+class SimpleMatchableTest extends TestCase {
 	
-	public void testKeys() {
+	@Test
+	void testKeys() {
 		
 		List<Comparable<?>> keys1 = new ArrayList<>();
 		keys1.add("Apple");
@@ -25,7 +27,8 @@ public class SimpleMatchableTest extends TestCase {
 		assertEquals(2, result.length);
 	}
 
-	public void testValues() {
+	@Test
+	void testValues() {
 		
 		List<Object> values = new ArrayList<>();
 		values.add("Apple");
@@ -40,7 +43,8 @@ public class SimpleMatchableTest extends TestCase {
 		assertEquals(2, results.length);
 	}
 	
-	public void testOthers() {
+	@Test
+	void testOthers() {
 		
 		List<Object> others = new ArrayList<>();
 		others.add("Apple");

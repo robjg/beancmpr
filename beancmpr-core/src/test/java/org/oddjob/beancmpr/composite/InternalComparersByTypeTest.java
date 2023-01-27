@@ -1,17 +1,18 @@
 package org.oddjob.beancmpr.composite;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.junit.jupiter.api.Test;
 import org.oddjob.beancmpr.Comparer;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.comparers.NumericComparer;
 import org.oddjob.beancmpr.comparers.TextComparer;
 
-import junit.framework.TestCase;
+import java.util.HashMap;
+import java.util.Map;
 
-public class InternalComparersByTypeTest extends TestCase {
+class InternalComparersByTypeTest extends TestCase {
 
-	public void testRetriveByExactType() {
+	@Test
+	void testRetriveByExactType() {
 		
 		Map<Class<?>, Comparer<?>> comparers = new HashMap<>();
 		
@@ -26,7 +27,8 @@ public class InternalComparersByTypeTest extends TestCase {
 		assertEquals(null, test.comparerFor(Object.class));
 	}
 	
-	public void testRetriveBySubType() {
+	@Test
+	void testRetrieveBySubType() {
 		
 		Map<Class<?>, Comparer<?>> comparers = new HashMap<>();
 		

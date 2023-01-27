@@ -1,12 +1,15 @@
 package org.oddjob.beancmpr.beans;
 
+import org.junit.jupiter.api.Test;
+import org.oddjob.beancmpr.TestCase;
+
 import java.math.BigDecimal;
 
-import junit.framework.TestCase;
 
-public class PropertyTypeHelperTest extends TestCase {
+class PropertyTypeHelperTest extends TestCase {
 
-	public void testDoubleInteger() {
+	@Test
+	void testDoubleInteger() {
 		
 		PropertyTypeHelper test = new PropertyTypeHelper();
 		
@@ -25,7 +28,7 @@ public class PropertyTypeHelperTest extends TestCase {
 		assertEquals(Number.class, result);
 	}
 	
-	public void testOneSubClassOfOtherCases() {
+	@Test void testOneSubClassOfOtherCases() {
 		
 		PropertyTypeHelper test = new PropertyTypeHelper();
 		
@@ -40,7 +43,7 @@ public class PropertyTypeHelperTest extends TestCase {
 		assertEquals(Number.class, result);
 	}
 	
-	public void testBigDecimalCases() {
+	@Test void testBigDecimalCases() {
 		
 		PropertyTypeHelper test = new PropertyTypeHelper();
 		

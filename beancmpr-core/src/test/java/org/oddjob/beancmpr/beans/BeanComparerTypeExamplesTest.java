@@ -1,36 +1,38 @@
 package org.oddjob.beancmpr.beans;
 
-import java.io.File;
-
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
 import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.arooa.reflect.ArooaPropertyException;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.state.ParentState;
 import org.oddjob.tools.ConsoleCapture;
 import org.oddjob.tools.OddjobTestHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BeanComparerTypeExamplesTest extends TestCase {
+import java.io.File;
+import java.util.Objects;
+
+class BeanComparerTypeExamplesTest extends TestCase {
 
 	private static final Logger logger = LoggerFactory.getLogger(BeanComparerTypeExamplesTest.class);
+
+	@BeforeEach
+	void init(TestInfo testInfo) {
+
+		logger.debug("========================== " + testInfo.getDisplayName() + "===================" );
+	}
 	
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	
+	@Test
+	void testCompareTwoNumbersExample() {
 		
-		logger.info("---------------------------  " + getName() + 
-				"  ----------------------------");
-	};
-	
-	
-	public void testCompareTwoNumbersExample() throws Exception {
-		
-		File file = new File(getClass().getResource(
-				"BeanComparerForTwoNumbers.xml").getFile());
+		File file = new File(Objects.requireNonNull(getClass().getResource(
+				"BeanComparerForTwoNumbers.xml")).getFile());
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setFile(file);
@@ -85,10 +87,11 @@ public class BeanComparerTypeExamplesTest extends TestCase {
 		}
 	}
 	
-	public void testCompareTwoBeansExample() throws Exception {
+	@Test
+	void testCompareTwoBeansExample() {
 		
-		File file = new File(getClass().getResource(
-				"BeanComparerForTwoBeans.xml").getFile());
+		File file = new File(Objects.requireNonNull(getClass().getResource(
+				"BeanComparerForTwoBeans.xml")).getFile());
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setFile(file);
@@ -139,11 +142,12 @@ public class BeanComparerTypeExamplesTest extends TestCase {
 	}
 	
 	
-	public void testPropertyThatIsBeanExample() throws ArooaPropertyException, ArooaConversionException {
+	@Test
+	void testPropertyThatIsBeanExample() throws ArooaPropertyException, ArooaConversionException {
 		
 		File file = new File(
-				getClass().getResource(
-						"BeanComparerForProperty.xml").getFile());
+				Objects.requireNonNull(getClass().getResource(
+						"BeanComparerForProperty.xml")).getFile());
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setFile(file);

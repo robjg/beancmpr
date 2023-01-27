@@ -1,12 +1,14 @@
 package org.oddjob.beancmpr.composite;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.oddjob.beancmpr.Comparer;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.comparers.NumericComparer;
 
-public class ComparersByPropertyOrTypeFactoryTest extends TestCase {
+class ComparersByPropertyOrTypeFactoryTest extends TestCase {
 
-	public void testSpecialisedByTypeRetrieval() {
+	@Test
+	void testSpecialisedByTypeRetrieval() {
 		
 		ComparersByTypeList list = new ComparersByTypeList();
 		list.setClassLoader(getClass().getClassLoader());

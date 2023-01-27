@@ -1,19 +1,21 @@
 package org.oddjob.beancmpr.matchables;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
+import org.oddjob.beancmpr.TestCase;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class MapMatchableFactoryTest extends TestCase {
+class MapMatchableFactoryTest extends TestCase {
 
-	public void testCreateKeyAndValue() {
+	@Test
+	void testCreateKeyAndValue() {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
@@ -79,7 +81,8 @@ public class MapMatchableFactoryTest extends TestCase {
 		}
 	}
 	
-	public void testKeyAndValueAreBeans() {
+	@Test
+	void testKeyAndValueAreBeans() {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		

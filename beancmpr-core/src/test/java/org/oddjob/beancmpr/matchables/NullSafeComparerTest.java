@@ -1,18 +1,19 @@
 package org.oddjob.beancmpr.matchables;
 
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.beans.ArrayComparer;
 import org.oddjob.beancmpr.comparers.NumericComparer;
 import org.oddjob.beancmpr.composite.DefaultComparersByType;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
-public class NullSafeComparerTest extends TestCase {
+class NullSafeComparerTest extends TestCase {
 
-	public void testCompareTwoNumbers() {
+	@Test
+	void testCompareTwoNumbers() {
 		
-		NullSafeComparer<Number> test = new NullSafeComparer<Number>(
+		NullSafeComparer<Number> test = new NullSafeComparer<>(
 				new NumericComparer(), "number");
 		
 		Comparison<Number> result = test.castAndCompare(2.4, 4.2);
@@ -20,9 +21,10 @@ public class NullSafeComparerTest extends TestCase {
 		assertEquals(true, result.getResult() < 0);
 	}
 	
+	@Test
 	public void testYIsNull() {
 		
-		NullSafeComparer<Number> test = new NullSafeComparer<Number>(
+		NullSafeComparer<Number> test = new NullSafeComparer<>(
 				new NumericComparer(), "number");
 		
 		Comparison<Number> result = test.castAndCompare(2.4, null);
@@ -31,9 +33,10 @@ public class NullSafeComparerTest extends TestCase {
 		assertEquals("Null Value", result.getSummaryText());
 	}
 	
-	public void testBothThingsAreNull() {
+	@Test
+	void testBothThingsAreNull() {
 		
-		NullSafeComparer<Number> test = new NullSafeComparer<Number>(
+		NullSafeComparer<Number> test = new NullSafeComparer<>(
 				new NumericComparer(), "number");
 		
 		Comparison<Number> result = test.castAndCompare(null, null);
@@ -42,7 +45,8 @@ public class NullSafeComparerTest extends TestCase {
 		assertEquals("", result.getSummaryText());
 	}
 	
-	public void testCompareTwoPrimativeArrays() {
+	@Test
+	void testCompareTwoPrimitiveArrays() {
 		
 		NullSafeComparer<Object> test = new NullSafeComparer<>(
 				new ArrayComparer(new DefaultComparersByType()), 

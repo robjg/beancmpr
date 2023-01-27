@@ -1,14 +1,16 @@
 package org.oddjob.beancmpr.comparers;
 
+import org.junit.jupiter.api.Test;
 import org.oddjob.beancmpr.Comparer;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.beans.ArrayComparer;
 import org.oddjob.beancmpr.composite.DefaultComparersByType;
 
-import junit.framework.TestCase;
 
-public class DefaultComparersByTypeTest extends TestCase {
+class DefaultComparersByTypeTest extends TestCase {
 
-	public void testFindByTypeForSomeSimpleClasses() {
+	@Test
+	void testFindByTypeForSomeSimpleClasses() {
 		
 		DefaultComparersByType test = new DefaultComparersByType();
 		
@@ -31,8 +33,9 @@ public class DefaultComparersByTypeTest extends TestCase {
 		assertEquals(EqualityComparer.class, objectComparer.getClass());
 		
 	}
-	
-	public void testFindByTypeForArrays() {
+
+	@Test
+	void testFindByTypeForArrays() {
 		
 		DefaultComparersByType test = new DefaultComparersByType();
 		

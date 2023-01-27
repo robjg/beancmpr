@@ -1,6 +1,6 @@
 package org.oddjob.beancmpr;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.beans.IterableBeansComparerType;
 import org.oddjob.beancmpr.results.MatchResultType;
@@ -33,7 +33,8 @@ public class BeanCompareJobInCodeTest extends TestCase {
 	}
 	
 	
-	public void testWithTwoKeysSortedAndBigGapInX() {
+	@Test
+	void testWithTwoKeysSortedAndBigGapInX() {
 	
 		List<Fruit> x = Arrays.asList(
 				new Fruit("apple", "green"),
@@ -109,7 +110,8 @@ public class BeanCompareJobInCodeTest extends TestCase {
 		assertEquals("red", result7.getKeys()[1]);
 	}
 	
-	public void testWithTwoKeysSortedAndBigGapInY() {
+	@Test
+	void testWithTwoKeysSortedAndBigGapInY() {
 		
 		List<Fruit> x = Arrays.asList(
 				new Fruit("banana", "brown"),

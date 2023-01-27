@@ -1,19 +1,20 @@
 package org.oddjob.beancmpr.comparers;
 
-import java.util.Arrays;
-
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.beans.IterableComparer;
 import org.oddjob.beancmpr.composite.DefaultComparersByType;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
-public class IterableComparerTest extends TestCase {
+import java.util.Arrays;
 
-	public void testCompareEqual() {
+class IterableComparerTest extends TestCase {
+
+	@Test
+	void testCompareEqual() {
 		
-		IterableComparer<String> test = 
-				new IterableComparer<String>(new DefaultComparersByType());
+		IterableComparer<String> test =
+				new IterableComparer<>(new DefaultComparersByType());
 		
 		Iterable<String> x = Arrays.asList("a", "b", "c");
 		
@@ -29,10 +30,11 @@ public class IterableComparerTest extends TestCase {
 		assertEquals(0, comparison.getYMissingCount());
 	}
 	
-	public void testCompareOneDifferentEqual() {
+	@Test
+	void testCompareOneDifferentEqual() {
 		
-		IterableComparer<String> test = 
-				new IterableComparer<String>(new DefaultComparersByType());
+		IterableComparer<String> test =
+				new IterableComparer<>(new DefaultComparersByType());
 		
 		Iterable<String> x = Arrays.asList("a", "b", "c");
 		
@@ -48,10 +50,11 @@ public class IterableComparerTest extends TestCase {
 		assertEquals(0, comparison.getYMissingCount());
 	}
 
+	@Test
 	public void testCompareOneXMissing() {
 		
-		IterableComparer<String> test = 
-				new IterableComparer<String>(new DefaultComparersByType());
+		IterableComparer<String> test =
+				new IterableComparer<>(new DefaultComparersByType());
 		
 		Iterable<String> x = Arrays.asList("b", "c");
 		
@@ -67,10 +70,11 @@ public class IterableComparerTest extends TestCase {
 		assertEquals(0, comparison.getYMissingCount());
 	}
 
+	@Test
 	public void testCompareOneYMissing() {
 		
-		IterableComparer<String> test = 
-				new IterableComparer<String>(new DefaultComparersByType());
+		IterableComparer<String> test =
+				new IterableComparer<>(new DefaultComparersByType());
 		
 		Iterable<String> x = Arrays.asList("a", "b", "c");
 		
@@ -89,10 +93,11 @@ public class IterableComparerTest extends TestCase {
 	/**
 	 * Check comparer for Number can accept list of Integers.
 	 */
+	@Test
 	public void testGenericSanityCheck() {
 		
-		IterableComparer<Integer> test = 
-				new IterableComparer<Integer>(new DefaultComparersByType());
+		IterableComparer<Integer> test =
+				new IterableComparer<>(new DefaultComparersByType());
 		
 		Iterable<Integer> x = Arrays.asList(4, 1 , 9);
 		

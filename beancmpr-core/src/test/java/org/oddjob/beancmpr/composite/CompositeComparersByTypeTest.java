@@ -1,17 +1,13 @@
 package org.oddjob.beancmpr.composite;
 
-import org.oddjob.arooa.convert.ArooaConversionException;
+import org.junit.jupiter.api.Test;
 import org.oddjob.beancmpr.Comparer;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.comparers.MockComparer;
-import org.oddjob.beancmpr.composite.ComparersByTypeList;
-import org.oddjob.beancmpr.composite.CompositeComparersByType;
-import org.oddjob.beancmpr.composite.DefaultComparersByType;
-
-import junit.framework.TestCase;
 
 public class CompositeComparersByTypeTest extends TestCase {
 
-	private class OurComparerFactory 
+	private static class OurComparerFactory
 	implements ComparerFactory<Integer> {
 
 		@Override
@@ -20,7 +16,7 @@ public class CompositeComparersByTypeTest extends TestCase {
 		}
 	}
 	
-	private class OurComparer extends MockComparer<Integer> {
+	private static class OurComparer extends MockComparer<Integer> {
 		
 		@Override
 		public Class<?> getType() {
@@ -28,10 +24,11 @@ public class CompositeComparersByTypeTest extends TestCase {
 		}
 	}
 	
-	public void testCustomOverridesDefault() throws ArooaConversionException {
+	@Test
+	void testCustomOverridesDefault() {
 		
 		ComparersByTypeList comparerList = new ComparersByTypeList();
-		comparerList.setSpecialisations(Integer.class.getName(), 
+		comparerList.setSpecialisations(Integer.class.getName(),
 				new OurComparerFactory());
 		
 		CompositeComparersByType test = new CompositeComparersByType(

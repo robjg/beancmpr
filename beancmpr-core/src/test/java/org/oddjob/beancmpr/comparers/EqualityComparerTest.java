@@ -1,15 +1,17 @@
 package org.oddjob.beancmpr.comparers;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.TestCase;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 
-public class EqualtiyComparerTest extends TestCase {
+class EqualityComparerTest extends TestCase {
 
-	public void testNotEquals() {
+	@Test
+	void testNotEquals() {
 		
 		EqualityComparer test = new EqualityComparer();
 		
@@ -44,7 +46,8 @@ public class EqualtiyComparerTest extends TestCase {
 		assertEquals("0.5<>0.25", comparison.getSummaryText());
 	}
 	
-	public void testEquals() {
+	@Test
+	void testEquals() {
 		
 		EqualityComparer test = new EqualityComparer();
 		

@@ -1,7 +1,6 @@
 package org.oddjob.beancmpr.matchables;
 
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
 import org.oddjob.arooa.beanutils.MagicBeanClassCreator;
 import org.oddjob.arooa.reflect.ArooaClass;
@@ -9,6 +8,7 @@ import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
+import org.oddjob.beancmpr.TestCase;
 
 public class BeanMatchableFactoryTest extends TestCase {
 
@@ -35,7 +35,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 		}
 	}
 		
-	public void testCreateKeys() {
+	@Test
+	void testCreateKeys() {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
 				new String[] { "fruit", "colour" }, 
@@ -44,8 +45,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory<Object> factory = 
-				new BeanMatchableFactory<Object>(definition, accessor);
+		BeanMatchableFactory<Object> factory =
+				new BeanMatchableFactory<>(definition, accessor);
 		
 		Snack snack = new Snack();
 		
@@ -94,7 +95,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 		assertEquals(String.class, metaData.getPropertyType("colour"));
 	}
 	
-	public void testCreateValues() {
+	@Test
+	void testCreateValues() {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
 				null,
@@ -103,8 +105,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory<Object> factory = 
-				new BeanMatchableFactory<Object>(definition, accessor);
+		BeanMatchableFactory<Object> factory =
+				new BeanMatchableFactory<>(definition, accessor);
 		
 		Snack snack = new Snack();
 		
@@ -154,7 +156,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 		assertEquals(String.class, metaData.getPropertyType("colour"));
 	}
 	
-	public void testCreateOthers() {
+	@Test
+	void testCreateOthers() {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
 				null,
@@ -164,8 +167,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory<Object> factory = 
-				new BeanMatchableFactory<Object>(definition, accessor);
+		BeanMatchableFactory<Object> factory =
+				new BeanMatchableFactory<>(definition, accessor);
 		
 		Snack snack = new Snack();
 		
@@ -227,7 +230,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 		}
 	}
 	
-	public void testPrimativeType() {
+	@Test
+	void testPrimativeType() {
 		
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
@@ -238,8 +242,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		BeanMatchableFactory<Object> factory = 
-				new BeanMatchableFactory<Object>(definition, accessor);
+		BeanMatchableFactory<Object> factory =
+				new BeanMatchableFactory<>(definition, accessor);
 
 		
 		ThingWithPrimitive thing = new ThingWithPrimitive();
@@ -252,7 +256,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 		assertEquals(Integer.class, result.getMetaData().getPropertyType("int"));
 	}	
 	
-	public void testWithMagicBeans() {
+	@Test
+	void testWithMagicBeans() {
 		
 		MagicBeanClassCreator creator = new MagicBeanClassCreator("fruit");
 		creator.addProperty("type", String.class);
@@ -273,8 +278,8 @@ public class BeanMatchableFactoryTest extends TestCase {
 				null
 				);
 		
-		BeanMatchableFactory<Object> factory = 
-				new BeanMatchableFactory<Object>(definition, accessor);
+		BeanMatchableFactory<Object> factory =
+				new BeanMatchableFactory<>(definition, accessor);
 		
 		Matchable matchable = factory.createMatchable(bean);
 		
@@ -288,13 +293,14 @@ public class BeanMatchableFactoryTest extends TestCase {
 		assertEquals(42, values[1]);
 	}
 	
-	public void testValueAsSelfThenValueCreatedWithSelf() {
+	@Test
+	void testValueAsSelfThenValueCreatedWithSelf() {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
 				null, new String[] { BeanMatchableFactory.SELF_TOKEN }, null);
 		
-		BeanMatchableFactory<String> test = 
-				new BeanMatchableFactory<String>(definition, null);
+		BeanMatchableFactory<String> test =
+				new BeanMatchableFactory<>(definition, null);
 		
 		Matchable matchable = test.createMatchable("red");
 		
@@ -323,13 +329,14 @@ public class BeanMatchableFactoryTest extends TestCase {
 				meta.getOtherProperties()).length);
 	}
 	
-	public void testKeyAsSelfThenKeyCreatedWithSelf() {
+	@Test
+	void testKeyAsSelfThenKeyCreatedWithSelf() {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
 				new String[] { BeanMatchableFactory.SELF_TOKEN }, null, null);
 		
-		BeanMatchableFactory<String> test = 
-				new BeanMatchableFactory<String>(definition, null);
+		BeanMatchableFactory<String> test =
+				new BeanMatchableFactory<>(definition, null);
 		
 		Matchable matchable = test.createMatchable("red");
 		

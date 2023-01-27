@@ -1,13 +1,14 @@
 package org.oddjob.beancmpr.beans;
 
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.composite.DefaultComparersByType;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
-public class ArrayComparerTest extends TestCase {
+class ArrayComparerTest extends TestCase {
 
-	public void testArrayOfIntsThatMatchButAreReversed() {
+	@Test
+	void testArrayOfIntsThatMatchButAreReversed() {
 		
 		int[] x = { 1, 2, 3, 4, 5 };
 		int[] y = { 5, 4, 3, 2, 1 };

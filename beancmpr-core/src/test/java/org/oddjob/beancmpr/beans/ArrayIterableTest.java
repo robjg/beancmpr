@@ -1,14 +1,16 @@
 package org.oddjob.beancmpr.beans;
 
+import org.junit.jupiter.api.Test;
+import org.oddjob.beancmpr.TestCase;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
+class ArrayIterableTest extends TestCase {
 
-public class ArrayIterableTest extends TestCase {
-
-	public void testIterableOver3Elements() {
+	@Test
+	void testIterableOver3Elements() {
 		
 		
 		int[] z = { 1, 2, 3 };
@@ -27,7 +29,8 @@ public class ArrayIterableTest extends TestCase {
 		assertEquals(false, a.hasNext());
 	}
 	
-	public void testInForLoop() {
+	@Test
+	void testInForLoop() {
 		
 		String[] array = { "red", "blue", "green" };
 		

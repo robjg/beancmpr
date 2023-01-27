@@ -1,12 +1,13 @@
 package org.oddjob.beancmpr.comparers;
 
+import org.junit.jupiter.api.Test;
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.TestCase;
 
-import junit.framework.TestCase;
+class TextComparerTest extends TestCase {
 
-public class TextComparerTest extends TestCase {
-
-	public void testCaseInsensitiveEquals() {
+	@Test
+	void testCaseInsensitiveEquals() {
 		
 		TextComparer test = new TextComparer();
 		test.setIgnoreCase(true);
@@ -19,7 +20,8 @@ public class TextComparerTest extends TestCase {
 		assertEquals("apple", comparison.getY());		
 	}
 	
-	public void testAppleLessThanBanana() {
+	@Test
+	void testAppleLessThanBanana() {
 		
 		TextComparer test = new TextComparer();
 		test.setIgnoreCase(true);
@@ -30,7 +32,8 @@ public class TextComparerTest extends TestCase {
 		assertEquals("apple<>BANANA", comparison.getSummaryText());
 	}
 	
-	public void testCaseCompare() {
+	@Test
+	void testCaseCompare() {
 		
 		TextComparer test = new TextComparer();
 		
@@ -40,7 +43,8 @@ public class TextComparerTest extends TestCase {
 		assertEquals("apple<>APPLE", comparison.getSummaryText());
 	}
 	
-	public void testIgnoreWhilespace() {
+	@Test
+	void testIgnoreWhilespace() {
 		
 		TextComparer test = new TextComparer();
 		test.setIgnoreWhitespace(true);

@@ -1,14 +1,8 @@
 package org.oddjob.beancmpr;
 
-import java.io.File;
-import java.net.URL;
-import java.text.ParseException;
-import java.util.Objects;
-
-import junit.framework.TestCase;
-
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
 import org.oddjob.arooa.convert.ArooaConversionException;
@@ -18,21 +12,23 @@ import org.oddjob.state.ParentState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class OddjobExamplesTest extends TestCase {
+import java.io.File;
+import java.net.URL;
+import java.util.Objects;
+
+class OddjobExamplesTest extends TestCase {
 
 	private static final Logger logger = LoggerFactory.getLogger(OddjobExamplesTest.class);
-	
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		
-		logger.info("---------------------------  " + getName() + 
-				"  ----------------------------");
-	};
+
+	@BeforeEach
+	void init(TestInfo testInfo) {
+
+		logger.debug("========================== " + testInfo.getDisplayName() + "===================" );
+	}
 	
 	@Test
-	public void testBeanBusExample() 
-	throws ArooaPropertyException, ArooaConversionException, ParseException {
+	void testBeanBusExample()
+	throws ArooaPropertyException, ArooaConversionException {
 
 		URL config = Objects.requireNonNull(
 				getClass().getResource("OddjobBeanBusExample.xml"));
@@ -42,13 +38,13 @@ public class OddjobExamplesTest extends TestCase {
 		
 		oddjob.run();
 
-		Assert.assertEquals(ParentState.COMPLETE, 
+		assertEquals(ParentState.COMPLETE,
 				oddjob.lastStateEvent().getState());
 
 		OddjobLookup lookup = new OddjobLookup(
 				oddjob);
 		
-		Assert.assertEquals(3, 
+		assertEquals(3,
 				(int) lookup.lookup("bean-capture.count", int.class));
 		
 		oddjob.destroy();
@@ -71,8 +67,7 @@ public class OddjobExamplesTest extends TestCase {
 			"NOT_EQUAL        Banana  3          4          3<>4                yellow   yellow" + EOL +
 			"EQUAL            Orange  2          2                              orange   orange" + EOL;
 
-	public void testDatabaseExample() 
-	throws ArooaPropertyException, ArooaConversionException {
+	@Test void testDatabaseExample() throws ArooaPropertyException, ArooaConversionException {
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setConfiguration(new XMLConfiguration(
@@ -80,19 +75,19 @@ public class OddjobExamplesTest extends TestCase {
 				getClass().getClassLoader()));
 		oddjob.run();
 
-		Assert.assertEquals(ParentState.COMPLETE, 
+		assertEquals(ParentState.COMPLETE,
 				oddjob.lastStateEvent().getState());
 
 		String byIdResults = new OddjobLookup(
 				oddjob).lookup("by-id-results", String.class);
 		
-		Assert.assertEquals(expectedKeysDifferent, 
+		assertEquals(expectedKeysDifferent,
 				byIdResults);
 		
 		String byTypeResults = new OddjobLookup(
 				oddjob).lookup("by-type-results", String.class);
 				
-		Assert.assertEquals(expectedKeysSame, 
+		assertEquals(expectedKeysSame,
 				byTypeResults);
 
 		oddjob.destroy();

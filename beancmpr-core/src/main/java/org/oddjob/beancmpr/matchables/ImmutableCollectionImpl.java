@@ -1,5 +1,6 @@
 package org.oddjob.beancmpr.matchables;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +15,7 @@ class ImmutableCollectionImpl<E> implements ImmutableCollection<E> {
     }
 
     public static <E> ImmutableCollection<E> of(List<E> list) {
-        return new ImmutableCollectionImpl<>(List.copyOf(list));
+        return new ImmutableCollectionImpl<>(new ArrayList(list));
     }
 
     public static <E> ImmutableCollection<E> of(E... elements) {

@@ -1,16 +1,9 @@
 package org.oddjob.beancmpr;
 
-import java.io.File;
-import java.util.Iterator;
-
-import junit.framework.TestCase;
-
-import org.oddjob.FailedToStopException;
-import org.oddjob.Iconic;
-import org.oddjob.Oddjob;
-import org.oddjob.OddjobLookup;
-import org.oddjob.Stateful;
-import org.oddjob.Stoppable;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.oddjob.*;
 import org.oddjob.images.IconHelper;
 import org.oddjob.state.JobState;
 import org.oddjob.state.ParentState;
@@ -20,17 +13,19 @@ import org.oddjob.tools.StateSteps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BeanCompareStopTest extends TestCase {
+import java.io.File;
+import java.util.Iterator;
+import java.util.Objects;
+
+class BeanCompareStopTest extends TestCase {
 
 	private static final Logger logger = LoggerFactory.getLogger(BeanCompareStopTest.class);
-	
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		
-		logger.info("---------------------------  " + getName() + 
-				"  ----------------------------");
-	};
+
+	@BeforeEach
+	void init(TestInfo testInfo) {
+
+		logger.debug("========================== " + testInfo.getDisplayName() + "===================" );
+	}
 	
 	public static class Fruit {
 		
@@ -48,13 +43,13 @@ public class BeanCompareStopTest extends TestCase {
 		@Override
 		public Iterator<Fruit> iterator() {
 			
-			return new Iterator<Fruit>() {
-				
+			return new Iterator<>() {
+
 				@Override
 				public boolean hasNext() {
 					return true;
 				}
-				
+
 				@Override
 				public Fruit next() {
 					try {
@@ -64,7 +59,7 @@ public class BeanCompareStopTest extends TestCase {
 					}
 					return new Fruit();
 				}
-				
+
 				@Override
 				public void remove() {
 					throw new UnsupportedOperationException();
@@ -73,11 +68,12 @@ public class BeanCompareStopTest extends TestCase {
 		}
 		
 	}
-	
-	public void testStopBeanCompareJobInOddjob() throws InterruptedException, FailedToStopException {
+
+	@Test
+	void testStopBeanCompareJobInOddjob() throws InterruptedException, FailedToStopException {
 		
-		File config = new File(getClass().getResource(
-				"BeanCompareStopTest.xml").getFile());
+		File config = new File(Objects.requireNonNull(getClass().getResource(
+				"BeanCompareStopTest.xml")).getFile());
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setFile(config);

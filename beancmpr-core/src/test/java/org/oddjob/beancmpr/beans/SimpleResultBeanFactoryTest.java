@@ -1,14 +1,15 @@
 package org.oddjob.beancmpr.beans;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.comparers.EqualityComparison;
 import org.oddjob.beancmpr.matchables.*;
 import org.oddjob.beancmpr.results.SimpleResultBeanFactory;
 
 import java.util.List;
 
-public class SimpleResultBeanFactoryTest extends TestCase {
+class SimpleResultBeanFactoryTest extends TestCase {
 
     private static class MyMetaData extends MockMatchableMetaData {
 
@@ -42,7 +43,8 @@ public class SimpleResultBeanFactoryTest extends TestCase {
         }
     }
 
-    public void testCreateResultNotEqual() {
+    @Test
+    void testCreateResultNotEqual() {
 
         BeanUtilsPropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 
@@ -91,7 +93,8 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 
     }
 
-    public void testCreateResultEqual() {
+    @Test
+    void testCreateResultEqual() {
 
         BeanUtilsPropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 
@@ -140,7 +143,8 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 
     }
 
-    public void testCreateResultXMissing() {
+    @Test
+    void testCreateResultXMissing() {
 
         BeanUtilsPropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 
@@ -178,7 +182,8 @@ public class SimpleResultBeanFactoryTest extends TestCase {
 
     }
 
-    public void testCreateYMissing() {
+    @Test
+    void testCreateYMissing() {
 
         BeanUtilsPropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 

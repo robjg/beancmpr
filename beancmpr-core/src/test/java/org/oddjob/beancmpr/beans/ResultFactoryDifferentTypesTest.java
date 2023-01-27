@@ -1,29 +1,30 @@
 package org.oddjob.beancmpr.beans;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
+import org.oddjob.arooa.ArooaSession;
+import org.oddjob.arooa.standard.StandardArooaSession;
+import org.oddjob.beancmpr.BeanCompareJob;
+import org.oddjob.beancmpr.TestCase;
+import org.oddjob.jobs.BeanReportJob;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.TestCase;
-
-import org.oddjob.arooa.ArooaSession;
-import org.oddjob.arooa.standard.StandardArooaSession;
-import org.oddjob.beancmpr.BeanCompareJob;
-import org.oddjob.jobs.BeanReportJob;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class ResultFactoryDifferentTypesTest extends TestCase {
+class ResultFactoryDifferentTypesTest extends TestCase {
 
 	private static final Logger logger = LoggerFactory.getLogger(
 			ResultFactoryDifferentTypesTest.class);
-	
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		
-		logger.info("---------------------  " + getName() + "  -----------------");
+
+	@BeforeEach
+	void init(TestInfo testInfo) {
+
+		logger.debug("========================== " + testInfo.getDisplayName() + "===================" );
 	}
 	
 	public static class Bean1 {
@@ -66,7 +67,7 @@ public class ResultFactoryDifferentTypesTest extends TestCase {
 		}
 	}
 	
-	public void testComparisonFirst() {
+	@Test void testComparisonFirst() {
 		
 		List<Object> bean1s = Arrays.asList(new Object[] {
 				new Bean1(1, 2.5),
@@ -99,7 +100,8 @@ public class ResultFactoryDifferentTypesTest extends TestCase {
 		assertEquals(3, results.size());
 	}
 	
-	public void testXMissingFirst() {
+	@Test
+	void testXMissingFirst() {
 		
 		List<Object> bean1s = Arrays.asList(new Object[] {
 				new Bean1(2, 2.5),
@@ -132,7 +134,8 @@ public class ResultFactoryDifferentTypesTest extends TestCase {
 		assertEquals(3, results.size());
 	}
 	
-	public void testYMissingFirst() {
+	@Test
+	void testYMissingFirst() {
 		
 		List<Object> bean1s = Arrays.asList(new Object[] {
 				new Bean1(1, 2.5),

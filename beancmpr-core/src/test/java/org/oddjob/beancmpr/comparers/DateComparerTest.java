@@ -1,16 +1,17 @@
 package org.oddjob.beancmpr.comparers;
 
+import org.junit.jupiter.api.Test;
+import org.oddjob.arooa.utils.DateHelper;
+import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.TestCase;
+
 import java.text.ParseException;
 import java.util.Date;
 
-import junit.framework.TestCase;
+class DateComparerTest extends TestCase {
 
-import org.oddjob.arooa.utils.DateHelper;
-import org.oddjob.beancmpr.Comparison;
-
-public class DateComparerTest extends TestCase {
-
-	public void testSame() throws ParseException {
+	@Test
+	void testSame() throws ParseException {
 		
 		java.sql.Date x = new java.sql.Date(
 				DateHelper.parseDateTime("2012-04-22 18:53").getTime());
@@ -28,7 +29,8 @@ public class DateComparerTest extends TestCase {
 		
 	}
 	
-	public void testSameWithinTolerance() throws ParseException {
+	@Test
+	void testSameWithinTolerance() throws ParseException {
 		
 		java.sql.Date x = new java.sql.Date(
 				DateHelper.parseDateTime("2012-04-22 18:53").getTime());
@@ -47,7 +49,8 @@ public class DateComparerTest extends TestCase {
 		
 	}
 	
-	public void testDifferent() throws ParseException {
+	@Test
+	void testDifferent() throws ParseException {
 		
 		java.sql.Date x = new java.sql.Date(
 				DateHelper.parseDateTime("2012-04-22 18:53").getTime());

@@ -1,27 +1,27 @@
 package org.oddjob.beancmpr.composite;
 
-import junit.framework.TestCase;
 
-import org.oddjob.arooa.convert.ArooaConversionException;
+import org.junit.jupiter.api.Test;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.beans.ArrayComparer;
 import org.oddjob.beancmpr.beans.BeanArrayComparerType;
 import org.oddjob.beancmpr.comparers.EqualityComparer;
 import org.oddjob.beancmpr.comparers.NumericComparer;
 import org.oddjob.beancmpr.comparers.TextComparer;
 
-public class ComparersByTypeListTest extends TestCase {
+class ComparersByTypeListTest extends TestCase {
 
-	private class MyType {
+	private static class MyType {
 		
 	}
 	
-	private class MyComparer implements Comparer<MyType> {
+	private static class MyComparer implements Comparer<MyType> {
 		
 		@Override
 		public Comparison<MyType> compare(MyType x, MyType y) {
-			throw new RuntimeException("Unexepected");
+			throw new RuntimeException("Unexpected");
 		}
 		
 		@Override
@@ -30,15 +30,15 @@ public class ComparersByTypeListTest extends TestCase {
 		}
 	}
 	
-	public void testFindByType() throws ArooaConversionException {
+	@Test void testFindByType() {
 		
 		ComparersByTypeList test = new ComparersByTypeList();
 		test.setClassLoader(getClass().getClassLoader());
 		
 		MyComparer comparer = new MyComparer();
 		
-		test.setSpecialisations(MyType.class.getName(), 
-				new ComparerFactoryAdaptor<MyType>(comparer));
+		test.setSpecialisations(MyType.class.getName(),
+				new ComparerFactoryAdaptor<>(comparer));
 		
 		ComparersByType comparersByType = 
 				test.createComparersByTypeWith(null);
@@ -48,7 +48,8 @@ public class ComparersByTypeListTest extends TestCase {
 		assertSame(null, comparersByType.comparerFor(String.class));
 	}
 	
-	public void testDefaultComparersProvided() {
+	@Test
+	void testDefaultComparersProvided() {
 		
 		ComparersByTypeList test = new ComparersByTypeList();
 		
@@ -59,12 +60,13 @@ public class ComparersByTypeListTest extends TestCase {
 		assertEquals(EqualityComparer.class, textComparer.getClass());
 	}
 	
-	public void testFindBySuperType() throws ArooaConversionException {
+	@Test
+	void testFindBySuperType() {
 		
 		ComparersByTypeList test = new ComparersByTypeList();
 		
-		test.setSpecialisations(Integer.class.getName(), 
-				new ComparerFactoryAdaptor<Number>(
+		test.setSpecialisations(Integer.class.getName(),
+				new ComparerFactoryAdaptor<>(
 						new NumericComparer()));
 		
 		ComparersByType comparersByType = 
@@ -75,12 +77,13 @@ public class ComparersByTypeListTest extends TestCase {
 		assertEquals(Number.class, comparer.getType());
 	}
 	
-	public void testRegisterBySubTypeOfSpecialisationFails() {
+	@Test
+	void testRegisterBySubTypeOfSpecialisationFails() {
 		
 		ComparersByTypeList test = new ComparersByTypeList();
 		
 		test.setSpecialisations(Object.class.getName(),
-				new ComparerFactoryAdaptor<MyType>(new MyComparer()));
+				new ComparerFactoryAdaptor<>(new MyComparer()));
 		
 		try {
 			test.createComparersByTypeWith(null);
@@ -95,14 +98,15 @@ public class ComparersByTypeListTest extends TestCase {
 		
 	}
 	
-	public void testProvidesArrayComparerForArraysOfElementSubType() {
+	@Test
+	void testProvidesArrayComparerForArraysOfElementSubType() {
 		
 		TextComparer textComparer = new TextComparer();
 		textComparer.setIgnoreCase(true);
 		
 		ComparersByTypeList arrayComparers = new ComparersByTypeList();
-		arrayComparers.setSpecialisations(String.class.getName(), 
-				new ComparerFactoryAdaptor<String>(textComparer));
+		arrayComparers.setSpecialisations(String.class.getName(),
+				new ComparerFactoryAdaptor<>(textComparer));
 		
 		BeanArrayComparerType arrayComparer = new BeanArrayComparerType();
 		arrayComparer.setComparersByType(arrayComparers);

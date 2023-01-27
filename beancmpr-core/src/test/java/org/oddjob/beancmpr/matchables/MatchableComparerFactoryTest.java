@@ -1,8 +1,9 @@
 package org.oddjob.beancmpr.matchables;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.comparers.NumericComparison;
 import org.oddjob.beancmpr.composite.ComparersByNameOrType;
 
@@ -12,7 +13,7 @@ import java.util.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 
-public class MatchableComparerFactoryTest extends TestCase {
+class MatchableComparerFactoryTest extends TestCase {
 
 	private static class MyMetaData extends MockMatchableMetaData {
 
@@ -65,7 +66,8 @@ public class MatchableComparerFactoryTest extends TestCase {
 		return classList;
 	}
 	
-	public void testCompareEqual() {
+	@Test
+	void testCompareEqual() {
 		
 		MatchableComparerFactory test = new MatchableComparerFactory(
 				new ComparersByNameOrType());
@@ -95,7 +97,8 @@ public class MatchableComparerFactoryTest extends TestCase {
 		assertEquals(0, comparisons[1].getResult());
 	}
 	
-	public void testCompareNotEqual() {
+	@Test
+	void testCompareNotEqual() {
 		
 		MatchableComparerFactory test = new MatchableComparerFactory(
 				new ComparersByNameOrType());
@@ -125,7 +128,8 @@ public class MatchableComparerFactoryTest extends TestCase {
 		assertTrue(comparisons[1].getResult() > 0);
 	}
 	
-	public void testEqualDifferentTypes() {
+	@Test
+	void testEqualDifferentTypes() {
 		
 		MatchableComparerFactory test = new MatchableComparerFactory(
 				new ComparersByNameOrType());

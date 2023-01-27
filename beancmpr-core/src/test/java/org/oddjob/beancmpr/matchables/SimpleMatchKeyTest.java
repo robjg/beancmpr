@@ -1,7 +1,8 @@
 package org.oddjob.beancmpr.matchables;
 
-import junit.framework.TestCase;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.composite.ComparersByNameOrType;
 
 import java.math.BigInteger;
@@ -11,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class SimpleMatchKeyTest extends TestCase {
+class SimpleMatchKeyTest extends TestCase {
 
 	private static class SomeMetaData implements MatchableMetaData {
 		
@@ -44,7 +45,8 @@ public class SimpleMatchKeyTest extends TestCase {
 		}
 	}
 	
-	public void testDifferentOneComponent() {
+	@Test
+	void testDifferentOneComponent() {
 		
 		SomeMetaData metaData = new SomeMetaData().
 				add("fruit", String.class);
@@ -64,7 +66,8 @@ public class SimpleMatchKeyTest extends TestCase {
 		assertThat(key1, not(key2));
 	}
 	
-	public void testDifferentTwoComponents() {
+	@Test
+	void testDifferentTwoComponents() {
 		
 		SomeMetaData metaData = new SomeMetaData().
 				add("fruit1", String.class).
@@ -85,7 +88,7 @@ public class SimpleMatchKeyTest extends TestCase {
 		assertThat(key1, not(key2));
 	}
 
-	public void testSameThreeComponents() {
+	@Test void testSameThreeComponents() {
 		
 		SomeMetaData metaData = new SomeMetaData()
 				.add("fruit1", String.class)
@@ -108,7 +111,8 @@ public class SimpleMatchKeyTest extends TestCase {
 		assertThat(key1.hashCode(), is(key2.hashCode()));
 	}
 	
-	public void testDifferentOneComponentNull() {
+	@Test
+	void testDifferentOneComponentNull() {
 		
 		SomeMetaData metaData = new SomeMetaData().
 				add("fruit1", String.class).
@@ -130,7 +134,8 @@ public class SimpleMatchKeyTest extends TestCase {
 		assertThat(key1, not(key2));
 	}
 	
-	public void testWithDifferentTypes() {
+	@Test
+	void testWithDifferentTypes() {
 		
 		SomeMetaData metaData1 = new SomeMetaData().
 				add("fruit", String.class).

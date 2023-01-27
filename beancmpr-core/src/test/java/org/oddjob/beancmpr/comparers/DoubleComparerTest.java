@@ -1,12 +1,15 @@
 package org.oddjob.beancmpr.comparers;
 
+import org.junit.jupiter.api.Test;
+import org.oddjob.beancmpr.TestCase;
+
 import java.text.DecimalFormatSymbols;
 
-import junit.framework.TestCase;
 
-public class DoubleComparerTest extends TestCase {
+class DoubleComparerTest extends TestCase {
 
-	public void testTwoDoubleNotANumber() {
+	@Test
+	void testTwoDoubleNotANumber() {
 		
 		double x = Double.NaN;
 		
@@ -27,8 +30,9 @@ public class DoubleComparerTest extends TestCase {
 		assertEquals(0, result.getResult());
 		assertEquals("", result.getSummaryText());		
 	}
-	
-	public void testFloatAndDoubleNotANumber() {
+
+	@Test
+	void testFloatAndDoubleNotANumber() {
 		
 		double x = Double.NaN;
 		
@@ -50,8 +54,9 @@ public class DoubleComparerTest extends TestCase {
 		assertEquals(0, result.getResult());
 		assertEquals("", result.getSummaryText());		
 	}
-	
-	public void testInfinityTwoDoubles() {
+
+	@Test
+	void testInfinityTwoDoubles() {
 		
 		double x = 1.0/0.0;
 		
@@ -63,8 +68,9 @@ public class DoubleComparerTest extends TestCase {
 		
 		assertEquals(0, result.getResult());
 	}
-	
-	public void testInfinityOneDoubleOneFloat() {
+
+	@Test
+	void testInfinityOneDoubleOneFloat() {
 		
 		double x = 1.0/0.0;
 		
@@ -76,8 +82,9 @@ public class DoubleComparerTest extends TestCase {
 		
 		assertEquals(0, result.getResult());
 	}
-	
-	public void testPositiveNegativeInfinity() {
+
+	@Test
+	void testPositiveNegativeInfinity() {
 		
 		float x = 1.0F/0.0F;
 		
@@ -92,8 +99,9 @@ public class DoubleComparerTest extends TestCase {
 		assertEquals(true, Double.isInfinite(result.getDelta()));
 		assertEquals(true, Double.isNaN(result.getPercentage()));
 	}
-	
-	public void testNegativePositiveInfinity() {
+
+	@Test
+	void testNegativePositiveInfinity() {
 		
 		float x = -1.0F/0.0F;
 		
@@ -106,8 +114,9 @@ public class DoubleComparerTest extends TestCase {
 		assertEquals(-1, result.getResult());
 		assertEquals("Infinity", result.getSummaryText());
 	}
-	
-	public void testInfinityWithDeltaFormat() {
+
+	@Test
+	void testInfinityWithDeltaFormat() {
 		
 		float x = -1.0F/0.0F;
 		

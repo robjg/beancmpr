@@ -1,21 +1,23 @@
 package org.oddjob.beancmpr.results;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.BeanCompareJob;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.SharedTestData;
 import org.oddjob.beancmpr.SharedTestData.Fruit;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.beans.IterableBeansComparerType;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class DidoBeanResultHandlerTest extends TestCase {
+class DidoBeanResultHandlerTest extends TestCase {
 
-	public void testCreateResultsAllDifferent() {
+	@Test
+	void testCreateResultsAllDifferent() {
 		
 		SharedTestData testData = new SharedTestData();
 				
@@ -65,7 +67,7 @@ public class DidoBeanResultHandlerTest extends TestCase {
 		assertEquals(3, bean.getResultType());
 	}
 	
-	public void testSomeMissing() {
+	@Test void testSomeMissing() {
 
 		ArooaSession session = new StandardArooaSession();
 		

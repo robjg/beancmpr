@@ -1,6 +1,7 @@
 package org.oddjob.beancmpr.matchables;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.composite.ComparersByNameOrType;
 
 import java.math.BigInteger;
@@ -10,7 +11,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 
-public class KeyComparatorFactoryTest extends TestCase {
+class KeyComparatorFactoryTest extends TestCase {
 
 	private static class MyMetaData extends MockMatchableMetaData {
 
@@ -63,7 +64,8 @@ public class KeyComparatorFactoryTest extends TestCase {
 		return classList;
 	}
 	
-	public void testCompareEqual() {
+	@Test
+	void testCompareEqual() {
 		
 		KeyComparatorFactory test = new KeyComparatorFactory(
 				new ComparersByNameOrType());
@@ -85,7 +87,8 @@ public class KeyComparatorFactoryTest extends TestCase {
 		assertEquals(0, result);
 	}
 	
-	public void testCompareNotEqual() {
+	@Test
+	void testCompareNotEqual() {
 		
 		KeyComparatorFactory test = new KeyComparatorFactory(
 				new ComparersByNameOrType());
@@ -107,7 +110,8 @@ public class KeyComparatorFactoryTest extends TestCase {
 		assertTrue(result > 0);
 	}
 	
-	public void testEqualDifferentTypes() {
+	@Test
+	void testEqualDifferentTypes() {
 		
 		KeyComparatorFactory test = new KeyComparatorFactory(
 				new ComparersByNameOrType());
@@ -135,7 +139,8 @@ public class KeyComparatorFactoryTest extends TestCase {
 		
 	}
 	
-	public void testCompareOneSideNullComponent() {
+	@Test
+	void testCompareOneSideNullComponent() {
 		
 		KeyComparatorFactory test = new KeyComparatorFactory(
 				new ComparersByNameOrType());

@@ -1,14 +1,14 @@
 package org.oddjob.beancmpr.beans;
 
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
 
-public class BeanComparerTypeTest extends TestCase {
+class BeanComparerTypeTest extends TestCase {
 
 	public static class Fruit {
 		
@@ -34,7 +34,8 @@ public class BeanComparerTypeTest extends TestCase {
 		
 	}
 	
-	public void testCompareTwoBeansWithTwoProperties() {
+	@Test
+	void testCompareTwoBeansWithTwoProperties() {
 		
 		ArooaSession session = new StandardArooaSession();
 	
@@ -73,7 +74,8 @@ public class BeanComparerTypeTest extends TestCase {
 		assertEquals(0, comparison.getYMissingCount());
 	}
 	
-	public void testCompareTwoBeansWithNoPropertiesSpecified() {
+	@Test
+	void testCompareTwoBeansWithNoPropertiesSpecified() {
 		
 		ArooaSession session = new StandardArooaSession();
 	
@@ -124,7 +126,8 @@ public class BeanComparerTypeTest extends TestCase {
 		assertEquals(true, comparisons[0].getResult() == 0);
 	}
 	
-	public void testCompareEachBeanHasSamePropertyWithANullValue() {
+	@Test
+	void testCompareEachBeanHasSamePropertyWithANullValue() {
 		
 		ArooaSession session = new StandardArooaSession();
 		
@@ -154,7 +157,8 @@ public class BeanComparerTypeTest extends TestCase {
 		assertEquals(0, comparisons[1].getResult());
 	}
 	
-	public void testCompareOneBeanHasOneNullValue() {
+	@Test
+	void testCompareOneBeanHasOneNullValue() {
 		
 		ArooaSession session = new StandardArooaSession();
 		
@@ -186,7 +190,8 @@ public class BeanComparerTypeTest extends TestCase {
 		assertEquals(0, comparisons[1].getResult());
 	}
 	
-	public void testWhenCompareValuesAreNullThrowNullPointerException() {
+	@Test
+	void testWhenCompareValuesAreNullThrowNullPointerException() {
 		
 		ArooaSession session = new StandardArooaSession();
 		

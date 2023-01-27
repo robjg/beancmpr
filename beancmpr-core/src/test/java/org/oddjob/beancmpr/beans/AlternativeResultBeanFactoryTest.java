@@ -1,17 +1,18 @@
 package org.oddjob.beancmpr.beans;
 
-import junit.framework.TestCase;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.comparers.EqualityComparison;
 import org.oddjob.beancmpr.matchables.*;
 import org.oddjob.beancmpr.results.AlternativeResultBeanFactory;
 
 import java.util.List;
 
-public class AlternativeResultBeanFactoryTest extends TestCase {
+class AlternativeResultBeanFactoryTest extends TestCase {
 
 	private static class MyMetaData extends MockMatchableMetaData {
 		
@@ -45,7 +46,8 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		}
 	}
 		
-	public void testCreateResultNotEqual() {
+	@Test
+	void testCreateResultNotEqual() {
 		
 		BeanUtilsPropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
@@ -98,7 +100,8 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		
 	}
 	
-	public void testCreateResultEqual() {
+	@Test
+	void testCreateResultEqual() {
 		
 		BeanUtilsPropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
@@ -151,7 +154,8 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		
 	}
 	
-	public void testCreateResultXMissing() {
+	@Test
+	void testCreateResultXMissing() {
 		
 		BeanUtilsPropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
@@ -189,7 +193,8 @@ public class AlternativeResultBeanFactoryTest extends TestCase {
 		
 	}
 	
-	public void testCreateYMissing() {
+	@Test
+	void testCreateYMissing() {
 		
 		BeanUtilsPropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		

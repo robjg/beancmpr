@@ -1,16 +1,14 @@
 package org.oddjob.beancmpr;
 
+import org.junit.jupiter.api.Test;
+
 import java.util.Iterator;
 
-import junit.framework.TestCase;
 
-import org.oddjob.beancmpr.MatchDefinition;
-import org.oddjob.beancmpr.SimpleMatchDefinition;
+class SimpleMatchDefinitionTest extends TestCase {
 
-
-public class SimpleMatchDefinitionTest extends TestCase {
-
-	public void testSimple() {
+	@Test
+	void testSimple() {
 		MatchDefinition test = new SimpleMatchDefinition(
 				new String[] { "id", "fruit"},
 				new String[] { "colour", "quantity", "price"},

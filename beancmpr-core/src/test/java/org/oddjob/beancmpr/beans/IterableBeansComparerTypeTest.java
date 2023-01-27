@@ -1,12 +1,13 @@
 package org.oddjob.beancmpr.beans;
 
-import junit.framework.TestCase;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.SharedTestData;
 import org.oddjob.beancmpr.SharedTestData.Fruit;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.composite.DefaultComparersByType;
 import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
@@ -19,9 +20,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class IterableBeansComparerTypeTest extends TestCase {
+class IterableBeansComparerTypeTest extends TestCase {
 	
-	public void testCompareListsOfFruitBeansWithTypeAsKeyAndValuesToCompare() {
+	@Test void testCompareListsOfFruitBeansWithTypeAsKeyAndValuesToCompare() {
 		
 		ArooaSession session = new StandardArooaSession();
 		
@@ -70,7 +71,7 @@ public class IterableBeansComparerTypeTest extends TestCase {
 		assertEquals("green<>red", results.get(0).getComparison(2).getSummaryText());
 		
 		assertEquals(MatchResultType.NOT_EQUAL, results.get(1).getResultType());
-		assertEquals(Long.valueOf(2), results.get(1).getKey(0));
+		assertEquals(2L, results.get(1).getKey(0));
 		
 		assertEquals(0, results.get(1).getComparison(0).getResult());
 		
@@ -83,15 +84,16 @@ public class IterableBeansComparerTypeTest extends TestCase {
 		
 
 		assertEquals(MatchResultType.X_MISSING, results.get(2).getResultType());
-		assertEquals(Long.valueOf(3), results.get(2).getKey(0));
+		assertEquals(3L, results.get(2).getKey(0));
 
 		assertEquals(MatchResultType.Y_MISSING, results.get(3).getResultType());
-		assertEquals(Long.valueOf(5), results.get(3).getKey(0));
+		assertEquals(5L, results.get(3).getKey(0));
 
 		MatcherAssert.assertThat(results.size(), Matchers.is(4));
 	}
 	
-	public void testCompareListOfFruitKeyedOnNoneUniqueTypeWithAdditionalValue() {
+	@Test
+	void testCompareListOfFruitKeyedOnNoneUniqueTypeWithAdditionalValue() {
 		
 		ArooaSession session = new StandardArooaSession();
 		
@@ -121,7 +123,7 @@ public class IterableBeansComparerTypeTest extends TestCase {
 		
 	}
 	
-	public void testCompareEqualListsOfStrings() {
+	@Test void testCompareEqualListsOfStrings() {
 		
 		ArooaSession session = new StandardArooaSession();
 		

@@ -1,8 +1,8 @@
 package org.oddjob.beancmpr;
 
-import junit.framework.TestCase;
 
 import org.apache.commons.beanutils.DynaBean;
+import org.junit.jupiter.api.Test;
 import org.oddjob.OddjobDescriptorFactory;
 import org.oddjob.OddjobSessionFactory;
 import org.oddjob.arooa.ArooaDescriptor;
@@ -19,7 +19,8 @@ public class BeanCompareDFTest extends TestCase {
 
 	DesignInstance design;
 	
-	public void testCreate() throws ArooaParseException {
+	@Test
+	void testCreate() throws ArooaParseException {
 		
 		String xml =  
 			"<beancmpr:compare xmlns:beancmpr='oddjob:beancmpr'" +
@@ -66,7 +67,7 @@ public class BeanCompareDFTest extends TestCase {
 				
 	}
 
-	public static void main(String args[]) throws ArooaParseException {
+	public static void main(String[] args) throws ArooaParseException {
 
 		BeanCompareDFTest test = new BeanCompareDFTest();
 		test.testCreate();

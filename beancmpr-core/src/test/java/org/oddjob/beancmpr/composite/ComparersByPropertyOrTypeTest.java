@@ -1,14 +1,15 @@
 package org.oddjob.beancmpr.composite;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.beans.BeanComparerType;
 import org.oddjob.beancmpr.comparers.MockComparison;
 
-public class ComparersByPropertyOrTypeTest extends TestCase {
+class ComparersByPropertyOrTypeTest extends TestCase {
 
 	public static class Fruit {
 		
@@ -41,7 +42,8 @@ public class ComparersByPropertyOrTypeTest extends TestCase {
 		}
 	}
 	
-	public void testThatTypeComparersInjectedIntoPropertyComparers() {
+	@Test
+	void testThatTypeComparersInjectedIntoPropertyComparers() {
 		
 		ArooaSession session = new StandardArooaSession();
 		

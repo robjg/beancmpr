@@ -1,11 +1,12 @@
 package org.oddjob.beancmpr.comparers;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import org.oddjob.beancmpr.TestCase;
 
-public class NumericComparerTest extends TestCase {
+class NumericComparerTest extends TestCase {
 
-	
-	public void testNoTolerances() {
+	@Test
+	void testNoTolerances() {
 		
 		NumericComparer test = new NumericComparer();
 		
@@ -29,7 +30,8 @@ public class NumericComparerTest extends TestCase {
 
 	}
 
-	public void testOutsideNumericTolerance() {
+	@Test
+	void testOutsideNumericTolerance() {
 		
 		NumericComparer test = new NumericComparer();
 		test.setDeltaTolerance(0.1);
@@ -49,8 +51,8 @@ public class NumericComparerTest extends TestCase {
 		assertEquals(-5.0, comparison.getPercentage(), 0.0001);
 	}
 	
-	
-	public void testOutsidePercentageTolerence() {
+	@Test
+	void testOutsidePercentageTolerence() {
 		
 		NumericComparer test = new NumericComparer();
 		test.setPercentageTolerance(5);
@@ -72,8 +74,9 @@ public class NumericComparerTest extends TestCase {
 		
 		assertEquals(0, comparison.getResult());
 	}
-	
-	public void testIntegerDoubleComparison() {
+
+	@Test
+	void testIntegerDoubleComparison() {
 		
 		NumericComparer test = new NumericComparer();
 		
@@ -87,8 +90,9 @@ public class NumericComparerTest extends TestCase {
 		
 		assertEquals(0, comparison.getResult());
 	}
-	
-	public void testNullValuesComparison() {
+
+	@Test
+	void testNullValuesComparison() {
 		
 		NumericComparer test = new NumericComparer();
 
@@ -99,8 +103,9 @@ public class NumericComparerTest extends TestCase {
 			// expected
 		}		
 	}
-	
-	public void testZerosWithPercentageTolerance() {
+
+	@Test
+	void testZerosWithPercentageTolerance() {
 		
 		NumericComparer test = new NumericComparer();
 		test.setPercentageTolerance(1.0);

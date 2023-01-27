@@ -1,9 +1,8 @@
 package org.oddjob.beancmpr.results;
 
-import java.text.ParseException;
-
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.oddjob.OddjobDescriptorFactory;
 import org.oddjob.OddjobSessionFactory;
 import org.oddjob.arooa.ArooaDescriptor;
@@ -15,9 +14,7 @@ import org.oddjob.arooa.design.view.ViewMainHelper;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.arooa.standard.StandardFragmentParser;
 import org.oddjob.arooa.xml.XMLConfiguration;
-import org.oddjob.beancmpr.results.BeanCreatingResultDesign;
-import org.oddjob.beancmpr.results.BeanCreatingResultHandler;
-import org.oddjob.beancmpr.results.SimpleResultBeanFactoryBuilder;
+import org.oddjob.beancmpr.TestCase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,14 +23,17 @@ import org.slf4j.LoggerFactory;
  */
 public class BeanCreatingResultHandlerDFTest extends TestCase {
 	private static final Logger logger = LoggerFactory.getLogger(BeanCreatingResultHandlerDFTest.class);
-	
-	public void setUp() {
-		logger.debug("========================== " + getName() + "===================" );
+
+	@BeforeEach
+	void init(TestInfo testInfo) {
+
+		logger.debug("========================== " + testInfo.getDisplayName() + "===================" );
 	}
 
 	DesignInstance design;
 	
-	public void testCreate() throws ArooaParseException, ParseException {
+	@Test
+	void testCreate() throws ArooaParseException {
 		
 		String xml =  
 				"<beancmpr:bean-results xmlns:beancmpr='oddjob:beancmpr'" +
@@ -79,7 +79,7 @@ public class BeanCreatingResultHandlerDFTest extends TestCase {
 		
 	}
 
-	public static void main(String args[]) throws ArooaParseException, ParseException {
+	public static void main(String[] args) throws ArooaParseException {
 
 		BeanCreatingResultHandlerDFTest test = new BeanCreatingResultHandlerDFTest();
 		test.testCreate();

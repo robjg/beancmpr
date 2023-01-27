@@ -1,12 +1,13 @@
 package org.oddjob.beancmpr.matchables;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.beanutils.BeanUtilsPropertyAccessor;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
+import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 import org.oddjob.beancmpr.composite.ComparersByNameOrType;
 import org.oddjob.beancmpr.composite.DefaultComparersByType;
@@ -19,16 +20,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class OrderedMatchablesComparerTest extends TestCase {
+class OrderedMatchablesComparerTest extends TestCase {
 	
 	private static final Logger logger =
 			LoggerFactory.getLogger(OrderedMatchablesComparerTest.class);
 	
 	public static class Fruit {
 		
-		private String type;
+		private final String type;
 		
-		private int quantity;
+		private final int quantity;
 				
 		public Fruit(String type, int qty) {
 			this.type = type;
@@ -44,7 +45,7 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		}
 	}
 	
-	private class Results implements CompareResultsHandler {
+	private static class Results implements CompareResultsHandler {
 		
 		List<Object[]> xsMissing =
 				new ArrayList<>();
@@ -90,7 +91,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		}
 	}
 	
-	public void testNoKeysMatch() {
+	@Test
+	void testNoKeysMatch() {
 
 		MatchDefinition definition = new SimpleMatchDefinition(
 				new String[] { "type" },
@@ -146,7 +148,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		assertEquals(0, results.comparedKeys.size());
 	}	
 	
-	public void testKeysMatchOneValueDoesnt() {
+	@Test
+	void testKeysMatchOneValueDoesnt() {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
 				new String[] { "type" },
@@ -200,7 +203,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		assertEquals(0, results.comparisons.get(2).getResult());		
 	}
 
-	public void testTwoXMissingOneYDuplicated() {
+	@Test
+	void testTwoXMissingOneYDuplicated() {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
 				new String[] { "type" },
@@ -258,7 +262,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		assertEquals(0, results.ysMissing.size());
 	}
 	
-	public void testWithNoKey() {
+	@Test
+	void testWithNoKey() {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
 				null,
@@ -358,7 +363,8 @@ public class OrderedMatchablesComparerTest extends TestCase {
 		}
 	}
 	
-	public void testKeysOfDifferentTypes() {
+	@Test
+	void testKeysOfDifferentTypes() {
 		
 		MatchDefinition definition = new SimpleMatchDefinition(
 				new String[] { "id" },
