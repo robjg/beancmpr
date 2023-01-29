@@ -19,7 +19,7 @@ class MapMatchableFactoryTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				null, null, null);
 		
 		Map<String, Integer> map = new HashMap<>();
@@ -86,7 +86,7 @@ class MapMatchableFactoryTest extends TestCase {
 		
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				new String[] { "colour", "quantity" }, 
 				new String[] { "colour" },
 				new String[] { "quantity" });

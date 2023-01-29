@@ -38,7 +38,7 @@ public class BeanMatchableFactoryTest extends TestCase {
 	@Test
 	void testCreateKeys() {
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				new String[] { "fruit", "colour" }, 
 				null,
 				null);
@@ -98,7 +98,7 @@ public class BeanMatchableFactoryTest extends TestCase {
 	@Test
 	void testCreateValues() {
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				null,
 				new String[] { "fruit", "colour" }, 
 				null);
@@ -159,7 +159,7 @@ public class BeanMatchableFactoryTest extends TestCase {
 	@Test
 	void testCreateOthers() {
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				null,
 				new String[] { BeanMatchableFactory.SELF_TOKEN },
 				new String[] { "fruit", "colour" }
@@ -231,10 +231,10 @@ public class BeanMatchableFactoryTest extends TestCase {
 	}
 	
 	@Test
-	void testPrimativeType() {
+	void testPrimitiveType() {
 		
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				null,
 				new String[] { "int" },
 				null
@@ -272,7 +272,7 @@ public class BeanMatchableFactoryTest extends TestCase {
 		accessor.setProperty(bean, "type", "apple");
 		accessor.setProperty(bean, "quantity", 42);
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				null,
 				new String[] { "type", "quantity" },
 				null
@@ -296,7 +296,7 @@ public class BeanMatchableFactoryTest extends TestCase {
 	@Test
 	void testValueAsSelfThenValueCreatedWithSelf() {
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				null, new String[] { BeanMatchableFactory.SELF_TOKEN }, null);
 		
 		BeanMatchableFactory<String> test =
@@ -332,7 +332,7 @@ public class BeanMatchableFactoryTest extends TestCase {
 	@Test
 	void testKeyAsSelfThenKeyCreatedWithSelf() {
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				new String[] { BeanMatchableFactory.SELF_TOKEN }, null, null);
 		
 		BeanMatchableFactory<String> test =

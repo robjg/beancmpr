@@ -9,7 +9,7 @@ class SimpleMatchDefinitionTest extends TestCase {
 
 	@Test
 	void testSimple() {
-		MatchDefinition test = new SimpleMatchDefinition(
+		MatchDefinition test = SimpleMatchDefinition.of(
 				new String[] { "id", "fruit"},
 				new String[] { "colour", "quantity", "price"},
 				new String[] { "country", "organic" } );

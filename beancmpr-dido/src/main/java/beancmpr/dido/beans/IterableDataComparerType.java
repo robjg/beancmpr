@@ -9,7 +9,6 @@ import org.oddjob.beancmpr.beans.IterableBeansComparer;
 import org.oddjob.beancmpr.beans.IterableComparerType;
 import org.oddjob.beancmpr.composite.*;
 import org.oddjob.beancmpr.matchables.CompareResultsHandler;
-import org.oddjob.beancmpr.matchables.BeanMatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
@@ -113,11 +112,7 @@ implements ComparerFactory<Iterable<GenericData<String>>>,
 				new ComparersByNameOrTypeFactory(
 						comparersByName, comparersByType);
 		
-		if (keys == null && values == null) {
-			 keys = new String[] { BeanMatchableFactory.SELF_TOKEN };
-		}
-		
-		MatchDefinition matchDefinition = new SimpleMatchDefinition(
+		MatchDefinition matchDefinition = SimpleMatchDefinition.of(
 				keys, values, others);
 		
 		MatchableFactoryProvider<GenericData<String>> matchableFactoryProvider =

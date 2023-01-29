@@ -3,9 +3,8 @@ package org.oddjob.beancmpr.matchables;
 import org.oddjob.arooa.utils.ClassUtils;
 import org.oddjob.beancmpr.MatchDefinition;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 
 /**
  * A simple implementation of {@link MatchableMetaData}.
@@ -15,40 +14,32 @@ import java.util.Map;
  */
 public class SimpleMatchableMeta implements MatchableMetaData {
 
-	private final Iterable<String> keyProperties;
+	private final ImmutableCollection<String> keyProperties;
 	
-	private final Iterable<String> valueProperties;
+	private final ImmutableCollection<String> valueProperties;
 	
-	private final Iterable<String> otherProperties;
+	private final ImmutableCollection<String> otherProperties;
 	
-	private final Map<String, Class<?>> types;
+	private final Function<? super String, ? extends Class<?>> types;
 
-	public SimpleMatchableMeta(Iterable<String> keyProperties,
-		Iterable<String> valueProperties, Iterable<String> otherProperties,
-		Map<String, Class<?>> types) {
+	private SimpleMatchableMeta(ImmutableCollection<String> keyProperties,
+							   ImmutableCollection<String> valueProperties,
+							   ImmutableCollection<String> otherProperties,
+								Function<? super String, ? extends Class<?>> typeLookup) {
+
+		this.keyProperties = Objects.requireNonNull(keyProperties);
+		this.valueProperties = Objects.requireNonNull(valueProperties);
+		this.otherProperties = Objects.requireNonNull(otherProperties);
 		
-		if (keyProperties == null) {
-			this.keyProperties = Collections.emptyList();
-		}
-		else {
-			this.keyProperties = keyProperties;
-		}
-		
-		if (valueProperties == null) {
-			this.valueProperties = Collections.emptyList();
-		}
-		else {
-			this.valueProperties = valueProperties;
-		}
-		
-		if (otherProperties == null) {
-			this.otherProperties = Collections.emptyList();
-		}
-		else {
-			this.otherProperties = otherProperties;
-		}
-		
-		this.types = new HashMap<String, Class<?>>();
+		this.types = typeLookup;
+	}
+
+	public static MatchableMetaData of(ImmutableCollection<String> keyProperties,
+								ImmutableCollection<String> valueProperties,
+								ImmutableCollection<String> otherProperties,
+								Map<String, Class<?>> types) {
+
+		final Map<String, Class<?>> typeCopy = new HashMap<>();
 		for (Map.Entry<String, Class<?>> entry: types.entrySet()) {
 			Class<?> type = entry.getValue();
 			String property = entry.getKey();
@@ -58,42 +49,87 @@ public class SimpleMatchableMeta implements MatchableMetaData {
 			if (type.isPrimitive()) {
 				type = ClassUtils.wrapperClassForPrimitive(type);
 			}
-			this.types.put(property, type);
+			typeCopy.put(property, type);
 		}
-	}
-	
-	public SimpleMatchableMeta(MatchDefinition definition,
-			Map<String, Class<?>> types) {
 
-		this(definition.getKeyProperties(),
+		return new SimpleMatchableMeta(keyProperties, valueProperties, otherProperties,
+			name -> typeCopy.get(name));
+	}
+
+	public static MatchableMetaData of(MatchDefinition definition,
+									   Function<? super String, ? extends Class<?>> typeLookup) {
+		return new SimpleMatchableMeta(definition.getKeyProperties(),
 				definition.getValueProperties(),
 				definition.getOtherProperties(),
-				types); 
+				typeLookup);
 	}
-	
+
+	public static class Builder {
+
+		private final Map<String, Class<?>> types = new HashMap<>();
+
+		private final List<String> keys = new ArrayList<>();
+
+		private final List<String> values = new ArrayList<>();
+
+		private final List<String> others = new ArrayList<>();
+
+		public Builder addKey(String name, Class<?> type) {
+			keys.add(Objects.requireNonNull(name));
+			types.put(name, Objects.requireNonNull(type));
+			return this;
+		}
+
+		public Builder addValue(String name, Class<?> type) {
+			values.add(Objects.requireNonNull(name));
+			types.put(name, Objects.requireNonNull(type));
+			return this;
+		}
+
+		public Builder addOther(String name, Class<?> type) {
+			others.add(Objects.requireNonNull(name));
+			types.put(name, Objects.requireNonNull(type));
+			return this;
+		}
+
+		public MatchableMetaData build() {
+
+			return of(ImmutableCollection.of(keys),
+					ImmutableCollection.of(values),
+					ImmutableCollection.of(others),
+					types);
+		}
+	}
+
+	public static Builder builder() {
+
+		return new Builder();
+	}
+
+
+
 	@Override
-	public Iterable<String> getKeyProperties() {
+	public ImmutableCollection<String> getKeyProperties() {
 		return keyProperties;
 	}
 	
 	@Override
-	public Iterable<String> getValueProperties() {
+	public ImmutableCollection<String> getValueProperties() {
 		return valueProperties;
 	}
 	
 	@Override
-	public Iterable<String> getOtherProperties() {
+	public ImmutableCollection<String> getOtherProperties() {
 		return otherProperties;
 	}
 	
 	@Override
 	public Class<?> getPropertyType(String name) {
-		return types.get(name);
+		return types.apply(name);
 	}
 	
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + ": for " + types.size() + 
-				" types";
+		return getClass().getSimpleName() + ": types " + types;
 	}
 }

@@ -43,7 +43,7 @@ class UnsortedBeanMatchablesTest extends TestCase {
 	@Test
 	void testIterating() {
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				new String[] { "type" }, 
 				new String[] { "colour" },
 				null);

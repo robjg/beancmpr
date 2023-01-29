@@ -135,7 +135,7 @@ implements ComparerFactory<Iterable<T>>,
 			 keys = new String[] { BeanMatchableFactory.SELF_TOKEN };
 		}
 		
-		MatchDefinition matchDefinition = new SimpleMatchDefinition(
+		MatchDefinition matchDefinition = SimpleMatchDefinition.of(
 				keys, values, others);
 		
 		MatchableFactoryProvider<T> matchableFactoryProvider =

@@ -14,42 +14,13 @@ import static org.hamcrest.Matchers.not;
 
 class SimpleMatchKeyTest extends TestCase {
 
-	private static class SomeMetaData implements MatchableMetaData {
-		
-		Map<String, Class<?>> meta =
-				new LinkedHashMap<>();
-		
-		SomeMetaData add(String prop, Class<?> type) {
-			meta.put(prop, type);
-			return this;
-		}
-		
-		@Override
-		public Class<?> getPropertyType(String name) {
-			return meta.get(name);
-		}
-		
-		@Override
-		public Iterable<String> getKeyProperties() {
-			return meta.keySet();
-		}
-		
-		@Override
-		public Iterable<String> getOtherProperties() {
-			throw new RuntimeException("Unexpected.");
-		}
-		
-		@Override
-		public Iterable<String> getValueProperties() {
-			throw new RuntimeException("Unexpected.");
-		}
-	}
-	
+
 	@Test
 	void testDifferentOneComponent() {
 		
-		SomeMetaData metaData = new SomeMetaData().
-				add("fruit", String.class);
+		MatchableMetaData metaData = SimpleMatchableMeta.builder()
+				.addKey("fruit", String.class)
+				.build();
 
 		Comparator<Iterable<?>> comparator = new KeyComparatorFactory(
 				new ComparersByNameOrType()).createComparatorFor(
@@ -68,10 +39,11 @@ class SimpleMatchKeyTest extends TestCase {
 	
 	@Test
 	void testDifferentTwoComponents() {
-		
-		SomeMetaData metaData = new SomeMetaData().
-				add("fruit1", String.class).
-				add("fruit2", String.class);
+
+		MatchableMetaData metaData = SimpleMatchableMeta.builder()
+				.addKey("fruit1", String.class)
+				.addKey("fruit2", String.class)
+				.build();
 
 		Comparator<Iterable<?>> comparator = new KeyComparatorFactory(
 				new ComparersByNameOrType()).createComparatorFor(
@@ -90,10 +62,11 @@ class SimpleMatchKeyTest extends TestCase {
 
 	@Test void testSameThreeComponents() {
 		
-		SomeMetaData metaData = new SomeMetaData()
-				.add("fruit1", String.class)
-				.add("fruit2", String.class)
-				.add("fruit3", String.class);
+		MatchableMetaData metaData = SimpleMatchableMeta.builder()
+				.addKey("fruit1", String.class)
+				.addKey("fruit2", String.class)
+				.addKey("fruit3", String.class)
+				.build();
 		
 		Comparator<Iterable<?>> comparator = new KeyComparatorFactory(
 				new ComparersByNameOrType()).createComparatorFor(
@@ -114,10 +87,11 @@ class SimpleMatchKeyTest extends TestCase {
 	@Test
 	void testDifferentOneComponentNull() {
 		
-		SomeMetaData metaData = new SomeMetaData().
-				add("fruit1", String.class).
-				add("fruit2", String.class).
-				add("fruit3", String.class);
+		MatchableMetaData metaData = SimpleMatchableMeta.builder()
+				.addKey("fruit1", String.class)
+				.addKey("fruit2", String.class)
+				.addKey("fruit3", String.class)
+				.build();
 		
 		Comparator<Iterable<?>> comparator = new KeyComparatorFactory(
 				new ComparersByNameOrType()).createComparatorFor(
@@ -137,15 +111,17 @@ class SimpleMatchKeyTest extends TestCase {
 	@Test
 	void testWithDifferentTypes() {
 		
-		SomeMetaData metaData1 = new SomeMetaData().
-				add("fruit", String.class).
-				add("quantity", Integer.class).
-				add("price", Double.class);
+		MatchableMetaData metaData1 = SimpleMatchableMeta.builder()
+				.addKey("fruit", String.class)
+				.addKey("quantity", Integer.class)
+				.addKey("price", Double.class)
+				.build();
 		
-		SomeMetaData metaData2 = new SomeMetaData().
-				add("fruit", String.class).
-				add("quantity", BigInteger.class).
-				add("price", double.class);
+		MatchableMetaData metaData2 = SimpleMatchableMeta.builder()
+				.addKey("fruit", String.class)
+				.addKey("quantity", BigInteger.class)
+				.addKey("price", double.class)
+				.build();
 		
 		Comparator<Iterable<?>> comparator = new KeyComparatorFactory(
 				new ComparersByNameOrType()).createComparatorFor(

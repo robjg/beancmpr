@@ -1,6 +1,7 @@
 package org.oddjob.beancmpr.matchables;
 
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Stream;
 
 /**
@@ -16,7 +17,7 @@ public interface ImmutableCollection<E> extends Iterable<E> {
 
     boolean isEmpty();
 
-    static <E> ImmutableCollection<E> of(List<E> list) {
+    static <E> ImmutableCollection<E> of(List<? extends E> list) {
         return ImmutableCollectionImpl.of(list);
     }
 
@@ -24,4 +25,8 @@ public interface ImmutableCollection<E> extends Iterable<E> {
         return ImmutableCollectionImpl.of(elements);
     }
 
+    static <T> Collector<T, List<T>, ImmutableCollection<T>> collector() {
+
+        return ImmutableCollectionImpl.collector();
+    }
 }

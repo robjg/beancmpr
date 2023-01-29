@@ -32,7 +32,7 @@ class MapComparerTest extends TestCase {
 				
 		PropertyAccessor accessor = new BeanUtilsPropertyAccessor();
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				null, null, null);
 		
 		MapMatchableFactoryProvider<String, Integer> matchableFactoryProvider = 

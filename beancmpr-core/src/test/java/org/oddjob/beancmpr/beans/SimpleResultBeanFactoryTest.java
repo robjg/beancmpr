@@ -11,36 +11,13 @@ import java.util.List;
 
 class SimpleResultBeanFactoryTest extends TestCase {
 
-    private static class MyMetaData extends MockMatchableMetaData {
+    MatchableMetaData metaData() {
 
-        @Override
-        public Iterable<String> getKeyProperties() {
-            return List.of("fruit");
-        }
-
-        @Override
-        public Iterable<String> getValueProperties() {
-            return List.of("quantity");
-        }
-
-        @Override
-        public Iterable<String> getOtherProperties() {
-            return List.of("colour");
-        }
-
-        @Override
-        public Class<?> getPropertyType(String name) {
-            if ("fruit".equals(name)) {
-                return String.class;
-            }
-            if ("quantity".equals(name)) {
-                return Integer.class;
-            }
-            if ("colour".equals(name)) {
-                return String.class;
-            }
-            throw new IllegalArgumentException(name);
-        }
+        return SimpleMatchableMeta.builder()
+                .addKey("fruit", String.class)
+                .addValue("quantity", Integer.class)
+                .addOther("colour", String.class)
+                .build();
     }
 
     @Test
@@ -55,13 +32,13 @@ class SimpleResultBeanFactoryTest extends TestCase {
                 List.of("Apple"),
                 List.of(2),
                 List.of("red"),
-                new MyMetaData());
+                metaData());
 
         SimpleMatchable y = new SimpleMatchable(
                 List.of("Apple"),
                 List.of(3),
                 List.of("green"),
-                new MyMetaData());
+                metaData());
 
         MultiValueComparison<Matchable> matchableComparison =
                 MatchableComparison.accumulatorFor(x, y)
@@ -105,13 +82,13 @@ class SimpleResultBeanFactoryTest extends TestCase {
                 List.of("Apple"),
                 List.of(2),
                 List.of("red"),
-                new MyMetaData());
+                metaData());
 
         SimpleMatchable y = new SimpleMatchable(
                 List.of("Apple"),
                 List.of(2),
                 List.of("green"),
-                new MyMetaData());
+                metaData());
 
         MultiValueComparison<Matchable> matchableComparison =
                 MatchableComparison.accumulatorFor(x, y)
@@ -155,7 +132,7 @@ class SimpleResultBeanFactoryTest extends TestCase {
                 List.of("Apple"),
                 List.of(3),
                 List.of("green"),
-                new MyMetaData());
+                metaData());
 
         Object bean = test.createXMissingResult(y);
 
@@ -194,7 +171,7 @@ class SimpleResultBeanFactoryTest extends TestCase {
                 List.of("Apple"),
                 List.of(2),
                 List.of("red"),
-                new MyMetaData());
+                metaData());
 
         Object bean = test.createYMissingResult(x);
 

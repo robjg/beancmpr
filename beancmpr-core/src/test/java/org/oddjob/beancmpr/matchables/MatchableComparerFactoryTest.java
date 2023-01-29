@@ -12,157 +12,128 @@ import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class MatchableComparerFactoryTest extends TestCase {
 
-	private static class MyMetaData extends MockMatchableMetaData {
 
-		final Map<String, Class<?>> propertiesAndType =
-				new LinkedHashMap<>();
+    static List<Class<?>> classList(Class<?>... classes) {
+        List<Class<?>> classList = new ArrayList<>();
+        Collections.addAll(classList, classes);
+        return classList;
+    }
 
-		public MyMetaData(Iterable<String> props, Iterable<Class<?>> types) {
-			ValueIterable<Class<?>> it = new ValueIterable<>(props, types);
-			for (ValueIterable.Value<Class<?>> v : it) {
-				propertiesAndType.put(v.getPropertyName(), v.getValue());
-			}
-		}
-		
-		@Override
-		public Iterable<String> getValueProperties() {
-			return propertiesAndType.keySet();
-		}
-		
-		@Override
-		public Class<?> getPropertyType(String name) {
-			return propertiesAndType.get(name);
-		}
-	}
-	
-	private static class MyMatchable extends MockMatchable {
-	
-		final Iterable<?> values;
-		
-		final MatchableMetaData metaData;
-		
-		public MyMatchable(Iterable<?> values, MatchableMetaData metaData) {
-			this.values = values;
-			this.metaData = metaData;
-		}
-		
-		@Override
-		public MatchableMetaData getMetaData() {
-			return metaData;
-		}
-		
-		@Override
-		public Iterable<?> getValues() {
-			return values;
-		}
-	}
-	
-	static List<Class<?>> classList(Class<?>... classes) {
-		List<Class<?>> classList = new ArrayList<>();
-		Collections.addAll(classList, classes);
-		return classList;
-	}
-	
-	@Test
-	void testCompareEqual() {
-		
-		MatchableComparerFactory test = new MatchableComparerFactory(
-				new ComparersByNameOrType());
-				
-		MatchableMetaData metaData = new MyMetaData(
-				Arrays.asList("fruit", "colour"),
-				classList(String.class, String.class));
-		
-		MyMatchable x = new MyMatchable(Arrays.asList("apple", "red"),
-				metaData);
-		MyMatchable y = new MyMatchable(Arrays.asList("apple", "red"),
-				metaData);
-		
-		MatchableComparer comparer = test.createComparerFor(
-				metaData, metaData);
-		
-		MultiValueComparison<Matchable> result = comparer.compare(x, y);
-		
-		assertEquals(0, result.getResult());
-		
-		Comparison<?>[] comparisons = Iterables.toArray(
-				result.getValueComparisons(), Comparison.class);
-		
-		assertEquals(2, comparisons.length);
-		
-		assertEquals(0, comparisons[0].getResult());
-		assertEquals(0, comparisons[1].getResult());
-	}
-	
-	@Test
-	void testCompareNotEqual() {
-		
-		MatchableComparerFactory test = new MatchableComparerFactory(
-				new ComparersByNameOrType());
-				
-		MatchableMetaData metaData = new MyMetaData(
-				Arrays.asList("fruit", "colour"),
-				classList(String.class, String.class));
-		
-		Matchable x = new MyMatchable(Arrays.asList("apple", "red"),
-				metaData);
-		Matchable y = new MyMatchable(Arrays.asList("apple", "green"),
-				metaData);
-				
-		MatchableComparer comparer = test.createComparerFor(
-				metaData, metaData);
-		
-		MultiValueComparison<Matchable> result = comparer.compare(x, y);
-		
-		assertTrue(result.getResult() > 0);
-		
-		Comparison<?>[] comparisons = Iterables.toArray(result.getValueComparisons(), 
-				Comparison.class);
-		
-		assertEquals(2, comparisons.length);
-		
-		assertEquals(0, comparisons[0].getResult());
-		assertTrue(comparisons[1].getResult() > 0);
-	}
-	
-	@Test
-	void testEqualDifferentTypes() {
-		
-		MatchableComparerFactory test = new MatchableComparerFactory(
-				new ComparersByNameOrType());
-				
-		MatchableMetaData xMetaData = new MyMetaData(
-				Arrays.asList("fruit", "quantity"),
-				classList(String.class, BigInteger.class));
-		
-		MatchableMetaData yMetaData = new MyMetaData(
-				Arrays.asList("fruit", "quantity"),
-				classList(String.class, BigInteger.class));
-		
-		Matchable x = new MyMatchable(Arrays.asList("apple", new BigInteger("42")),
-				xMetaData);
-		
-		Matchable y = new MyMatchable(Arrays.asList("apple", 42),
-				yMetaData);
-				
-		MatchableComparer comparer = test.createComparerFor(
-				xMetaData, yMetaData);
-		
-		MultiValueComparison<Matchable> result = comparer.compare(x, y);
-		
-		assertEquals(0, result.getResult());
-		
-		Comparison<?>[] comparisons = Iterables.toArray(
-				result.getValueComparisons(), Comparison.class);
-		
-		assertEquals(2, comparisons.length);
-		
-		assertEquals(0, comparisons[0].getResult());
-		assertEquals(0, comparisons[1].getResult());
-		
-		assertThat(comparisons[1], instanceOf(NumericComparison.class));
-	}
+    @Test
+    void testCompareEqual() {
+
+        MatchableComparerFactory test = new MatchableComparerFactory(
+                new ComparersByNameOrType());
+
+        MatchableMetaData metaData = SimpleMatchableMeta.builder()
+                .addValue("fruit", String.class)
+                .addValue("colour", String.class)
+                .build();
+
+        Matchable x = mock(Matchable.class);
+        when(x.getValues()).thenReturn(ImmutableCollection.of("apple", "red"));
+        when(x.getMetaData()).thenReturn(metaData);
+
+        Matchable y = mock(Matchable.class);
+        when(y.getValues()).thenReturn(ImmutableCollection.of("apple", "red"));
+        when(y.getMetaData()).thenReturn(metaData);
+
+
+        MatchableComparer comparer = test.createComparerFor(
+                metaData, metaData);
+
+        MultiValueComparison<Matchable> result = comparer.compare(x, y);
+
+        assertEquals(0, result.getResult());
+
+        Comparison<?>[] comparisons = Iterables.toArray(
+                result.getValueComparisons(), Comparison.class);
+
+        assertEquals(2, comparisons.length);
+
+        assertEquals(0, comparisons[0].getResult());
+        assertEquals(0, comparisons[1].getResult());
+    }
+
+    @Test
+    void testCompareNotEqual() {
+
+        MatchableComparerFactory test = new MatchableComparerFactory(
+                new ComparersByNameOrType());
+
+        MatchableMetaData metaData = SimpleMatchableMeta.builder()
+                .addValue("fruit", String.class)
+                .addValue("colour", String.class)
+                .build();
+
+        Matchable x = mock(Matchable.class);
+        when(x.getValues()).thenReturn(ImmutableCollection.of("apple", "red"));
+        when(x.getMetaData()).thenReturn(metaData);
+
+        Matchable y = mock(Matchable.class);
+        when(y.getValues()).thenReturn(ImmutableCollection.of("apple", "green"));
+        when(y.getMetaData()).thenReturn(metaData);
+
+        MatchableComparer comparer = test.createComparerFor(
+                metaData, metaData);
+
+        MultiValueComparison<Matchable> result = comparer.compare(x, y);
+
+        assertTrue(result.getResult() > 0);
+
+        Comparison<?>[] comparisons = Iterables.toArray(result.getValueComparisons(),
+                Comparison.class);
+
+        assertEquals(2, comparisons.length);
+
+        assertEquals(0, comparisons[0].getResult());
+        assertTrue(comparisons[1].getResult() > 0);
+    }
+
+    @Test
+    void testEqualDifferentTypes() {
+
+        MatchableComparerFactory test = new MatchableComparerFactory(
+                new ComparersByNameOrType());
+
+        MatchableMetaData xMetaData = SimpleMatchableMeta.builder()
+                .addValue("fruit", String.class)
+                .addValue("quantity", BigInteger.class)
+                .build();
+
+        MatchableMetaData yMetaData = SimpleMatchableMeta.builder()
+                .addValue("fruit", String.class)
+                .addValue("quantity", BigInteger.class)
+                .build();
+
+        Matchable x = mock(Matchable.class);
+        when(x.getValues()).thenReturn(ImmutableCollection.of("apple", new BigInteger("42")));
+        when(x.getMetaData()).thenReturn(xMetaData);
+
+        Matchable y = mock(Matchable.class);
+        when(y.getValues()).thenReturn(ImmutableCollection.of("apple", 42));
+        when(y.getMetaData()).thenReturn(yMetaData);
+
+        MatchableComparer comparer = test.createComparerFor(
+                xMetaData, yMetaData);
+
+        MultiValueComparison<Matchable> result = comparer.compare(x, y);
+
+        assertEquals(0, result.getResult());
+
+        Comparison<?>[] comparisons = Iterables.toArray(
+                result.getValueComparisons(), Comparison.class);
+
+        assertEquals(2, comparisons.length);
+
+        assertEquals(0, comparisons[0].getResult());
+        assertEquals(0, comparisons[1].getResult());
+
+        assertThat(comparisons[1], instanceOf(NumericComparison.class));
+    }
 }

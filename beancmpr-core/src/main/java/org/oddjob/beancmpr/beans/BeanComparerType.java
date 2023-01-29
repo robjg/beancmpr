@@ -135,8 +135,7 @@ implements ArooaSessionAware, ComparerFactory<T>,
 		}
 		
 		MatchableFactory<T> matchableFactory = new BeanMatchableFactory<>(
-				new SimpleMatchDefinition(
-						null, values, others),
+				SimpleMatchDefinition.of(null, values, others),
 				accessor);
 		
 		return new BeanComparer<>(matchableFactory,

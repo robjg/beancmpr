@@ -37,33 +37,31 @@ implements ResultBeanFactory {
 		
 		populateKeys(result, definition.getKeyProperties(), x.getKeys());
 		
-		ValuePairIterable<String, Object> values = 
-				new ValuePairIterable<String, Object>(
-					definition.getValueProperties(), 
-					x.getValues(), 
-					y.getValues());
+		ValuePairIterable<String, Object> values =
+				new ValuePairIterable<>(
+						definition.getValueProperties(),
+						x.getValues(),
+						y.getValues());
 		
-		Iterator<Comparison<?>> comparisonsIterator = 
-			matchableComparison == null ? null :
+		Iterator<Comparison<?>> comparisonsIterator =
 				matchableComparison.getValueComparisons().iterator();
 		
 		for (ValuePairIterable.ValuePair<String, Object> set : values) {
 			
 			String propertyName = set.getCommon();
 			
-			Comparison<?> comparison = comparisonsIterator == null ?
-					null : comparisonsIterator.next();
+			Comparison<?> comparison = comparisonsIterator.next();
 			
 			populateXProperty(result, propertyName, set.getValueX());
 			populateYProperty(result, propertyName, set.getValueY());
 			populateComparison(result, propertyName, comparison);
 		}
 		
-		ValuePairIterable<String, Object> others = 
-				new ValuePairIterable<String, Object>(
-					definition.getOtherProperties(), 
-					x == null ? null : x.getOthers(), 
-					y == null ? null : y.getOthers());
+		ValuePairIterable<String, Object> others =
+				new ValuePairIterable<>(
+						definition.getOtherProperties(),
+						x.getOthers(),
+						y.getOthers());
 		
 		for (ValuePairIterable.ValuePair<String, Object> set : others) {
 						
@@ -88,10 +86,10 @@ implements ResultBeanFactory {
 			
 		populateKeys(result, definition.getKeyProperties(), y.getKeys());
 		
-		ValueIterable<Object> values = 
-				new ValueIterable<Object>(
-					definition.getValueProperties(), 
-					y.getValues());
+		ValueIterable<Object> values =
+				new ValueIterable<>(
+						definition.getValueProperties(),
+						y.getValues());
 		
 		for (ValueIterable.Value<Object> set : values) {
 			
@@ -100,10 +98,10 @@ implements ResultBeanFactory {
 			populateYProperty(result, propertyName, set.getValue());
 		}
 		
-		ValueIterable<Object> others = 
-				new ValueIterable<Object>(
-					definition.getOtherProperties(), 
-					y.getOthers());
+		ValueIterable<Object> others =
+				new ValueIterable<>(
+						definition.getOtherProperties(),
+						y.getOthers());
 		
 		for (ValueIterable.Value<Object> set : others) {
 						
@@ -127,10 +125,10 @@ implements ResultBeanFactory {
 		
 		populateKeys(result, definition.getKeyProperties(), x.getKeys());
 		
-		ValueIterable<Object> values = 
-				new ValueIterable<Object>(
-					definition.getValueProperties(), 
-					x.getValues());
+		ValueIterable<Object> values =
+				new ValueIterable<>(
+						definition.getValueProperties(),
+						x.getValues());
 		
 		for (ValueIterable.Value<Object> set : values) {
 			
@@ -139,10 +137,10 @@ implements ResultBeanFactory {
 			populateXProperty(result, propertyName, set.getValue());
 		}
 		
-		ValueIterable<Object> others = 
-				new ValueIterable<Object>(
-					definition.getOtherProperties(), 
-					x.getOthers());
+		ValueIterable<Object> others =
+				new ValueIterable<>(
+						definition.getOtherProperties(),
+						x.getOthers());
 		
 		for (ValueIterable.Value<Object> set : others) {
 						
@@ -169,10 +167,10 @@ implements ResultBeanFactory {
 	private void populateKeys(Object resultBean, 
 			Iterable<String> keyProperties, Iterable<?> keyValues) {
 		
-		ValueIterable<Object> keys = 
-				new ValueIterable<Object>(
-					keyProperties, 
-					keyValues);
+		ValueIterable<Object> keys =
+				new ValueIterable<>(
+						keyProperties,
+						keyValues);
 		
 		for (ValueIterable.Value<Object> set : keys) {
 			Object value = set.getValue();
@@ -199,8 +197,8 @@ implements ResultBeanFactory {
 	/**
 	 * Utility method to upper case the first letter of a property name.
 	 * 
-	 * @param propertyName
-	 * @return
+	 * @param propertyName A name.
+	 * @return The new name.
 	 */
 	protected static String upperCaseFirstLetter(String propertyName) {
 		return propertyName.substring(0, 1).toUpperCase() + 

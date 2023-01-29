@@ -1,7 +1,5 @@
 package org.oddjob.beancmpr.beans;
 
-import java.util.Map;
-
 import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.deploy.annotations.ArooaAttribute;
 import org.oddjob.arooa.deploy.annotations.ArooaHidden;
@@ -10,16 +8,14 @@ import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
-import org.oddjob.beancmpr.composite.ComparerFactory;
-import org.oddjob.beancmpr.composite.ComparersByNameFactory;
-import org.oddjob.beancmpr.composite.ComparersByNameOrTypeFactory;
-import org.oddjob.beancmpr.composite.ComparersByType;
-import org.oddjob.beancmpr.composite.ComparersByTypeFactory;
+import org.oddjob.beancmpr.composite.*;
 import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.matchables.MapMatchableFactoryProvider;
 import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
+
+import java.util.Map;
 
 /**
  * @oddjob.description Provides a Comparer that can compare two maps. The maps
@@ -144,13 +140,13 @@ implements ComparerFactory<Map<K, V>>,
 				new ComparersByNameOrTypeFactory(
 						comparersByName, comparersByType);
 		
-		MatchDefinition matchDefinition = new SimpleMatchDefinition(
+		MatchDefinition matchDefinition = SimpleMatchDefinition.of(
 				keys, values, others);
 		
 		MatchableFactoryProvider<Map.Entry<K, V>> matchableFactoryProvider = 
 				new MapMatchableFactoryProvider<>(matchDefinition, accessor);
 		
-		return new MapComparer<K, V>(matchableFactoryProvider, 
+		return new MapComparer<>(matchableFactoryProvider,
 				comparerProviderFactory.createWith(parentComparersByType),
 				sorted,
 				resultHandler);

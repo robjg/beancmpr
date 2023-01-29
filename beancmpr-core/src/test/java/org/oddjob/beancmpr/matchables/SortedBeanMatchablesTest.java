@@ -40,7 +40,7 @@ class SortedBeanMatchablesTest extends TestCase {
 	@Test
 	void testIteratingWithOneKey() {
 				
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				new String[] { "type" }, 
 				new String[] { },
 				new String[] { "colour" });
@@ -92,7 +92,7 @@ class SortedBeanMatchablesTest extends TestCase {
 	@Test
 	void testIteratingWithTwoKeys() {
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				new String[] { "type", "colour" }, 
 				new String[] { },
 				new String[] { });
@@ -141,7 +141,7 @@ class SortedBeanMatchablesTest extends TestCase {
 	@Test
 	void testThrowsExceptionWhenUnordered() {
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				new String[] { "type", "colour" }, 
 				new String[] { },
 				new String[] { });

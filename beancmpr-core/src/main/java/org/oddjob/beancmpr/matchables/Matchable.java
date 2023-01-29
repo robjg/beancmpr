@@ -17,7 +17,7 @@ public interface Matchable {
 	 * @return The keys. Never null.
 	 * 
 	 */
-	Iterable<?> getKeys();
+	ImmutableCollection<Object> getKeys();
 	
 	/**
 	 * Get the values for comparison.
@@ -25,7 +25,7 @@ public interface Matchable {
 	 * @return The values to compare. Never null.
 	 * 
 	 */
-	Iterable<?> getValues();
+	ImmutableCollection<Object> getValues();
 	
 	/**
 	 * Get the others.
@@ -33,7 +33,7 @@ public interface Matchable {
 	 * @return The others. Never null.
 	 * 
 	 */
-	Iterable<?> getOthers();
+	ImmutableCollection<Object> getOthers();
 	
 	/**
 	 * Get the meta data that describe this matchable.

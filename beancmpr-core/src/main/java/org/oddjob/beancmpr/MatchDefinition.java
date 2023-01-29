@@ -1,5 +1,7 @@
 package org.oddjob.beancmpr;
 
+import org.oddjob.beancmpr.matchables.ImmutableCollection;
+
 /**
  * Define the properties for matching two beans.
  * <p>
@@ -13,25 +15,25 @@ public interface MatchDefinition {
 	 * The key property names. These properties decide if two things 
 	 * can be compared.
 	 * 
-	 * @return The names of the key properties. May be null.
+	 * @return The names of the key properties. May not be null.
 	 */
-	Iterable<String> getKeyProperties();
+	ImmutableCollection<String> getKeyProperties();
 	
 	/**
 	 * The names of the properties of the values that will be compared.
 	 * 
-	 * @return The names of the properties for comparison. May be null.
+	 * @return The names of the properties for comparison. May not be null.
 	 */
-	Iterable<String> getValueProperties();
+	ImmutableCollection<String> getValueProperties();
 		
 		
 	/**
-	 * Other properties that wont be used in the match, but which
+	 * Other properties that won't be used in the match, but which
 	 * might be required for information on results. Inserted time,
 	 * or Operator Id for instance.
 	 * 
-	 * @return The names of other properties. May be null.
+	 * @return The names of other properties. May not be null.
 	 */
-	Iterable<String> getOtherProperties();
+	ImmutableCollection<String> getOtherProperties();
 	
 }

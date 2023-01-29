@@ -1,15 +1,12 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.oddjob.arooa.reflect.ArooaClass;
 import org.oddjob.arooa.reflect.BeanOverview;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.MatchDefinition;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A {@link MatchableFactory} that creates {@link Matchable}s from beans.
@@ -37,8 +34,8 @@ implements MatchableFactory<Map.Entry<K, V>> {
 	/**
 	 * Create a new instance.
 	 * 
-	 * @param definition
-	 * @param accessor
+	 * @param definition The match definition.
+	 * @param accessor The property accessor.
 	 */
 	public MapMatchableFactory(MatchDefinition definition,
 			PropertyAccessor accessor) {
@@ -65,69 +62,58 @@ implements MatchableFactory<Map.Entry<K, V>> {
 			metaData = metaDataFor(entry);
 		}
 		
-		List<?> keys; 
-		if (definition.getKeyProperties() == null) {
-			keys = Arrays.asList(entry.getKey());
+		ImmutableCollection<Object> keys;
+		if (definition.getKeyProperties().isEmpty()) {
+			keys = ImmutableCollectionImpl.of(entry.getKey());
 		}
 		else {
-			keys = strip(entry.getKey(), definition.getKeyProperties());		
+			keys = extract(entry.getKey(), definition.getKeyProperties());
 		}
 		
-		List<?> comparables;
-		if (definition.getKeyProperties() == null) {
-			comparables = Arrays.asList(entry.getValue());
+		ImmutableCollection<Object> comparables;
+		if (definition.getKeyProperties().isEmpty()) {
+			comparables = ImmutableCollectionImpl.of(entry.getValue());
 		}
 		else {
-			comparables = strip(entry.getValue(), definition.getValueProperties());
+			comparables = extract(entry.getValue(), definition.getValueProperties());
 		}
 		
-		List<?> others;
-		if (definition.getOtherProperties() == null) {
-			others = new ArrayList<Object>();
-		}
-		else {
-			others = strip(entry.getValue(), definition.getOtherProperties());
-		}
-		
-		SimpleMatchable matchable = 
-			new SimpleMatchable(keys, comparables, others, metaData);
-		
-		return matchable;
+		ImmutableCollection<Object> others =
+				extract(entry.getValue(), definition.getOtherProperties());
+
+		return SimpleMatchable.of(keys, comparables, others, metaData);
 	}
 	
 	/**
-	 * Create a list of the given property values.
+	 * Create a collection of the given property values.
 	 * 
-	 * @param bean
-	 * @param names
+	 * @param bean the bean
+	 * @param names the property names
 	 * 
 	 * @return The property values. Never null.
 	 */
-	@SuppressWarnings("unchecked")
-	private <T> List<T> strip(Object bean, Iterable<String> names) {
-		
-		List<T> values = new ArrayList<T>();
-		for (String name : names) {
-			values.add((T) accessor.getProperty(bean, name));
-		}
-		return values;
+	private ImmutableCollection<Object> extract(Object bean, ImmutableCollection<String> names) {
+
+		return names.stream()
+				.map(name -> accessor.getProperty(bean, name))
+				.collect(ImmutableCollection.collector());
 	}
 	
 	/**
 	 * Create the meta data.
 	 * 
-	 * @param entry A map entry on which to base the meta data.
+	 * @param entry A map entry on which to base the metadata.
 	 * 
 	 * @return The meta data. Never null.
 	 */
 	private MatchableMetaData metaDataFor(Map.Entry<?, ?> entry) {
 		
-		Map<String, Class<?>> types = new HashMap<String, Class<?>>();
+		Map<String, Class<?>> types = new HashMap<>();
 		
-		Iterable<String> keyProperties = definition.getKeyProperties();
-		if (keyProperties == null) {
+		ImmutableCollection<String> keyProperties = definition.getKeyProperties();
+		if (keyProperties.isEmpty()) {
 			types.put(KEY_NAME, entry.getKey().getClass());
-			keyProperties = Arrays.asList(KEY_NAME);
+			keyProperties = ImmutableCollection.of(KEY_NAME);
 		}
 		else {
 			ArooaClass arooaClass = accessor.getClassName(entry.getKey());
@@ -139,10 +125,10 @@ implements MatchableFactory<Map.Entry<K, V>> {
 			}
 		}
 		
-		Iterable<String> valueProperties = definition.getValueProperties();
-		if (valueProperties == null) {
+		ImmutableCollection<String> valueProperties = definition.getValueProperties();
+		if (valueProperties.isEmpty()) {
 			types.put(VALUE_NAME, entry.getValue().getClass());
-			valueProperties = Arrays.asList(VALUE_NAME);
+			valueProperties = ImmutableCollection.of(VALUE_NAME);
 		}
 		else {
 			ArooaClass arooaClass = accessor.getClassName(entry.getValue());
@@ -153,14 +139,12 @@ implements MatchableFactory<Map.Entry<K, V>> {
 				types.put(name, overview.getPropertyType(name));
 			}
 			
-			if (definition.getOtherProperties() != null) {
-				for (String name : definition.getOtherProperties()) {
-					types.put(name, overview.getPropertyType(name));
-				}
+			for (String name : definition.getOtherProperties()) {
+				types.put(name, overview.getPropertyType(name));
 			}
 		}
 		
-		return new SimpleMatchableMeta(keyProperties, valueProperties, 
+		return SimpleMatchableMeta.of(keyProperties, valueProperties,
 				definition.getOtherProperties(), types);
 	}	
 	

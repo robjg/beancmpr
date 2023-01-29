@@ -94,7 +94,7 @@ class OrderedMatchablesComparerTest extends TestCase {
 	@Test
 	void testNoKeysMatch() {
 
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				new String[] { "type" },
 				new String[] { "quantity" },
 				null);
@@ -151,7 +151,7 @@ class OrderedMatchablesComparerTest extends TestCase {
 	@Test
 	void testKeysMatchOneValueDoesnt() {
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				new String[] { "type" },
 				new String[] { "quantity" },
 				null
@@ -206,7 +206,7 @@ class OrderedMatchablesComparerTest extends TestCase {
 	@Test
 	void testTwoXMissingOneYDuplicated() {
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				new String[] { "type" },
 				new String[] { "quantity" },
 				null);
@@ -265,7 +265,7 @@ class OrderedMatchablesComparerTest extends TestCase {
 	@Test
 	void testWithNoKey() {
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				null,
 				new String[] { "type", "quantity" },
 				null);
@@ -366,7 +366,7 @@ class OrderedMatchablesComparerTest extends TestCase {
 	@Test
 	void testKeysOfDifferentTypes() {
 		
-		MatchDefinition definition = new SimpleMatchDefinition(
+		MatchDefinition definition = SimpleMatchDefinition.of(
 				new String[] { "id" },
 				new String[] { "type", "quantity" },
 				null);
