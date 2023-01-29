@@ -17,8 +17,8 @@ public interface MultiValueComparison<T> extends Comparison<T> {
 	 * Provides an {@code Iterable} of the individual {@link Comparison}s
 	 * between the values of two {@link Matchable}s.
 	 * 
-	 * @return Comparison Iterable. Never null.
+	 * @return Comparison Collection. Never null.
 	 */
-	Iterable<Comparison<?>> getValueComparisons();
+	ImmutableCollection<Comparison<?>> getValueComparisons();
 
 }

@@ -3,12 +3,15 @@ package org.oddjob.beancmpr;
 import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.beans.IterableBeansComparerType;
-import org.oddjob.beancmpr.results.MatchResultType;
 import org.oddjob.beancmpr.results.MatchResult;
 import org.oddjob.beancmpr.results.MatchResultHandlerFactory;
+import org.oddjob.beancmpr.results.MatchResultType;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 public class BeanCompareJobInCodeTest extends TestCase {
 
@@ -68,46 +71,50 @@ public class BeanCompareJobInCodeTest extends TestCase {
 		test.run();
 		
 		MatchResult result1 = results.getResults().get(0);
-		
+
+		assertThat(result1.getMetaData().getKeyProperties().size(), is(2));
+		assertThat(result1.getMetaData().getPropertyType("type"), is(String.class));
+		assertThat(result1.getMetaData().getPropertyType("colour"), is(String.class));
+
 		assertEquals(MatchResultType.Y_MISSING, result1.getResultType());
-		assertEquals("apple", result1.getKeys()[0]);
-		assertEquals("green", result1.getKeys()[1]);
+		assertEquals("apple", result1.getKey(0));
+		assertEquals("green", result1.getKey(1));
 		
 		MatchResult result2 = results.getResults().get(1);
 		
 		assertEquals(MatchResultType.X_MISSING, result2.getResultType());
-		assertEquals("banana", result2.getKeys()[0]);
-		assertEquals("brown", result2.getKeys()[1]);
-		
+		assertEquals("banana", result2.getKey(0));
+		assertEquals("brown", result2.getKey(1));
+
 		MatchResult result3 = results.getResults().get(2);
 		
 		assertEquals(MatchResultType.X_MISSING, result3.getResultType());
-		assertEquals("banana", result3.getKeys()[0]);
-		assertEquals("green", result3.getKeys()[1]);
+		assertEquals("banana", result3.getKey(0));
+		assertEquals("green", result3.getKey(1));
 		
 		MatchResult result4 = results.getResults().get(3);
 		
 		assertEquals(MatchResultType.X_MISSING, result4.getResultType());
-		assertEquals("banana", result4.getKeys()[0]);
-		assertEquals("yellow", result4.getKeys()[1]);
+		assertEquals("banana", result4.getKey(0));
+		assertEquals("yellow", result4.getKey(1));
 		
 		MatchResult result5 = results.getResults().get(4);
 		
 		assertEquals(MatchResultType.Y_MISSING, result5.getResultType());
-		assertEquals("orange", result5.getKeys()[0]);
-		assertEquals("orange", result5.getKeys()[1]);
+		assertEquals("orange", result5.getKey(0));
+		assertEquals("orange", result5.getKey(1));
 		
 		MatchResult result6 = results.getResults().get(5);
 		
 		assertEquals(MatchResultType.X_MISSING, result6.getResultType());
-		assertEquals("pear", result6.getKeys()[0]);
-		assertEquals("green", result6.getKeys()[1]);
+		assertEquals("pear", result6.getKey(0));
+		assertEquals("green", result6.getKey(1));
 		
 		MatchResult result7 = results.getResults().get(6);
 		
 		assertEquals(MatchResultType.EQUAL, result7.getResultType());
-		assertEquals("pear", result7.getKeys()[0]);
-		assertEquals("red", result7.getKeys()[1]);
+		assertEquals("pear", result7.getKey(0));
+		assertEquals("red", result7.getKey(1));
 	}
 	
 	@Test
@@ -147,44 +154,44 @@ public class BeanCompareJobInCodeTest extends TestCase {
 		MatchResult result1 = results.getResults().get(0);
 		
 		assertEquals(MatchResultType.X_MISSING, result1.getResultType());
-		assertEquals("apple", result1.getKeys()[0]);
-		assertEquals("green", result1.getKeys()[1]);
+		assertEquals("apple", result1.getKey(0));
+		assertEquals("green", result1.getKey(1));
 		
 		MatchResult result2 = results.getResults().get(1);
 		
 		assertEquals(MatchResultType.Y_MISSING, result2.getResultType());
-		assertEquals("banana", result2.getKeys()[0]);
-		assertEquals("brown", result2.getKeys()[1]);
+		assertEquals("banana", result2.getKey(0));
+		assertEquals("brown", result2.getKey(1));
 		
 		MatchResult result3 = results.getResults().get(2);
 		
 		assertEquals(MatchResultType.Y_MISSING, result3.getResultType());
-		assertEquals("banana", result3.getKeys()[0]);
-		assertEquals("green", result3.getKeys()[1]);
+		assertEquals("banana", result3.getKey(0));
+		assertEquals("green", result3.getKey(1));
 		
 		MatchResult result4 = results.getResults().get(3);
 		
 		assertEquals(MatchResultType.Y_MISSING, result4.getResultType());
-		assertEquals("banana", result4.getKeys()[0]);
-		assertEquals("yellow", result4.getKeys()[1]);
+		assertEquals("banana", result4.getKey(0));
+		assertEquals("yellow", result4.getKey(1));
 		
 		MatchResult result5 = results.getResults().get(4);
 		
 		assertEquals(MatchResultType.X_MISSING, result5.getResultType());
-		assertEquals("orange", result5.getKeys()[0]);
-		assertEquals("orange", result5.getKeys()[1]);
+		assertEquals("orange", result5.getKey(0));
+		assertEquals("orange", result5.getKey(1));
 		
 		MatchResult result6 = results.getResults().get(5);
 		
 		assertEquals(MatchResultType.Y_MISSING, result6.getResultType());
-		assertEquals("pear", result6.getKeys()[0]);
-		assertEquals("green", result6.getKeys()[1]);
+		assertEquals("pear", result6.getKey(0));
+		assertEquals("green", result6.getKey(1));
 		
 		MatchResult result7 = results.getResults().get(6);
 		
 		assertEquals(MatchResultType.EQUAL, result7.getResultType());
-		assertEquals("pear", result7.getKeys()[0]);
-		assertEquals("red", result7.getKeys()[1]);
+		assertEquals("pear", result7.getKey(0));
+		assertEquals("red", result7.getKey(1));
 	}
 	
 }

@@ -1,6 +1,7 @@
 package org.oddjob.beancmpr.beans;
 
 import org.oddjob.beancmpr.Comparison;
+import org.oddjob.beancmpr.matchables.ImmutableCollection;
 import org.oddjob.beancmpr.matchables.Matchable;
 import org.oddjob.beancmpr.matchables.MatchableComparison;
 import org.oddjob.beancmpr.matchables.MultiValueComparison;
@@ -65,7 +66,7 @@ implements MultiValueComparison<T>, MultiItemComparison<T> {
 	}
 	
 	@Override
-	public Iterable<Comparison<?>> getValueComparisons() {
+	public ImmutableCollection<Comparison<?>> getValueComparisons() {
 		return delegate.getValueComparisons();
 	}
 	

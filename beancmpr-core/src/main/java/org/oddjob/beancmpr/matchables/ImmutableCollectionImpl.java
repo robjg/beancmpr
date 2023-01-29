@@ -67,6 +67,11 @@ class ImmutableCollectionImpl<E> implements ImmutableCollection<E> {
     }
 
     @Override
+    public E get(int index) {
+        return elements.get(index);
+    }
+
+    @Override
     public boolean isEmpty() {
         return elements.isEmpty();
     }
@@ -75,6 +80,7 @@ class ImmutableCollectionImpl<E> implements ImmutableCollection<E> {
     public Iterator<E> iterator() {
         return elements.listIterator();
     }
+
 
     @Override
     public boolean equals(Object o) {

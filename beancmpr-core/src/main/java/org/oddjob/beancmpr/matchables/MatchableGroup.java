@@ -13,7 +13,7 @@ public interface MatchableGroup {
 	 * 
 	 * @return The keys. Will not be null.
 	 */
-	Iterable<?> getKeys();
+	ImmutableCollection<Object> getKeys();
 	
 	/**
 	 * Get the meta data for {@link Matchable}s in this group.
@@ -28,7 +28,7 @@ public interface MatchableGroup {
 	 * @return An Iterable over the group. A group must contain at least
 	 * one {@link Matchable}.
 	 */
-	Iterable<Matchable> getGroup();
+	ImmutableCollection<Matchable> getGroup();
 	
 	/**
 	 * Get the size of the group.

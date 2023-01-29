@@ -48,7 +48,7 @@ public class MatchableComparison
             this.y = y;
         }
 
-        public Accumulator add(Comparison<?> comparison) {
+        public Accumulator add(Comparison<? extends Object> comparison) {
 
             this.comparisons.add(comparison);
 
@@ -89,7 +89,7 @@ public class MatchableComparison
     }
 
     @Override
-    public Iterable<Comparison<?>> getValueComparisons() {
+    public ImmutableCollection<Comparison<?>> getValueComparisons() {
         return comparisons;
     }
 

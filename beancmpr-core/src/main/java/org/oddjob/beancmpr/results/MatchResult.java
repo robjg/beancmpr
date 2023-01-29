@@ -1,81 +1,192 @@
 package org.oddjob.beancmpr.results;
 
-import org.oddjob.arooa.utils.Iterables;
 import org.oddjob.beancmpr.Comparison;
-import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableGroup;
-import org.oddjob.beancmpr.matchables.MultiValueComparison;
+import org.oddjob.beancmpr.matchables.*;
 
 /**
  * A Match Result
  */
-public class MatchResult {
+abstract public class MatchResult {
 
-    private MatchResultType resultType;
+    abstract public MatchResultType getResultType();
 
-    private Object[] keys;
+    abstract public MatchableMetaData getMetaData();
 
-    private Comparison<?>[] comparisons;
+    abstract public Object getKey(int index);
 
-    public MatchResultType getResultType() {
-        return resultType;
-    }
+    abstract public Object getXValue(int index);
 
-    public Object[] getKeys() {
-        return keys;
-    }
+    abstract public Object getYValue(int index);
 
-    public Object getKey(int index) {
-        return keys[index];
-    }
+    abstract public Object getXOther(int index);
 
-    public Comparison<?>[] getComparisons() {
-        return comparisons;
-    }
+    abstract public Object getYOther(int index);
 
-    public Comparison<?> getComparison(int index) {
-        return comparisons[index];
+    abstract public Comparison<?> getComparison(int index);
+
+    static class ComparisonResult extends MatchResult {
+
+        private final MultiValueComparison<Matchable> comparison;
+
+        ComparisonResult(MultiValueComparison<Matchable> comparison) {
+            this.comparison = comparison;
+        }
+
+        @Override
+        public MatchResultType getResultType() {
+            return comparison.getResult() == 0 ? MatchResultType.EQUAL : MatchResultType.NOT_EQUAL;
+        }
+
+        @Override
+        public MatchableMetaData getMetaData() {
+            return comparison.getX().getMetaData();
+        }
+
+        @Override
+        public Object getKey(int index) {
+            return comparison.getX().getKeys().get(index);
+        }
+
+        @Override
+        public Object getXValue(int index) {
+            return comparison.getX().getValues().get(index);
+        }
+
+        @Override
+        public Object getYValue(int index) {
+            return comparison.getY().getValues().get(index);
+        }
+
+        @Override
+        public Object getXOther(int index) {
+            return comparison.getX().getOthers().get(index);
+        }
+
+        @Override
+        public Object getYOther(int index) {
+            return comparison.getY().getOthers().get(index);
+        }
+
+        @Override
+        public Comparison<?> getComparison(int index) {
+            return comparison.getValueComparisons().get(index);
+        }
     }
 
     public static MatchResult fromComparison(MultiValueComparison<Matchable> comparison) {
-        MatchResult row = new MatchResult();
-
-        if (comparison.getResult() == 0) {
-            row.resultType = MatchResultType.EQUAL;
-        }
-        else {
-            row.resultType = MatchResultType.NOT_EQUAL;
-        }
-        row.keys = Iterables.toArray(comparison.getX().getKeys());
-
-        row.comparisons = Iterables.toArray(
-                comparison.getValueComparisons(), Comparison.class);
-
-        return row;
+        return new ComparisonResult(comparison);
     }
 
-    public static MatchResult fromMissingX(MatchableGroup ys) {
-        MatchResult row = new MatchResult();
+    static class MissingX extends MatchResult {
 
-        row.resultType = MatchResultType.X_MISSING;
+        private final Matchable y;
 
-        row.keys = Iterables.toArray(ys.getKeys());
+        MissingX(Matchable y) {
+            this.y = y;
+        }
 
-        row.comparisons = new Comparison[0];
+        @Override
+        public MatchResultType getResultType() {
+            return MatchResultType.X_MISSING;
+        }
 
-        return row;
+        @Override
+        public MatchableMetaData getMetaData() {
+            return y.getMetaData();
+        }
+
+        @Override
+        public Object getKey(int index) {
+            return y.getKeys().get(index);
+        }
+
+        @Override
+        public Object getXValue(int index) {
+            return null;
+        }
+
+        @Override
+        public Object getYValue(int index) {
+            return y.getValues().get(index);
+        }
+
+        @Override
+        public Object getXOther(int index) {
+            return null;
+        }
+
+        @Override
+        public Object getYOther(int index) {
+            return y.getOthers().get(index);
+        }
+
+        @Override
+        public Comparison<?> getComparison(int index) {
+            return null;
+        }
     }
 
-    public static MatchResult fromMissingY(MatchableGroup xs) {
-        MatchResult row = new MatchResult();
+    public static ImmutableCollection<MatchResult> fromMissingX(MatchableGroup ys) {
 
-        row.resultType = MatchResultType.Y_MISSING;
+        return ys.getGroup().stream()
+                .map(MissingX::new)
+                .collect(ImmutableCollection.collector());
+    }
 
-        row.keys = Iterables.toArray(xs.getKeys());
+    static class MissingY extends MatchResult {
 
-        row.comparisons = new Comparison[0];
+        private final Matchable x;
 
-        return row;
+        MissingY(Matchable x) {
+            this.x = x;
+        }
+
+        @Override
+        public MatchResultType getResultType() {
+            return MatchResultType.Y_MISSING;
+        }
+
+        @Override
+        public MatchableMetaData getMetaData() {
+            return x.getMetaData();
+        }
+
+        @Override
+        public Object getKey(int index) {
+            return x.getKeys().get(index);
+        }
+
+        @Override
+        public Object getXValue(int index) {
+            return x.getValues().get(index);
+        }
+
+        @Override
+        public Object getYValue(int index) {
+            return null;
+        }
+
+        @Override
+        public Object getXOther(int index) {
+            return x.getOthers().get(index);
+        }
+
+        @Override
+        public Object getYOther(int index) {
+            return null;
+        }
+
+        @Override
+        public Comparison<?> getComparison(int index) {
+            return null;
+        }
+    }
+
+    public static ImmutableCollection<MatchResult> fromMissingY(MatchableGroup xs) {
+
+        return xs.getGroup().stream()
+                .map(MissingY::new)
+                .collect(ImmutableCollection.collector());
     }
 
 }

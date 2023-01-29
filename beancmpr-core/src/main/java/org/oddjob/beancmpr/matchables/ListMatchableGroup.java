@@ -1,16 +1,16 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.util.List;
-
 import org.oddjob.arooa.utils.Iterables;
+
+import java.util.List;
 
 public class ListMatchableGroup implements MatchableGroup {
 
-	private final List<Matchable> matchables;
+	private final ImmutableCollection<Matchable> matchables;
 	
 	public ListMatchableGroup(
 			List<Matchable> matchables) {
-		this.matchables = matchables;
+		this.matchables = ImmutableCollection.of(matchables);
 		
 		if (matchables.isEmpty()) {
 			throw new IllegalArgumentException(
@@ -19,12 +19,12 @@ public class ListMatchableGroup implements MatchableGroup {
 	}
 	
 	@Override
-	public Iterable<?> getKeys() {
+	public ImmutableCollection<Object> getKeys() {
 		return matchables.get(0).getKeys();
 	}
 	
 	@Override
-	public Iterable<Matchable> getGroup() {
+	public ImmutableCollection<Matchable> getGroup() {
 		return matchables;
 	}
 	

@@ -17,6 +17,8 @@ public interface ImmutableCollection<E> extends Iterable<E> {
 
     boolean isEmpty();
 
+    E get(int index);
+
     static <E> ImmutableCollection<E> of(List<? extends E> list) {
         return ImmutableCollectionImpl.of(list);
     }

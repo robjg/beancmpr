@@ -46,12 +46,12 @@ public class MatchResultHandlerFactory implements CompareResultsHandlerFactory {
         @Override
         public void xMissing(MatchableGroup ys) {
 
-            to.accept(MatchResult.fromMissingX(ys));
+            MatchResult.fromMissingX(ys).forEach(to);
         }
 
         @Override
         public void yMissing(MatchableGroup xs) {
-            to.accept(MatchResult.fromMissingY(xs));
+            MatchResult.fromMissingY(xs).forEach(to);
         }
 
     }
