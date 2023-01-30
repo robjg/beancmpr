@@ -1,0 +1,17 @@
+<arooa:descriptor xmlns:arooa="http://rgordon.co.uk/oddjob/arooa"
+  prefix="beancmpr" namespace="oddjob:beancmpr">
+  <components>
+    <arooa:bean-def element='poi-results'
+                    className='beancmpr.poi.PoiMatchResultsService'>
+      <properties>
+        <arooa:property name="to" annotation="org.oddjob.beanbus.Destination"/>
+      </properties>
+      <annotations>
+        <arooa:annotation name="org.oddjob.framework.Start"
+                          method="start" />
+        <arooa:annotation name="org.oddjob.framework.Stop"
+                          method="stop" />
+      </annotations>
+    </arooa:bean-def>
+  </components>
+</arooa:descriptor>

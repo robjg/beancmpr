@@ -30,6 +30,8 @@
     <modules>
         <module>beancmpr-core</module>
         <module>beancmpr-dido</module>
+        <module>beancmpr-poi</module>
+        <module>beancmpr-test</module>
     </modules>
 
     <scm>

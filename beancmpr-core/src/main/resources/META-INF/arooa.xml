@@ -12,8 +12,8 @@
           method="configured" />
       </annotations>
     </arooa:bean-def>
-    <arooa:bean-def element='dido-results'
-      className='org.oddjob.beancmpr.results.DidoBeanResultHandler'/>
+    <arooa:bean-def element='match-results'
+      className='org.oddjob.beancmpr.results.MatchResultHandlerFactory'/>
       
     <arooa:bean-def element='comparers-by-type'
       className='org.oddjob.beancmpr.composite.ComparersByTypeList'/>
