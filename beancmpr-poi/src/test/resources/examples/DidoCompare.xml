@@ -8,28 +8,34 @@
                         <file file="." key="work.dir"/>
                     </values>
                 </properties>
+                <variables id="vars">
+                    <schema>
+                        <dido:schema xmlns:dido="oddjob:dido">
+                            <of>
+                                <dido:field name="Fruit" type="java.lang.String"/>
+                                <dido:field name="Colour" type="java.lang.String"/>
+                                <dido:field name="Qty" type="int"/>
+                                <dido:field name="Price" type="double"/>
+                                <dido:field name="Origin" type="java.lang.String"/>
+                                <dido:field name="Comments" type="java.lang.String"/>
+                            </of>
+                        </dido:schema>
+                    </schema>
+                </variables>
                 <dido:data-in id="data1" name="Data 1" xmlns:dido="oddjob:dido">
                     <how>
                         <dido:csv>
                             <schema>
-                                <dido:schema>
-                                    <of>
-                                        <dido:field name="Fruit" type="java.lang.String"/>
-                                        <dido:field name="Colour" type="java.lang.String"/>
-                                        <dido:field name="Qty" type="int"/>
-                                        <dido:field name="Price" type="double"/>
-                                        <dido:field name="Comments" type="java.lang.String"/>
-                                    </of>
-                                </dido:schema>
+                                <value value="${vars.schema}"/>
                             </schema>
                         </dido:csv>
                     </how>
                     <from>
-                        <buffer><![CDATA[apple,red,5,22.4,crunchy
-apple,green,6,23.2,crisp
-banana,yellow,3,46.4,bent
-orange,orange,2,23.5,healthy
-pear,green,8,37.0,shapely]]></buffer>
+                        <buffer><![CDATA[apple,red,5,22.4,UK,Crunchy
+apple,green,6,23.2,France,Crisp
+banana,yellow,3,46.4,Costa Rica,Bent
+orange,orange,2,23.5,Spain,Healthy
+pear,green,8,37.0,UK,Shapely]]></buffer>
                     </from>
                     <to>
                         <list/>
@@ -39,24 +45,16 @@ pear,green,8,37.0,shapely]]></buffer>
                     <how>
                         <dido:csv>
                             <schema>
-                                <dido:schema>
-                                    <of>
-                                        <dido:field name="Fruit" type="java.lang.String"/>
-                                        <dido:field name="Colour" type="java.lang.String"/>
-                                        <dido:field name="Qty" type="int"/>
-                                        <dido:field name="Price" type="double"/>
-                                        <dido:field name="Comments" type="java.lang.String"/>
-                                    </of>
-                                </dido:schema>
+                                <value value="${vars.schema}"/>
                             </schema>
                         </dido:csv>
                     </how>
                     <from>
-                        <buffer><![CDATA[apple,red,5,22.4,crunchy
-apple,green,7,23.2,crisp
-banana,yellow,3,46.4,bent
-orange,orange,2,57.2,healthy
-pear,gr,8,37.0,shapely]]></buffer>
+                        <buffer><![CDATA[apple,red,5,22.4,South Africa,Crunchy
+apple,green,7,23.2,France,Crisp
+banana,yellow,3,46.4,Costa Rica,Bent
+orange,orange,2,57.2,Spain,Healthy
+pear,gr,8,37.0,Italy,Shapely]]></buffer>
                     </from>
                     <to>
                         <list/>
@@ -72,7 +70,7 @@ pear,gr,8,37.0,shapely]]></buffer>
                                 <value value="${data2.to}"/>
                             </inY>
                             <comparer>
-                                <didocmpr:collection-comparer keys="Fruit,Colour" others="Comments" sorted="false" values="Qty, Price" xmlns:didocmpr="oddjob:didocmpr">
+                                <didocmpr:collection-comparer keys="Fruit,Colour" others="Comments" sorted="false" values="Qty, Price, Origin" xmlns:didocmpr="oddjob:didocmpr">
                                     <comparersByName>
                                         <beancmpr:comparers-by-name>
                                             <comparers>
@@ -90,7 +88,7 @@ pear,gr,8,37.0,shapely]]></buffer>
                             <bookOutProvider>
                                 <dido-poi:workbook xmlns:dido-poi="oddjob:dido:poi">
                                     <output>
-                                        <file file="${work.dir}/Foo.xlsx"/>
+                                        <file file="${work.dir}/MatchResults.xlsx"/>
                                     </output>
                                 </dido-poi:workbook>
                             </bookOutProvider>
