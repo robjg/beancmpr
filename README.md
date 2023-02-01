@@ -11,3 +11,10 @@ used stand alone in code.
 
 Requires Java 11
 
+Modules:
+
+[beancmpr-core](beancmpr-core) Compare Beans, Collections, Arrays and Maps.
+
+[beancmpr-dido](beancmpr-dido) Compare Generic Data.
+
+[beancmpr-poi](beancmpr-poi) Produce results in Excel.

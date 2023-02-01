@@ -5,11 +5,19 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
+import org.oddjob.arooa.reflect.ArooaPropertyException;
 import org.oddjob.arooa.types.ArooaObject;
 import org.oddjob.arooa.xml.XMLConfiguration;
 import org.oddjob.state.ParentState;
+import org.oddjob.tools.ConsoleCapture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.util.Objects;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 class BeanCompareJobTest extends TestCase {
 
@@ -127,5 +135,35 @@ class BeanCompareJobTest extends TestCase {
 				oddjob).lookup("results", String.class);
 				
 		assertEquals(expectedKeysSame, results);
+	}
+
+	@Test
+	void testMainDocumentedExample() throws ArooaPropertyException {
+
+		File config = new File(
+				Objects.requireNonNull(
+						getClass().getResource("BeanCompareJobExample.xml")).getFile());
+
+		Oddjob oddjob = new Oddjob();
+		oddjob.setFile(config);
+
+		ConsoleCapture console = new ConsoleCapture();
+		try (ConsoleCapture.Close ignored = console.captureConsole()) {
+
+			oddjob.run();
+		}
+
+		assertEquals(ParentState.COMPLETE,
+				oddjob.lastStateEvent().getState());
+
+		StringBuilder builder = new StringBuilder();
+		for (String line : console.getLines()) {
+			builder.append(line);
+			builder.append(EOL);
+		}
+
+		assertThat(builder.toString(), is(expectedKeysDifferent));
+
+		oddjob.destroy();
 	}
 }

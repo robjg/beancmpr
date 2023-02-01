@@ -6,10 +6,9 @@ import org.oddjob.beancmpr.matchables.CompareResultsHandlerFactory;
 import java.util.function.Consumer;
 
 /**
- * @oddjob.description A handler that will generate results in format
- * used by Dido. Dido (Data In Data Out) is currently experimental.
- * It can be found at <a href="http://sourceforge.net/projects/di-do>
- * http://sourceforge.net/projects/di-do</a>.
+ * @oddjob.description A Result Handler that will generate results as Generic Data.
+ * Useful for exporting results to CSV, or Excel. Although beancmpr-poi might be
+ * better for Excel as it colours results according to match type.
  * 
  * @author rob
  *
@@ -43,8 +42,8 @@ implements CompareResultsHandlerFactory {
 
 	/**
 	 * @oddjob.property
-	 * @oddjob.description If true then result beans will not be created
-	 * when a comparison results in a match. If false result beans
+	 * @oddjob.description If true then result data will not be created
+	 * when a comparison results in a match. If false result data
 	 * for all comparisons will be created.
 	 * @oddjob.required No. Defaults to false.
 	 */

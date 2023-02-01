@@ -4,15 +4,15 @@
         <sequential>
             <jobs>
                 <bean class="org.oddjob.beancmpr.SharedTestData" id="test-data"/>
-                <beancmpr:compare2 id="compare" xmlns:beancmpr="oddjob:beancmpr">
+                <beancmpr:compare id="compare" xmlns:beancmpr="oddjob:beancmpr">
                     <inX>
-                        <value value="${test-data.fruitX}"/>
+                        <value value="${test-data.listFruitX}"/>
                     </inX>
                     <inY>
-                        <value value="${test-data.fruitY}"/>
+                        <value value="${test-data.listFruitY}"/>
                     </inY>
                     <comparer>
-                        <beancmpr:iterable-comparer keys="id" sorted="false" values="type, quantity, colour"/>
+                        <beancmpr:collection-comparer keys="id" sorted="false" values="type, quantity, colour"/>
                     </comparer>
                     <results>
                         <beancmpr:bean-results>
@@ -21,7 +21,7 @@
                             </out>
                         </beancmpr:bean-results>
                     </results>
-                </beancmpr:compare2>
+                </beancmpr:compare>
                 <bean-report>
                     <beans>
                         <value value="${compare.results.out}"/>

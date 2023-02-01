@@ -67,7 +67,8 @@ class OddjobExamplesTest extends TestCase {
 			"NOT_EQUAL        Banana  3          4          3<>4                yellow   yellow" + EOL +
 			"EQUAL            Orange  2          2                              orange   orange" + EOL;
 
-	@Test void testDatabaseExample() throws ArooaPropertyException, ArooaConversionException {
+	@Test
+	void testDatabaseExample() throws ArooaPropertyException, ArooaConversionException {
 		
 		Oddjob oddjob = new Oddjob();
 		oddjob.setConfiguration(new XMLConfiguration(
@@ -92,4 +93,6 @@ class OddjobExamplesTest extends TestCase {
 
 		oddjob.destroy();
 	}
+
+
 }

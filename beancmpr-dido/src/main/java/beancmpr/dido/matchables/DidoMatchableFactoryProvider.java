@@ -6,7 +6,7 @@ import org.oddjob.beancmpr.matchables.MatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
 
 /**
- * Provide a {@link MatchableFactory} for a Java Bean.
+ * Provide a {@link MatchableFactory} for a Generic Data.
  * 
  * @see DidoMatchableFactory
  * 

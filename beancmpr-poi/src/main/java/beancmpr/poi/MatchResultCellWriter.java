@@ -89,7 +89,7 @@ public class MatchResultCellWriter implements AutoCloseable {
                     firstColumn);
 
             List<ResultItemOut> template = new ArrayList<>();
-            int column = Math.max(firstColumn, 1);
+            int column = 1;
 
             String xPrefix = Objects.requireNonNullElse(this.xPrefix, DEFAULT_X_PREFIX);
             String yPrefix = Objects.requireNonNullElse(this.yPrefix, DEFAULT_Y_PREFIX);

@@ -7,6 +7,7 @@ import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.matchables.*;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -49,7 +50,8 @@ public class DidoMatchableFactory implements MatchableFactory<GenericData<String
                     .collect(Collectors.toMap(
                             Function.identity(),
                             name -> {
-                                Class<?> type = schema.getType(name);
+                                Class<?> type = Objects.requireNonNull(schema.getType(name),
+                                        "No Property " + name + " in Schema " + schema);
                                 if (type.isPrimitive()) {
                                     type = ClassUtils.wrapperClassForPrimitive(type);
                                 }

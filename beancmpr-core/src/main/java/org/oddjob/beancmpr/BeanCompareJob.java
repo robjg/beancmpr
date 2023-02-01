@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  * 
  * A simple example.
  * 
- * {@oddjob.xml.resource org/oddjob/beancmpr/BeanCompareJob2Example1.xml}
+ * {@oddjob.xml.resource org/oddjob/beancmpr/BeanCompareJobExample.xml}
  * 
  * 
  * @author rob
@@ -50,14 +50,14 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 	
 	/**
 	 * @oddjob.property
-	 * @oddjob.description A source of beans.
+	 * @oddjob.description First source of data.
 	 * @oddjob.required Yes.
 	 */
 	private T inX;
 	
 	/**
 	 * @oddjob.property
-	 * @oddjob.description A source of beans.
+	 * @oddjob.description Second source of data.
 	 * @oddjob.required Yes.
 	 */
 	private T inY;

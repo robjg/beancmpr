@@ -1,17 +1,42 @@
 <arooa:descriptor xmlns:arooa="http://rgordon.co.uk/oddjob/arooa"
-  prefix="beancmpr" namespace="oddjob:beancmpr">
-  <components>
-    <arooa:bean-def element='poi-results'
-                    className='beancmpr.poi.PoiMatchResultsService'>
-      <properties>
-        <arooa:property name="to" annotation="org.oddjob.beanbus.Destination"/>
-      </properties>
-      <annotations>
-        <arooa:annotation name="org.oddjob.framework.Start"
-                          method="start" />
-        <arooa:annotation name="org.oddjob.framework.Stop"
-                          method="stop" />
-      </annotations>
-    </arooa:bean-def>
-  </components>
+                  prefix="beancmpr" namespace="oddjob:beancmpr">
+    <components>
+        <arooa:bean-def element='poi-results'
+                        className='beancmpr.poi.PoiMatchResultsService'>
+            <properties>
+                <arooa:property name="to" annotation="org.oddjob.beanbus.Destination"/>
+            </properties>
+            <annotations>
+                <arooa:annotation name="org.oddjob.framework.Start"
+                                  method="start"/>
+                <arooa:annotation name="org.oddjob.framework.Stop"
+                                  method="stop"/>
+            </annotations>
+            <design>
+                <design:form xmlns:design="arooa:design">
+                    <formItems>
+                        <design:group bordered="true" title="General">
+                            <formItems>
+                                <design:text property="name" title="Name"/>
+                            </formItems>
+                        </design:group>
+                        <design:group bordered="true" title="Required">
+                            <formItems>
+                                <design:single property="workbook" title="Workbook"/>
+                            </formItems>
+                        </design:group>
+                        <design:group bordered="true" title="Optional">
+                            <formItems>
+                                <design:text property="sheetName" title="Sheet Name"/>
+                                <design:text property="firstRow" title="First Row"/>
+                                <design:text property="firstColumn" title="First Column"/>
+                                <design:text property="xPrefix" title="X Prefix"/>
+                                <design:text property="yPrefix" title="Y Prefix"/>
+                            </formItems>
+                        </design:group>
+                    </formItems>
+                </design:form>
+            </design>
+        </arooa:bean-def>
+    </components>
 </arooa:descriptor>

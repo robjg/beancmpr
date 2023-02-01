@@ -84,19 +84,16 @@ pear,gr,8,37.0,Italy,Shapely]]></buffer>
                                 <beancmpr:match-results/>
                             </results>
                         </beancmpr:compare>
-                        <beancmpr:poi-results xmlns:beancmpr="oddjob:beancmpr">
-                            <bookOutProvider>
+                        <beancmpr:poi-results firstColumn="2" firstRow="3" name="Comparisons To Excel" sheetName="Comparisons" xmlns:beancmpr="oddjob:beancmpr">
+                            <workbook>
                                 <dido-poi:workbook xmlns:dido-poi="oddjob:dido:poi">
                                     <output>
                                         <file file="${work.dir}/MatchResults.xlsx"/>
                                     </output>
                                 </dido-poi:workbook>
-                            </bookOutProvider>
+                            </workbook>
                         </beancmpr:poi-results>
                     </of>
-                    <to>
-                        <list/>
-                    </to>
                 </bus:bus>
             </jobs>
         </sequential>

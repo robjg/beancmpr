@@ -95,6 +95,48 @@ class IterableDataComparerTypeTest {
                 MatchResultType.NOT_EQUAL, "Pear", 7, 7, "", 42.1, 63.7, "21.60 (51.3%)")));
     }
 
+    @Test
+    void whenNoKeysOrValuesThenComparisonIsEqual() {
+
+        List<GenericData<String>> dataX = List.of(
+                MapData.of("Fruit", "Apple", "Quantity", 5, "Price", 53.2),
+                MapData.of("Fruit", "Pear", "Quantity", 7, "Price", 42.1)
+        );
+
+        List<GenericData<String>> dataY = List.of(
+                MapData.of("Fruit", "Orange", "Quantity", 3, "Price", 98.2),
+                MapData.of("Fruit", "Pear", "Quantity", 7, "Price", 63.7)
+        );
+
+
+        IterableDataComparerType test = new IterableDataComparerType();
+
+        ComparersByNameType comparersByName = new ComparersByNameType();
+
+        test.setComparersByName(comparersByName);
+
+        List<GenericData<String>> results = new ArrayList<>();
+
+        GenericDataResultHandler resultHandler = GenericDataResultHandler.withSettings()
+                .setTo(results::add)
+                .make();
+
+        IterableBeansComparer<GenericData<String>> comparer
+                = test.createComparerWith(new DefaultComparersByType(), resultHandler);
+
+        MultiItemComparison<Iterable<GenericData<String>>> comparison = comparer.compare(dataX, dataY);
+
+        MatcherAssert.assertThat(comparison.getResult(), is(0));
+
+        DataSchema<String> expectedSchema = SchemaBuilder.forStringFields()
+                .addField("MatchType", MatchResultType.class)
+                .build();
+
+        assertThat(results.get(0).getSchema(), is(expectedSchema));
+
+        assertThat(results.get(0).get("MatchType"), is(MatchResultType.EQUAL));
+        assertThat(results.get(1).get("MatchType"), is(MatchResultType.EQUAL));
+    }
 
     // A bug in Arooa that is now fixed.
     @Test

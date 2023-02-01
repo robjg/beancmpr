@@ -5,8 +5,6 @@ import dido.data.GenericData;
 import dido.how.DataIn;
 import org.junit.jupiter.api.Test;
 import org.oddjob.Oddjob;
-import org.oddjob.OddjobLookup;
-import org.oddjob.beancmpr.results.MatchResult;
 import org.oddjob.dido.poi.data.PoiWorkbook;
 import org.oddjob.dido.poi.layouts.DataRows;
 import org.oddjob.state.ParentState;
@@ -43,15 +41,13 @@ class PoiMatchResultsServiceTest {
 
         assertThat(oddjob.lastStateEvent().getState(), is(ParentState.COMPLETE));
 
-        List<MatchResult> results = new OddjobLookup(oddjob).lookup("bus.to", List.class);
-
-        assertThat(results.size(), is(6));
-
         PoiWorkbook workbook = new PoiWorkbook();
         workbook.setInput(Files.newInputStream(workDir.resolve("MatchResults.xlsx")));
 
         DataRows dataRows = new DataRows();
         dataRows.setWithHeader(true);
+        dataRows.setFirstRow(3);
+        dataRows.setFirstColumn(2);
 
         DataIn<String> dataIn = dataRows.inFrom(workbook);
 

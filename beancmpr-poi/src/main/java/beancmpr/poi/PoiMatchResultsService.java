@@ -17,7 +17,7 @@ public class PoiMatchResultsService implements Consumer<MatchResult> {
 
     private volatile String name;
 
-    private volatile BookOutProvider bookOutProvider;
+    private volatile BookOutProvider workbook;
 
     private volatile String sheetName;
 
@@ -25,9 +25,9 @@ public class PoiMatchResultsService implements Consumer<MatchResult> {
 
     private volatile int firstColumn;
 
-    private volatile String xHeaderPrefix;
+    private volatile String xPrefix;
 
-    private volatile String yHeaderPrefix;
+    private volatile String yPrefix;
 
     private volatile BookOut bookOut;
 
@@ -37,7 +37,7 @@ public class PoiMatchResultsService implements Consumer<MatchResult> {
 
     public void start() throws Exception {
 
-        this.bookOut = bookOutProvider.provideBookOut();
+        this.bookOut = workbook.provideBookOut();
     }
 
     @Override
@@ -51,8 +51,8 @@ public class PoiMatchResultsService implements Consumer<MatchResult> {
                         .setSheetName(this.sheetName)
                         .setFirstRow(this.firstRow)
                         .setFirstColumn(this.firstColumn)
-                        .setxPrefix(this.xHeaderPrefix)
-                        .setyPrefix(this.yHeaderPrefix)
+                        .setxPrefix(this.xPrefix)
+                        .setyPrefix(this.yPrefix)
                         .createFor(this.bookOut, matchResult.getMetaData());
 
                 this.cellWriter.writeHeader();
@@ -72,7 +72,10 @@ public class PoiMatchResultsService implements Consumer<MatchResult> {
 
     public void stop() throws IOException {
         try {
-            this.cellWriter.close();
+            // If no lines written, cell writer will be null still.
+            if (this.cellWriter != null) {
+                this.cellWriter.close();
+            }
             this.bookOut.close();
         }
         finally {
@@ -90,12 +93,12 @@ public class PoiMatchResultsService implements Consumer<MatchResult> {
         this.name = name;
     }
 
-    public BookOutProvider getBookOutProvider() {
-        return bookOutProvider;
+    public BookOutProvider getWorkbook() {
+        return workbook;
     }
 
-    public void setBookOutProvider(BookOutProvider bookOutProvider) {
-        this.bookOutProvider = bookOutProvider;
+    public void setWorkbook(BookOutProvider workbook) {
+        this.workbook = workbook;
     }
 
     public String getSheetName() {
@@ -122,20 +125,20 @@ public class PoiMatchResultsService implements Consumer<MatchResult> {
         this.firstColumn = firstColumn;
     }
 
-    public String getxHeaderPrefix() {
-        return xHeaderPrefix;
+    public String getxPrefix() {
+        return xPrefix;
     }
 
-    public void setxHeaderPrefix(String xHeaderPrefix) {
-        this.xHeaderPrefix = xHeaderPrefix;
+    public void setxPrefix(String xPrefix) {
+        this.xPrefix = xPrefix;
     }
 
-    public String getyHeaderPrefix() {
-        return yHeaderPrefix;
+    public String getyPrefix() {
+        return yPrefix;
     }
 
-    public void setyHeaderPrefix(String yHeaderPrefix) {
-        this.yHeaderPrefix = yHeaderPrefix;
+    public void setyPrefix(String yPrefix) {
+        this.yPrefix = yPrefix;
     }
 
     public Consumer<? super MatchResult> getTo() {
