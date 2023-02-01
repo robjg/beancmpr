@@ -29,6 +29,10 @@ public class PoiMatchResultsService implements Consumer<MatchResult> {
 
     private volatile String yPrefix;
 
+    private boolean autoWidth;
+
+    private boolean autoFilter;
+
     private volatile BookOut bookOut;
 
     private volatile MatchResultCellWriter cellWriter;
@@ -53,6 +57,8 @@ public class PoiMatchResultsService implements Consumer<MatchResult> {
                         .setFirstColumn(this.firstColumn)
                         .setxPrefix(this.xPrefix)
                         .setyPrefix(this.yPrefix)
+                        .setAutoFilter(this.autoFilter)
+                        .setAutoWidth(this.autoWidth)
                         .createFor(this.bookOut, matchResult.getMetaData());
 
                 this.cellWriter.writeHeader();
@@ -139,6 +145,22 @@ public class PoiMatchResultsService implements Consumer<MatchResult> {
 
     public void setyPrefix(String yPrefix) {
         this.yPrefix = yPrefix;
+    }
+
+    public boolean isAutoWidth() {
+        return autoWidth;
+    }
+
+    public void setAutoWidth(boolean autoWidth) {
+        this.autoWidth = autoWidth;
+    }
+
+    public boolean isAutoFilter() {
+        return autoFilter;
+    }
+
+    public void setAutoFilter(boolean autoFilter) {
+        this.autoFilter = autoFilter;
     }
 
     public Consumer<? super MatchResult> getTo() {

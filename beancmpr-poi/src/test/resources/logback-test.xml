@@ -13,7 +13,7 @@
   </root>
   
   <logger name="org.oddjob" level="INFO"/>
-  <logger name="org.oddjob.arooa" level="INFO"/>
   <logger name="beancmpr" level="DEBUG"/>
+  <logger name="dido" level="DEBUG"/>
 
 </configuration>

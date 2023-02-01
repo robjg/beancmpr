@@ -37,9 +37,18 @@ public class MatchResultCellWriter implements AutoCloseable {
 
     private final List<ResultItemOut> template;
 
-    private MatchResultCellWriter(RowsOut rowsOut, List<ResultItemOut> template) {
+    private final boolean autoWidth;
+
+    private final boolean autoFilter;
+
+    private MatchResultCellWriter(RowsOut rowsOut,
+                                  List<ResultItemOut> template,
+                                  boolean autoWidth,
+                                  boolean autoFilter) {
         this.rowsOut = rowsOut;
         this.template = template;
+        this.autoWidth = autoWidth;
+        this.autoFilter = autoFilter;
     }
 
     static class Options {
@@ -53,6 +62,10 @@ public class MatchResultCellWriter implements AutoCloseable {
         private String xPrefix;
 
         private String yPrefix;
+
+        private boolean autoWidth;
+
+        private boolean autoFilter;
 
         public Options setSheetName(String sheetName) {
             this.sheetName = sheetName;
@@ -76,6 +89,16 @@ public class MatchResultCellWriter implements AutoCloseable {
 
         public Options setyPrefix(String yPrefix) {
             this.yPrefix = yPrefix;
+            return this;
+        }
+
+        public Options setAutoWidth(boolean autoWidth) {
+            this.autoWidth = autoWidth;
+            return this;
+        }
+
+        public Options setAutoFilter(boolean autoFilter) {
+            this.autoFilter = autoFilter;
             return this;
         }
 
@@ -115,7 +138,7 @@ public class MatchResultCellWriter implements AutoCloseable {
                 ++column;
             }
 
-            return new MatchResultCellWriter(rowsOut, template);
+            return new MatchResultCellWriter(rowsOut, template, autoWidth, autoFilter);
         }
     }
 
@@ -144,7 +167,14 @@ public class MatchResultCellWriter implements AutoCloseable {
 
     @Override
     public void close() {
-        rowsOut.autoWidth();
+
+        if (autoFilter) {
+            rowsOut.autoFilter();
+        }
+
+        if (autoWidth) {
+            rowsOut.autoWidth();
+        }
     }
 
     interface ResultItemOut {

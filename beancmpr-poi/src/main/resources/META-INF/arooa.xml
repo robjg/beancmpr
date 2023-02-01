@@ -32,6 +32,8 @@
                                 <design:text property="firstColumn" title="First Column"/>
                                 <design:text property="xPrefix" title="X Prefix"/>
                                 <design:text property="yPrefix" title="Y Prefix"/>
+                                <design:text property="autoWidth" title="Auto Width"/>
+                                <design:text property="autoFilter" title="Auto Filter"/>
                             </formItems>
                         </design:group>
                     </formItems>
