@@ -48,6 +48,9 @@ public class MatchResultHandlerFactory implements CompareResultsHandlerFactory {
         @Override
         public void compared(MultiValueComparison<Matchable> comparison) {
 
+            if (ignoreMatches && comparison.getResult() == 0) {
+                return;
+            }
             to.accept(MatchResult.fromComparison(comparison));
         }
 
