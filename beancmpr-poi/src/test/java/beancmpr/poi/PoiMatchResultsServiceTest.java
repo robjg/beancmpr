@@ -1,18 +1,17 @@
 package beancmpr.poi;
 
 import beancmpr.test.OurDirs;
-import dido.data.GenericData;
+import dido.data.DidoData;
 import dido.how.DataIn;
+import dido.poi.data.PoiWorkbook;
+import dido.poi.layouts.DataRows;
 import org.junit.jupiter.api.Test;
 import org.oddjob.Oddjob;
-import org.oddjob.dido.poi.data.PoiWorkbook;
-import org.oddjob.dido.poi.layouts.DataRows;
 import org.oddjob.state.ParentState;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -49,20 +48,18 @@ class PoiMatchResultsServiceTest {
         dataRows.setFirstRow(3);
         dataRows.setFirstColumn(2);
 
-        DataIn<String> dataIn = dataRows.inFrom(workbook);
+        List<DidoData> list;
 
-        List<GenericData<String>> list = new ArrayList<>();
-        for (GenericData<String> data = dataIn.get(); data != null; data = dataIn.get()) {
-            list.add(data);
-
+        try (DataIn dataIn = dataRows.inFrom(workbook)) {
+            list = dataIn.stream().toList();
         }
 
         assertThat(list.size(), is(6));
 
-        assertThat(list.get(5).getString("ResultType"), is("Y_MISSING"));
-        assertThat(list.get(4).getDouble("Y_Qty"), is(8.0));
-        assertThat(list.get(2).getString("Colour"), is("yellow"));
-        assertThat(list.get(0).getString("X_Comments"), is("Crisp"));
+        assertThat(list.get(5).getStringNamed("ResultType"), is("Y_MISSING"));
+        assertThat(list.get(4).getDoubleNamed("Y_Qty"), is(8.0));
+        assertThat(list.get(2).getStringNamed("Colour"), is("yellow"));
+        assertThat(list.get(0).getStringNamed("X_Comments"), is("Crisp"));
 
         oddjob.destroy();
     }

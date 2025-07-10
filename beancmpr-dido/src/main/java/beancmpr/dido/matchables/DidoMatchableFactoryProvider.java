@@ -1,6 +1,6 @@
 package beancmpr.dido.matchables;
 
-import dido.data.GenericData;
+import dido.data.DidoData;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.matchables.MatchableFactory;
 import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
@@ -14,7 +14,7 @@ import org.oddjob.beancmpr.matchables.MatchableFactoryProvider;
  *
  */
 public class DidoMatchableFactoryProvider
-implements MatchableFactoryProvider<GenericData<String>> {
+implements MatchableFactoryProvider<DidoData> {
 	
 	/** The definition for the match. */ 
 	private final MatchDefinition matchDefinition;
@@ -23,16 +23,15 @@ implements MatchableFactoryProvider<GenericData<String>> {
 	/**
 	 * Create a new instance.
 	 * 
-	 * @param matchDefinition
+	 * @param matchDefinition The definition for the match.
 	 */
-	public DidoMatchableFactoryProvider(
-			MatchDefinition matchDefinition) {
+	public DidoMatchableFactoryProvider(MatchDefinition matchDefinition) {
 		
 		this.matchDefinition = matchDefinition;
 	}
 	
 	@Override
-	public MatchableFactory<GenericData<String>> provideFactory() {
+	public MatchableFactory<DidoData> provideFactory() {
 		return new DidoMatchableFactory(
 				matchDefinition);
 	}

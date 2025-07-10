@@ -2,6 +2,8 @@ package org.oddjob.beancmpr.composite;
 
 import org.oddjob.beancmpr.Comparer;
 
+import java.lang.reflect.Type;
+
 /**
  * Collects together {@link ComparersByName} and {@link ComparersByType}
  * <p>
@@ -42,7 +44,7 @@ public class ComparersByNameOrType implements BeanPropertyComparerProvider {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> Comparer<T> comparerFor(String property, Class<T> type) {
+	public <T> Comparer<T> comparerFor(String property, Type type) {
 
 		Comparer<T> comparer = null;
 		if (comparersByName != null) {

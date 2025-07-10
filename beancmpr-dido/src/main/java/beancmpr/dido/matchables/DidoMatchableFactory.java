@@ -1,11 +1,14 @@
 package beancmpr.dido.matchables;
 
 import dido.data.DataSchema;
-import dido.data.GenericData;
+import dido.data.DidoData;
+import dido.data.generic.GenericData;
+import dido.data.util.TypeUtil;
 import org.oddjob.arooa.utils.ClassUtils;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.matchables.*;
 
+import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
@@ -17,7 +20,7 @@ import java.util.stream.Stream;
  *
  * @author rob
  */
-public class DidoMatchableFactory implements MatchableFactory<GenericData<String>> {
+public class DidoMatchableFactory implements MatchableFactory<DidoData> {
 
     private final MatchDefinition definition;
 
@@ -33,16 +36,16 @@ public class DidoMatchableFactory implements MatchableFactory<GenericData<String
     }
 
     @Override
-    public Matchable createMatchable(GenericData<String> data) {
+    public Matchable createMatchable(DidoData data) {
 
         if (data == null) {
             throw new NullPointerException("Bean is null.");
         }
 
         if (metaData == null) {
-            DataSchema<String> schema = data.getSchema();
+            DataSchema schema = data.getSchema();
 
-            Map<String, Class<?>> types = Stream.of(
+            Map<String, Type> types = Stream.of(
                             definition.getKeyProperties().stream(),
                             definition.getValueProperties().stream(),
                             definition.getOtherProperties().stream())
@@ -50,10 +53,10 @@ public class DidoMatchableFactory implements MatchableFactory<GenericData<String
                     .collect(Collectors.toMap(
                             Function.identity(),
                             name -> {
-                                Class<?> type = Objects.requireNonNull(schema.getType(name),
+                                Type type = Objects.requireNonNull(schema.getTypeNamed(name),
                                         "No Property " + name + " in Schema " + schema);
-                                if (type.isPrimitive()) {
-                                    type = ClassUtils.wrapperClassForPrimitive(type);
+                                if (TypeUtil.isPrimitive(type)) {
+                                    type = ClassUtils.wrapperClassForPrimitive(TypeUtil.classOf(type));
                                 }
                                 return type;
                             }));
@@ -73,14 +76,14 @@ public class DidoMatchableFactory implements MatchableFactory<GenericData<String
     /**
      * Create a list of the given property values.
      *
-     * @param genericData
-     * @param names
+     * @param didoData The data.
+     * @param names The field names.
      * @return The property values. Never null.
      */
-    private ImmutableCollection<Object> copy(GenericData<String> genericData, ImmutableCollection<String> names) {
+    private ImmutableCollection<Object> copy(DidoData didoData, ImmutableCollection<String> names) {
 
         return names.stream()
-                .map(genericData::get)
+                .map(didoData::getNamed)
                 .collect(ImmutableCollection.collector());
     }
 

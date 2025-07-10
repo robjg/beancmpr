@@ -2,6 +2,8 @@ package org.oddjob.beancmpr.composite;
 
 import org.oddjob.beancmpr.Comparer;
 
+import java.lang.reflect.Type;
+
 /**
  * A collection of {@link Comparer}s where the comparer can be retrieved
  * by type.
@@ -19,5 +21,5 @@ public interface ComparersByType {
 	 * 
 	 * @return The comparer or null if one can't be found for the type.
 	 */
-	<T> Comparer<T> comparerFor(Class<T> type);
+	<T> Comparer<T> comparerFor(Type type);
 }

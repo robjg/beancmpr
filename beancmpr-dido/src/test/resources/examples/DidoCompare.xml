@@ -85,6 +85,7 @@ pear,gr,8,37.0,shapely]]>
                                 <didocmpr:data-results xmlns:didocmpr="oddjob:didocmpr"/>
                             </results>
                         </beancmpr:compare>
+                        <bus:collect id="results"/>
                         <dido:data-out xmlns:dido="oddjob:dido">
                             <how>
                                 <dido:csv/>
@@ -94,9 +95,6 @@ pear,gr,8,37.0,shapely]]>
                             </to>
                         </dido:data-out>
                     </of>
-                    <to>
-                        <list/>
-                    </to>
                 </bus:bus>
             </jobs>
         </sequential>

@@ -2,6 +2,8 @@ package org.oddjob.beancmpr.matchables;
 
 import org.oddjob.beancmpr.MatchDefinition;
 
+import java.lang.reflect.Type;
+
 /**
  * Meta data that describe a {@link Matchable}.
  * <p>
@@ -19,5 +21,5 @@ public interface MatchableMetaData extends MatchDefinition {
 	 * @param name The name of the property.
 	 * @return The type. Must not be null if the property exists.
 	 */
-	Class<?> getPropertyType(String name);
+	Type getPropertyType(String name);
 }

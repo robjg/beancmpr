@@ -1,13 +1,14 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.beans.PropertyTypeHelper;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Create a {@code Comparator} for the keys of {@link Matchable}s based
@@ -51,7 +52,7 @@ public class KeyComparatorFactory {
 	
 		for (String propertyName: xMetaData.getKeyProperties()) {
 
-			Class<?> propertyType = new PropertyTypeHelper().typeFor(propertyName, 
+			Type propertyType = new PropertyTypeHelper().typeFor(propertyName,
 					xMetaData.getPropertyType(propertyName),
 					yMetaData.getPropertyType(propertyName));
 			
@@ -61,7 +62,7 @@ public class KeyComparatorFactory {
 			if (comparer == null) {
 				throw new IllegalStateException("No comparer for [" + 
 						propertyName + "] of type [" + 
-						propertyType.getName() + "]");
+						propertyType.getTypeName() + "]");
 			}
 			
 			compares.add(createWithinferdType(comparer, propertyName));

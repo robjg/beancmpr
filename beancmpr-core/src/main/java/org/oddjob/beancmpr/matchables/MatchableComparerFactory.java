@@ -5,6 +5,7 @@ import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.beans.PropertyTypeHelper;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class MatchableComparerFactory {
 		
 		for (String propertyName: xMetaData.getValueProperties()) {
 
-			Class<?> propertyType = new PropertyTypeHelper().typeFor(
+			Type propertyType = new PropertyTypeHelper().typeFor(
 					propertyName, 
 					xMetaData.getPropertyType(propertyName),
 					yMetaData.getPropertyType(propertyName));

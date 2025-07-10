@@ -1,7 +1,7 @@
 package beancmpr.dido.beans;
 
 import beancmpr.dido.matchables.DidoMatchableFactoryProvider;
-import dido.data.GenericData;
+import dido.data.DidoData;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
 import org.oddjob.beancmpr.beans.IterableBeansComparer;
@@ -21,8 +21,8 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
  *
  */
 public class IterableDataComparerType
-implements ComparerFactory<Iterable<GenericData<String>>>,
-		MultiItemComparerFactory<Iterable<GenericData<String>>> {
+implements ComparerFactory<Iterable<DidoData>>,
+		MultiItemComparerFactory<Iterable<DidoData>> {
 
 	/**
 	 * @oddjob.property
@@ -78,12 +78,12 @@ implements ComparerFactory<Iterable<GenericData<String>>>,
 	
 
 	@Override
-	public MultiItemComparer<Iterable<GenericData<String>>> createComparerWith(
+	public MultiItemComparer<Iterable<DidoData>> createComparerWith(
 			ComparersByType parentComparersByType) {
 	
 		if (keys == null && values == null && others == null) {
 
-			IterableComparerType<GenericData<String>> iterableComparer =
+			IterableComparerType<DidoData> iterableComparer =
 					new IterableComparerType<>();
 			iterableComparer.setComparersByType(comparersByType);
 			
@@ -96,7 +96,7 @@ implements ComparerFactory<Iterable<GenericData<String>>>,
 	}
 		
 	@Override
-	public IterableBeansComparer<GenericData<String>> createComparerWith(
+	public IterableBeansComparer<DidoData> createComparerWith(
 			ComparersByType parentComparersByType,
 			CompareResultsHandler resultHandler) {
 		
@@ -107,7 +107,7 @@ implements ComparerFactory<Iterable<GenericData<String>>>,
 		MatchDefinition matchDefinition = SimpleMatchDefinition.of(
 				keys, values, others);
 		
-		MatchableFactoryProvider<GenericData<String>> matchableFactoryProvider =
+		MatchableFactoryProvider<DidoData> matchableFactoryProvider =
 				new DidoMatchableFactoryProvider(matchDefinition);
 		
 		return new IterableBeansComparer<>(

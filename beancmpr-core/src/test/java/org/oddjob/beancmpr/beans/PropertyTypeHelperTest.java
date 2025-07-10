@@ -3,6 +3,7 @@ package org.oddjob.beancmpr.beans;
 import org.junit.jupiter.api.Test;
 import org.oddjob.beancmpr.TestCase;
 
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 
 
@@ -13,7 +14,7 @@ class PropertyTypeHelperTest extends TestCase {
 		
 		PropertyTypeHelper test = new PropertyTypeHelper();
 		
-		Class<?> result;
+		Type result;
 		
 		result = test.typeFor("Foo", Double.class, Integer.class);
 		
@@ -32,7 +33,7 @@ class PropertyTypeHelperTest extends TestCase {
 		
 		PropertyTypeHelper test = new PropertyTypeHelper();
 		
-		Class<?> result;
+		Type result;
 		
 		result = test.typeFor("Foo", Number.class, Integer.class);
 		
@@ -47,7 +48,7 @@ class PropertyTypeHelperTest extends TestCase {
 		
 		PropertyTypeHelper test = new PropertyTypeHelper();
 		
-		Class<?> result;
+		Type result;
 		
 		result = test.typeFor("Foo", Double.class, BigDecimal.class);
 		

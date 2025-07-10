@@ -3,10 +3,10 @@ package beancmpr.poi;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.oddjob.dido.poi.style.StyleBean;
-import org.oddjob.dido.poi.style.StyleFactoryRegistry;
-import org.oddjob.dido.poi.style.StyleProvider;
-import org.oddjob.dido.poi.style.StyleProviderFactory;
+import dido.poi.style.StyleBean;
+import dido.poi.style.StyleFactoryRegistry;
+import dido.poi.style.StyleProvider;
+import dido.poi.style.StyleProviderFactory;
 
 /**
  * Provide the styles for the comparison spreadsheet.

@@ -2,7 +2,7 @@ package beancmpr.dido.beans;
 
 import beancmpr.dido.results.GenericDataResultHandler;
 import dido.data.DataSchema;
-import dido.data.GenericData;
+import dido.data.DidoData;
 import dido.data.MapData;
 import dido.data.SchemaBuilder;
 import org.hamcrest.MatcherAssert;
@@ -36,12 +36,12 @@ class IterableDataComparerTypeTest {
     @Test
     void testSimpleComparison() {
 
-        List<GenericData<String>> dataX = List.of(
+        List<DidoData> dataX = List.of(
                 MapData.of("Fruit", "Apple", "Quantity", 5, "Price", 53.2),
                 MapData.of("Fruit", "Pear", "Quantity", 7, "Price", 42.1)
         );
 
-        List<GenericData<String>> dataY = List.of(
+        List<DidoData> dataY = List.of(
                 MapData.of("Fruit", "Orange", "Quantity", 3, "Price", 98.2),
                 MapData.of("Fruit", "Pear", "Quantity", 7, "Price", 63.7)
         );
@@ -59,55 +59,54 @@ class IterableDataComparerTypeTest {
 
         test.setComparersByName(comparersByName);
 
-        List<GenericData<String>> results = new ArrayList<>();
+        List<DidoData> results = new ArrayList<>();
 
         GenericDataResultHandler resultHandler = GenericDataResultHandler.withSettings()
                 .setTo(results::add)
                 .make();
 
-        IterableBeansComparer<GenericData<String>> comparer
+        IterableBeansComparer<DidoData> comparer
             = test.createComparerWith(new DefaultComparersByType(), resultHandler);
 
-        MultiItemComparison<Iterable<GenericData<String>>> comparison = comparer.compare(dataX, dataY);
+        MultiItemComparison<Iterable<DidoData>> comparison = comparer.compare(dataX, dataY);
 
         MatcherAssert.assertThat(comparison.getResult(), is(3));
 
-        DataSchema<String> expectedSchema = SchemaBuilder.forStringFields()
-                .addField("MatchType", MatchResultType.class)
-                .addField("Fruit", String.class)
-                .addField("X_Quantity", Integer.class)
-                .addField("Y_Quantity", Integer.class)
-                .addField("Quantity_", String.class)
-                .addField("X_Price", Double.class)
-                .addField("Y_Price", Double.class)
-                .addField("Price_", String.class)
+        DataSchema expectedSchema = SchemaBuilder.newInstance()
+                .addNamed("MatchType", MatchResultType.class)
+                .addNamed("Fruit", String.class)
+                .addNamed("X_Quantity", Integer.class)
+                .addNamed("Y_Quantity", Integer.class)
+                .addNamed("Quantity_", String.class)
+                .addNamed("X_Price", Double.class)
+                .addNamed("Y_Price", Double.class)
+                .addNamed("Price_", String.class)
                 .build();
 
         assertThat(results.get(0).getSchema(), is(expectedSchema));
 
-        assertThat(results.get(0), is(MapData.valuesFor(expectedSchema).of(
+        assertThat(results.get(0), is(MapData.valuesWithSchema(expectedSchema).of(
                 MatchResultType.Y_MISSING, "Apple", 5, null, null, 53.2, null, null)));
 
-        assertThat(results.get(1), is(MapData.valuesFor(expectedSchema).of(
+        assertThat(results.get(1), is(MapData.valuesWithSchema(expectedSchema).of(
                 MatchResultType.X_MISSING, "Orange", null, 3, null, null, 98.2, null)));
 
-        assertThat(results.get(2), is(MapData.valuesFor(expectedSchema).of(
+        assertThat(results.get(2), is(MapData.valuesWithSchema(expectedSchema).of(
                 MatchResultType.NOT_EQUAL, "Pear", 7, 7, "", 42.1, 63.7, "21.60 (51.3%)")));
     }
 
     @Test
     void whenNoKeysOrValuesThenComparisonIsEqual() {
 
-        List<GenericData<String>> dataX = List.of(
+        List<DidoData> dataX = List.of(
                 MapData.of("Fruit", "Apple", "Quantity", 5, "Price", 53.2),
                 MapData.of("Fruit", "Pear", "Quantity", 7, "Price", 42.1)
         );
 
-        List<GenericData<String>> dataY = List.of(
+        List<DidoData> dataY = List.of(
                 MapData.of("Fruit", "Orange", "Quantity", 3, "Price", 98.2),
                 MapData.of("Fruit", "Pear", "Quantity", 7, "Price", 63.7)
         );
-
 
         IterableDataComparerType test = new IterableDataComparerType();
 
@@ -115,27 +114,27 @@ class IterableDataComparerTypeTest {
 
         test.setComparersByName(comparersByName);
 
-        List<GenericData<String>> results = new ArrayList<>();
+        List<DidoData> results = new ArrayList<>();
 
         GenericDataResultHandler resultHandler = GenericDataResultHandler.withSettings()
                 .setTo(results::add)
                 .make();
 
-        IterableBeansComparer<GenericData<String>> comparer
+        IterableBeansComparer<DidoData> comparer
                 = test.createComparerWith(new DefaultComparersByType(), resultHandler);
 
-        MultiItemComparison<Iterable<GenericData<String>>> comparison = comparer.compare(dataX, dataY);
+        MultiItemComparison<Iterable<DidoData>> comparison = comparer.compare(dataX, dataY);
 
         MatcherAssert.assertThat(comparison.getResult(), is(0));
 
-        DataSchema<String> expectedSchema = SchemaBuilder.forStringFields()
-                .addField("MatchType", MatchResultType.class)
+        DataSchema expectedSchema = SchemaBuilder.newInstance()
+                .addNamed("MatchType", MatchResultType.class)
                 .build();
 
         assertThat(results.get(0).getSchema(), is(expectedSchema));
 
-        assertThat(results.get(0).get("MatchType"), is(MatchResultType.EQUAL));
-        assertThat(results.get(1).get("MatchType"), is(MatchResultType.EQUAL));
+        assertThat(results.get(0).getNamed("MatchType"), is(MatchResultType.EQUAL));
+        assertThat(results.get(1).getNamed("MatchType"), is(MatchResultType.EQUAL));
     }
 
     // A bug in Arooa that is now fixed.

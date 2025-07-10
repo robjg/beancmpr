@@ -5,6 +5,7 @@ import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.matchables.*;
 import org.oddjob.beancmpr.results.MatchResultType;
 
+import java.lang.reflect.Type;
 import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -13,276 +14,300 @@ import java.util.function.Function;
  * A Result Handler that Creates Generic Data.
  *
  * @author rob
- *
  */
 public class GenericDataResultHandler
-implements CompareResultsHandler {
+        implements CompareResultsHandler {
 
-	public static final String MATCH_TYPE_FIELD = "MatchType";
+    public static final String MATCH_TYPE_FIELD = "MatchType";
 
-	private final Consumer<? super GenericData<String>> to;
-		
-	private final boolean ignoreMatches;
+    private final Consumer<? super DidoData> to;
 
-	private final String xFieldFormat;
-
-	private final String yFieldFormat;
-
-	private final String comparisonFieldFormat;
-
-	private DataSchema<String> schema;
-
-	private GenericDataBuilder<String> dataBuilder;
-
-	private GenericDataResultHandler(Settings settings) {
-		this.to = Objects.requireNonNullElse(settings.to, ignore -> {});
-		this.ignoreMatches = settings.ignoreMatches;
-		this.xFieldFormat = Objects.requireNonNullElse(settings.xFieldFormat, "X_%s");
-		this.yFieldFormat = Objects.requireNonNullElse(settings.yFieldFormat, "Y_%s");
-		this.comparisonFieldFormat = Objects.requireNonNullElse(settings.comparisonFieldFormat, "%s_");
-	}
-
-
-	public static class Settings {
-
-		private Consumer<? super GenericData<String>> to;
-
-		private boolean ignoreMatches;
+    private final boolean ignoreMatches;
 
-		private String xFieldFormat;
+    private final String xFieldFormat;
 
-		private String yFieldFormat;
+    private final String yFieldFormat;
 
-		private String comparisonFieldFormat;
+    private final String comparisonFieldFormat;
 
-		public Settings setTo(Consumer<? super GenericData<String>> to) {
-			this.to = to;
-			return this;
-		}
+    private PerResultDelegate delegate;
 
-		public Settings setIgnoreMatches(boolean ignoreMatches) {
-			this.ignoreMatches = ignoreMatches;
-			return this;
-		}
+    private GenericDataResultHandler(Settings settings) {
+        this.to = Objects.requireNonNullElse(settings.to, ignore -> {
+        });
+        this.ignoreMatches = settings.ignoreMatches;
+        this.xFieldFormat = Objects.requireNonNullElse(settings.xFieldFormat, "X_%s");
+        this.yFieldFormat = Objects.requireNonNullElse(settings.yFieldFormat, "Y_%s");
+        this.comparisonFieldFormat = Objects.requireNonNullElse(settings.comparisonFieldFormat, "%s_");
+    }
 
-		public Settings setxFieldFormat(String x_titleFormat) {
-			this.xFieldFormat = x_titleFormat;
-			return this;
-		}
 
-		public Settings setyFieldFormat(String y_Name) {
-			this.yFieldFormat = y_Name;
-			return this;
-		}
+    public static class Settings {
 
-		public Settings setComparisonFieldFormat(String comparisonFieldFormat) {
-			this.comparisonFieldFormat = comparisonFieldFormat;
-			return this;
-		}
+        private Consumer<? super DidoData> to;
 
-		public GenericDataResultHandler make() {
-			return new GenericDataResultHandler(this);
-		}
-	}
+        private boolean ignoreMatches;
 
-	public static Settings withSettings() {
-		return new Settings();
-	}
-	
-	@Override
-	public void compared(MultiValueComparison<Matchable> comparison) {
+        private String xFieldFormat;
 
-		if (ignoreMatches && comparison.getResult() == 0) {
-			return;
-		}
+        private String yFieldFormat;
 
-		if (schema == null) {
-			this.schema = schemaFromMatchableMeta(comparison.getX().getMetaData());
-			this.dataBuilder = MapData.newBuilder(schema);
-		}
+        private String comparisonFieldFormat;
 
-		to.accept(createComparisonResult(comparison));
-	}
-	
-	@Override
-	public void xMissing(MatchableGroup ys) {
-		if (schema == null) {
-			this.schema = schemaFromMatchableMeta((ys.getMetaData()));
-			this.dataBuilder = MapData.newBuilder(schema);
-		}
+        public Settings setTo(Consumer<? super DidoData> to) {
+            this.to = to;
+            return this;
+        }
 
-		for (Matchable y : ys.getGroup()) {
-			to.accept(createXMissingResult(y));
-		}
-	}
-	
-	@Override
-	public void yMissing(MatchableGroup xs) {
-		if (schema == null) {
-			this.schema = schemaFromMatchableMeta((xs.getMetaData()));
-			this.dataBuilder = MapData.newBuilder(schema);
-		}
+        public Settings setIgnoreMatches(boolean ignoreMatches) {
+            this.ignoreMatches = ignoreMatches;
+            return this;
+        }
 
-		for (Matchable x : xs.getGroup()) {
-			to.accept(createYMissingResult(x));
-		}
-	}	
+        public Settings setxFieldFormat(String x_titleFormat) {
+            this.xFieldFormat = x_titleFormat;
+            return this;
+        }
 
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() + 
-				", ignoreMatches=" + ignoreMatches;
-	}
-	
-	protected GenericData<String> createXMissingResult(Matchable y) {
+        public Settings setyFieldFormat(String y_Name) {
+            this.yFieldFormat = y_Name;
+            return this;
+        }
 
-		dataBuilder.set(MATCH_TYPE_FIELD, MatchResultType.X_MISSING);
+        public Settings setComparisonFieldFormat(String comparisonFieldFormat) {
+            this.comparisonFieldFormat = comparisonFieldFormat;
+            return this;
+        }
 
-		populateKeys(y);
+        public GenericDataResultHandler make() {
+            return new GenericDataResultHandler(this);
+        }
+    }
 
-		ValueIterable<Object> comparisons =
-				new ValueIterable<>(
-						y.getMetaData().getValueProperties(),
-						y.getValues());
+    public static Settings withSettings() {
+        return new Settings();
+    }
 
-		for (ValueIterable.Value<Object> set : comparisons) {
+    PerResultDelegate delegate(MatchableMetaData matchableMetaData) {
+        if (delegate == null) {
+            DataFactoryProvider factoryProvider = DataFactoryProvider.newInstance();
+            SchemaFactory schemaFactory = factoryProvider.getSchemaFactory();
+            DataSchema schema = schemaFromMatchableMeta(schemaFactory, matchableMetaData);
+            DataFactory factory = factoryProvider.factoryFor(schemaFactory.toSchema());
 
-			Object value = set.getValue();
+            delegate = new PerResultDelegate(factory);
+        }
+        return delegate;
+    }
 
-			String name = set.getPropertyName();
-			dataBuilder.set(String.format(yFieldFormat, name), value);
-		}
+    @Override
+    public void compared(MultiValueComparison<Matchable> comparison) {
 
-		populateOthers(y,
-				name ->  String.format(yFieldFormat, name));
+        if (ignoreMatches && comparison.getResult() == 0) {
+            return;
+        }
 
-		return dataBuilder.build();
-	}
-	
-	protected GenericData<String> createYMissingResult(Matchable x) {
+        delegate(comparison.getX().getMetaData()).compared(comparison);
+    }
 
-		dataBuilder.set(MATCH_TYPE_FIELD, MatchResultType.Y_MISSING);
+    @Override
+    public void xMissing(MatchableGroup ys) {
 
-		populateKeys(x);
+        delegate(ys.getMetaData()).xMissing(ys);
+    }
 
-		ValueIterable<Object> comparisons =
-				new ValueIterable<>(
-						x.getMetaData().getValueProperties(),
-						x.getValues());
+    @Override
+    public void yMissing(MatchableGroup xs) {
 
-		for (ValueIterable.Value<Object> set : comparisons) {
+        delegate(xs.getMetaData()).yMissing(xs);
+    }
 
-			Object value = set.getValue();
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() +
+                ", ignoreMatches=" + ignoreMatches;
+    }
 
-			String name = set.getPropertyName();
-			dataBuilder.set(String.format(xFieldFormat, name), value);
-		}
+    class PerResultDelegate implements CompareResultsHandler {
 
-		populateOthers(x,
-				name ->  String.format(xFieldFormat, name));
+        private final DataFactory dataFactory;
+        private final WritableData writableData;
 
-		return dataBuilder.build();
-	}
-	
-	
-	protected GenericData<String> createComparisonResult(
-			MultiValueComparison<Matchable> matchableComparison) {
+        PerResultDelegate(DataFactory dataFactory) {
+            this.dataFactory = dataFactory;
+            this.writableData = dataFactory.getWritableData();
+        }
 
-		dataBuilder.set(MATCH_TYPE_FIELD,
-				matchableComparison.getResult() == 0 ?
-						MatchResultType.EQUAL : MatchResultType.NOT_EQUAL);
+        @Override
+        public void compared(MultiValueComparison<Matchable> comparison) {
 
+            to.accept(createComparisonResult(comparison));
+        }
 
-		populateKeys(matchableComparison.getX());
+        @Override
+        public void xMissing(MatchableGroup ys) {
 
-		populateValues(matchableComparison.getX().getMetaData().getValueProperties(),
-				matchableComparison.getValueComparisons());
+            for (Matchable y : ys.getGroup()) {
+                to.accept(createXMissingResult(y));
+            }
+        }
 
-		populateOthers(matchableComparison.getX(),
-				name ->  String.format(xFieldFormat, name));
+        @Override
+        public void yMissing(MatchableGroup xs) {
 
-		populateOthers(matchableComparison.getY(),
-				name -> String.format(yFieldFormat, name));
+            for (Matchable x : xs.getGroup()) {
+                to.accept(createYMissingResult(x));
+            }
+        }
 
-		return dataBuilder.build();
-	}
+        protected DidoData createXMissingResult(Matchable y) {
 
-	private void populateKeys(Matchable matchable) {
-		
-		ValueIterable<Object> keys =
-				new ValueIterable<>(
-						matchable.getMetaData().getKeyProperties(),
-						matchable.getKeys());
-		
-		for (ValueIterable.Value<Object> set : keys) {
+            writableData.setNamed(MATCH_TYPE_FIELD, MatchResultType.X_MISSING);
 
-			Object value = set.getValue();
-			
-			dataBuilder.set(set.getPropertyName(), value);
-		}
-	}
+            populateKeys(y);
 
-	private void populateValues(
-			Iterable<String> comparisonProperties, 
-			Iterable<? extends Comparison<?>> comparisonValues) {
-		
-		ValueIterable<Comparison<?>> comparisons =
-				new ValueIterable<>(
-						comparisonProperties,
-						comparisonValues);
+            ValueIterable<Object> comparisons =
+                    new ValueIterable<>(
+                            y.getMetaData().getValueProperties(),
+                            y.getValues());
 
-		for (ValueIterable.Value<Comparison<?>> set : comparisons) {
+            for (ValueIterable.Value<Object> set : comparisons) {
 
-			Comparison<?> comparison = set.getValue();
+                Object value = set.getValue();
 
-			String name = set.getPropertyName();
-			dataBuilder.set(String.format(xFieldFormat, name), comparison.getX());
-			dataBuilder.set(String.format(yFieldFormat, name), comparison.getY());
-			dataBuilder.set(String.format(comparisonFieldFormat, name), comparison.getSummaryText());
-		}
-	}
+                String name = set.getPropertyName();
+                writableData.setNamed(String.format(yFieldFormat, name), value);
+            }
 
-	private void populateOthers(Matchable matchable, Function<? super String, ? extends String> format) {
+            populateOthers(y,
+                    name -> String.format(yFieldFormat, name));
 
-		ValueIterable<Object> xOthers =
-				new ValueIterable<>(
-						matchable.getMetaData().getOtherProperties(),
-						matchable.getOthers());
+            return dataFactory.toData();
+        }
 
-		for (ValueIterable.Value<Object> set : xOthers) {
+        protected DidoData createYMissingResult(Matchable x) {
 
-			Object value = set.getValue();
+            writableData.setNamed(MATCH_TYPE_FIELD, MatchResultType.Y_MISSING);
 
-			dataBuilder.set(format.apply(set.getPropertyName()), value);
-		}
-	}
-	public DataSchema<String> schemaFromMatchableMeta(MatchableMetaData matchableMetaData) {
+            populateKeys(x);
 
-		SchemaBuilder<String> schemaBuilder = SchemaBuilder.forStringFields();
+            ValueIterable<Object> comparisons =
+                    new ValueIterable<>(
+                            x.getMetaData().getValueProperties(),
+                            x.getValues());
 
-		schemaBuilder.addField(MATCH_TYPE_FIELD, MatchResultType.class);
+            for (ValueIterable.Value<Object> set : comparisons) {
 
-		for (String key : matchableMetaData.getKeyProperties()) {
-			Class<?> type = matchableMetaData.getPropertyType(key);
-			schemaBuilder.addField(key, type);
-		}
+                Object value = set.getValue();
 
-		for (String value : matchableMetaData.getValueProperties()) {
-			Class<?> type = matchableMetaData.getPropertyType(value);
-			schemaBuilder.addField(String.format(xFieldFormat, value), type);
-			schemaBuilder.addField(String.format(yFieldFormat, value), type);
-			schemaBuilder.addField(String.format(comparisonFieldFormat, value), String.class);
-		}
+                String name = set.getPropertyName();
+                writableData.setNamed(String.format(xFieldFormat, name), value);
+            }
 
-		for (String other : matchableMetaData.getOtherProperties()) {
-			Class<?> type = matchableMetaData.getPropertyType(other);
-			schemaBuilder.addField(String.format(xFieldFormat, other), type);
-			schemaBuilder.addField(String.format(yFieldFormat, other), type);
-		}
+            populateOthers(x,
+                    name -> String.format(xFieldFormat, name));
 
-		DataSchema<String> schema = schemaBuilder.build();
-		dataBuilder = ArrayData.builderForSchema(schema);
+            return dataFactory.toData();
+        }
 
-		return schema;
-	}
+        protected DidoData createComparisonResult(
+                MultiValueComparison<Matchable> matchableComparison) {
+
+            writableData.setNamed(MATCH_TYPE_FIELD,
+                    matchableComparison.getResult() == 0 ?
+                            MatchResultType.EQUAL : MatchResultType.NOT_EQUAL);
+
+
+            populateKeys(matchableComparison.getX());
+
+            populateValues(matchableComparison.getX().getMetaData().getValueProperties(),
+                    matchableComparison.getValueComparisons());
+
+            populateOthers(matchableComparison.getX(),
+                    name -> String.format(xFieldFormat, name));
+
+            populateOthers(matchableComparison.getY(),
+                    name -> String.format(yFieldFormat, name));
+
+            return dataFactory.toData();
+        }
+
+        private void populateKeys(Matchable matchable) {
+
+            ValueIterable<Object> keys =
+                    new ValueIterable<>(
+                            matchable.getMetaData().getKeyProperties(),
+                            matchable.getKeys());
+
+            for (ValueIterable.Value<Object> set : keys) {
+
+                Object value = set.getValue();
+
+                writableData.setNamed(set.getPropertyName(), value);
+            }
+        }
+
+        private void populateValues(
+                Iterable<String> comparisonProperties,
+                Iterable<? extends Comparison<?>> comparisonValues) {
+
+            ValueIterable<Comparison<?>> comparisons =
+                    new ValueIterable<>(
+                            comparisonProperties,
+                            comparisonValues);
+
+            for (ValueIterable.Value<Comparison<?>> set : comparisons) {
+
+                Comparison<?> comparison = set.getValue();
+
+                String name = set.getPropertyName();
+                writableData.setNamed(String.format(xFieldFormat, name), comparison.getX());
+                writableData.setNamed(String.format(yFieldFormat, name), comparison.getY());
+                writableData.setNamed(String.format(comparisonFieldFormat, name), comparison.getSummaryText());
+            }
+        }
+
+        private void populateOthers(Matchable matchable, Function<? super String, ? extends String> format) {
+
+            ValueIterable<Object> xOthers =
+                    new ValueIterable<>(
+                            matchable.getMetaData().getOtherProperties(),
+                            matchable.getOthers());
+
+            for (ValueIterable.Value<Object> set : xOthers) {
+
+                Object value = set.getValue();
+
+                writableData.setNamed(format.apply(set.getPropertyName()), value);
+            }
+        }
+    }
+
+    public DataSchema schemaFromMatchableMeta(SchemaFactory schemaFactory,
+                                              MatchableMetaData matchableMetaData) {
+
+        SchemaBuilder schemaBuilder = SchemaBuilder.builderFor(schemaFactory);
+
+        schemaBuilder.addNamed(MATCH_TYPE_FIELD, MatchResultType.class);
+
+        for (String key : matchableMetaData.getKeyProperties()) {
+            Type type = matchableMetaData.getPropertyType(key);
+            schemaBuilder.addNamed(key, type);
+        }
+
+        for (String value : matchableMetaData.getValueProperties()) {
+            Type type = matchableMetaData.getPropertyType(value);
+            schemaBuilder.addNamed(String.format(xFieldFormat, value), type);
+            schemaBuilder.addNamed(String.format(yFieldFormat, value), type);
+            schemaBuilder.addNamed(String.format(comparisonFieldFormat, value), String.class);
+        }
+
+        for (String other : matchableMetaData.getOtherProperties()) {
+            Type type = matchableMetaData.getPropertyType(other);
+            schemaBuilder.addNamed(String.format(xFieldFormat, other), type);
+            schemaBuilder.addNamed(String.format(yFieldFormat, other), type);
+        }
+
+        return schemaBuilder.build();
+    }
 }

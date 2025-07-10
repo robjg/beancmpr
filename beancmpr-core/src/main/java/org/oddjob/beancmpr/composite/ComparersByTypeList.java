@@ -4,6 +4,7 @@ import org.oddjob.arooa.utils.ClassUtils;
 import org.oddjob.beancmpr.Comparer;
 
 import javax.inject.Inject;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -78,7 +79,7 @@ public class ComparersByTypeList implements ComparersByTypeFactory {
 	public ComparersByType createComparersByTypeWith(
 			ComparersByType parentComparersByType) {
 		
-		Map<Class<?>, Comparer<?>> byClass =
+		Map<Type, Comparer<?>> byClass =
 				new LinkedHashMap<>();
 		
 		ComparersByType comparersByType = new CompositeComparersByType(

@@ -3,6 +3,7 @@ package org.oddjob.beancmpr.matchables;
 import org.oddjob.arooa.utils.ClassUtils;
 import org.oddjob.beancmpr.MatchDefinition;
 
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.function.Function;
 
@@ -20,12 +21,12 @@ public class SimpleMatchableMeta implements MatchableMetaData {
 	
 	private final ImmutableCollection<String> otherProperties;
 	
-	private final Function<? super String, ? extends Class<?>> types;
+	private final Function<? super String, ? extends Type> types;
 
 	private SimpleMatchableMeta(ImmutableCollection<String> keyProperties,
 							   ImmutableCollection<String> valueProperties,
 							   ImmutableCollection<String> otherProperties,
-								Function<? super String, ? extends Class<?>> typeLookup) {
+								Function<? super String, ? extends Type> typeLookup) {
 
 		this.keyProperties = Objects.requireNonNull(keyProperties);
 		this.valueProperties = Objects.requireNonNull(valueProperties);
@@ -53,11 +54,11 @@ public class SimpleMatchableMeta implements MatchableMetaData {
 		}
 
 		return new SimpleMatchableMeta(keyProperties, valueProperties, otherProperties,
-			name -> typeCopy.get(name));
+                typeCopy::get);
 	}
 
 	public static MatchableMetaData of(MatchDefinition definition,
-									   Function<? super String, ? extends Class<?>> typeLookup) {
+									   Function<? super String, ? extends Type> typeLookup) {
 		return new SimpleMatchableMeta(definition.getKeyProperties(),
 				definition.getValueProperties(),
 				definition.getOtherProperties(),
@@ -124,7 +125,7 @@ public class SimpleMatchableMeta implements MatchableMetaData {
 	}
 	
 	@Override
-	public Class<?> getPropertyType(String name) {
+	public Type getPropertyType(String name) {
 		return types.apply(name);
 	}
 	

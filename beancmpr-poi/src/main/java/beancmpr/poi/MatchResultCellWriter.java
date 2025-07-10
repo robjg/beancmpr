@@ -1,16 +1,17 @@
 package beancmpr.poi;
 
+import dido.poi.BookOut;
+import dido.poi.HeaderRowOut;
+import dido.poi.RowOut;
+import dido.poi.RowsOut;
+import dido.poi.data.PoiRowsOut;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.oddjob.beancmpr.matchables.MatchableMetaData;
 import org.oddjob.beancmpr.results.MatchResult;
-import org.oddjob.dido.poi.BookOut;
-import org.oddjob.dido.poi.HeaderRowOut;
-import org.oddjob.dido.poi.RowOut;
-import org.oddjob.dido.poi.RowsOut;
-import org.oddjob.dido.poi.data.PoiRowsOut;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -237,7 +238,7 @@ public class MatchResultCellWriter implements AutoCloseable {
 
         private final String name;
 
-        private final Class<?> type;
+        private final Type type;
         private final int keyIndex;
 
         KeyOut(int sheetIndex, MatchableMetaData metaData, int keyIndex) {
@@ -280,7 +281,7 @@ public class MatchResultCellWriter implements AutoCloseable {
 
         private final String name;
 
-        private final Class<?> type;
+        private final Type type;
 
         private final int comparisonIndex;
 
@@ -350,7 +351,7 @@ public class MatchResultCellWriter implements AutoCloseable {
 
         private final String name;
 
-        private final Class<?> type;
+        private final Type type;
 
         private final int otherIndex;
 
@@ -458,7 +459,7 @@ public class MatchResultCellWriter implements AutoCloseable {
     }
 
 
-    static Cell createAndSetCell(RowOut rowOut, int index, Class<?> type, Object value) {
+    static Cell createAndSetCell(RowOut rowOut, int index, Type type, Object value) {
 
         CellCreateAndSet cellCreateAndSet;
 

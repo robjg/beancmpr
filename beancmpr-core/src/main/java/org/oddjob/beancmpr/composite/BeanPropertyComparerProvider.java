@@ -2,6 +2,8 @@ package org.oddjob.beancmpr.composite;
 
 import org.oddjob.beancmpr.Comparer;
 
+import java.lang.reflect.Type;
+
 /**
  * Provides {@link Comparer}s for a bean class.
  * 
@@ -19,5 +21,5 @@ public interface BeanPropertyComparerProvider {
 	 * 
 	 * @return Never null.
 	 */
-	public <T> Comparer<T> comparerFor(String property, Class<T> type);
+	<T> Comparer<T> comparerFor(String property, Type type);
 }

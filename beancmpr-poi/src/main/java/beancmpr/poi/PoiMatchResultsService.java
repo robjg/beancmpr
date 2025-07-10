@@ -2,7 +2,7 @@ package beancmpr.poi;
 
 import dido.poi.BookOutProvider;
 import org.oddjob.beancmpr.results.MatchResult;
-import org.oddjob.dido.poi.BookOut;
+import dido.poi.BookOut;
 
 import java.io.IOException;
 import java.util.Objects;

@@ -1,8 +1,5 @@
 package org.oddjob.beancmpr.composite;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.beans.ArrayComparer;
 import org.oddjob.beancmpr.beans.IterableComparerType;
@@ -11,6 +8,11 @@ import org.oddjob.beancmpr.comparers.ComparableComparer;
 import org.oddjob.beancmpr.comparers.DateComparer;
 import org.oddjob.beancmpr.comparers.EqualityComparer;
 import org.oddjob.beancmpr.comparers.NumericComparer;
+import org.oddjob.beancmpr.util.TypeUtil;
+
+import java.lang.reflect.Type;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Default {@link Comparer}s.
@@ -27,7 +29,7 @@ public class DefaultComparersByType implements ComparersByType {
 	 */
 	public DefaultComparersByType() {
 		
-		Map<Class<?>, Comparer<?>> map =
+		Map<Type, Comparer<?>> map =
 				new LinkedHashMap<>();
 		
 		map.put(Integer.class, new ComparableComparer<Integer>());
@@ -47,7 +49,7 @@ public class DefaultComparersByType implements ComparersByType {
 	}
 		
 	private void doPut(Comparer<?> comparer, 
-			Map<Class<?>, Comparer<?>> map) {
+			Map<Type, Comparer<?>> map) {
 		
 		map.put(comparer.getType(), comparer);
 	}
@@ -55,8 +57,8 @@ public class DefaultComparersByType implements ComparersByType {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> Comparer<T> comparerFor(Class<T> type) {
-		if (type.isArray()) {
+	public <T> Comparer<T> comparerFor(Type type) {
+		if (TypeUtil.classOf(type).isArray()) {
 			return (Comparer<T>) new ArrayComparer(this);
 		}
 		else {

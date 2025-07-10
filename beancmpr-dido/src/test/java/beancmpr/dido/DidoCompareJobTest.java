@@ -2,7 +2,7 @@ package beancmpr.dido;
 
 import dido.data.ArrayData;
 import dido.data.DataSchema;
-import dido.data.GenericData;
+import dido.data.DidoData;
 import dido.data.SchemaBuilder;
 import org.junit.jupiter.api.Test;
 import org.oddjob.Oddjob;
@@ -34,36 +34,37 @@ class DidoCompareJobTest {
 
         assertThat(oddjob.lastStateEvent().getState(), is(ParentState.COMPLETE));
 
-        DataSchema<String> expectedSchema = SchemaBuilder.forStringFields()
-                .addField("MatchType", MatchResultType.class)
-                .addField("Fruit", String.class)
-                .addField("Colour", String.class)
-                .addField("X_Qty", Integer.class)
-                .addField("Y_Qty", Integer.class)
-                .addField("Qty_", String.class)
-                .addField("X_Price", Double.class)
-                .addField("Y_Price", Double.class)
-                .addField("Price_", String.class)
-                .addField("X_Comments", String.class)
-                .addField("Y_Comments", String.class)
+        DataSchema expectedSchema = SchemaBuilder.newInstance()
+                .addNamed("MatchType", MatchResultType.class)
+                .addNamed("Fruit", String.class)
+                .addNamed("Colour", String.class)
+                .addNamed("X_Qty", Integer.class)
+                .addNamed("Y_Qty", Integer.class)
+                .addNamed("Qty_", String.class)
+                .addNamed("X_Price", Double.class)
+                .addNamed("Y_Price", Double.class)
+                .addNamed("Price_", String.class)
+                .addNamed("X_Comments", String.class)
+                .addNamed("Y_Comments", String.class)
                 .build();
 
-        List<GenericData<String>> results = new OddjobLookup(oddjob).lookup("bus.to", List.class);
+        @SuppressWarnings("unchecked")
+        List<DidoData> results = new OddjobLookup(oddjob).lookup("results.list.list", List.class);
 
-        assertThat(results.get(0).getSchema(), is(expectedSchema));
+        assertThat(results.getFirst().getSchema(), is(expectedSchema));
 
         assertThat(results, contains(
-                ArrayData.valuesFor(expectedSchema)
+                ArrayData.valuesWithSchema(expectedSchema)
                         .of(MatchResultType.NOT_EQUAL, "apple", "green", 6, 7, "6<>7", 23.2, 23.2, "", "crisp", "crisp"),
-                ArrayData.valuesFor(expectedSchema)
+                ArrayData.valuesWithSchema(expectedSchema)
                         .of(MatchResultType.EQUAL, "apple", "red", 5, 5, "", 22.4, 22.4, "", "crunchy", "crunchy"),
-                ArrayData.valuesFor(expectedSchema)
+                ArrayData.valuesWithSchema(expectedSchema)
                         .of(MatchResultType.EQUAL, "banana", "yellow", 3, 3, "", 46.4, 46.4, "", "bent", "bent"),
-                ArrayData.valuesFor(expectedSchema)
+                ArrayData.valuesWithSchema(expectedSchema)
                         .of(MatchResultType.NOT_EQUAL, "orange", "orange", 2, 2, "", 23.5, 57.2, "33.7 (143.4%)", "healthy", "healthy"),
-                ArrayData.valuesFor(expectedSchema)
+                ArrayData.valuesWithSchema(expectedSchema)
                         .of(MatchResultType.X_MISSING, "pear", "gr", null, 8, null, null, 37.0, null, null, "shapely"),
-                ArrayData.valuesFor(expectedSchema)
+                ArrayData.valuesWithSchema(expectedSchema)
                         .of(MatchResultType.Y_MISSING, "pear", "green", 8, null, null, 37.0, null, null, "shapely")
 
         ));
