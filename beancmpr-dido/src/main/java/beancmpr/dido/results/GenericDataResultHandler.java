@@ -1,6 +1,7 @@
 package beancmpr.dido.results;
 
 import dido.data.*;
+import dido.data.schema.SchemaBuilder;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.matchables.*;
 import org.oddjob.beancmpr.results.MatchResultType;

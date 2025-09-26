@@ -1,9 +1,8 @@
 package beancmpr.dido;
 
-import dido.data.ArrayData;
 import dido.data.DataSchema;
 import dido.data.DidoData;
-import dido.data.SchemaBuilder;
+import dido.data.schema.SchemaBuilder;
 import org.junit.jupiter.api.Test;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
@@ -54,17 +53,17 @@ class DidoCompareJobTest {
         assertThat(results.getFirst().getSchema(), is(expectedSchema));
 
         assertThat(results, contains(
-                ArrayData.valuesWithSchema(expectedSchema)
+                DidoData.withSchema(expectedSchema)
                         .of(MatchResultType.NOT_EQUAL, "apple", "green", 6, 7, "6<>7", 23.2, 23.2, "", "crisp", "crisp"),
-                ArrayData.valuesWithSchema(expectedSchema)
+                DidoData.withSchema(expectedSchema)
                         .of(MatchResultType.EQUAL, "apple", "red", 5, 5, "", 22.4, 22.4, "", "crunchy", "crunchy"),
-                ArrayData.valuesWithSchema(expectedSchema)
+                DidoData.withSchema(expectedSchema)
                         .of(MatchResultType.EQUAL, "banana", "yellow", 3, 3, "", 46.4, 46.4, "", "bent", "bent"),
-                ArrayData.valuesWithSchema(expectedSchema)
+                DidoData.withSchema(expectedSchema)
                         .of(MatchResultType.NOT_EQUAL, "orange", "orange", 2, 2, "", 23.5, 57.2, "33.7 (143.4%)", "healthy", "healthy"),
-                ArrayData.valuesWithSchema(expectedSchema)
+                DidoData.withSchema(expectedSchema)
                         .of(MatchResultType.X_MISSING, "pear", "gr", null, 8, null, null, 37.0, null, null, "shapely"),
-                ArrayData.valuesWithSchema(expectedSchema)
+                DidoData.withSchema(expectedSchema)
                         .of(MatchResultType.Y_MISSING, "pear", "green", 8, null, null, 37.0, null, null, "shapely")
 
         ));

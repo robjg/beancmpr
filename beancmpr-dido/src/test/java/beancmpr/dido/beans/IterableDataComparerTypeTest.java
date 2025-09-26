@@ -3,8 +3,8 @@ package beancmpr.dido.beans;
 import beancmpr.dido.results.GenericDataResultHandler;
 import dido.data.DataSchema;
 import dido.data.DidoData;
-import dido.data.MapData;
-import dido.data.SchemaBuilder;
+import dido.data.immutable.MapData;
+import dido.data.schema.SchemaBuilder;
 import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.Test;
 import org.oddjob.arooa.ArooaAnnotations;
@@ -85,13 +85,13 @@ class IterableDataComparerTypeTest {
 
         assertThat(results.get(0).getSchema(), is(expectedSchema));
 
-        assertThat(results.get(0), is(MapData.valuesWithSchema(expectedSchema).of(
+        assertThat(results.get(0), is(DidoData.withSchema(expectedSchema).of(
                 MatchResultType.Y_MISSING, "Apple", 5, null, null, 53.2, null, null)));
 
-        assertThat(results.get(1), is(MapData.valuesWithSchema(expectedSchema).of(
+        assertThat(results.get(1), is(DidoData.withSchema(expectedSchema).of(
                 MatchResultType.X_MISSING, "Orange", null, 3, null, null, 98.2, null)));
 
-        assertThat(results.get(2), is(MapData.valuesWithSchema(expectedSchema).of(
+        assertThat(results.get(2), is(DidoData.withSchema(expectedSchema).of(
                 MatchResultType.NOT_EQUAL, "Pear", 7, 7, "", 42.1, 63.7, "21.60 (51.3%)")));
     }
 
