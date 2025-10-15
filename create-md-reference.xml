@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob id="oddjob">
+    <job>
+        <sequential>
+            <jobs>
+                <properties>
+                    <values>
+                        <file file="${oddjob.dir}/docs/reference" key="reference.dir"/>
+                        <value key="oddjob.version" value="1.7.0-SNAPSHOT"/>
+                        <value key="project.version" value="1.1.0-SNAPSHOT"/>
+                    </values>
+                </properties>
+                <variables id="vars">
+                    <descriptorUrls>
+                        <list>
+                            <values>
+                                <value value="file:${oddjob.dir}/beancmpr-core/src/main/resources/META-INF/arooa.xml"/>
+                                <value value="file:${oddjob.dir}/beancmpr-dido/src/main/resources/META-INF/arooa.xml"/>
+                                <value value="file:${oddjob.dir}/beancmpr-poi/src/main/resources/META-INF/arooa.xml"/>
+                            </values>
+                        </list>
+                    </descriptorUrls>
+                    <sources>
+                        <files>
+                            <list>
+                                <file file="${oddjob.dir}/beancmpr-core/src/main/java"/>
+                                <file file="${oddjob.dir}/beancmpr-dido/src/main/java"/>
+                                <file file="${oddjob.dir}/beancmpr-poi/src/main/java"/>
+                            </list>
+                        </files>
+                    </sources>
+                    <loaderPath>
+                        <files>
+                            <list>
+                                <file file="${oddjob.dir}/beancmpr-core/src/test/resources"/>
+                                <file file="${oddjob.dir}/beancmpr-dido/src/test/java"/>
+                                <file file="${oddjob.dir}/beancmpr-poi/src/test/resources"/>
+                            </list>
+                        </files>
+                    </loaderPath>
+                </variables>
+                <resolve:resolve id="docletResolve" name="Doclet Resolve" xmlns:resolve="oddjob:resolve">
+                    <dependencies>
+                        <resolve:dependencies>
+                            <dependencies>
+                                <resolve:dependency artifactId="oj-doc" groupId="uk.co.rgordon"
+                                                    version="${oddjob.version}"/>
+                                <resolve:dependency artifactId="oddjob" groupId="uk.co.rgordon"
+                                                    version="${oddjob.version}"/>
+                                <resolve:dependency artifactId="beancmpr-dido" groupId="uk.co.rgordon"
+                                                    version="${project.version}"/>
+                                <resolve:dependency artifactId="beancmpr-poi" groupId="uk.co.rgordon"
+                                                    version="${project.version}"/>
+                            </dependencies>
+                        </resolve:dependencies>
+                    </dependencies>
+                </resolve:resolve>
+                <resolve:resolve id="didoResolve" name="Dido Resolve" xmlns:resolve="oddjob:resolve">
+                    <dependencies>
+                        <resolve:dependencies>
+                            <dependencies>
+                                <resolve:dependency artifactId="beancmpr-dido" groupId="uk.co.rgordon"
+                                                    version="${project.version}"/>
+                                <resolve:dependency artifactId="beancmpr-poi" groupId="uk.co.rgordon"
+                                                    version="${project.version}"/>
+                                <resolve:dependency artifactId="oddjob" groupId="uk.co.rgordon"
+                                                    version="${oddjob.version}"/>
+                            </dependencies>
+                        </resolve:dependencies>
+                    </dependencies>
+                </resolve:resolve>
+                <bean class="org.oddjob.doc.doclet.ReferenceMain" classPath="${didoResolve.resolvedFilesArray}"
+                      directory="${reference.dir}" docletPath="${docletResolve.resolvedFilesArray}" packages="org.oddjob:beancmpr"
+                      sourcepath="${vars.sources}" writerFactory="org.oddjob.doc.markdown.MdReferenceWriterFactory"
+                      loaderPath="${vars.loaderPath}">
+                    <descriptorUrls>
+                        <value value="${vars.descriptorUrls}"/>
+                    </descriptorUrls>
+                    <links>
+                        <list>
+                            <values>
+                                <value value="https://docs.oracle.com/en/java/javase/11/docs/api"/>
+                            </values>
+                        </list>
+                    </links>
+                </bean>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>
