@@ -56,7 +56,7 @@
 
         <maven.test.failure.ignore>false</maven.test.failure.ignore>
 
-        <oddjob.version>1.7.0-SNAPSHOT</oddjob.version>
+        <oddjob.version>1.7.0</oddjob.version>
         <dido.version>2.0.0-SNAPSHOT</dido.version>
 
         <javax.inject.version>1</javax.inject.version>

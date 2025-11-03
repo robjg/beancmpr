@@ -21,13 +21,12 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * @oddjob.description A job that takes two streams of beans and
- * attempts to match the beans according to their properties.
+ * @oddjob.description A job that takes two inputs and
+ * attempts to match that data using a provided Comparer.
  * 
  * @oddjob.example
  * 
  * A simple example.
- * 
  * {@oddjob.xml.resource org/oddjob/beancmpr/BeanCompareJobExample.xml}
  * 
  * 
@@ -64,7 +63,7 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 	
 	/**
 	 * @oddjob.property
-	 * @oddjob.description Something to handle results. Typically a 
+	 * @oddjob.description Something to handle results. Typically, a
 	 * {@link CompareResultsHandler}.
 	 * @oddjob.required No.
 	 */
@@ -77,8 +76,19 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 	 * @oddjob.required No.
 	 */
 	private Consumer<? super Object> to;
-	
-	private MultiItemComparerFactory<T> comparer;
+
+    /**
+     * @oddjob.property
+     * @oddjob.description An appropriate Comparer for the type of inputs.
+     * Historically this was commonly {@link IterableBeansComparerType} which
+     * compares Beans by their properties. However, integration with
+     * <a href="https://github.com/robjg/dido>Dido</a> has been the recent focus
+     * with {@link beancmpr.dido.beans.IterableDataComparerType} now being
+     * the most common Comparer.
+     * @oddjob.required Yes.
+     */
+	@SuppressWarnings("JavadocReference")
+    private MultiItemComparerFactory<T> comparer;
 	
 	/** Counts. */
 	private MultiItemComparisonCounts counts;
@@ -134,11 +144,9 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 				new DefaultComparersByType(), resultsHandler);
 		
 		this.counts = comparer.compare(inX, inY);
-		
-		logger.info("Xs Missing " + getXMissingCount() +
-				", Ys Missing " + getYMissingCount() + 
-				", Different " + getDifferentCount() + 
-				", Same " + getMatchedCount());
+
+        logger.info("Xs Missing {}, Ys Missing {}, Different {}, Same {}",
+                getXMissingCount(), getYMissingCount(), getDifferentCount(), getMatchedCount());
 	}	
 	
 	@SuppressWarnings("unchecked")
@@ -209,31 +217,62 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 		this.results = results;
 	}
 
+    /**
+     * @oddjob.property
+     * @oddjob.description The number of items missing from the first source.
+     * @oddjob.required Read only.
+     */
 	@Override
 	synchronized public int getXMissingCount() {
 		return counts == null ? 0 : counts.getXMissingCount();
 	}
-	
+
+    /**
+     * @oddjob.property
+     * @oddjob.description The number of items missing from the second source.
+     * @oddjob.required Read only.
+     */
 	@Override
 	synchronized public int getYMissingCount() {
 		return counts == null ? 0 : counts.getYMissingCount();
 	}
-	
+
+    /**
+     * @oddjob.property
+     * @oddjob.description The number of items matched.
+     * @oddjob.required Read only.
+     */
 	@Override
 	synchronized public int getMatchedCount() {
 		return counts == null ? 0 : counts.getMatchedCount();
 	}
-	
+
+    /**
+     * @oddjob.property
+     * @oddjob.description The number of items different.
+     * @oddjob.required Read only.
+     */
 	@Override
 	synchronized public int getDifferentCount() {
 		return counts == null ? 0 : counts.getDifferentCount();
 	}
-	
+
+    /**
+     * @oddjob.property
+     * @oddjob.description The number of differences. This is the sum of the
+     * missing and the different.
+     * @oddjob.required Read only.
+     */
 	@Override
 	synchronized public int getBreaksCount() {
 		return counts == null ? 0 : counts.getBreaksCount();
 	}
-	
+
+    /**
+     * @oddjob.property
+     * @oddjob.description The total number of items compared.
+     * @oddjob.required Read only.
+     */
 	@Override
 	synchronized public int getComparedCount() {
 		return counts == null ? 0 : counts.getComparedCount();
@@ -242,22 +281,12 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 	/**
 	 * Used by Oddjob's Bean Bus to Automatically set a destination.
 	 * 
-	 * @param destination
+	 * @param destination A destination for results.
 	 */
 	public void acceptDestination(Consumer<? super Object> destination) {
 		this.to = destination;
 	}	
 	
-	@Override
-	public String toString() {
-		if (name == null) {
-			return getClass().getSimpleName();
-		}
-		else {
-			return name;
-		}
-	}
-
 	public MultiItemComparerFactory<T> getComparer() {
 		return comparer;
 	}
@@ -266,5 +295,15 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
 			MultiItemComparerFactory<T> comparer) {
 		this.comparer = comparer;
 	}
+
+    @Override
+    public String toString() {
+        if (name == null) {
+            return getClass().getSimpleName();
+        }
+        else {
+            return name;
+        }
+    }
 
 }
