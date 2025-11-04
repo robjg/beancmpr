@@ -2,7 +2,7 @@
 
 ### Jobs
 
-- [beancmpr:compare](org/oddjob/beancmpr/BeanCompareJob.md) - A job that takes two streams of beans and attempts to match the beans according to their properties.
+- [beancmpr:compare](org/oddjob/beancmpr/BeanCompareJob.md) - A job that takes two inputs and attempts to match that data using a provided Comparer.
 - [beancmpr:poi-results](beancmpr/poi/PoiMatchResultsService.md) - 
 
 ### Types

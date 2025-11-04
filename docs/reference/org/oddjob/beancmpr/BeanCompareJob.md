@@ -1,22 +1,22 @@
 [HOME](../../../README.md)
 # beancmpr:compare
 
-A job that takes two streams of beans and
-attempts to match the beans according to their properties.
+A job that takes two inputs and
+attempts to match that data using a provided Comparer.
 
 ### Property Summary
 
 | Property | Description |
 | -------- | ----------- |
-| [XMissingCount](#propertyxmissingcount) |  | 
-| [YMissingCount](#propertyymissingcount) |  | 
-| [breaksCount](#propertybreakscount) |  | 
-| [comparedCount](#propertycomparedcount) |  | 
-| [comparer](#propertycomparer) |  | 
-| [differentCount](#propertydifferentcount) |  | 
+| [XMissingCount](#propertyxmissingcount) | The number of items missing from the first source. | 
+| [YMissingCount](#propertyymissingcount) | The number of items missing from the second source. | 
+| [breaksCount](#propertybreakscount) | The number of differences. | 
+| [comparedCount](#propertycomparedcount) | The total number of items compared. | 
+| [comparer](#propertycomparer) | An appropriate Comparer for the type of inputs. | 
+| [differentCount](#propertydifferentcount) | The number of items different. | 
 | [inX](#propertyinx) | First source of data. | 
 | [inY](#propertyiny) | Second source of data. | 
-| [matchedCount](#propertymatchedcount) |  | 
+| [matchedCount](#propertymatchedcount) | The number of items matched. | 
 | [name](#propertyname) | The name of the job as seen in Oddjob. | 
 | [results](#propertyresults) | Something to handle results. | 
 
@@ -33,50 +33,62 @@ attempts to match the beans according to their properties.
 
 <table style='font-size:smaller'>
       <tr><td><i>Access</i></td><td>READ_ONLY</td></tr>
+      <tr><td><i>Required</i></td><td>Read only.</td></tr>
 </table>
 
-
+The number of items missing from the first source.
 
 #### YMissingCount <a name="propertyymissingcount"></a>
 
 <table style='font-size:smaller'>
       <tr><td><i>Access</i></td><td>READ_ONLY</td></tr>
+      <tr><td><i>Required</i></td><td>Read only.</td></tr>
 </table>
 
-
+The number of items missing from the second source.
 
 #### breaksCount <a name="propertybreakscount"></a>
 
 <table style='font-size:smaller'>
       <tr><td><i>Access</i></td><td>READ_ONLY</td></tr>
+      <tr><td><i>Required</i></td><td>Read only.</td></tr>
 </table>
 
-
+The number of differences. This is the sum of the
+missing and the different.
 
 #### comparedCount <a name="propertycomparedcount"></a>
 
 <table style='font-size:smaller'>
       <tr><td><i>Access</i></td><td>READ_ONLY</td></tr>
+      <tr><td><i>Required</i></td><td>Read only.</td></tr>
 </table>
 
-
+The total number of items compared.
 
 #### comparer <a name="propertycomparer"></a>
 
 <table style='font-size:smaller'>
       <tr><td><i>Configured By</i></td><td>ELEMENT</td></tr>
       <tr><td><i>Access</i></td><td>READ_WRITE</td></tr>
+      <tr><td><i>Required</i></td><td>Yes.</td></tr>
 </table>
 
-
+An appropriate Comparer for the type of inputs.
+Historically this was commonly [beancmpr:collection-comparer](../../../org/oddjob/beancmpr/beans/IterableBeansComparerType.md) which
+compares Beans by their properties. However, integration with
+a href="https://github.com/robjg/dido>Dido</a> has been the recent focus
+with [didocmpr:collection-comparer](../../../beancmpr/dido/beans/IterableDataComparerType.md) now being
+the most common Comparer.
 
 #### differentCount <a name="propertydifferentcount"></a>
 
 <table style='font-size:smaller'>
       <tr><td><i>Access</i></td><td>READ_ONLY</td></tr>
+      <tr><td><i>Required</i></td><td>Read only.</td></tr>
 </table>
 
-
+The number of items different.
 
 #### inX <a name="propertyinx"></a>
 
@@ -102,9 +114,10 @@ Second source of data.
 
 <table style='font-size:smaller'>
       <tr><td><i>Access</i></td><td>READ_ONLY</td></tr>
+      <tr><td><i>Required</i></td><td>Read only.</td></tr>
 </table>
 
-
+The number of items matched.
 
 #### name <a name="propertyname"></a>
 
@@ -124,7 +137,7 @@ The name of the job as seen in Oddjob.
       <tr><td><i>Required</i></td><td>No.</td></tr>
 </table>
 
-Something to handle results. Typically a
+Something to handle results. Typically, a
 `org.oddjob.beancmpr.matchables.CompareResultsHandler`.
 
 
@@ -132,7 +145,6 @@ Something to handle results. Typically a
 #### Example 1 <a name="example1"></a>
 
 A simple example.
-
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <oddjob>
