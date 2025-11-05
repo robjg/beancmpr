@@ -39,6 +39,12 @@
     <dependencies>
 
         <dependency>
+            <groupId>uk.co.rgordon</groupId>
+            <artifactId>arooa</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <artifactId>beancmpr-core</artifactId>
             <groupId>uk.co.rgordon</groupId>
             <version>${project.version}</version>

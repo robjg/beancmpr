@@ -32,6 +32,7 @@
         <module>beancmpr-dido</module>
         <module>beancmpr-poi</module>
         <module>beancmpr-test</module>
+        <module>beancmpr-examples</module>
     </modules>
 
     <scm>
@@ -40,6 +41,9 @@
     </scm>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
 
@@ -50,14 +54,15 @@
 
         <javax.inject.version>1</javax.inject.version>
 
-        <hsql.version>2.7.4</hsql.version>
-
         <slf4j.version>2.0.17</slf4j.version>
         <logback.version>1.5.20</logback.version>
 
+        <nashorn.version>15.7</nashorn.version>
         <junit5.version>6.0.1</junit5.version>
         <hamcrest.version>3.0</hamcrest.version>
         <mockito.version>5.20.0</mockito.version>
+        <hsql.version>2.7.4</hsql.version>
+
     </properties>
 
     <dependencyManagement>
@@ -79,14 +84,18 @@
                 <groupId>uk.co.rgordon</groupId>
                 <artifactId>arooa</artifactId>
                 <version>${oddjob.version}</version>
-                <scope>provided</scope>
             </dependency>
 
             <dependency>
                 <groupId>uk.co.rgordon</groupId>
                 <artifactId>oddjob</artifactId>
                 <version>${oddjob.version}</version>
-                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.openjdk.nashorn</groupId>
+                <artifactId>nashorn-core</artifactId>
+                <version>${nashorn.version}</version>
             </dependency>
 
             <dependency>
