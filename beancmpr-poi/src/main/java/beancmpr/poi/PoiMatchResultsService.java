@@ -9,14 +9,25 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * A service that can be used in a Bean Bus to create an Excel
- * spreadsheet of results created using the {@link org.oddjob.beancmpr.results.MatchResultHandlerFactory} as
+ * @oddjob.description A service that can be used in a Bean Bus to create an Excel
+ * spreadsheet of comparison results. The result will typically be created
+ * using the {@link org.oddjob.beancmpr.results.MatchResultHandlerFactory} as
  * the Result Handler of an {@link org.oddjob.beancmpr.BeanCompareJob}.
  */
 public class PoiMatchResultsService implements Consumer<MatchResult> {
 
+    /**
+     * @oddjob.property
+     * @oddjob.description The name of the component as seen in Oddjob.
+     * @oddjob.required No.
+     */
     private volatile String name;
 
+    /**
+     * @oddjob.property
+     * @oddjob.description The name of the component as seen in Oddjob.
+     * @oddjob.required No.
+     */
     private volatile BookOutProvider workbook;
 
     private volatile String sheetName;

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <cascade>
+            <jobs>
+                <properties>
+                    <values>
+                        <file file="." key="work.dir"/>
+                        <file file="${work.dir}/FruitComparison.xlsx" key="comparison.file"/>
+                        <file file="./data" key="data.dir"/>
+                        <file file="${data.dir}/Fruit_1.csv" key="file.first"/>
+                        <file file="${data.dir}/Fruit_2.csv" key="file.second"/>
+                    </values>
+                </properties>
+                <variables id="vars">
+                    <schema>
+                        <dido:schema xmlns:dido="oddjob:dido">
+                            <of>
+                                <dido:field name="Fruit" type="java.lang.String"/>
+                                <dido:field name="Quantity" type="int"/>
+                                <dido:field name="Price" type="double"/>
+                            </of>
+                        </dido:schema>
+                    </schema>
+                </variables>
+                <parallel name="Load CSVs In Parallel">
+                    <jobs>
+                        <bus:bus name="Load Frist CSV" xmlns:bus="oddjob:beanbus">
+                            <of>
+                                <dido:data-in xmlns:dido="oddjob:dido">
+                                    <how>
+                                        <dido:csv>
+                                            <schema>
+                                                <value value="${vars.schema}"/>
+                                            </schema>
+                                        </dido:csv>
+                                    </how>
+                                    <from>
+                                        <file file="${file.first}"/>
+                                    </from>
+                                </dido:data-in>
+                                <bus:collect id="captureFirst"/>
+                            </of>
+                        </bus:bus>
+                        <bus:bus name="Load Second CSV" xmlns:bus="oddjob:beanbus">
+                            <of>
+                                <dido:data-in xmlns:dido="oddjob:dido">
+                                    <how>
+                                        <dido:csv>
+                                            <schema>
+                                                <value value="${vars.schema}"/>
+                                            </schema>
+                                        </dido:csv>
+                                    </how>
+                                    <from>
+                                        <file file="${file.second}"/>
+                                    </from>
+                                </dido:data-in>
+                                <bus:collect id="captureSecond"/>
+                            </of>
+                        </bus:bus>
+                    </jobs>
+                </parallel>
+                <bus:bus name="Do Compare" xmlns:bus="oddjob:beanbus">
+                    <of>
+                        <beancmpr:compare id="compare" xmlns:beancmpr="oddjob:beancmpr">
+                            <inX>
+                                <value value="${captureFirst.list}"/>
+                            </inX>
+                            <inY>
+                                <value value="${captureSecond.list}"/>
+                            </inY>
+                            <comparer>
+                                <didocmpr:collection-comparer keys="Fruit" values="Quantity,Price" xmlns:didocmpr="oddjob:didocmpr"/>
+                            </comparer>
+                            <results>
+                                <beancmpr:match-results/>
+                            </results>
+                        </beancmpr:compare>
+                        <beancmpr:poi-results autoFilter="true" autoWidth="true" firstColumn="2" firstRow="2" name="Create Excel Sheet" sheetName="FruitComparison" xPrefix="First" yPrefix="Second" xmlns:beancmpr="oddjob:beancmpr">
+                            <workbook>
+                                <dido-poi:workbook xmlns:dido-poi="oddjob:dido:poi">
+                                    <output>
+                                        <file file="${comparison.file}"/>
+                                    </output>
+                                </dido-poi:workbook>
+                            </workbook>
+                        </beancmpr:poi-results>
+                    </of>
+                </bus:bus>
+                <echo><![CDATA[Compared: ${compare.comparedCount}
+Matched: ${compare.matchedCount}
+Different: ${compare.differentCount}
+Missing from First: ${compare.XMissingCount}
+Missing from Second: ${compare.YMissingCount}
+Created Full Comparison in ${comparison.file}]]></echo>
+            </jobs>
+        </cascade>
+    </job>
+</oddjob>

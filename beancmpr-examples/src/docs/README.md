@@ -2,21 +2,32 @@ Bean Compare
 ============
 
 - [Overview](#overview)
-- [Some Examples](#some-examples)
 - [More Info](#more-info)
 - [Building](#building)
 
 ### Overview
+
+Given this CSV
+{@oddjob.text.file  examples/Fruit_1.csv}
+and this CSV
+{@oddjob.text.file  examples/Fruit_2.csv}
+Bean Compare will produce this comparison
+![Fruit Comparison in Excel](docs/images/FruitComparison.jpg)
 
 Bean Compare started a utility for comparing Java Beans, hence the name. It then included
 Collections, Arrays and Maps as types it can compare. It now also supports data from
 [Dido](https://github.com/robjg/dido) which allows it to compare Database tables, CSV files, simple JSON
 and any other type of Dido Data.
 
-Bean Compare is intended to be used as an [Oddjob](https://github.com/robjg/oddjob) Oddball but can be
-used stand alone in code.
+### More Info
 
-Requires Java 21
+See [Getting Started](docs/GETTING-STARTED.md)
+
+See [The Reference](docs/reference/README.md)
+
+### Building
+
+See [Building](BUILDING.md)
 
 Modules:
 
@@ -25,17 +36,4 @@ Modules:
 [beancmpr-dido](beancmpr-dido) Compare Generic Data.
 
 [beancmpr-poi](beancmpr-poi) Produce results in Excel.
-
-
-### Some Examples
-
-TBD
-
-### More Info
-
-See the reference: 
-
-### Building
-
-See [Building](BUILDING.md)
 
