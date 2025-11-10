@@ -4,7 +4,7 @@ Getting Started
 Beancmpr requires Java 21. It is in Maven, however it is intended to be used with
 [Oddjob](https://github.com/robjg/oddjob) and so requires a few dependencies to launch.
 
-For an example POM needed to launch Beancmpr in Oddjob see the [The Example POM](beancmpr-examples/pom.xml).
+For an example POM needed to launch Beancmpr in Oddjob see [The Examples POM](../beancmpr-examples/pom.xml).
 
 The pom also contains a target to run the example comparison from the [README](../README.md).
 
