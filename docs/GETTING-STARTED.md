@@ -134,7 +134,7 @@ exec:exec@oddjob-explorer-example1 -P examples
 You will see
 ![Oddjob Explorer Example1 Read](images/OddjobExplorerExample1Ready.jpg)
 Run the root job node from the 'Job' Menu and you will see the jobs run and hopefully complete:
-![Oddjob Explorer Example1 Read](images/OddjobExplorerExample1Ready.jpg)
+![Oddjob Explorer Example1 Read](images/OddjobExplorerExample1Complete.jpg)
 Here we've navigated to the Comparison Job so you can see properties of the comparison that
 get written the console by the final `echo` task.
 
