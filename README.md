@@ -8,9 +8,24 @@ Bean Compare
 ### Overview
 
 Given this CSV
-_java.nio.file.NoSuchFileException: C:\Users\rob\projects\beancmpr\beancmpr-examples\examples\Fruit_1.csv_
+```
+Plumb,1,20.3
+Orange,2,82.8
+Kiwi,11, 59.6
+Apple,5,23.2
+Banana,7,40.3
+Pear,3,30.6
+```
+
 and this CSV
-_java.nio.file.NoSuchFileException: C:\Users\rob\projects\beancmpr\beancmpr-examples\examples\Fruit_2.csv_
+```
+Orange,3,82.7
+Pear,3,30.7
+Banana,7,40.3
+Grapefruit,2,78.8
+Plumb,1,20.3
+```
+
 Bean Compare will produce this comparison
 ![Fruit Comparison in Excel](docs/images/FruitComparison.jpg)
 

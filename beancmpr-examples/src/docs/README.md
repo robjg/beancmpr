@@ -8,9 +8,9 @@ Bean Compare
 ### Overview
 
 Given this CSV
-{@oddjob.text.file  examples/Fruit_1.csv}
+{@oddjob.text.file  data/Fruit_1.csv}
 and this CSV
-{@oddjob.text.file  examples/Fruit_2.csv}
+{@oddjob.text.file  data/Fruit_2.csv}
 Bean Compare will produce this comparison
 ![Fruit Comparison in Excel](docs/images/FruitComparison.jpg)
 
