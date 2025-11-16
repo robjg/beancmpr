@@ -4,7 +4,9 @@ import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.matchables.*;
 
 /**
- * A Match Result
+ * A Simple representation of the result of a comparison.
+ *
+ * @see MatchResultHandlerFactory
  */
 abstract public class MatchResult {
 

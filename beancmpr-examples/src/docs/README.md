@@ -12,9 +12,10 @@ Given this CSV
 and this CSV
 {@oddjob.text.file  data/Fruit_2.csv}
 Bean Compare will produce this comparison
-![Fruit Comparison in Excel](docs/images/FruitComparison.jpg)
 
-Bean Compare started a utility for comparing Java Beans, hence the name. It then included
+<img alt="Fruit Comparison in Excel" src="docs/images/FruitComparison.jpg" width="800px"/>
+
+Bean Compare started as a utility for comparing Java Beans, hence the name. It then included
 Collections, Arrays and Maps as types it can compare. It now also supports data from
 [Dido](https://github.com/robjg/dido) which allows it to compare Database tables, CSV files, simple JSON
 and any other type of Dido Data.
@@ -29,11 +30,11 @@ See [The Reference](docs/reference/README.md)
 
 See [Building](BUILDING.md)
 
-Modules:
+### Modules:
 
 [beancmpr-core](beancmpr-core) Compare Beans, Collections, Arrays and Maps.
 
-[beancmpr-dido](beancmpr-dido) Compare Generic Data.
+[beancmpr-dido](beancmpr-dido) Compare Dido Data.
 
 [beancmpr-poi](beancmpr-poi) Produce results in Excel.
 

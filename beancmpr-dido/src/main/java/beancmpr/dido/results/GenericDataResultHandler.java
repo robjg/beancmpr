@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * A Result Handler that Creates Generic Data.
+ * A Result Handler that Creates Dido Data.
  *
  * @author rob
  */

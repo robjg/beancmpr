@@ -25,29 +25,74 @@ public class PoiMatchResultsService implements Consumer<MatchResult> {
 
     /**
      * @oddjob.property
-     * @oddjob.description The name of the component as seen in Oddjob.
-     * @oddjob.required No.
+     * @oddjob.description The provider of the Excel workbook to write to.
+     * Typically, this will be a <a href="https://github.com/robjg/dido/blob/master/docs/reference/dido/poi/data/PoiWorkbook.md">dido-poi:workbook</a>
+     * @oddjob.required Yes.
      */
     private volatile BookOutProvider workbook;
 
+    /**
+     * @oddjob.property
+     * @oddjob.description The name of the sheet that will be created.
+     * @oddjob.required No.
+     */
     private volatile String sheetName;
 
+    /**
+     * @oddjob.property
+     * @oddjob.description The position of the first row. 1 being the top
+     * @oddjob.required No. Defaults to 1.
+     */
     private volatile int firstRow;
 
+    /**
+     * @oddjob.property
+     * @oddjob.description The position of the first column. 1 being the leftmost.
+     * @oddjob.required No. Defaults to 1.
+     */
     private volatile int firstColumn;
 
+    /**
+     * @oddjob.property
+     * @oddjob.description The prefix that will be used for the X titles.
+     * @oddjob.required No. Defaults to X_.
+     */
     private volatile String xPrefix;
 
+    /**
+     * @oddjob.property
+     * @oddjob.description The prefix that will be used for the Y titles.
+     * @oddjob.required No. Defaults to Y_.
+     */
     private volatile String yPrefix;
 
+    /**
+     * @oddjob.property
+     * @oddjob.description Should the column width expand to fit the data.
+     * @oddjob.required No. Defaults to false.
+     */
     private boolean autoWidth;
 
+    /**
+     * @oddjob.property
+     * @oddjob.description Should filters be applied to the columns.
+     * @oddjob.required No. Defaults to false.
+     */
     private boolean autoFilter;
 
+    /** The book being created */
     private volatile BookOut bookOut;
 
     private volatile MatchResultCellWriter cellWriter;
 
+    /**
+     * @oddjob.property
+     * @oddjob.description An additional consumer to send results to. If the service
+     * is the middle of Bean Bus pipeline then this will be automatically set to
+     * the next component. Otherwise, might be useful for testing but can otherwise be
+     * ignored.
+     * @oddjob.required No.
+     */
     private volatile Consumer<? super MatchResult> to;
 
     public void start() throws Exception {

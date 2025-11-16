@@ -6,7 +6,7 @@ import org.oddjob.beancmpr.matchables.CompareResultsHandlerFactory;
 import java.util.function.Consumer;
 
 /**
- * @oddjob.description A Result Handler that will generate results as Generic Data.
+ * @oddjob.description A Result Handler that will generate results as Dido Data.
  * Useful for exporting results to CSV, or Excel. Although beancmpr-poi might be
  * better for Excel as it colours results according to match type.
  * 

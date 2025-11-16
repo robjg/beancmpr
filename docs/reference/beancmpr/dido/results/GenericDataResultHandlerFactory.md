@@ -1,7 +1,7 @@
 [HOME](../../../README.md)
 # didocmpr:data-results
 
-A Result Handler that will generate results as Generic Data.
+A Result Handler that will generate results as Dido Data.
 Useful for exporting results to CSV, or Excel. Although beancmpr-poi might be
 better for Excel as it colours results according to match type.
 

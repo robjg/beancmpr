@@ -13,7 +13,7 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 
 /**
- * @oddjob.description Compares two Iterables of Generic Data. Iterables will
+ * @oddjob.description Compares two Iterables of Dido Data. Iterables will
  * typically be lists or sets.
  * 
  *

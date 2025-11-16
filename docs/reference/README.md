@@ -3,7 +3,7 @@
 ### Jobs
 
 - [beancmpr:compare](org/oddjob/beancmpr/BeanCompareJob.md) - A job that takes two inputs and attempts to match that data using a provided Comparer.
-- [beancmpr:poi-results](beancmpr/poi/PoiMatchResultsService.md) - 
+- [beancmpr:poi-results](beancmpr/poi/PoiMatchResultsService.md) - A service that can be used in a Bean Bus to create an Excel spreadsheet of comparison results.
 
 ### Types
 
@@ -17,11 +17,11 @@
 - [beancmpr:date-comparer](org/oddjob/beancmpr/comparers/DateComparer.md) - A Comparer that will allow a comparison between two Java dates with a millisecond tolerance.
 - [beancmpr:equality-comparer](org/oddjob/beancmpr/comparers/EqualityComparer.md) - A comparer that uses the equals method of an object.
 - [beancmpr:map-comparer](org/oddjob/beancmpr/beans/MapComparerType.md) - Provides a Comparer that can compare two maps.
-- [beancmpr:match-results](org/oddjob/beancmpr/results/MatchResultHandlerFactory.md) - 
+- [beancmpr:match-results](org/oddjob/beancmpr/results/MatchResultHandlerFactory.md) - Creates simple result objects.
 - [beancmpr:numeric-comparer](org/oddjob/beancmpr/comparers/NumericComparer.md) - A Comparer for numbers that supports tolerances and provides the comparison as a difference between the numbers and as a percentage change between numbers.
 - [beancmpr:text-comparer](org/oddjob/beancmpr/comparers/TextComparer.md) - A comparer for text.
-- [didocmpr:collection-comparer](beancmpr/dido/beans/IterableDataComparerType.md) - Compares two Iterables of Generic Data.
-- [didocmpr:data-results](beancmpr/dido/results/GenericDataResultHandlerFactory.md) - A Result Handler that will generate results as Generic Data.
+- [didocmpr:collection-comparer](beancmpr/dido/beans/IterableDataComparerType.md) - Compares two Iterables of Dido Data.
+- [didocmpr:data-results](beancmpr/dido/results/GenericDataResultHandlerFactory.md) - A Result Handler that will generate results as Dido Data.
 
 -----------------------
 

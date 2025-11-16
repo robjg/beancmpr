@@ -1,7 +1,7 @@
 [HOME](../../../README.md)
 # didocmpr:collection-comparer
 
-Compares two Iterables of Generic Data. Iterables will
+Compares two Iterables of Dido Data. Iterables will
 typically be lists or sets.
 
 ### Property Summary
