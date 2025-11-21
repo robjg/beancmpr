@@ -1,24 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <oddjob>
-  <job>
-    <beancmpr>
-      <inX>
-        <list>
-          <values>
-            <value value="4"/>
-            <value value="5"/>
-            <value value="6"/>
-          </values>
-        </list>
-      </inX>
-      <inY>
-        <list>
-          <values>
-            <value value="4"/>
-            <value value="8"/>
-            <value value="9"/>
-          </values>
-        </list>
-      </inY>
-    </beancmpr>
-  </job>
+    <job>
+        <sequential>
+            <jobs>
+                <beancmpr:compare id="compare" xmlns:beancmpr="oddjob:beancmpr">
+                    <inX>
+                        <list>
+                            <values>
+                                <value value="4"/>
+                                <value value="5"/>
+                                <value value="6"/>
+                            </values>
+                            <elementType>
+                                <class name="java.lang.Integer"/>
+                            </elementType>
+                        </list>
+                    </inX>
+                    <inY>
+                        <list>
+                            <values>
+                                <value value="4"/>
+                                <value value="8"/>
+                                <value value="9"/>
+                            </values>
+                            <elementType>
+                                <class name="java.lang.Integer"/>
+                            </elementType>
+                        </list>
+                    </inY>
+                    <results>
+                        <beancmpr:bean-results>
+                            <out>
+                                <list/>
+                            </out>
+                        </beancmpr:bean-results>
+                    </results>
+                </beancmpr:compare>
+                <bean-report>
+                    <beans>
+                        <value value="${compare.results.out}"/>
+                    </beans>
+                </bean-report>
+            </jobs>
+        </sequential>
+    </job>
 </oddjob>

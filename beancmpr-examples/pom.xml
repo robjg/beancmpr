@@ -75,10 +75,17 @@
             <version>${dido.version}</version>
         </dependency>
 
-        <!-- Needed to read CSV data -->
+        <!-- Needed to read/write CSV data -->
         <dependency>
             <groupId>uk.co.rgordon</groupId>
             <artifactId>dido-csv</artifactId>
+            <version>${dido.version}</version>
+        </dependency>
+
+        <!-- For Text Tables from Dido Data -->
+        <dependency>
+            <groupId>uk.co.rgordon</groupId>
+            <artifactId>dido-text</artifactId>
             <version>${dido.version}</version>
         </dependency>
 

@@ -7,7 +7,6 @@ import org.oddjob.arooa.ArooaSession;
 import org.oddjob.arooa.standard.StandardArooaSession;
 import org.oddjob.beancmpr.SharedTestData;
 import org.oddjob.beancmpr.SharedTestData.Fruit;
-import org.oddjob.beancmpr.TestCase;
 import org.oddjob.beancmpr.composite.DefaultComparersByType;
 import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
@@ -20,9 +19,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class IterableBeansComparerTypeTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class IterableBeansComparerTypeTest {
 	
-	@Test void testCompareListsOfFruitBeansWithTypeAsKeyAndValuesToCompare() {
+	@Test
+    void testCompareListsOfFruitBeansWithTypeAsKeyAndValuesToCompare() {
 		
 		ArooaSession session = new StandardArooaSession();
 		
@@ -67,7 +70,7 @@ class IterableBeansComparerTypeTest extends TestCase {
 		
 		assertEquals("green", results.get(0).getComparison(2).getX());
 		assertEquals("red", results.get(0).getComparison(2).getY());
-		assertEquals(true, results.get(0).getComparison(2).getResult() != 0);
+        assertTrue(results.get(0).getComparison(2).getResult() != 0);
 		assertEquals("green<>red", results.get(0).getComparison(2).getSummaryText());
 		
 		assertEquals(MatchResultType.NOT_EQUAL, results.get(1).getResultType());
@@ -77,7 +80,7 @@ class IterableBeansComparerTypeTest extends TestCase {
 		
 		assertEquals(3, results.get(1).getComparison(1).getX());
 		assertEquals(4, results.get(1).getComparison(1).getY());
-		assertEquals(true, results.get(1).getComparison(1).getResult() != 0);
+        assertTrue(results.get(1).getComparison(1).getResult() != 0);
 		assertEquals("3<>4", results.get(1).getComparison(1).getSummaryText());
 		
 		assertEquals(0, results.get(1).getComparison(2).getResult());
@@ -123,7 +126,8 @@ class IterableBeansComparerTypeTest extends TestCase {
 		
 	}
 	
-	@Test void testCompareEqualListsOfStrings() {
+	@Test
+    void testCompareEqualListsOfStrings() {
 		
 		ArooaSession session = new StandardArooaSession();
 		

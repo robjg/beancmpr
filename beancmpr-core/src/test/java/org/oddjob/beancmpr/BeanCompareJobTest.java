@@ -1,10 +1,12 @@
 package org.oddjob.beancmpr;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
+import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.arooa.reflect.ArooaPropertyException;
 import org.oddjob.arooa.types.ArooaObject;
 import org.oddjob.arooa.xml.XMLConfiguration;
@@ -13,25 +15,30 @@ import org.oddjob.tools.ConsoleCapture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Objects;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class BeanCompareJobTest extends TestCase {
+class BeanCompareJobTest {
 
 	private static final Logger logger = LoggerFactory.getLogger(BeanCompareJobTest.class);
 
 	@BeforeEach
 	void init(TestInfo testInfo) {
 
-		logger.debug("========================== " + testInfo.getDisplayName() + "===================" );
+        logger.debug("========================== {} ===================", testInfo.getDisplayName());
 	}
 		
 	SharedTestData data = new SharedTestData();
 	
-	static String EOL = System.getProperty("line.separator");
+	static String EOL = System.lineSeparator();
 	
 	public static String expectedKeysDifferent =
 		"matchResultType  id  xType   yType   typeComparison  xQuantity  yQuantity  quantityComparison  xColour  yColour  colourComparison" + EOL +
@@ -156,14 +163,56 @@ class BeanCompareJobTest extends TestCase {
 		assertEquals(ParentState.COMPLETE,
 				oddjob.lastStateEvent().getState());
 
-		StringBuilder builder = new StringBuilder();
-		for (String line : console.getLines()) {
-			builder.append(line);
-			builder.append(EOL);
-		}
+        List<String> lines = console.getAsList().stream()
+                .map(String::stripTrailing)
+                .toList();
 
-		assertThat(builder.toString(), is(expectedKeysDifferent));
+        List<String> expected = new BufferedReader(
+                new InputStreamReader(Objects.requireNonNull(
+                        getClass().getResourceAsStream("BeanCompareJobExampleOut.txt"))))
+                .lines().toList();
+
+        assertThat(lines, is(expected));
 
 		oddjob.destroy();
 	}
+
+    @Test
+    void compareTwoListsOfIntegers() throws ArooaConversionException {
+
+        File file = new File(Objects.requireNonNull(getClass().getResource(
+                "CompareTwoListsOfIntegers.xml")).getFile());
+
+        Oddjob oddjob = new Oddjob();
+        oddjob.setFile(file);
+
+        ConsoleCapture console = new ConsoleCapture();
+        try (ConsoleCapture.Close ignored = console.captureConsole()) {
+
+            oddjob.run();
+        }
+
+        assertTrue(oddjob.lastStateEvent().getState().isComplete());
+
+        console.dump(logger);
+
+        List<String> lines = console.getAsList();
+
+        List<String> expected = new BufferedReader(
+                new InputStreamReader(Objects.requireNonNull(
+                        getClass().getResourceAsStream("CompareTwoListsOfIntegersOut.txt"))))
+                        .lines().toList();
+
+        assertThat(lines, is(expected));
+
+        OddjobLookup lookup = new OddjobLookup(oddjob);
+
+        assertThat(lookup.lookup("compare.breaksCount", int.class),
+                Matchers.is(4));
+        assertThat(lookup.lookup("compare.matchedCount", int.class),
+                Matchers.is(1));
+
+        oddjob.destroy();
+
+    }
 }

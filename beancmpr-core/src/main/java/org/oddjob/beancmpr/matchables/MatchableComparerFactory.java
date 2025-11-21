@@ -4,6 +4,8 @@ import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.Comparison;
 import org.oddjob.beancmpr.beans.PropertyTypeHelper;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -11,14 +13,16 @@ import java.util.List;
 
 /**
  * Create a {@link MatchableComparer} base on the {@link Matchable}s 
- * meta data.
+ * metadata.
  * 
  * @author rob
  *
  */
 public class MatchableComparerFactory {
 
-	private final BeanPropertyComparerProvider comparerProvider;
+    private static final Logger logger = LoggerFactory.getLogger(MatchableComparerFactory.class);
+
+    private final BeanPropertyComparerProvider comparerProvider;
 	
 	/**
 	 *  Create an instance.
@@ -30,7 +34,7 @@ public class MatchableComparerFactory {
 			BeanPropertyComparerProvider comparerProvider) {
 		
 		if (comparerProvider == null) {
-			throw new NullPointerException("ComparerProvider must be provded.");
+			throw new NullPointerException("ComparerProvider must be provided.");
 		}
 		
 		this.comparerProvider = comparerProvider;
@@ -68,7 +72,9 @@ public class MatchableComparerFactory {
 				throw new NullPointerException("No comparer for name " +
 						propertyName + ", type " + propertyType);
 			}
-			
+
+            logger.trace("Added comparer {} for matchable property {}.", comparer, propertyName);
+
 			compares.add(createWithInferredType(comparer, propertyName));
 		}		
 		

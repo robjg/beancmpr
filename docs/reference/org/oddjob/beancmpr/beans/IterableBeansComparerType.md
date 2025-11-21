@@ -2,7 +2,7 @@
 # beancmpr:collection-comparer
 
 Compares two Iterables of Java Beans. Iterables will
-typeically be lists or sets. If no Java Bean
+typically be lists or sets. If no Java Bean
 properties are specified for the comparison then a comparison of the
 elements is made using a comparer defined for the class of the elements,
 or a default comparer if none is specified.

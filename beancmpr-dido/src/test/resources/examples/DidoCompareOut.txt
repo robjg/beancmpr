@@ -1,0 +1,8 @@
+MatchType|Fruit |Colour|X_Qty|Y_Qty|Qty_|X_Price|Y_Price|Price_       |X_Comments|Y_Comments
+---------+------+------+-----+-----+----+-------+-------+-------------+----------+----------
+NOT_EQUAL|apple |green |    6|    7|6<>7|   23.2|   23.2|             |crisp     |crisp
+EQUAL    |apple |red   |    5|    5|    |   22.4|   22.4|             |crunchy   |crunchy
+EQUAL    |banana|yellow|    3|    3|    |   46.4|   46.4|             |bent      |bent
+NOT_EQUAL|orange|orange|    2|    2|    |   23.5|   57.2|33.7 (143.4%)|healthy   |healthy
+X_MISSING|pear  |gr    |     |    8|    |       |   37.0|             |          |shapely
+Y_MISSING|pear  |green |    8|     |    |   37.0|       |             |shapely   |

@@ -25,7 +25,8 @@ attempts to match that data using a provided Comparer.
 
 | Title | Description |
 | ----- | ----------- |
-| [Example 1](#example1) | A simple example. |
+| [Example 1](#example1) | An example of comparing two lists of ints. |
+| [Example 2](#example2) | An example of comparing two lists of beans. |
 
 
 ### Property Detail
@@ -71,15 +72,16 @@ The total number of items compared.
 <table style='font-size:smaller'>
       <tr><td><i>Configured By</i></td><td>ELEMENT</td></tr>
       <tr><td><i>Access</i></td><td>READ_WRITE</td></tr>
-      <tr><td><i>Required</i></td><td>Yes.</td></tr>
+      <tr><td><i>Required</i></td><td>No.</td></tr>
 </table>
 
 An appropriate Comparer for the type of inputs.
 Historically this was commonly [beancmpr:collection-comparer](../../../org/oddjob/beancmpr/beans/IterableBeansComparerType.md) which
 compares Beans by their properties. However, integration with
-a href="https://github.com/robjg/dido>Dido</a> has been the recent focus
+<a href="https://github.com/robjg/dido">Dido</a> has been the recent focus
 with [didocmpr:collection-comparer](../../../beancmpr/dido/beans/IterableDataComparerType.md) now being
-the most common Comparer.
+the most common Comparer. If no comparer is provided then one
+is inferred from the data provided.
 
 #### differentCount <a name="propertydifferentcount"></a>
 
@@ -144,7 +146,72 @@ Something to handle results. Typically, a
 ### Examples
 #### Example 1 <a name="example1"></a>
 
-A simple example.
+An example of comparing two lists of ints.
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <sequential>
+            <jobs>
+                <beancmpr:compare id="compare" xmlns:beancmpr="oddjob:beancmpr">
+                    <inX>
+                        <list>
+                            <values>
+                                <value value="4"/>
+                                <value value="5"/>
+                                <value value="6"/>
+                            </values>
+                            <elementType>
+                                <class name="java.lang.Integer"/>
+                            </elementType>
+                        </list>
+                    </inX>
+                    <inY>
+                        <list>
+                            <values>
+                                <value value="4"/>
+                                <value value="8"/>
+                                <value value="9"/>
+                            </values>
+                            <elementType>
+                                <class name="java.lang.Integer"/>
+                            </elementType>
+                        </list>
+                    </inY>
+                    <results>
+                        <beancmpr:bean-results>
+                            <out>
+                                <list/>
+                            </out>
+                        </beancmpr:bean-results>
+                    </results>
+                </beancmpr:compare>
+                <bean-report>
+                    <beans>
+                        <value value="${compare.results.out}"/>
+                    </beans>
+                </bean-report>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>
+```
+
+The example creates the following output:
+```
+matchResultType  value
+---------------  -----
+EQUAL            4
+y_MISSING        5
+y_MISSING        6
+x_MISSING        8
+x_MISSING        9
+```
+
+
+#### Example 2 <a name="example2"></a>
+
+An example of comparing two lists of beans.
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <oddjob>
@@ -179,6 +246,16 @@ A simple example.
         </sequential>
     </job>
 </oddjob>
+```
+
+The example creates the following output:
+```
+matchResultType  id  xType   yType   typeComparison  xQuantity  yQuantity  quantityComparison  xColour  yColour  colourComparison
+---------------  --  ------  ------  --------------  ---------  ---------  ------------------  -------  -------  ----------------
+NOT_EQUAL        1   Apple   Apple                   4          4                              green    red      green<>red
+NOT_EQUAL        2   Banana  Banana                  3          4          3<>4                yellow   yellow
+x_MISSING        3           Orange                             2                                       orange
+y_MISSING        5   Orange                          2                                         orange
 ```
 
 

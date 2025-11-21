@@ -1,0 +1,7 @@
+matchResultType  value
+---------------  -----
+EQUAL            4
+y_MISSING        5
+y_MISSING        6
+x_MISSING        8
+x_MISSING        9

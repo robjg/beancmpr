@@ -3,7 +3,6 @@ package org.oddjob.beancmpr.beans;
 import org.junit.jupiter.api.Test;
 import org.oddjob.Oddjob;
 import org.oddjob.OddjobLookup;
-import org.oddjob.beancmpr.TestCase;
 import org.oddjob.tools.ConsoleCapture;
 import org.oddjob.tools.OddjobTestHelper;
 import org.slf4j.Logger;
@@ -12,7 +11,10 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.util.Objects;
 
-public class BeanArrayComparerTypeTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class BeanArrayComparerTypeTest {
 
 	private static final Logger logger = LoggerFactory.getLogger(
 			BeanArrayComparerTypeTest.class);
@@ -31,8 +33,8 @@ public class BeanArrayComparerTypeTest extends TestCase {
 		try (ConsoleCapture.Close ignored = console.captureConsole()) {
 			oddjob.run();
 		}
-		
-		assertEquals(true, oddjob.lastStateEvent().getState().isComplete());
+
+        assertTrue(oddjob.lastStateEvent().getState().isComplete());
 
 		console.dump(logger);
 		
@@ -62,8 +64,8 @@ public class BeanArrayComparerTypeTest extends TestCase {
 
 			oddjob.run();
 		}
-		
-		assertEquals(true, oddjob.lastStateEvent().getState().isComplete());
+
+        assertTrue(oddjob.lastStateEvent().getState().isComplete());
 
 		console.dump(logger);
 		
@@ -80,7 +82,8 @@ public class BeanArrayComparerTypeTest extends TestCase {
 	}
 
 	
-	@Test void testBeanWithArrayPropertyCompare() throws Exception {
+	@Test
+    void testBeanWithArrayPropertyCompare() throws Exception {
 		
 		File file = new File(Objects.requireNonNull(getClass().getResource(
 				"BeanWithArrayPropertyCompare.xml")).getFile());
@@ -93,8 +96,8 @@ public class BeanArrayComparerTypeTest extends TestCase {
 			
 			oddjob.run();
 		}
-		
-		assertEquals(true, oddjob.lastStateEvent().getState().isComplete());
+
+        assertTrue(oddjob.lastStateEvent().getState().isComplete());
 
 		console.dump(logger);
 		

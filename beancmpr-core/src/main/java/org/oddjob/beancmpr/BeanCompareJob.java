@@ -23,13 +23,22 @@ import java.util.function.Consumer;
 /**
  * @oddjob.description A job that takes two inputs and
  * attempts to match that data using a provided Comparer.
- * 
+ *
+ * @oddjob.example
+ *
+ * An example of comparing two lists of ints.
+ * {@oddjob.xml.resource org/oddjob/beancmpr/CompareTwoListsOfIntegers.xml}
+ * The example creates the following output:
+ * {@oddjob.text.resource org/oddjob/beancmpr/CompareTwoListsOfIntegersOut.txt}
+ *
  * @oddjob.example
  * 
- * A simple example.
+ * An example of comparing two lists of beans.
  * {@oddjob.xml.resource org/oddjob/beancmpr/BeanCompareJobExample.xml}
- * 
- * 
+ * The example creates the following output:
+ * {@oddjob.text.resource org/oddjob/beancmpr/BeanCompareJobExampleOut.txt}
+ *
+ *
  * @author rob
  *
  */
@@ -82,10 +91,11 @@ implements Runnable, MultiItemComparisonCounts, ArooaSessionAware {
      * @oddjob.description An appropriate Comparer for the type of inputs.
      * Historically this was commonly {@link IterableBeansComparerType} which
      * compares Beans by their properties. However, integration with
-     * <a href="https://github.com/robjg/dido>Dido</a> has been the recent focus
+     * <a href="https://github.com/robjg/dido">Dido</a> has been the recent focus
      * with {@link beancmpr.dido.beans.IterableDataComparerType} now being
-     * the most common Comparer.
-     * @oddjob.required Yes.
+     * the most common Comparer. If no comparer is provided then one
+     * is inferred from the data provided.
+     * @oddjob.required No.
      */
 	@SuppressWarnings("JavadocReference")
     private MultiItemComparerFactory<T> comparer;

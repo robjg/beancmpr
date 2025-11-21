@@ -9,16 +9,16 @@ package org.oddjob.beancmpr.multiitem;
  */
 public interface MultiItemComparisonCounts {
 	
-	public int getXMissingCount();
+	int getXMissingCount();
 	
-	public int getYMissingCount();
+	int getYMissingCount();
 		
-	public int getDifferentCount();
+	int getDifferentCount();
 	
-	public int getMatchedCount();
+	int getMatchedCount();
 	
-	public int getBreaksCount();
+	int getBreaksCount();
 	
-	public int getComparedCount();
+	int getComparedCount();
 	
 }

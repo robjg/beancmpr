@@ -99,6 +99,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- For Text Tables from Dido Data -->
+        <dependency>
+            <groupId>uk.co.rgordon</groupId>
+            <artifactId>dido-text</artifactId>
+            <version>${dido.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <artifactId>dido-oddball</artifactId>
             <groupId>uk.co.rgordon</groupId>

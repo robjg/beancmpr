@@ -9,8 +9,13 @@ import org.oddjob.OddjobLookup;
 import org.oddjob.arooa.convert.ArooaConversionException;
 import org.oddjob.beancmpr.results.MatchResultType;
 import org.oddjob.state.ParentState;
+import org.oddjob.tools.ConsoleCapture;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,6 +24,8 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 
 class DidoCompareJobTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(DidoCompareJobTest.class);
 
     @Test
     void testDidoCompareInOddjob() throws ArooaConversionException {
@@ -29,7 +36,25 @@ class DidoCompareJobTest {
         Oddjob oddjob = new Oddjob();
         oddjob.setFile(file);
 
-        oddjob.run();
+        ConsoleCapture console = new ConsoleCapture();
+        try (ConsoleCapture.Close ignored = console.captureConsole()) {
+
+            oddjob.run();
+        }
+
+        console.dump(logger);
+
+        List<String> lines = console.getAsList()
+                .stream()
+                .map(String::stripTrailing)
+                .toList();
+
+        List<String> expected = new BufferedReader(
+                new InputStreamReader(Objects.requireNonNull(
+                        getClass().getResourceAsStream("/examples/DidoCompareOut.txt"))))
+                .lines().map(String::stripTrailing).toList();
+
+        assertThat(lines, is(expected));
 
         assertThat(oddjob.lastStateEvent().getState(), is(ParentState.COMPLETE));
 
@@ -48,7 +73,7 @@ class DidoCompareJobTest {
                 .build();
 
         @SuppressWarnings("unchecked")
-        List<DidoData> results = new OddjobLookup(oddjob).lookup("results.list.list", List.class);
+        List<DidoData> results = new OddjobLookup(oddjob).lookup("results.list", List.class);
 
         assertThat(results.getFirst().getSchema(), is(expectedSchema));
 

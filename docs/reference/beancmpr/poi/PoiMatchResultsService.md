@@ -22,6 +22,13 @@ the Result Handler of an [beancmpr:compare](../../org/oddjob/beancmpr/BeanCompar
 | [yPrefix](#propertyyprefix) | The prefix that will be used for the Y titles. | 
 
 
+### Example Summary
+
+| Title | Description |
+| ----- | ----------- |
+| [Example 1](#example1) | Creating an Excel spreadsheet of comparison results. |
+
+
 ### Property Detail
 #### autoFilter <a name="propertyautofilter"></a>
 
@@ -126,6 +133,13 @@ The prefix that will be used for the X titles.
 </table>
 
 The prefix that will be used for the Y titles.
+
+
+### Examples
+#### Example 1 <a name="example1"></a>
+
+Creating an Excel spreadsheet of comparison results.
+_java.io.IOException: No Resource Found: 'example/PoiMatchResultExample.xml', classloader=java.net.URLClassLoader@67b355c8_
 
 
 -----------------------

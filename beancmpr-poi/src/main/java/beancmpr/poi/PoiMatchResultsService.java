@@ -13,6 +13,12 @@ import java.util.function.Consumer;
  * spreadsheet of comparison results. The result will typically be created
  * using the {@link org.oddjob.beancmpr.results.MatchResultHandlerFactory} as
  * the Result Handler of an {@link org.oddjob.beancmpr.BeanCompareJob}.
+ *
+ * @oddjob.example
+ *
+ * Creating an Excel spreadsheet of comparison results.
+ * {@oddjob.xml.resource example/PoiMatchResultExample.xml}
+ *
  */
 public class PoiMatchResultsService implements Consumer<MatchResult> {
 

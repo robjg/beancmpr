@@ -7,7 +7,7 @@
                     <values>
                         <file file="${oddjob.dir}/docs/reference" key="reference.dir"/>
                         <value key="oddjob.version" value="1.7.0"/>
-                        <value key="project.version" value="1.1.0"/>
+                        <value key="project.version" value="1.2.0-SNAPSHOT"/>
                     </values>
                 </properties>
                 <variables id="vars">
@@ -33,8 +33,11 @@
                         <files>
                             <list>
                                 <file file="${oddjob.dir}/beancmpr-core/src/test/resources"/>
+                                <file file="${oddjob.dir}/beancmpr-core/src/test/java"/>
+                                <file file="${oddjob.dir}/beancmpr-dido/src/test/resources"/>
                                 <file file="${oddjob.dir}/beancmpr-dido/src/test/java"/>
                                 <file file="${oddjob.dir}/beancmpr-poi/src/test/resources"/>
+                                <file file="${oddjob.dir}/beancmpr-poi/src/test/java"/>
                             </list>
                         </files>
                     </loaderPath>
@@ -55,7 +58,7 @@
                         </resolve:dependencies>
                     </dependencies>
                 </resolve:resolve>
-                <resolve:resolve id="didoResolve" name="Dido Resolve" xmlns:resolve="oddjob:resolve">
+                <resolve:resolve id="projectResolve" name="Project Resolve" xmlns:resolve="oddjob:resolve">
                     <dependencies>
                         <resolve:dependencies>
                             <dependencies>
@@ -69,7 +72,7 @@
                         </resolve:dependencies>
                     </dependencies>
                 </resolve:resolve>
-                <bean class="org.oddjob.doc.doclet.ReferenceMain" classPath="${didoResolve.resolvedFilesArray}"
+                <bean class="org.oddjob.util.ReferenceMain" classPath="${projectResolve.resolvedFilesArray}"
                       directory="${reference.dir}" docletPath="${docletResolve.resolvedFilesArray}" packages="org.oddjob:beancmpr"
                       sourcepath="${vars.sources}" writerFactory="org.oddjob.doc.markdown.MdReferenceWriterFactory"
                       loaderPath="${vars.loaderPath}">

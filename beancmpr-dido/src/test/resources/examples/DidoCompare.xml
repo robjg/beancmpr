@@ -20,13 +20,11 @@
                         </dido:csv>
                     </how>
                     <from>
-                        <buffer>
-                            <![CDATA[apple,red,5,22.4,crunchy
+                        <buffer><![CDATA[apple,red,5,22.4,crunchy
 apple,green,6,23.2,crisp
 banana,yellow,3,46.4,bent
 orange,orange,2,23.5,healthy
-pear,green,8,37.0,shapely]]>
-                        </buffer>
+pear,green,8,37.0,shapely]]></buffer>
                     </from>
                     <to>
                         <list/>
@@ -49,19 +47,17 @@ pear,green,8,37.0,shapely]]>
                         </dido:csv>
                     </how>
                     <from>
-                        <buffer>
-                            <![CDATA[apple,red,5,22.4,crunchy
+                        <buffer><![CDATA[apple,red,5,22.4,crunchy
 apple,green,7,23.2,crisp
 banana,yellow,3,46.4,bent
 orange,orange,2,57.2,healthy
-pear,gr,8,37.0,shapely]]>
-                        </buffer>
+pear,gr,8,37.0,shapely]]></buffer>
                     </from>
                     <to>
                         <list/>
                     </to>
                 </dido:data-in>
-                <bus:bus xmlns:bus="oddjob:beanbus" id="bus">
+                <bus:bus id="bus" xmlns:bus="oddjob:beanbus">
                     <of>
                         <beancmpr:compare id="comparison" xmlns:beancmpr="oddjob:beancmpr">
                             <inX>
@@ -88,7 +84,7 @@ pear,gr,8,37.0,shapely]]>
                         <bus:collect id="results"/>
                         <dido:data-out xmlns:dido="oddjob:dido">
                             <how>
-                                <dido:csv/>
+                                <dido:table/>
                             </how>
                             <to>
                                 <stdout/>

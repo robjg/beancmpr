@@ -15,7 +15,14 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
 /**
  * @oddjob.description Compares two Iterables of Dido Data. Iterables will
  * typically be lists or sets.
- * 
+ *
+ * @oddjob.example Comparing two lists of Dido Data. The Data is created from
+ * parsing CSV files. The comparison results are also created as Dido Data and
+ * are written as a Text Table. As they are Dido Data they could have captured as
+ * a CSV, JSON or written to a database.
+ * {@oddjob.xml.resource examples/DidoCompare.xml}
+ * The output is:
+ * {@oddjob.text.resource examples/DidoCompareOut.txt}
  *
  * @author rob
  *

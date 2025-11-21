@@ -1,0 +1,6 @@
+matchResultType  id  xType   yType   typeComparison  xQuantity  yQuantity  quantityComparison  xColour  yColour  colourComparison
+---------------  --  ------  ------  --------------  ---------  ---------  ------------------  -------  -------  ----------------
+NOT_EQUAL        1   Apple   Apple                   4          4                              green    red      green<>red
+NOT_EQUAL        2   Banana  Banana                  3          4          3<>4                yellow   yellow
+x_MISSING        3           Orange                             2                                       orange
+y_MISSING        5   Orange                          2                                         orange

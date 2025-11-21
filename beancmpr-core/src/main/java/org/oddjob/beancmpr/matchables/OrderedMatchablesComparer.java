@@ -1,14 +1,14 @@
 package org.oddjob.beancmpr.matchables;
 
-import java.util.Comparator;
-import java.util.Iterator;
-
 import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.ComparisonStoppedException;
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 import org.oddjob.beancmpr.multiitem.MultiItemComparer;
 import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 import org.oddjob.beancmpr.multiitem.MultiItemComparisonFromCounts;
+
+import java.util.Comparator;
+import java.util.Iterator;
 
 /**
  * Compares two {@code Iterable}s of {@link MatchableGroup}s.
@@ -19,7 +19,7 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparisonFromCounts;
  */
 public class OrderedMatchablesComparer 
 implements MultiItemComparer<Iterable<MatchableGroup>> {
-	
+
 	private final ComparisonGatheringProcessor matchProcessor;
 	
 	private final BeanPropertyComparerProvider comparerProvider;
@@ -64,7 +64,7 @@ implements MultiItemComparer<Iterable<MatchableGroup>> {
 
 			if (Thread.interrupted()) {
 				throw new ComparisonStoppedException(getClass().getSimpleName() + 
-						" detected inturrupt.");
+						" detected interrupt.");
 			}
 			
 			if (currentX == null && matchablesX.hasNext()) {
@@ -123,9 +123,9 @@ implements MultiItemComparer<Iterable<MatchableGroup>> {
 			currentY = null;
 		}
 				
-		return new MultiItemComparisonFromCounts<Iterable<MatchableGroup>>(
-				x, y,
-				matchProcessor);
+		return new MultiItemComparisonFromCounts<>(
+                x, y,
+                matchProcessor);
 	}
 	
 	/**
@@ -133,8 +133,8 @@ implements MultiItemComparer<Iterable<MatchableGroup>> {
 	 * the same key.
 	 * <p>
 	 * 
-	 * @param fromX
-	 * @param fromY
+	 * @param fromX Group X.
+	 * @param fromY Group Y.
 	 */
 	protected void groupMatch(MatchableGroup fromX, MatchableGroup fromY) {
 		
@@ -169,18 +169,18 @@ implements MultiItemComparer<Iterable<MatchableGroup>> {
 		
 		// Notify differences for remaining matchables in the order 
 		// provided and remove until one group is empty.
-		for (; itX.hasNext() && itY.hasNext(); ) {
-			Matchable matchableX = itX.next();
-			Matchable matchableY = itY.next();	
-			
-			matchProcessor.compared(matchableComparer.compare(
-					matchableX, matchableY));
-			
-			itY.remove();
-			itX.remove();
-		}
-		
-		// If any left in X then they are missing from Y.
+        while (itX.hasNext() && itY.hasNext()) {
+            Matchable matchableX = itX.next();
+            Matchable matchableY = itY.next();
+
+            matchProcessor.compared(matchableComparer.compare(
+                    matchableX, matchableY));
+
+            itY.remove();
+            itX.remove();
+        }
+
+        // If any left in X then they are missing from Y.
 		if (itX.hasNext()) {
 			matchProcessor.yMissing(fromX);
 		}

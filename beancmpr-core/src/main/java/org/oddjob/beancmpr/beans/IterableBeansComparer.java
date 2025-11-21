@@ -14,10 +14,11 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparison;
 
 /**
  * Compare any two collections of beans.
- * 
+ *
+ * @see IterableBeansComparerType
  * @author rob
  *
- * @param <T>
+ * @param <T> The type of the iterable.
  */
 public class IterableBeansComparer<T>
 implements MultiItemComparer<Iterable<T>> {

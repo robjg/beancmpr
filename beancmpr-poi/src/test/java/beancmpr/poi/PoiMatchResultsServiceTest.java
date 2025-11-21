@@ -30,7 +30,7 @@ class PoiMatchResultsServiceTest {
         properties.setProperty("work.dir", workDir.toString());
 
         File file = new File(Objects.requireNonNull(
-                getClass().getResource("/examples/DidoCompare.xml")).getFile());
+                getClass().getResource("/examples/PoiMatchResultExample.xml")).getFile());
 
         Oddjob oddjob = new Oddjob();
         oddjob.setFile(file);
