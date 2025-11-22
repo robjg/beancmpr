@@ -8,10 +8,8 @@
                         <dido:schema xmlns:dido="oddjob:dido">
                             <of>
                                 <dido:field name="Fruit" type="java.lang.String"/>
-                                <dido:field name="Colour" type="java.lang.String"/>
                                 <dido:field name="Qty" type="int"/>
                                 <dido:field name="Price" type="double"/>
-                                <dido:field name="Comments" type="java.lang.String"/>
                             </of>
                         </dido:schema>
                     </schema>
@@ -25,11 +23,7 @@
                         </dido:csv>
                     </how>
                     <from>
-                        <buffer><![CDATA[apple,red,5,22.4,crunchy
-apple,green,6,23.2,crisp
-banana,yellow,3,46.4,bent
-orange,orange,2,23.5,healthy
-pear,green,8,37.0,shapely]]></buffer>
+                        <buffer><![CDATA[apple,25,22.7]]></buffer>
                     </from>
                     <to>
                         <list/>
@@ -44,11 +38,7 @@ pear,green,8,37.0,shapely]]></buffer>
                         </dido:csv>
                     </how>
                     <from>
-                        <buffer><![CDATA[apple,red,5,22.4,crunchy
-apple,green,7,23.2,crisp
-banana,yellow,3,46.4,bent
-orange,orange,2,57.2,healthy
-pear,gr,8,37.0,shapely]]></buffer>
+                        <buffer><![CDATA[APPLE,26,22.4]]></buffer>
                     </from>
                     <to>
                         <list/>
@@ -64,13 +54,24 @@ pear,gr,8,37.0,shapely]]></buffer>
                                 <value value="${data2.to}"/>
                             </inY>
                             <comparer>
-                                <didocmpr:collection-comparer keys="Fruit,Colour" others="Comments" sorted="false" values="Qty, Price" xmlns:didocmpr="oddjob:didocmpr"/>
+                                <didocmpr:collection-comparer values="Fruit, Qty, Price" xmlns:didocmpr="oddjob:didocmpr">
+                                    <comparersByType>
+                                        <beancmpr:comparers-by-type>
+                                            <comparers>
+                                                <beancmpr:numeric-comparer deltaTolerance="0.5"/>
+                                                <beancmpr:text-comparer ignoreCase="true"/>
+                                            </comparers>
+                                            <specialisations>
+                                                <beancmpr:numeric-comparer key="java.lang.Integer" percentageTolerance="10"/>
+                                            </specialisations>
+                                        </beancmpr:comparers-by-type>
+                                    </comparersByType>
+                                </didocmpr:collection-comparer>
                             </comparer>
                             <results>
                                 <didocmpr:data-results xmlns:didocmpr="oddjob:didocmpr"/>
                             </results>
                         </beancmpr:compare>
-                        <bus:collect id="results"/>
                         <dido:data-out xmlns:dido="oddjob:dido">
                             <how>
                                 <dido:table/>

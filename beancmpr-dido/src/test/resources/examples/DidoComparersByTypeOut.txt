@@ -1,0 +1,3 @@
+MatchType|X_Fruit|Y_Fruit|Fruit_|X_Qty|Y_Qty|Qty_|X_Price|Y_Price|Price_
+---------+-------+-------+------+-----+-----+----+-------+-------+------
+EQUAL    |apple  |APPLE  |      |   25|   26|    |   22.7|   22.4|      

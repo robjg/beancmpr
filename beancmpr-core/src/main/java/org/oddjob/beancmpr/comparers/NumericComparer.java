@@ -134,6 +134,7 @@ public class NumericComparer implements Comparer<Number> {
 	 * @oddjob.property type
 	 * @oddjob.description The base class this is a comparer for. 
 	 * Used internally.
+     * @oddjob.required Read Only
 	 * 
 	 */
 	@Override

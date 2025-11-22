@@ -94,4 +94,70 @@ class DidoCompareJobTest {
         ));
     }
 
+    @Test
+    void didoComparersByType() throws ArooaConversionException {
+
+        File file = new File(Objects.requireNonNull(
+                getClass().getResource("/examples/DidoComparersByType.xml")).getFile());
+
+        Oddjob oddjob = new Oddjob();
+        oddjob.setFile(file);
+
+        ConsoleCapture console = new ConsoleCapture();
+        try (ConsoleCapture.Close ignored = console.captureConsole()) {
+
+            oddjob.run();
+        }
+
+        console.dump(logger);
+
+        List<String> lines = console.getAsList()
+                .stream()
+                .map(String::stripTrailing)
+                .toList();
+
+        List<String> expected = new BufferedReader(
+                new InputStreamReader(Objects.requireNonNull(
+                        getClass().getResourceAsStream("/examples/DidoComparersByTypeOut.txt"))))
+                .lines().map(String::stripTrailing).toList();
+
+        assertThat(lines, is(expected));
+
+        assertThat(oddjob.lastStateEvent().getState(), is(ParentState.COMPLETE));
+
+    }
+
+    @Test
+    void didoComparersByName() throws ArooaConversionException {
+
+        File file = new File(Objects.requireNonNull(
+                getClass().getResource("/examples/DidoComparersByName.xml")).getFile());
+
+        Oddjob oddjob = new Oddjob();
+        oddjob.setFile(file);
+
+        ConsoleCapture console = new ConsoleCapture();
+        try (ConsoleCapture.Close ignored = console.captureConsole()) {
+
+            oddjob.run();
+        }
+
+        console.dump(logger);
+
+        List<String> lines = console.getAsList()
+                .stream()
+                .map(String::stripTrailing)
+                .toList();
+
+        List<String> expected = new BufferedReader(
+                new InputStreamReader(Objects.requireNonNull(
+                        getClass().getResourceAsStream("/examples/DidoComparersByNameOut.txt"))))
+                .lines().map(String::stripTrailing).toList();
+
+        assertThat(lines, is(expected));
+
+        assertThat(oddjob.lastStateEvent().getState(), is(ParentState.COMPLETE));
+
+    }
+
 }

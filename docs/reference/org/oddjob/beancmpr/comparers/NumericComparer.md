@@ -93,6 +93,7 @@ Treat two Not a Numbers as being equal when true.
 
 <table style='font-size:smaller'>
       <tr><td><i>Access</i></td><td>READ_ONLY</td></tr>
+      <tr><td><i>Required</i></td><td>Read Only</td></tr>
 </table>
 
 The base class this is a comparer for.
