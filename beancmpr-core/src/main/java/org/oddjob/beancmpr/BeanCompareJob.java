@@ -34,6 +34,8 @@ import java.util.function.Consumer;
  * @oddjob.example
  * 
  * An example of comparing two lists of beans.
+ * The Beans are defined in a Test Class that can be seen
+ * <a href="https://github.com/robjg/beancmpr/blob/master/beancmpr-core/src/test/java/org/oddjob/beancmpr/SharedTestData.java">here in GitHub</a>.
  * {@oddjob.xml.resource org/oddjob/beancmpr/BeanCompareJobExample.xml}
  * The example creates the following output:
  * {@oddjob.text.resource org/oddjob/beancmpr/BeanCompareJobExampleOut.txt}

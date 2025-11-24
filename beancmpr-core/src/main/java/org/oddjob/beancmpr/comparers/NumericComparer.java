@@ -4,6 +4,7 @@ import org.oddjob.beancmpr.Comparer;
 import org.oddjob.beancmpr.composite.ComparerFactory;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 /**
  * @oddjob.description A Comparer for numbers that supports tolerances and provides
@@ -20,9 +21,16 @@ import java.text.DecimalFormat;
  * <p>
  * The comparison is only unequal if the difference between the two numbers
  * is greater than both tolerances. Both tolerances default to zero.
- * <p>
- * If either or both input number is null, the result of the compare is null.
- * 
+ *
+ * @oddjob.example
+ *
+ * Formatting the result of a numeric compare. Note that we use
+ * JavaScript expressions to configure the numbers because Oddjob
+ * would default to Strings as the value of configuration attribute.
+ * {@oddjob.xml.resource org/oddjob/beancmpr/comparers/NumericComparerExample.xml}
+ * The example creates the following output:
+ * {@oddjob.text.resource org/oddjob/beancmpr/comparers/NumericComparerExampleOut.txt}
+ *
  * @author Rob
  *
  */
@@ -83,9 +91,8 @@ public class NumericComparer implements Comparer<Number> {
 	 */
 	public NumericComparison compare(final Number x, final Number y) {
 
-		if (x == null || y == null) {
-			throw new NullPointerException("X or Y Null.");
-		}
+        Objects.requireNonNull(x, "X null.");
+        Objects.requireNonNull(y, "Y null.");
 		
 		double doubleX = x.doubleValue();
 		double doubleY = y.doubleValue();

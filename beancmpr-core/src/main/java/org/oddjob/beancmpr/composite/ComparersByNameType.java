@@ -14,7 +14,9 @@ import java.util.Map;
  * a properties. This type is used by comparers such as 
  * {@link BeanArrayComparerType}, {@link IterableBeansComparerType},
  * {@link BeanComparerType}, or {@link MapComparerType}.
- * 
+ * The name of the property is
+ * given as the key. It must exactly match the incoming field name. If it
+ * doesn't, Beancmpr will silently fall back on the default comparer. *
  * @author rob
  *
  */
@@ -22,8 +24,8 @@ public class ComparersByNameType
 implements ComparersByNameFactory {
 
 	/**
-	 * @oddjob.property
-	 * @oddjob.description Comparer keys by property name.
+	 * @oddjob.property comparers
+	 * @oddjob.description Comparers keyed by property name.
 	 * @oddjob.required No. But pointless if missing.
 	 */
 	public final Map<String, ComparerFactory<?>> comparersByName =

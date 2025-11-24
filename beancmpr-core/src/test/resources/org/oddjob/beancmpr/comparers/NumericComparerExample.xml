@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <sequential>
+            <jobs>
+                <beancmpr:compare id="compare" xmlns:beancmpr="oddjob:beancmpr">
+                    <inX>
+                        <value value="#{4.25}"/>
+                    </inX>
+                    <inY>
+                        <value value="#{5.01}"/>
+                    </inY>
+                    <comparer>
+                        <beancmpr:bean-comparer>
+                            <comparersByType>
+                                <beancmpr:comparers-by-type>
+                                    <comparers>
+                                        <beancmpr:numeric-comparer deltaTolerance="0.5" deltaFormat="0.1" percentageFormat="0" xmlns:beancmpr="oddjob:beancmpr"/>
+                                    </comparers>
+                                </beancmpr:comparers-by-type>
+                            </comparersByType>
+                        </beancmpr:bean-comparer>
+                    </comparer>
+                    <results>
+                        <beancmpr:bean-results>
+                            <out>
+                                <list/>
+                            </out>
+                        </beancmpr:bean-results>
+                    </results>
+                </beancmpr:compare>
+                <bean-report>
+                    <beans>
+                        <value value="${compare.results.out}"/>
+                    </beans>
+                </bean-report>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>

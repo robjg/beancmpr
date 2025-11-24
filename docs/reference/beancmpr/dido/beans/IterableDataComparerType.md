@@ -210,7 +210,8 @@ Y_MISSING|pear  |green |    8|     |    |   37.0|       |             |shapely  
 #### Example 2 <a name="example2"></a>
 
 Using the `comparersByType` property to configure
-the comparers used for the comparison. Note that we specify a comparer
+the comparers used for the comparison. The [beancmpr:comparers-by-type](../../../org/oddjob/beancmpr/composite/ComparersByTypeList.md) type
+is used to provide the Comparers by Type. Note that we specify a comparer
 for all Numeric types, but then override this with a specialisation for
 Integers. We see that despite differences in the inputs, Beancmpr now
 treats the two items as equal.
@@ -316,9 +317,8 @@ EQUAL    |apple  |APPLE  |      |   25|   26|    |   22.7|   22.4|
 #### Example 3 <a name="example3"></a>
 
 Using the `comparersByName` property to configure
-the comparers used for the comparison. The name of the property is
-given as the key. It must exactly match the incoming field name. If it
-doesn't, Beancmpr will silently fall back on the default comparer.
+the comparers used for the comparison. The [beancmpr:comparers-by-name](../../../org/oddjob/beancmpr/composite/ComparersByNameType.md)
+type is used to provide the Comparers by Name.
 As above, we see that despite differences in the inputs, Beancmpr
 treats the two items as equal.
 ```xml

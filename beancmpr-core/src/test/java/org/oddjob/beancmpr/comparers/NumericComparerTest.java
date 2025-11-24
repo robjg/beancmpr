@@ -1,9 +1,21 @@
 package org.oddjob.beancmpr.comparers;
 
 import org.junit.jupiter.api.Test;
-import org.oddjob.beancmpr.TestCase;
+import org.oddjob.Oddjob;
+import org.oddjob.tools.ConsoleCapture;
 
-class NumericComparerTest extends TestCase {
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
+import java.util.List;
+import java.util.Objects;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class NumericComparerTest  {
 
 	@Test
 	void testNoTolerances() {
@@ -114,7 +126,7 @@ class NumericComparerTest extends TestCase {
 		
 		assertEquals(-1, comparison.getResult());
 		assertEquals("1000.0", comparison.getSummaryText());
-		assertEquals(true, Double.isInfinite(comparison.getPercentage()));
+        assertTrue(Double.isInfinite(comparison.getPercentage()));
 		
 		comparison = test.compare(1000.0, 0.0);
 		
@@ -126,5 +138,35 @@ class NumericComparerTest extends TestCase {
 		assertEquals(0, comparison.getResult());
 		assertEquals("", comparison.getSummaryText());
 	}
-	
+
+    @Test
+    void example() {
+
+        File file = new File(Objects.requireNonNull(getClass().getResource(
+                "NumericComparerExample.xml")).getFile());
+
+        Oddjob oddjob = new Oddjob();
+        oddjob.setFile(file);
+
+        ConsoleCapture console = new ConsoleCapture();
+        try (ConsoleCapture.Close ignored = console.captureConsole()) {
+
+            oddjob.run();
+        }
+
+        assertTrue(oddjob.lastStateEvent().getState().isComplete());
+
+        List<String> lines = console.getAsList();
+
+        List<String> expected = new BufferedReader(
+                new InputStreamReader(Objects.requireNonNull(
+                        getClass().getResourceAsStream("NumericComparerExampleOut.txt"))))
+                .lines().toList();
+
+        assertThat(lines, is(expected));
+
+        oddjob.destroy();
+
+    }
+
 }

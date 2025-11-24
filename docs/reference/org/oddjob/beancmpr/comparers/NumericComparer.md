@@ -19,9 +19,6 @@ or a minimum percentage change that the two number must exceed.
 The comparison is only unequal if the difference between the two numbers
 is greater than both tolerances. Both tolerances default to zero.
 
-
-If either or both input number is null, the result of the compare is null.
-
 ### Property Summary
 
 | Property | Description |
@@ -32,6 +29,13 @@ If either or both input number is null, the result of the compare is null.
 | [percentageTolerance](#propertypercentagetolerance) | The difference specified as percentage to allow for two numbers to still be considered equal. | 
 | [twoNaNsEqual](#propertytwonansequal) | Treat two Not a Numbers as being equal when true. | 
 | [type](#propertytype) | The base class this is a comparer for. | 
+
+
+### Example Summary
+
+| Title | Description |
+| ----- | ----------- |
+| [Example 1](#example1) | Formatting the result of a numeric compare. |
 
 
 ### Property Detail
@@ -98,6 +102,64 @@ Treat two Not a Numbers as being equal when true.
 
 The base class this is a comparer for.
 Used internally.
+
+
+### Examples
+#### Example 1 <a name="example1"></a>
+
+Formatting the result of a numeric compare. Note that we use
+JavaScript expressions to configure the numbers because Oddjob
+would default to Strings as the value of configuration attribute.
+```xml
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <sequential>
+            <jobs>
+                <beancmpr:compare id="compare" xmlns:beancmpr="oddjob:beancmpr">
+                    <inX>
+                        <value value="#{4.25}"/>
+                    </inX>
+                    <inY>
+                        <value value="#{5.01}"/>
+                    </inY>
+                    <comparer>
+                        <beancmpr:bean-comparer>
+                            <comparersByType>
+                                <beancmpr:comparers-by-type>
+                                    <comparers>
+                                        <beancmpr:numeric-comparer deltaTolerance="0.5" deltaFormat="0.1" percentageFormat="0" xmlns:beancmpr="oddjob:beancmpr"/>
+                                    </comparers>
+                                </beancmpr:comparers-by-type>
+                            </comparersByType>
+                        </beancmpr:bean-comparer>
+                    </comparer>
+                    <results>
+                        <beancmpr:bean-results>
+                            <out>
+                                <list/>
+                            </out>
+                        </beancmpr:bean-results>
+                    </results>
+                </beancmpr:compare>
+                <bean-report>
+                    <beans>
+                        <value value="${compare.results.out}"/>
+                    </beans>
+                </bean-report>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>
+```
+
+The example creates the following output:
+```
+matchResultType  xValue  yValue  valueComparison
+---------------  ------  ------  ---------------
+NOT_EQUAL        4.25    5.01    1.1 (18%)
+```
+
 
 
 -----------------------

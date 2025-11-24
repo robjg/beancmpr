@@ -25,7 +25,8 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
  * {@oddjob.text.resource examples/DidoCompareOut.txt}
  *
  * @oddjob.example Using the {@code comparersByType} property to configure
- * the comparers used for the comparison. Note that we specify a comparer
+ * the comparers used for the comparison. The {@link ComparersByTypeList} type
+ * is used to provide the Comparers by Type. Note that we specify a comparer
  * for all Numeric types, but then override this with a specialisation for
  * Integers. We see that despite differences in the inputs, Beancmpr now
  * treats the two items as equal.
@@ -34,9 +35,8 @@ import org.oddjob.beancmpr.multiitem.MultiItemComparerFactory;
  * {@oddjob.text.resource examples/DidoComparersByTypeOut.txt}
  *
  * @oddjob.example Using the {@code comparersByName} property to configure
- * the comparers used for the comparison. The name of the property is
- * given as the key. It must exactly match the incoming field name. If it
- * doesn't, Beancmpr will silently fall back on the default comparer.
+ * the comparers used for the comparison. The {@link ComparersByNameType}
+ * type is used to provide the Comparers by Name.
  * As above, we see that despite differences in the inputs, Beancmpr
  * treats the two items as equal.
  * {@oddjob.xml.resource examples/DidoComparersByName.xml}

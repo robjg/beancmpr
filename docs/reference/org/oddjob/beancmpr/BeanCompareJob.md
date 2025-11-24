@@ -212,6 +212,8 @@ x_MISSING        9
 #### Example 2 <a name="example2"></a>
 
 An example of comparing two lists of beans.
+The Beans are defined in a Test Class that can be seen
+<a href="https://github.com/robjg/beancmpr/blob/master/beancmpr-core/src/test/java/org/oddjob/beancmpr/SharedTestData.java">here in GitHub</a>.
 ```xml
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <oddjob>
