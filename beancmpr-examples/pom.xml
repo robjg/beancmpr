@@ -163,7 +163,7 @@
 
     <profiles>
         <profile>
-            <id>reference</id>
+            <id>docs</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
