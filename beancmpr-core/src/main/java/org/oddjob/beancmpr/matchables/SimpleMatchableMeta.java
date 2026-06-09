@@ -38,17 +38,17 @@ public class SimpleMatchableMeta implements MatchableMetaData {
 	public static MatchableMetaData of(ImmutableCollection<String> keyProperties,
 								ImmutableCollection<String> valueProperties,
 								ImmutableCollection<String> otherProperties,
-								Map<String, Class<?>> types) {
+								Map<String, Type> types) {
 
-		final Map<String, Class<?>> typeCopy = new HashMap<>();
-		for (Map.Entry<String, Class<?>> entry: types.entrySet()) {
-			Class<?> type = entry.getValue();
+		final Map<String, Type> typeCopy = new HashMap<>();
+		for (Map.Entry<String, Type> entry: types.entrySet()) {
+			Type type = entry.getValue();
 			String property = entry.getKey();
 			if (type == null) {
 				throw new IllegalArgumentException("No property " + property);
 			}
-			if (type.isPrimitive()) {
-				type = ClassUtils.wrapperClassForPrimitive(type);
+			if (type instanceof Class<?> cl && cl.isPrimitive()) {
+				type = ClassUtils.wrapperClassForPrimitive(cl);
 			}
 			typeCopy.put(property, type);
 		}
@@ -67,7 +67,7 @@ public class SimpleMatchableMeta implements MatchableMetaData {
 
 	public static class Builder {
 
-		private final Map<String, Class<?>> types = new HashMap<>();
+		private final Map<String, Type> types = new HashMap<>();
 
 		private final List<String> keys = new ArrayList<>();
 

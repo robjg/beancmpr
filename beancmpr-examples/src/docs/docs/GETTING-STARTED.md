@@ -64,6 +64,6 @@ Run the root job node from the 'Job' Menu and you will see the jobs run and hope
 Here we've navigated to the Comparison Job so you can see properties of the comparison that
 get written the console by the final `echo` task.
 
-And that's a very quick guid to getting started with Beancmpr.
+And that's a very quick guide to getting started with Beancmpr.
 
 

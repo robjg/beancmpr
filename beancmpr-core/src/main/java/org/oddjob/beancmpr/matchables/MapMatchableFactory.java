@@ -5,6 +5,7 @@ import org.oddjob.arooa.reflect.BeanOverview;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.MatchDefinition;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,7 +109,7 @@ implements MatchableFactory<Map.Entry<K, V>> {
 	 */
 	private MatchableMetaData metaDataFor(Map.Entry<?, ?> entry) {
 		
-		Map<String, Class<?>> types = new HashMap<>();
+		Map<String, Type> types = new HashMap<>();
 		
 		ImmutableCollection<String> keyProperties = definition.getKeyProperties();
 		if (keyProperties.isEmpty()) {

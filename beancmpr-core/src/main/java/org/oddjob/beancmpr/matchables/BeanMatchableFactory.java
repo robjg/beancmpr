@@ -5,6 +5,7 @@ import org.oddjob.arooa.reflect.BeanOverview;
 import org.oddjob.arooa.reflect.PropertyAccessor;
 import org.oddjob.beancmpr.MatchDefinition;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +33,8 @@ public class BeanMatchableFactory<T> implements MatchableFactory<T> {
     /**
      * Create a new instance.
      *
-     * @param definition
-     * @param accessor
+     * @param definition The Match Definition.
+     * @param accessor The Property Accessor.
      */
     public BeanMatchableFactory(final MatchDefinition definition,
                                 PropertyAccessor accessor) {
@@ -62,8 +63,8 @@ public class BeanMatchableFactory<T> implements MatchableFactory<T> {
     /**
      * Create a list of the given property values.
      *
-     * @param bean
-     * @param names
+     * @param bean A bean.
+     * @param names Property names.
      * @return The property values. Never null.
      */
     private ImmutableCollection<Object> strip(Object bean, ImmutableCollection<String> names) {
@@ -108,7 +109,7 @@ public class BeanMatchableFactory<T> implements MatchableFactory<T> {
 
         private final Object bean;
 
-        private final Map<String, Class<?>> types = new HashMap<>();
+        private final Map<String, Type> types = new HashMap<>();
 
         private BeanOverview overview;
 
@@ -152,7 +153,7 @@ public class BeanMatchableFactory<T> implements MatchableFactory<T> {
             return overview;
         }
 
-        Map<String, Class<?>> getTypes() {
+        Map<String, Type> getTypes() {
             return types;
         }
 

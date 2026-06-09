@@ -130,10 +130,11 @@ implements ResultBeanFactory {
 			}
 			
 			if (resultClass == null) {
-				logger.debug("Creating Result Class based on [" + 
-						xPropertyPrefix + "] types only.");
-				
-				resultClass = classForResult(x, x);
+                //noinspection LoggingSimilarMessage
+                logger.debug("Creating Result Class based on [{}] types only.", xPropertyPrefix);
+
+                //noinspection SuspiciousNameCombination
+                resultClass = classForResult(x, x);
 			}
 			else {
 				resultClass = mergeXintoY(x);
@@ -151,10 +152,10 @@ implements ResultBeanFactory {
 			}
 			
 			if (resultClass == null) {
-				logger.debug("Creating Result Class based on [" + 
-						yPropertyPrefix + "] types only.");
-				
-				resultClass = classForResult(y, y);
+				logger.debug("Creating Result Class based on [{}] types only.", yPropertyPrefix);
+
+                //noinspection SuspiciousNameCombination
+                resultClass = classForResult(y, y);
 			}
 			else {
 				resultClass = mergeYintoX(y);
@@ -199,16 +200,8 @@ implements ResultBeanFactory {
 					xPropertyPrefix + "] types into Result Class.");
 			
 			return merge(
-					new Ifyer() {
-						public String ify(String propertyName) {
-							return yify(propertyName);
-						}
-					},
-					new Ifyer() {
-						public String ify(String propertyName) {
-							return xify(propertyName);
-						}
-					},
+                    SharedNameResultBeanFactory.this::yify,
+                    SharedNameResultBeanFactory.this::xify,
 					x.getMetaData());
 		}
 		
@@ -218,16 +211,8 @@ implements ResultBeanFactory {
 					yPropertyPrefix + "] types into Result Class.");
 			
 			return merge(
-					new Ifyer() {
-						public String ify(String propertyName) {
-							return xify(propertyName);
-						}
-					},
-					new Ifyer() {
-						public String ify(String propertyName) {
-							return yify(propertyName);
-						}
-					},
+                    SharedNameResultBeanFactory.this::xify,
+                    SharedNameResultBeanFactory.this::yify,
 					y.getMetaData());
 		}
 		
@@ -292,8 +277,8 @@ implements ResultBeanFactory {
 				MagicBeanClassCreator magicDef) {
 			
 			String existingPropertyName = existingIfyer.ify(propertyName);
-			Class<?> existingType = overview.getPropertyType(
-					existingPropertyName);
+			Class<?> existingType = TypeUtil.classOf(overview.getPropertyType(
+					existingPropertyName));
 
 			// add the existing type back.
 			magicDef.addProperty(existingPropertyName, existingType);
