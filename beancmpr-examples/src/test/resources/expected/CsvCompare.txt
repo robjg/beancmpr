@@ -1,0 +1,6 @@
+Compared: 7
+Matched: 2
+Different: 2
+Missing from First: 1
+Missing from Second: 2
+Created Full Comparison in FruitComparison.xlsx

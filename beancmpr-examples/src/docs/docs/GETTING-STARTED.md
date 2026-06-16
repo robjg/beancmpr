@@ -20,7 +20,7 @@ Matched: 2
 Different: 2
 Missing from First: 1
 Missing from Second: 2
-Created Full Comparison in C:\Users\rob\projects\beancmpr\beancmpr-examples\FruitComparison.xlsx
+Created Full Comparison in FruitComparison.xlsx
 ```
 Oddjob is configured using XML. This is the configuration used to run this example:
 {@oddjob.xml.file src/examples/CsvCompare.xml}

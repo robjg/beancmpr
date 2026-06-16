@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<oddjob>
+<oddjob id="oddjob">
     <job>
         <cascade>
             <jobs>
                 <properties>
                     <values>
                         <file file="." key="work.dir"/>
-                        <file file="${work.dir}/FruitComparison.xlsx" key="comparison.file"/>
-                        <file file="./data" key="data.dir"/>
+                        <value key="comparison.file.name" value="FruitComparison.xlsx"/>
+                        <file file="${work.dir}/${comparison.file.name}" key="comparison.file"/>
+                        <file file="${oddjob.dir}/../data" key="data.dir"/>
                         <file file="${data.dir}/Fruit_1.csv" key="file.first"/>
                         <file file="${data.dir}/Fruit_2.csv" key="file.second"/>
                     </values>
@@ -93,7 +94,7 @@ Matched: ${compare.matchedCount}
 Different: ${compare.differentCount}
 Missing from First: ${compare.XMissingCount}
 Missing from Second: ${compare.YMissingCount}
-Created Full Comparison in ${comparison.file}]]></echo>
+Created Full Comparison in ${comparison.file.name}]]></echo>
             </jobs>
         </cascade>
     </job>

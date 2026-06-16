@@ -237,7 +237,7 @@
                                         <classpath/>
                                         <argument>org.oddjob.Main</argument>
                                         <argument>-f</argument>
-                                        <argument>src/examples/CsvCompare.xml</argument>
+                                        <argument>src/test/resources/examples/CsvCompare.xml</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
@@ -251,7 +251,7 @@
                                         <argument>org.oddjob.Main</argument>
                                         <argument>-f</argument>
                                         <argument>oddjob.xml</argument>
-                                        <argument>src/examples/CsvCompare.xml</argument>
+                                        <argument>src/test/resources/examples/CsvCompare.xml</argument>
                                     </arguments>
                                 </configuration>
                             </execution>
