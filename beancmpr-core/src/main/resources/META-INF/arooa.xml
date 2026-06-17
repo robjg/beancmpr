@@ -49,9 +49,9 @@
       className='org.oddjob.beancmpr.BeanCompareJob' 
       designFactory='org.oddjob.beancmpr.BeanCompareDF'>
       <annotations>
-        <arooa:annotation name="org.oddjob.framework.SoftReset"
+        <arooa:annotation name="org.oddjob.framework.adapt.SoftReset"
           method="reset" />
-        <arooa:annotation name="org.oddjob.framework.HardReset"
+        <arooa:annotation name="org.oddjob.framework.adapt.HardReset"
           method="reset" />
         <arooa:annotation name="org.oddjob.beanbus.Destination"
           method="acceptDestination" parameterTypes="java.util.function.Consumer"/>

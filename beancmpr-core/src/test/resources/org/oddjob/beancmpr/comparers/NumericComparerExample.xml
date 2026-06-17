@@ -15,7 +15,7 @@
                             <comparersByType>
                                 <beancmpr:comparers-by-type>
                                     <comparers>
-                                        <beancmpr:numeric-comparer deltaTolerance="0.5" deltaFormat="0.1" percentageFormat="0" xmlns:beancmpr="oddjob:beancmpr"/>
+                                        <beancmpr:numeric-comparer deltaTolerance="0.5" deltaFormat="0.1" percentageFormat="'('0%')';'('-0%')'" xmlns:beancmpr="oddjob:beancmpr"/>
                                     </comparers>
                                 </beancmpr:comparers-by-type>
                             </comparersByType>

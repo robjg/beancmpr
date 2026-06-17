@@ -7,6 +7,7 @@ import org.oddjob.tools.ConsoleCapture;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,6 +17,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NumericComparerTest  {
+
+	@Test void decimalFormatAssumptions() {
+
+		assertThat(new DecimalFormat("0.0;(0.0)").format(42.24),
+				is("42.2"));
+		assertThat(new DecimalFormat("0.0;(0.0)").format(-42.24),
+				is("(42.2)"));
+		assertThat(new DecimalFormat("0.0%").format(.0979),
+				is("9.8%"));
+		assertThat(new DecimalFormat("0.0%").format(-0.0979),
+				is("-9.8%"));
+		assertThat(new DecimalFormat("0,000").format(12345678),
+				is("12,345,678"));
+		assertThat(new DecimalFormat("'('0.0%')';'('-0.0%')'").format(-0.005),
+				is("(-0.5%)"));
+		assertThat(new DecimalFormat("'('0.0%')';'('-0.0%')'").format(-0.005),
+				is("(-0.5%)"));
+	}
 
 	@Test
 	void testNoTolerances() {
@@ -64,11 +83,11 @@ class NumericComparerTest  {
 	}
 	
 	@Test
-	void testOutsidePercentageTolerence() {
+	void testOutsidePercentageTolerance() {
 		
 		NumericComparer test = new NumericComparer();
 		test.setPercentageTolerance(5);
-		test.setPercentageFormat("###");
+		test.setPercentageFormat("'('###%')';'('-###%')'");
 		test.setDeltaFormat("##");
 		
 		NumericComparison comparison;

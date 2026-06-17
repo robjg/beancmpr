@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <sequential>
+            <jobs>
+                <variables id="vars">
+                    <comparers>
+                        <list>
+                            <values>
+                                <beancmpr:numeric-comparer deltaTolerance="0.01" deltaFormat="0.00" xmlns:beancmpr="oddjob:beancmpr"/>
+                                <beancmpr:numeric-comparer deltaTolerance="0.05" xmlns:beancmpr="oddjob:beancmpr"/>
+                                <beancmpr:numeric-comparer deltaTolerance="0.001" deltaFormat="0.000" percentageFormat="NONE" xmlns:beancmpr="oddjob:beancmpr"/>
+                                <beancmpr:numeric-comparer deltaTolerance="0.001" deltaFormat="none" percentageFormat="0.00%" xmlns:beancmpr="oddjob:beancmpr"/>
+                            </values>
+                        </list>
+                    </comparers>
+                    <results>
+                        <list/>
+                    </results>
+                </variables>
+                <repeat id="repeat">
+                    <values>
+                        <value value="${vars.comparers}"/>
+                    </values>
+                    <job>
+                        <beancmpr:compare id="compare" xmlns:beancmpr="oddjob:beancmpr">
+                            <inX>
+                                <value value="#{4.025}"/>
+                            </inX>
+                            <inY>
+                                <value value="#{4.050}"/>
+                            </inY>
+                            <comparer>
+                                <beancmpr:bean-comparer>
+                                    <comparersByType>
+                                        <beancmpr:comparers-by-type>
+                                            <comparers>
+                                                <value value="${repeat.current}"/>
+                                            </comparers>
+                                        </beancmpr:comparers-by-type>
+                                    </comparersByType>
+                                </beancmpr:bean-comparer>
+                            </comparer>
+                            <results>
+                                <beancmpr:bean-results>
+                                    <out>
+                                        <value value="${vars.results}"/>
+                                    </out>
+                                </beancmpr:bean-results>
+                            </results>
+                        </beancmpr:compare>
+                    </job>
+                </repeat>
+                <bean-report>
+                    <beans>
+                        <value value="${vars.results}"/>
+                    </beans>
+                </bean-report>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>

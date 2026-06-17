@@ -7,9 +7,9 @@
                 <arooa:property name="to" annotation="org.oddjob.beanbus.Destination"/>
             </properties>
             <annotations>
-                <arooa:annotation name="org.oddjob.framework.Start"
+                <arooa:annotation name="org.oddjob.framework.adapt.Start"
                                   method="start"/>
-                <arooa:annotation name="org.oddjob.framework.Stop"
+                <arooa:annotation name="org.oddjob.framework.adapt.Stop"
                                   method="stop"/>
             </annotations>
             <design>

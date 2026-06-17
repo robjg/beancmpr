@@ -36,18 +36,22 @@ import java.util.Objects;
  */
 public class NumericComparer implements Comparer<Number> {
 
+	public static final String NONE = "NONE";
+
 	/**
 	 * @oddjob.property
 	 * @oddjob.description The absolute difference to allow for two numbers
 	 * to still be considered equal.
-	 * @oddjob.required No. Defaults to 0.
+	 * @oddjob.required No. Defaults to 0.0
 	 */
 	private volatile double deltaTolerance;
 	
 	/**
 	 * @oddjob.property
 	 * @oddjob.description The decimal format to use for reporting a 
-	 * difference.
+	 * difference. The format is as defined by {@link DecimalFormat}. If
+	 * no format is specified then the raw delta is reported. If the format is 'NONE'
+	 * then no delta format is reported.
 	 * @oddjob.required No.
 	 */
 	private volatile String deltaFormat;
@@ -56,15 +60,17 @@ public class NumericComparer implements Comparer<Number> {
 	 * @oddjob.property
 	 * @oddjob.description The difference specified as percentage to allow
 	 * for two numbers to still be considered equal.
-	 * @oddjob.required No. Defaults to 0.
+	 * @oddjob.required No. Defaults to 0.0
 	 */
 	private volatile double percentageTolerance;
 	
 	/**
 	 * @oddjob.property
 	 * @oddjob.description The decimal format to use for reporting a 
-	 * percentage difference.
-	 * @oddjob.required No.
+	 * percentage difference. The format is as defined by {@link DecimalFormat}. If 'NONE'
+	 * is specified then no percentage format is reported.
+	 * @oddjob.required No. If a delta tolerance is specified, defaults to '('0.0%')';'('-0.0%')',
+	 * otherwise defaults to 0.0%.
 	 */
 	private volatile String percentageFormat;
 	
@@ -308,20 +314,28 @@ public class NumericComparer implements Comparer<Number> {
 					if (deltaFormat == null) {
 						builder.append(delta);
 					}
-					else {
+					else if (!NONE.equalsIgnoreCase(deltaFormat)) {
 						builder.append(new DecimalFormat(
 								deltaFormat).format(delta));
 					}
 					
 					if (!Double.isInfinite(percentage) 
-							&& !Double.isNaN(percentage)) {
-						builder.append(" (");
+							&& !Double.isNaN(percentage)
+							&& !NONE.equalsIgnoreCase(percentageFormat)) {
 						if (percentageFormat == null) {
-							percentageFormat = "0.0";
+							if (builder.isEmpty()) {
+								percentageFormat = "0.0";
+							} else {
+								percentageFormat = "'('0.0%')';'('-0.0%')'";
+							}
 						}
+						if (!builder.isEmpty()) {
+							builder.append(' ');
+						}
+						// Percentage format converted back to decimal as % in format
+						// string will multiply it again.
 						builder.append(new DecimalFormat(
-								percentageFormat).format(percentage));
-						builder.append("%)");
+								percentageFormat).format(percentage / 100));
 					}
 					summaryText = builder.toString();
 				}

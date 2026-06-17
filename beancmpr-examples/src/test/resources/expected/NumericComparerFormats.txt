@@ -1,0 +1,6 @@
+matchResultType  xValue  yValue  valueComparison
+---------------  ------  ------  ---------------
+NOT_EQUAL        4.025   4.05    0.02 (0.6%)
+EQUAL            4.025   4.05
+NOT_EQUAL        4.025   4.05    0.025
+NOT_EQUAL        4.025   4.05    0.62%
