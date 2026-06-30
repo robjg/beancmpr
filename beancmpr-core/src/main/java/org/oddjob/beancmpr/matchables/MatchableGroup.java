@@ -1,5 +1,7 @@
 package org.oddjob.beancmpr.matchables;
 
+import java.util.List;
+
 /**
  * A group of {@link Matchable}s that have the same keys.
  * 
@@ -36,4 +38,8 @@ public interface MatchableGroup {
 	 * @return The size.
 	 */
 	int getSize();
+
+	static MatchableGroup of(Matchable... matchables) {
+		return new ListMatchableGroup(List.of(matchables));
+	}
 }

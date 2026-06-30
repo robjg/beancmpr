@@ -1,7 +1,9 @@
 package org.oddjob.beancmpr.matchables;
 
+import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
+
 import java.util.Comparator;
-import java.util.Iterator;
+import java.util.function.Function;
 
 /**
  * A simple implementation of {@link MatchKey}.
@@ -25,7 +27,17 @@ public class SimpleMatchKey implements MatchKey<SimpleMatchKey> {
 		this.keys = components;
 		this.comparator = comparator;
 	}
-	
+
+	public static Function<Iterable<?>, SimpleMatchKey>
+	creatorFrom(BeanPropertyComparerProvider comparerProvider,
+                                                       MatchableMetaData metaData) {
+		Comparator<Iterable<?>> keyComparator = new KeyComparatorFactory(
+				comparerProvider).createComparatorFor(
+				metaData, metaData);
+
+		return keys -> new SimpleMatchKey(keys, keyComparator);
+	}
+
 	@Override
 	public Iterable<?> getKeys() {
 		return keys;
@@ -45,11 +57,9 @@ public class SimpleMatchKey implements MatchKey<SimpleMatchKey> {
 	@Override
 	public int hashCode() {
 		int hashCode = 1;
-		Iterator<?> i = keys.iterator();
-		while (i.hasNext()) {
-		    Object obj = i.next();
-		    hashCode = 31 * hashCode + (obj==null ? 0 : obj.hashCode());
-		}
+        for (Object obj : keys) {
+            hashCode = 31 * hashCode + (obj == null ? 0 : obj.hashCode());
+        }
 		return hashCode;
 	}
 
