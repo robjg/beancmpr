@@ -1,9 +1,6 @@
 package org.oddjob.beancmpr.continuous;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NavigableMap;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.function.Supplier;
 
 /**
@@ -73,6 +70,23 @@ public class HistoryByComparable<C extends Comparable<C>, V> implements SourceHi
         @Override
         public V getItem() {
             return value;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            KeyValue<?, ?> keyValue = (KeyValue<?, ?>) o;
+            return Objects.equals(key, keyValue.key) && Objects.equals(value, keyValue.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(key, value);
+        }
+
+        @Override
+        public String toString() {
+            return "Entry{key=" + key + ", value=" + value + '}';
         }
     }
 }
