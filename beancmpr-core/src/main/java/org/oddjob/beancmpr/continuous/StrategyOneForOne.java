@@ -33,17 +33,33 @@ public class StrategyOneForOne<V> implements SourceStrategy<V> {
     }
 
     @Override
-    public Optional<Runnable> onOurItem(V ourItem,
-                                        SourceHistory<V> ourHistory,
-                                        SourceHistory<V> theirHistory,
-                                        Results<V> results) {
+    public Optional<Runnable> onX(V x,
+                                  SourceHistory<V> xHistory,
+                                  SourceHistory<V> yHistory,
+                                  Results<V> results) {
+        return onItem(x, xHistory, yHistory, results, true);
+    }
 
-        List<SourceHistory.Entry<V>> theirEntries = theirHistory.allOldestFirst();
+    @Override
+    public Optional<Runnable> onY(V y,
+                                  SourceHistory<V> yHistory,
+                                  SourceHistory<V> xHistory,
+                                  Results<V> results) {
+        return onItem(y, yHistory, xHistory, results, false);
+    }
+
+    public Optional<Runnable> onItem(V item,
+                                     SourceHistory<V> itemHistory,
+                                     SourceHistory<V> otherHistory,
+                                     Results<V> results,
+                                     boolean isX) {
+
+        List<SourceHistory.Entry<V>> theirEntries = otherHistory.allOldestFirst();
 
         if (theirEntries.isEmpty()) {
-            SourceHistory.Entry<V> entry = ourHistory.store(ourItem);
+            SourceHistory.Entry<V> entry = itemHistory.store(item);
             return Optional.of(() -> {
-                V expired = ourHistory.remove(entry);
+                V expired = itemHistory.remove(entry);
 
                 if (expired != null) {
                     results.theirMissing(expired);
@@ -52,8 +68,10 @@ public class StrategyOneForOne<V> implements SourceStrategy<V> {
         } else {
             for (SourceHistory.Entry<V> theirEntry : theirEntries) {
 
-                V theirItem = theirHistory.remove(theirEntry);
-                Comparison<? super V> comparison = comparer.compare(ourItem, theirItem);
+                V theirItem = otherHistory.remove(theirEntry);
+                Comparison<? super V> comparison = isX ?
+                        comparer.compare(item, theirItem) :
+                        comparer.compare(theirItem, item);
                 results.comparison(comparison);
                 if (comparison.getResult() == 0) {
                     break;

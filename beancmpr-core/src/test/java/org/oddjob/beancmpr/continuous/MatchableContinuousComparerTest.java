@@ -52,8 +52,7 @@ class MatchableContinuousComparerTest {
 
         MatchResult result1 = results.getFirst();
         assertThat(result1.getResultType(), is(MatchResultType.NOT_EQUAL));
-        // The comparison isn't correct
-        assertThat(result1.getComparison(0).getResult(), greaterThan(0));
+        assertThat(result1.getComparison(0).getResult(), lessThan(0));
 
         assertThat(checkBacks.size(), is(1));
         checkBacks.getFirst().run();

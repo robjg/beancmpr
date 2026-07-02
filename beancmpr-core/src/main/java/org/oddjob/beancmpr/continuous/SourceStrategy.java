@@ -13,11 +13,15 @@ import java.util.Optional;
  */
 public interface SourceStrategy<V> {
 
-    Optional<Runnable> onOurItem(V ourItem,
-                                 SourceHistory<V> ourHistory,
-                                 SourceHistory<V> theirHistory,
-                                 Results<V> results);
+    Optional<Runnable> onX(V x,
+                           SourceHistory<V> xHistory,
+                           SourceHistory<V> yHistory,
+                           Results<V> results);
 
+    Optional<Runnable> onY(V y,
+                           SourceHistory<V> yHistory,
+                           SourceHistory<V> xHistory,
+                           Results<V> results);
 
     interface Results<V> {
 

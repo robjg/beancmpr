@@ -35,7 +35,7 @@ public class ContinuousComparer<V> {
 
     public void acceptX(V xItem) {
 
-        sourceStrategy.onOurItem(xItem, xHistory, yHistory,
+        sourceStrategy.onX(xItem, xHistory, yHistory,
                 new SourceStrategy.Results<>() {
 
                     @Override
@@ -52,7 +52,7 @@ public class ContinuousComparer<V> {
 
     public void acceptY(V yItem) {
 
-        sourceStrategy.onOurItem(yItem, yHistory, xHistory,
+        sourceStrategy.onY(yItem, yHistory, xHistory,
                 new SourceStrategy.Results<>() {
 
                     @Override

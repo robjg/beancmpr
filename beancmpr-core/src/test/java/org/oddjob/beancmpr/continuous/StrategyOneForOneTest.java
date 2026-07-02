@@ -26,7 +26,7 @@ class StrategyOneForOneTest {
         @SuppressWarnings("unchecked")
         SourceStrategy.Results<Integer> results = mock(SourceStrategy.Results.class);
 
-        Optional<Runnable> checkBack = test.onOurItem(42, ourHistory, theirHistory, results);
+        Optional<Runnable> checkBack = test.onX(42, ourHistory, theirHistory, results);
         assertThat(checkBack.isPresent(), is(false));
 
         ArgumentCaptor<NumericComparison> comparisonCaptor = ArgumentCaptor.forClass(NumericComparison.class);
@@ -48,7 +48,7 @@ class StrategyOneForOneTest {
         @SuppressWarnings("unchecked")
         SourceStrategy.Results<Integer> results = mock(SourceStrategy.Results.class);
 
-        Optional<Runnable> checkBack = test.onOurItem(42, ourHistory, theirHistory, results);
+        Optional<Runnable> checkBack = test.onX(42, ourHistory, theirHistory, results);
 
         checkBack.orElseThrow().run();
 
@@ -65,7 +65,7 @@ class StrategyOneForOneTest {
 
         @SuppressWarnings("unchecked")
         SourceStrategy.Results<Integer> results = mock(SourceStrategy.Results.class);
-        test.onOurItem(42, ourHistory, theirHistory, results);
+        test.onX(42, ourHistory, theirHistory, results);
 
         ArgumentCaptor<NumericComparison> comparisonCaptor = ArgumentCaptor.forClass(NumericComparison.class);
 
@@ -73,7 +73,7 @@ class StrategyOneForOneTest {
 
         assertThat(comparisonCaptor.getValue().getResult(), is(0));
 
-        test.onOurItem(42, ourHistory, theirHistory, results);
+        test.onX(42, ourHistory, theirHistory, results);
 
         verify(results, times(2)).comparison(comparisonCaptor.capture());
 
