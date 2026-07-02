@@ -18,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class NumericComparerTest  {
 
-	@Test void decimalFormatAssumptions() {
+	@Test
+	void decimalFormatAssumptions() {
 
 		assertThat(new DecimalFormat("0.0;(0.0)").format(42.24),
 				is("42.2"));

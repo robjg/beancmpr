@@ -44,7 +44,7 @@ public class FluentMatchable {
 
         public Values andValues(Object... values) {
             if (this.names == null) {
-                this.names = IntStream.range(1, keys.size())
+                this.names = IntStream.range(1, keys.size() + 1)
                         .mapToObj(i -> "k" + i)
                         .toList();
             }
@@ -92,12 +92,12 @@ public class FluentMatchable {
 
         public Others andOthers(Object... others) {
             if (this.names == null) {
-                this.names = IntStream.range(1, values.size())
+                this.names = IntStream.range(1, values.size() + 1)
                         .mapToObj(i -> "v" + i)
                         .toList();
             }
             for (int i = 0; i < this.names.size(); i++) {
-                types.put(names.get(i), keys.get(i).getClass());
+                types.put(names.get(i), values.get(i).getClass());
             }
 
             return new Others(keys, keyNames, values, names, types,
@@ -147,9 +147,13 @@ public class FluentMatchable {
         public Matchable make() {
 
             if (this.names == null) {
-                this.names = IntStream.range(1, others.size())
+                this.names = IntStream.range(1, others.size() + 1)
                         .mapToObj(i -> "o" + i)
                         .toList();
+            }
+
+            for (int i = 0; i < this.names.size(); i++) {
+                types.put(names.get(i), others.get(i).getClass());
             }
 
             return new SimpleMatchable(keys, values, others,

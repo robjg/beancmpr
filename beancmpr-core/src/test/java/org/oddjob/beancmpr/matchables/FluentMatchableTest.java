@@ -42,5 +42,13 @@ class FluentMatchableTest {
         assertThat(m1.getKeys(), contains(42));
         assertThat(m1.getValues(), contains("Apple"));
         assertThat(m1.getOthers(), contains("Crunchy"));
+
+        MatchableMetaData meta = m1.getMetaData();
+        assertThat(meta.getKeyProperties(), is(ImmutableCollection.of("k1")));
+        assertThat(meta.getValueProperties(), is(ImmutableCollection.of("v1")));
+        assertThat(meta.getOtherProperties(), is(ImmutableCollection.of("o1")));
+        assertThat(meta.getPropertyType("k1"), is(Integer.class));
+        assertThat(meta.getPropertyType("v1"), is(String.class));
+        assertThat(meta.getPropertyType("o1"), is(String.class));
     }
 }
