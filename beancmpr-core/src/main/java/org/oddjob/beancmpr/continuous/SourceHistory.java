@@ -20,11 +20,16 @@ public interface SourceHistory<V> {
      */
     List<Entry<V>> allRecentFirst();
 
-    List<V> removeExpired();
-
     V remove(Entry<V> entry);
 
-    void removeIfOld(Entry<V> entry);
+    /**
+     * Is the entry within some tolerance. Allows a time limit to be
+     * applied to differences.
+     *
+     * @param entry An entry that must have come from this history.
+     * @return true if the entry can be considered not yet eligible to be different.
+     */
+    boolean isWithinTolerance(Entry<V> entry);
 
     interface Entry<V>
     {

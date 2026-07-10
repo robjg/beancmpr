@@ -9,7 +9,7 @@ import java.util.function.Supplier;
  * @param <C> The comparable for the key.
  * @param <V> The item history type.
  */
-public class HistoryByComparable<C extends Comparable<C>, V> implements SourceHistory<V> {
+abstract public class HistoryByComparable<C extends Comparable<C>, V> implements SourceHistory<V> {
 
     private final Supplier<C> keySupplier;
 
@@ -40,23 +40,13 @@ public class HistoryByComparable<C extends Comparable<C>, V> implements SourceHi
                 .toList();
     }
 
-    @Override
-    public List<V> removeExpired() {
-        List<V> expired = new ArrayList<>(history.values());
-        history.clear();
-        return expired;
-    }
 
     public V remove(Entry<V> entry) {
         return history.remove(((KeyValue<C, V>) entry).key);
     }
 
-    @Override
-    public void removeIfOld(Entry<V> entry) {
-        remove(entry);
-    }
 
-    static class KeyValue<C extends Comparable<C>, V> implements Entry<V> {
+    protected static class KeyValue<C extends Comparable<C>, V> implements Entry<V> {
 
         private final C key;
 
@@ -65,6 +55,10 @@ public class HistoryByComparable<C extends Comparable<C>, V> implements SourceHi
         KeyValue(C key, V value) {
             this.key = key;
             this.value = value;
+        }
+
+        protected C getKey() {
+            return key;
         }
 
         @Override

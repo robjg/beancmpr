@@ -37,4 +37,9 @@ public class HistoryBySequence<V> extends HistoryByComparable<Integer, V> {
 
         return sequence;
     }
+
+    @Override
+    public boolean isWithinTolerance(Entry<V> entry) {
+        return false;
+    }
 }
