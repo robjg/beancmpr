@@ -10,7 +10,7 @@ import java.util.function.Supplier;
  *
  * @param <V> The type of item.
  */
-public class ContinuousComparer<V> {
+public class ContinuousComparer<V> implements DuelConsumer<V> {
 
     private final ContinuousResults<V> resultsHandler;
 
@@ -33,6 +33,7 @@ public class ContinuousComparer<V> {
         this.checkBacks = checkBacks;
     }
 
+    @Override
     public void acceptX(V xItem) {
 
         sourceStrategy.onX(xItem, xHistory, yHistory,
@@ -50,6 +51,7 @@ public class ContinuousComparer<V> {
                 }).ifPresent(checkBacks);
     }
 
+    @Override
     public void acceptY(V yItem) {
 
         sourceStrategy.onY(yItem, yHistory, xHistory,

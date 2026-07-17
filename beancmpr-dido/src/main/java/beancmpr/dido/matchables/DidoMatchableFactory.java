@@ -80,7 +80,7 @@ public class DidoMatchableFactory implements MatchableFactory<DidoData> {
      * @param names The field names.
      * @return The property values. Never null.
      */
-    private ImmutableCollection<Object> copy(DidoData didoData, ImmutableCollection<String> names) {
+        private ImmutableCollection<Object> copy(DidoData didoData, ImmutableCollection<String> names) {
 
         return names.stream()
                 .map(didoData::getNamed)

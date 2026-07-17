@@ -2,11 +2,9 @@ package org.oddjob.beancmpr.continuous;
 
 import org.oddjob.beancmpr.composite.BeanPropertyComparerProvider;
 import org.oddjob.beancmpr.composite.ComparersByNameOrType;
-import org.oddjob.beancmpr.matchables.CompareResultsHandler;
-import org.oddjob.beancmpr.matchables.Matchable;
-import org.oddjob.beancmpr.matchables.MatchableComparerFactory;
-import org.oddjob.beancmpr.matchables.MatchableMetaData;
+import org.oddjob.beancmpr.matchables.*;
 
+import java.beans.ExceptionListener;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.InstantSource;
@@ -15,10 +13,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 
-public class TimedMatchableComparer implements AutoCloseable {
+public class TimedMatchableComparer implements CloseableDuelConsumer<Matchable> {
 
     private final MatchableContinuousComparer continuousComparer;
 
@@ -42,11 +42,13 @@ public class TimedMatchableComparer implements AutoCloseable {
 
         private BeanPropertyComparerProvider  comparerProvider;
 
-        private SourceStrategy<Matchable> sourceStrategy;
+        private SourceStrategyFactory<Matchable> sourceStrategy;
 
         private Duration tolerance;
 
         private ScheduledExecutorService scheduler;
+
+        private ExceptionListener exceptionListener;
 
         public Settings resultsHandler(CompareResultsHandler resultsHandler) {
 
@@ -64,7 +66,7 @@ public class TimedMatchableComparer implements AutoCloseable {
             return this;
         }
 
-        public Settings sourceStrategy(SourceStrategy<Matchable> sourceStrategy) {
+        public Settings sourceStrategy(SourceStrategyFactory<Matchable> sourceStrategy) {
             this.sourceStrategy = sourceStrategy;
             return this;
         }
@@ -79,6 +81,10 @@ public class TimedMatchableComparer implements AutoCloseable {
             return this;
         }
 
+        public Settings exceptionListener(ExceptionListener exceptionListener) {
+            this.exceptionListener = exceptionListener;
+            return this;
+        }
 
         public TimedMatchableComparer createFor(MatchableMetaData metaData) {
 
@@ -88,9 +94,11 @@ public class TimedMatchableComparer implements AutoCloseable {
             BeanPropertyComparerProvider comparerProvider = Objects.requireNonNullElseGet(
                     this.comparerProvider, ComparersByNameOrType::new);
 
-            SourceStrategy<Matchable> strategy = Objects.requireNonNullElseGet(this.sourceStrategy,
-                    () -> new StrategyOneForOne<>(new MatchableComparerFactory(
-                            comparerProvider).createComparerFor(metaData, metaData)));
+            MatchableComparer matchableComparer = new MatchableComparerFactory(
+                    comparerProvider).createComparerFor(metaData, metaData);
+
+            SourceStrategy<Matchable> strategy = Objects.requireNonNullElse(this.sourceStrategy,
+                            SourceStrategies.Strategy.ONE_FOR_ONE).createStrategy(matchableComparer);
 
             Supplier<SourceHistory<Matchable>> historyFactory =
                     () -> new HistoryByInstant<>(clock);
@@ -99,10 +107,13 @@ public class TimedMatchableComparer implements AutoCloseable {
 
             ScheduledExecutorService scheduler = Objects.requireNonNullElseGet(
                     this.scheduler, () -> {
-                        ScheduledExecutorService scheduler_ = Executors.newScheduledThreadPool(1);
+                        ScheduledExecutorService scheduler_ = Executors.newScheduledThreadPool(1,
+                                new DefaultThreadFactory(exceptionListener));
                         shutdownTasks.add(scheduler_::shutdown);
                         return scheduler_;
                     });
+
+            long toleranceMillis = tolerance == null ? 1000L : tolerance.toMillis();
 
             MatchableContinuousComparer continuousComparer =
                     MatchableContinuousComparer.with()
@@ -112,7 +123,7 @@ public class TimedMatchableComparer implements AutoCloseable {
                                     historyFactory,
                                     metaData,
                                     checkBack -> scheduler.schedule(
-                                            checkBack, tolerance.toMillis(),
+                                            checkBack, toleranceMillis,
                                             TimeUnit.MILLISECONDS));
 
             return new TimedMatchableComparer(continuousComparer,
@@ -124,19 +135,69 @@ public class TimedMatchableComparer implements AutoCloseable {
         return new Settings();
     }
 
-
+    @Override
     public void acceptX(Matchable x) {
 
-        scheduler.execute(() -> continuousComparer.acceptX(x));
+        scheduler.execute(() -> {
+            try {
+                continuousComparer.acceptX(x);
+            } catch (Exception e) {
+                Thread.currentThread().getUncaughtExceptionHandler()
+                        .uncaughtException(Thread.currentThread(), e);
+            }
+        });
     }
 
+    @Override
     public void acceptY(Matchable y) {
 
-        scheduler.execute(() -> continuousComparer.acceptY(y));
+        scheduler.execute(() -> {
+            try {
+                continuousComparer.acceptY(y);
+            } catch (Exception e) {
+                Thread.currentThread().getUncaughtExceptionHandler()
+                        .uncaughtException(Thread.currentThread(), e);
+            }
+        });
     }
 
     @Override
     public void close() {
         shutdownTasks.forEach(Runnable::run);
     }
+
+    private static class DefaultThreadFactory implements ThreadFactory {
+        private static final AtomicInteger poolNumber = new AtomicInteger(1);
+        private final AtomicInteger threadNumber = new AtomicInteger(1);
+        private final String namePrefix;
+        private final ExceptionListener exceptionListener;
+
+        DefaultThreadFactory(ExceptionListener exceptionListener) {
+            this.exceptionListener = exceptionListener;
+            this.namePrefix = TimedMatchableComparer.class.getSimpleName() + "-thread-";
+        }
+
+        public Thread newThread(Runnable r) {
+            Thread t = new Thread(null, r,
+                    namePrefix + threadNumber.getAndIncrement(),
+                    0);
+            if (t.isDaemon())
+                t.setDaemon(false);
+            if (t.getPriority() != Thread.NORM_PRIORITY)
+                t.setPriority(Thread.NORM_PRIORITY);
+            if (exceptionListener != null) {
+                t.setUncaughtExceptionHandler(
+                        (th, e) -> {
+                            if (e instanceof Exception ex) {
+                                exceptionListener.exceptionThrown(ex);
+                            }
+                            else {
+                                exceptionListener.exceptionThrown(new Exception(e));
+                            }
+                        });
+            }
+            return t;
+        }
+    }
+
 }

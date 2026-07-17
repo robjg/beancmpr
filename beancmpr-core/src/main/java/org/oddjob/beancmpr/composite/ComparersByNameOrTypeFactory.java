@@ -1,6 +1,8 @@
 package org.oddjob.beancmpr.composite;
 
 
+import org.oddjob.beancmpr.Comparer;
+
 /**
  * Create {@link BeanPropertyComparerProvider} by a combination of 
  * {@link ComparersByName} and {@link ComparersByType} and using
@@ -38,7 +40,7 @@ implements BeanPropertyComparerProviderFactory {
 		this.comparersByType = comparersByType;
 		this.comparersByName = comparersByProperty;
 	}
-	
+
 	@Override
 	public BeanPropertyComparerProvider createWith(ComparersByType parentComparers) {
 		

@@ -1,5 +1,10 @@
 <arooa:descriptor xmlns:arooa="http://rgordon.co.uk/oddjob/arooa"
   prefix="didocmpr" namespace="oddjob:didocmpr">
+  <conversions>
+    <arooa:conversion className="org.oddjob.beancmpr.continuous.SourceStrategies"
+                      methodName="toSourceStrategy"
+                      arooaValue="true"/>
+  </conversions>
   <values>
     <arooa:bean-def element='collection-comparer'
       className='beancmpr.dido.beans.IterableDataComparerType'
@@ -10,8 +15,21 @@
         <arooa:property name="others" annotation="org.oddjob.arooa.deploy.annotations.ArooaAttribute"/>
       </properties>
     </arooa:bean-def>
+    <arooa:bean-def element='continuous-strategy'
+                    className='org.oddjob.beancmpr.continuous.SourceStrategies'>
+    </arooa:bean-def>
     <arooa:bean-def element='data-results'
                     className='beancmpr.dido.results.GenericDataResultHandlerFactory'>
     </arooa:bean-def>
   </values>
+  <components>
+    <arooa:bean-def element='continuous-comparer'
+                    className='beancmpr.dido.continuous.DataCompareService'>
+      <properties>
+        <arooa:property name="keys" annotation="org.oddjob.arooa.deploy.annotations.ArooaAttribute"/>
+        <arooa:property name="values" annotation="org.oddjob.arooa.deploy.annotations.ArooaAttribute"/>
+        <arooa:property name="others" annotation="org.oddjob.arooa.deploy.annotations.ArooaAttribute"/>
+      </properties>
+    </arooa:bean-def>
+  </components>
 </arooa:descriptor>

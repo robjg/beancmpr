@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <sequential>
+            <jobs>
+                <variables id="vars">
+                    <schema>
+                        <dido:schema xmlns:dido="oddjob:dido">
+                            <of>
+                                <dido:field name="Fruit" type="java.lang.String"/>
+                                <dido:field name="Colour" type="java.lang.String"/>
+                                <dido:field name="Qty" type="int"/>
+                                <dido:field name="Price" type="double"/>
+                                <dido:field name="Comments" type="java.lang.String"/>
+                            </of>
+                        </dido:schema>
+                    </schema>
+                </variables>
+                <dido:data-in id="data1" name="Data 1" xmlns:dido="oddjob:dido">
+                    <how>
+                        <dido:csv>
+                            <schema>
+                                <value value="${vars.schema}"/>
+                            </schema>
+                        </dido:csv>
+                    </how>
+                    <from>
+                        <buffer><![CDATA[apple,red,5,22.4,crunchy
+apple,green,6,23.2,crisp
+banana,yellow,3,46.4,bent
+orange,orange,2,23.5,healthy
+pear,green,8,37.0,shapely]]></buffer>
+                    </from>
+                    <to>
+                        <list/>
+                    </to>
+                </dido:data-in>
+                <dido:data-in id="data2" name="Data 2" xmlns:dido="oddjob:dido">
+                    <how>
+                        <dido:csv>
+                            <schema>
+                                <value value="${vars.schema}"/>
+                            </schema>
+                        </dido:csv>
+                    </how>
+                    <from>
+                        <buffer><![CDATA[apple,red,5,22.4,crunchy
+apple,green,7,23.2,crisp
+banana,yellow,3,46.4,bent
+orange,orange,2,57.2,healthy
+pear,gr,8,37.0,shapely]]></buffer>
+                    </from>
+                    <to>
+                        <list/>
+                    </to>
+                </dido:data-in>
+                <bus:bus id="bus" xmlns:bus="oddjob:beanbus">
+                    <of>
+                        <didocmpr:continuous-comparer xmlns:didocmpr="oddjob:didocmpr"/>
+                        <beancmpr:compare id="comparison" xmlns:beancmpr="oddjob:beancmpr">
+                            <inX>
+                                <value value="${data1.to}"/>
+                            </inX>
+                            <inY>
+                                <value value="${data2.to}"/>
+                            </inY>
+                            <comparer>
+                                <didocmpr:collection-comparer keys="Fruit,Colour" others="Comments" sorted="false" values="Qty, Price" xmlns:didocmpr="oddjob:didocmpr"/>
+                            </comparer>
+                            <results>
+                                <didocmpr:data-results xmlns:didocmpr="oddjob:didocmpr"/>
+                            </results>
+                        </beancmpr:compare>
+                        <bus:collect id="results"/>
+                        <dido:data-out xmlns:dido="oddjob:dido">
+                            <how>
+                                <dido:table/>
+                            </how>
+                            <to>
+                                <stdout/>
+                            </to>
+                        </dido:data-out>
+                    </of>
+                </bus:bus>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>
