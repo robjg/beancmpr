@@ -48,14 +48,16 @@ is greater than both tolerances. Both tolerances default to zero.
 </table>
 
 The decimal format to use for reporting a
-difference.
+difference. The format is as defined by [java.text.DecimalFormat](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/text/DecimalFormat.html). If
+no format is specified then the raw delta is reported. If the format is 'NONE'
+then no delta format is reported.
 
 #### deltaTolerance <a name="propertydeltatolerance"></a>
 
 <table style='font-size:smaller'>
       <tr><td><i>Configured By</i></td><td>ATTRIBUTE</td></tr>
       <tr><td><i>Access</i></td><td>READ_WRITE</td></tr>
-      <tr><td><i>Required</i></td><td>No. Defaults to 0.</td></tr>
+      <tr><td><i>Required</i></td><td>No. Defaults to 0.0</td></tr>
 </table>
 
 The absolute difference to allow for two numbers
@@ -66,18 +68,20 @@ to still be considered equal.
 <table style='font-size:smaller'>
       <tr><td><i>Configured By</i></td><td>ATTRIBUTE</td></tr>
       <tr><td><i>Access</i></td><td>READ_WRITE</td></tr>
-      <tr><td><i>Required</i></td><td>No.</td></tr>
+      <tr><td><i>Required</i></td><td>No. If a delta tolerance is specified, defaults to '('0.0%')';'('-0.0%')',
+ otherwise defaults to 0.0%.</td></tr>
 </table>
 
 The decimal format to use for reporting a
-percentage difference.
+percentage difference. The format is as defined by [java.text.DecimalFormat](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/text/DecimalFormat.html). If 'NONE'
+is specified then no percentage format is reported.
 
 #### percentageTolerance <a name="propertypercentagetolerance"></a>
 
 <table style='font-size:smaller'>
       <tr><td><i>Configured By</i></td><td>ATTRIBUTE</td></tr>
       <tr><td><i>Access</i></td><td>READ_WRITE</td></tr>
-      <tr><td><i>Required</i></td><td>No. Defaults to 0.</td></tr>
+      <tr><td><i>Required</i></td><td>No. Defaults to 0.0</td></tr>
 </table>
 
 The difference specified as percentage to allow
@@ -128,7 +132,7 @@ would default to Strings as the value of configuration attribute.
                             <comparersByType>
                                 <beancmpr:comparers-by-type>
                                     <comparers>
-                                        <beancmpr:numeric-comparer deltaTolerance="0.5" deltaFormat="0.1" percentageFormat="0" xmlns:beancmpr="oddjob:beancmpr"/>
+                                        <beancmpr:numeric-comparer deltaTolerance="0.5" deltaFormat="0.1" percentageFormat="'('0%')';'('-0%')'" xmlns:beancmpr="oddjob:beancmpr"/>
                                     </comparers>
                                 </beancmpr:comparers-by-type>
                             </comparersByType>

@@ -1,77 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<oddjob>
+<oddjob id="oddjob">
     <job>
         <sequential>
             <jobs>
-                <variables id="vars">
-                    <schema>
-                        <dido:schema xmlns:dido="oddjob:dido">
-                            <of>
-                                <dido:field name="Fruit" type="java.lang.String"/>
-                                <dido:field name="Colour" type="java.lang.String"/>
-                                <dido:field name="Qty" type="int"/>
-                                <dido:field name="Price" type="double"/>
-                                <dido:field name="Comments" type="java.lang.String"/>
-                            </of>
-                        </dido:schema>
-                    </schema>
-                </variables>
-                <dido:data-in id="data1" name="Data 1" xmlns:dido="oddjob:dido">
-                    <how>
-                        <dido:csv>
-                            <schema>
-                                <value value="${vars.schema}"/>
-                            </schema>
-                        </dido:csv>
-                    </how>
-                    <from>
-                        <buffer><![CDATA[apple,red,5,22.4,crunchy
-apple,green,6,23.2,crisp
-banana,yellow,3,46.4,bent
-orange,orange,2,23.5,healthy
-pear,green,8,37.0,shapely]]></buffer>
-                    </from>
-                    <to>
-                        <list/>
-                    </to>
-                </dido:data-in>
-                <dido:data-in id="data2" name="Data 2" xmlns:dido="oddjob:dido">
-                    <how>
-                        <dido:csv>
-                            <schema>
-                                <value value="${vars.schema}"/>
-                            </schema>
-                        </dido:csv>
-                    </how>
-                    <from>
-                        <buffer><![CDATA[apple,red,5,22.4,crunchy
-apple,green,7,23.2,crisp
-banana,yellow,3,46.4,bent
-orange,orange,2,57.2,healthy
-pear,gr,8,37.0,shapely]]></buffer>
-                    </from>
-                    <to>
-                        <list/>
-                    </to>
-                </dido:data-in>
+                <properties>
+                    <values>
+                        <value key="compare.time.tolerance" value="PT0.2S"/>
+                        <value key="stop.after.interval" value="00:00:02"/>
+                    </values>
+                </properties>
                 <bus:bus id="bus" xmlns:bus="oddjob:beanbus">
                     <of>
-                        <didocmpr:continuous-comparer xmlns:didocmpr="oddjob:didocmpr"/>
-                        <beancmpr:compare id="comparison" xmlns:beancmpr="oddjob:beancmpr">
-                            <inX>
-                                <value value="${data1.to}"/>
-                            </inX>
-                            <inY>
-                                <value value="${data2.to}"/>
-                            </inY>
-                            <comparer>
-                                <didocmpr:collection-comparer keys="Fruit,Colour" others="Comments" sorted="false" values="Qty, Price" xmlns:didocmpr="oddjob:didocmpr"/>
-                            </comparer>
-                            <results>
-                                <didocmpr:data-results xmlns:didocmpr="oddjob:didocmpr"/>
-                            </results>
-                        </beancmpr:compare>
-                        <bus:collect id="results"/>
+                        <didocmpr:continuous-comparer id="compare" keys="Fruit,Colour" others="Comments" tolerance="${compare.time.tolerance}" values="Qty,Price" xmlns:didocmpr="oddjob:didocmpr">
+                            <schema>
+                                <value value="${vars.schema}"/>
+                            </schema>
+                            <sourceStrategy>
+                                <didocmpr:continuous-strategy strategy="MANY_FOR_MANY"/>
+                            </sourceStrategy>
+                        </didocmpr:continuous-comparer>
+                        <bus:collect id="results">
+                            <to>
+                                <stdout/>
+                            </to>
+                        </bus:collect>
                         <dido:data-out xmlns:dido="oddjob:dido">
                             <how>
                                 <dido:table/>
@@ -82,6 +34,42 @@ pear,gr,8,37.0,shapely]]></buffer>
                         </dido:data-out>
                     </of>
                 </bus:bus>
+                <parallel>
+                    <jobs>
+                        <dido:play filesPrefix="x-" xmlns:dido="oddjob:dido">
+                            <dir>
+                                <file file="${oddjob.dir}/data"/>
+                            </dir>
+                            <to>
+                                <value value="${compare.x}"/>
+                            </to>
+                        </dido:play>
+                        <dido:play filesPrefix="y-" xmlns:dido="oddjob:dido">
+                            <dir>
+                                <file file="${oddjob.dir}/data"/>
+                            </dir>
+                            <to>
+                                <value value="${compare.y}"/>
+                            </to>
+                        </dido:play>
+                    </jobs>
+                </parallel>
+                <scheduling:timer xmlns:scheduling="http://rgordon.co.uk/oddjob/scheduling">
+                    <schedule>
+                        <schedules:count count="1" xmlns:schedules="http://rgordon.co.uk/oddjob/schedules">
+                            <refinement>
+                                <schedules:after>
+                                    <schedule>
+                                        <schedules:interval interval="${stop.after.interval}"/>
+                                    </schedule>
+                                </schedules:after>
+                            </refinement>
+                        </schedules:count>
+                    </schedule>
+                    <job>
+                        <stop job="${bus}"/>
+                    </job>
+                </scheduling:timer>
             </jobs>
         </sequential>
     </job>

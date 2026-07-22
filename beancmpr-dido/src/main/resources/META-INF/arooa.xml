@@ -29,7 +29,18 @@
         <arooa:property name="keys" annotation="org.oddjob.arooa.deploy.annotations.ArooaAttribute"/>
         <arooa:property name="values" annotation="org.oddjob.arooa.deploy.annotations.ArooaAttribute"/>
         <arooa:property name="others" annotation="org.oddjob.arooa.deploy.annotations.ArooaAttribute"/>
+        <arooa:property name="tolerance" annotation="org.oddjob.arooa.deploy.annotations.ArooaAttribute"/>
+        <arooa:property name="to" annotation="org.oddjob.beanbus.Destination"/>
       </properties>
+      <annotations>
+        <arooa:annotation name="org.oddjob.framework.adapt.SoftReset"
+                          method="reset" />
+        <arooa:annotation name="org.oddjob.framework.adapt.HardReset"
+                          method="reset" />
+        <arooa:annotation name="org.oddjob.framework.adapt.AcceptExceptionListener"
+                          method="exceptionListener"
+                          parameterTypes="java.beans.ExceptionListener"/>
+      </annotations>
     </arooa:bean-def>
   </components>
 </arooa:descriptor>

@@ -164,11 +164,11 @@ public class TimedMatchableComparer implements CloseableDuelConsumer<Matchable> 
     @Override
     public void close() {
         shutdownTasks.forEach(Runnable::run);
+        shutdownTasks.clear();
     }
 
     private static class DefaultThreadFactory implements ThreadFactory {
-        private static final AtomicInteger poolNumber = new AtomicInteger(1);
-        private final AtomicInteger threadNumber = new AtomicInteger(1);
+        private final static AtomicInteger threadNumber = new AtomicInteger(1);
         private final String namePrefix;
         private final ExceptionListener exceptionListener;
 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob id="oddjob">
+    <job>
+        <sequential>
+            <jobs>
+                <variables id="vars">
+                    <schema>
+                        <dido:schema xmlns:dido="oddjob:dido">
+                            <of>
+                                <dido:field name="Fruit" type="java.lang.String"/>
+                                <dido:field name="Colour" type="java.lang.String"/>
+                                <dido:field name="Qty" type="int"/>
+                                <dido:field name="Price" type="double"/>
+                                <dido:field name="Comments" type="java.lang.String"/>
+                            </of>
+                        </dido:schema>
+                    </schema>
+                </variables>
+                <bus:bus id="bus" xmlns:bus="oddjob:beanbus">
+                    <of>
+                        <dido:data-in id="data1" name="Data 1" xmlns:dido="oddjob:dido">
+                            <how>
+                                <dido:csv>
+                                    <schema>
+                                        <value value="${vars.schema}"/>
+                                    </schema>
+                                </dido:csv>
+                            </how>
+                            <from>
+                                <buffer><![CDATA[apple,red,5,22.4,crunchy
+apple,green,6,23.2,crisp
+banana,yellow,3,46.4,bent
+orange,orange,2,23.5,healthy
+pear,green,8,37.0,shapely]]></buffer>
+                            </from>
+                        </dido:data-in>
+                        <dido:record filesPrefix="x-" xmlns:dido="oddjob:dido">
+                            <dir>
+                                <file file="${oddjob.dir}/data"/>
+                            </dir>
+                        </dido:record>
+                    </of>
+                </bus:bus>
+                <bus:bus xmlns:bus="oddjob:beanbus">
+                    <of>
+                        <dido:data-in id="data2" name="Data 2" xmlns:dido="oddjob:dido">
+                            <how>
+                                <dido:csv>
+                                    <schema>
+                                        <value value="${vars.schema}"/>
+                                    </schema>
+                                </dido:csv>
+                            </how>
+                            <from>
+                                <buffer><![CDATA[apple,red,5,22.4,crunchy
+apple,green,7,23.2,crisp
+banana,yellow,3,46.4,bent
+orange,orange,2,57.2,healthy
+pear,gr,8,37.0,shapely]]></buffer>
+                            </from>
+                        </dido:data-in>
+                        <dido:record filesPrefix="y-" xmlns:dido="oddjob:dido">
+                            <dir>
+                                <file file="${oddjob.dir}/data"/>
+                            </dir>
+                        </dido:record>
+                    </of>
+                </bus:bus>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>

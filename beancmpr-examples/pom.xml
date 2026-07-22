@@ -89,6 +89,13 @@
             <version>${dido.version}</version>
         </dependency>
 
+        <!-- To record and replay data -->
+        <dependency>
+            <groupId>uk.co.rgordon</groupId>
+            <artifactId>dido-replay</artifactId>
+            <version>${dido.version}</version>
+        </dependency>
+
         <!-- Needed because we're using Oddjob to orchestrate the
          tasks in our comparisons -->
         <dependency>

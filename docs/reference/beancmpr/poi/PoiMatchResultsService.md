@@ -139,7 +139,7 @@ The prefix that will be used for the Y titles.
 #### Example 1 <a name="example1"></a>
 
 Creating an Excel spreadsheet of comparison results.
-_java.io.IOException: No Resource Found: 'example/PoiMatchResultExample.xml', classloader=java.net.URLClassLoader@67b355c8_
+_java.io.IOException: No Resource Found: 'example/PoiMatchResultExample.xml', classloader=java.net.URLClassLoader@43ecfeb5_
 
 
 -----------------------

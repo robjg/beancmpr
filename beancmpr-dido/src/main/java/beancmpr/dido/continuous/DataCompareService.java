@@ -7,7 +7,9 @@ import dido.data.DidoData;
 import org.oddjob.beancmpr.MatchDefinition;
 import org.oddjob.beancmpr.SimpleMatchDefinition;
 import org.oddjob.beancmpr.composite.*;
-import org.oddjob.beancmpr.continuous.*;
+import org.oddjob.beancmpr.continuous.CloseableDuelConsumer;
+import org.oddjob.beancmpr.continuous.SourceStrategyFactory;
+import org.oddjob.beancmpr.continuous.TimedMatchableComparer;
 import org.oddjob.beancmpr.matchables.CompareResultsHandler;
 import org.oddjob.beancmpr.matchables.CompareResultsHandlerFactory;
 import org.oddjob.beancmpr.matchables.ComparisonGatheringProcessor;
@@ -17,10 +19,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.beans.ExceptionListener;
+import java.time.Duration;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public class DataCompareService implements DuelConsumer<DidoData>, MultiItemComparisonCounts {
+/**
+ * @oddjob.description Creates a service that continuously compares two
+ * streams of data.
+ *
+ * @oddjob.example Compare two streams of data.
+ * {@oddjob.xml.resource examples/ContinuousCompare.xml}
+ * The output is:
+ * {@oddjob.text.resource examples/ContinuousCompareOut.txt}
+ *
+ */
+public class DataCompareService implements MultiItemComparisonCounts {
 
     private static final Logger logger = LoggerFactory.getLogger(DataCompareService.class);
 
@@ -75,11 +88,34 @@ public class DataCompareService implements DuelConsumer<DidoData>, MultiItemComp
      */
     private ComparersByNameFactory comparersByName;
 
+    /**
+     * @oddjob.property
+     * @oddjob.description The schema, if known in advance.
+     * @oddjob.required No, it will be taken from the first item of data.
+     */
     private DataSchema schema;
 
+    /**
+     * @oddjob.property
+     * @oddjob.description The strategy. See {@link org.oddjob.beancmpr.continuous.SourceStrategies} for a
+     * means of configuration.
+     * @oddjob.required No. Defaults to ONE_FOR_ONE
+     */
     private SourceStrategyFactory<Matchable> sourceStrategy;
 
+    /** Hidden */
     private ExceptionListener exceptionListener;
+
+    /**
+     * @oddjob.property
+     * @oddjob.description The tolerance to be used. This is a duration, Oddjob
+     * provides a conversion from java's {@link Duration} text format.
+     * How it is used depends on the
+     * strategy, but missing data is generally reported only after the tolerance period
+     * has expired.
+     * @oddjob.required No. Defaults to PT01S (1 second).
+     */
+    private Duration tolerance;
 
     /**
      * @oddjob.property
@@ -100,7 +136,64 @@ public class DataCompareService implements DuelConsumer<DidoData>, MultiItemComp
     /** Counts. */
     private MultiItemComparisonCounts counts;
 
-    private CloseableDuelConsumer<DidoData> consumers;
+    /** Internal. */
+    private volatile CloseableDuelConsumer<DidoData> consumers;
+
+    /**
+     * @oddjob.property
+     * @oddjob.description Provides a consumer to accept X data.
+     * @oddjob.required Read only.
+     */
+    private final Consumer<DidoData> x = new Consumer<>() {
+
+        @Override
+        public void accept(DidoData x) {
+
+            if (consumers == null) {
+                synchronized (DataCompareService.this) {
+                    if (consumers == null) {
+                        logger.info("Creating match from schema of X: {}",
+                                x.getSchema());
+                        consumers = schemaKnown(x.getSchema());
+                    }
+                }
+            }
+            consumers.acceptX(x);
+        }
+
+        @Override
+        public String toString() {
+            return "Consumer for X";
+        }
+    };
+
+    /**
+     * @oddjob.property
+     * @oddjob.description Provides a consumer to accept Y data.
+     * @oddjob.required Read only.
+     */
+    private final Consumer<DidoData> y = new Consumer<>() {
+
+        @Override
+        public void accept(DidoData y) {
+
+            if (consumers == null) {
+                synchronized (DataCompareService.this) {
+                    if (consumers == null) {
+                        logger.info("Creating match from schema of Y: {}",
+                                y.getSchema());
+                        consumers = schemaKnown(y.getSchema());
+                    }
+                }
+            }
+            consumers.acceptY(y);
+        }
+
+        @Override
+        public String toString() {
+            return "Consumer for Y";
+        }
+    };
 
     public void start() {
 
@@ -127,26 +220,14 @@ public class DataCompareService implements DuelConsumer<DidoData>, MultiItemComp
         counts = null;
     }
 
-    @Override
-    public void acceptX(DidoData x) {
+    public Consumer<DidoData> getX() {
 
-        if (consumers == null) {
-            logger.info("Creating match from schema of X: {}",
-                    x.getSchema());
-            consumers = schemaKnown(x.getSchema());
-        }
-        consumers.acceptX(x);
+        return x;
     }
 
-    @Override
-    public void acceptY(DidoData y) {
+    public Consumer<DidoData> getY() {
 
-        if (consumers == null) {
-            logger.info("Creating match from schema of Y: {}",
-                    y.getSchema());
-            consumers = schemaKnown(y.getSchema());
-        }
-        consumers.acceptY(y);
+        return y;
     }
 
     protected CloseableDuelConsumer<DidoData> schemaKnown(DataSchema schema) {
@@ -190,6 +271,7 @@ public class DataCompareService implements DuelConsumer<DidoData>, MultiItemComp
                         .createWith(null))
                 .resultsHandler(statsResultsHandler)
                 .sourceStrategy(sourceStrategy)
+                .tolerance(tolerance)
                 .exceptionListener(exceptionListener)
                 .createFor(matchableFactory.getMetaData());
 
@@ -277,6 +359,14 @@ public class DataCompareService implements DuelConsumer<DidoData>, MultiItemComp
         this.sourceStrategy = sourceStrategy;
     }
 
+    public Duration getTolerance() {
+        return tolerance;
+    }
+
+    public void setTolerance(Duration tolerance) {
+        this.tolerance = tolerance;
+    }
+
     public CompareResultsHandlerFactory getResults() {
         return results;
     }
@@ -293,11 +383,7 @@ public class DataCompareService implements DuelConsumer<DidoData>, MultiItemComp
         this.to = to;
     }
 
-    public ExceptionListener getExceptionListener() {
-        return exceptionListener;
-    }
-
-    public void setExceptionListener(ExceptionListener exceptionListener) {
+    public void exceptionListener(ExceptionListener exceptionListener) {
         this.exceptionListener = exceptionListener;
     }
 

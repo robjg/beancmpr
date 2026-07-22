@@ -4,6 +4,7 @@
 
 - [beancmpr:compare](org/oddjob/beancmpr/BeanCompareJob.md) - A job that takes two inputs and attempts to match that data using a provided Comparer.
 - [beancmpr:poi-results](beancmpr/poi/PoiMatchResultsService.md) - A service that can be used in a Bean Bus to create an Excel spreadsheet of comparison results.
+- [didocmpr:continuous-comparer](beancmpr/dido/continuous/DataCompareService.md) - Creates a service that continuously compares two streams of data.
 
 ### Types
 
@@ -21,6 +22,7 @@
 - [beancmpr:numeric-comparer](org/oddjob/beancmpr/comparers/NumericComparer.md) - A Comparer for numbers that supports tolerances and provides the comparison as a difference between the numbers and as a percentage change between numbers.
 - [beancmpr:text-comparer](org/oddjob/beancmpr/comparers/TextComparer.md) - A comparer for text.
 - [didocmpr:collection-comparer](beancmpr/dido/beans/IterableDataComparerType.md) - Compares two Iterables of Dido Data.
+- [didocmpr:continuous-strategy](org/oddjob/beancmpr/continuous/SourceStrategies.md) - Provides a way to configure a Strategy for comparing sources for Oddjob.
 - [didocmpr:data-results](beancmpr/dido/results/GenericDataResultHandlerFactory.md) - A Result Handler that will generate results as Dido Data.
 
 -----------------------

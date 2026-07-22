@@ -1,15 +1,34 @@
 package org.oddjob.beancmpr.continuous;
 
 import org.oddjob.beancmpr.Comparer;
-import org.oddjob.beancmpr.matchables.Matchable;import java.util.Objects;
+import org.oddjob.beancmpr.matchables.Matchable;
+
+import java.util.Objects;
 
 /**
- * Encapsulate {@link SourceStrategyFactory}s as an enum, primarily for Oddjob configuration.
+ * @oddjob.description Provides a way to configure a Strategy for comparing
+ * sources for Oddjob. Current strategies are:
+ * <ul>
+ *     <li>ONE_FOR_ONE: Trys to match each X to each Y</li>
+ *     <li>MANY_FOR_MANY: Any number of Xs will Match any number of Ys. For instance if
+ *     you get 2 Xs that match a single Y, then 2 matches are reported, as opposed
+ *     to the ONE_FOR_ONE strategy where the second X would result in a missing Y result.
+ *     One use case is comparing a ticking price stream with a throttled price
+ *     stream to ensure the throttled stream had approximately the same data within
+ *     a tolerance period.</li>
+ * </ul>
  */
 public class SourceStrategies {
 
-    private Strategy name;
+    /**
+     * @oddjob.description The name of the strategy.
+     * @oddjob.required Yes.
+     */
+    private Strategy strategy;
 
+    /**
+     * Encapsulate {@link SourceStrategyFactory}s as an enum.
+     */
     public enum Strategy implements SourceStrategyFactory<Matchable> {
 
         ONE_FOR_ONE(StrategyOneForOne::new) {
@@ -31,19 +50,19 @@ public class SourceStrategies {
     }
 
     public SourceStrategyFactory<Matchable> toSourceStrategy() {
-        return Objects.requireNonNull(name, "No Strategy Specified.");
+        return Objects.requireNonNull(strategy, "No Strategy Specified.");
     }
 
-    public Strategy getName() {
-        return name;
+    public Strategy getStrategy() {
+        return strategy;
     }
 
-    public void setName(Strategy name) {
-        this.name = name;
+    public void setStrategy(Strategy strategy) {
+        this.strategy = strategy;
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "[name=" + name + ']';
+        return getClass().getSimpleName() + "[name=" + strategy + ']';
     }
 }

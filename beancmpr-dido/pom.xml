@@ -108,6 +108,13 @@
         </dependency>
 
         <dependency>
+            <groupId>uk.co.rgordon</groupId>
+            <artifactId>dido-replay</artifactId>
+            <version>${dido.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <artifactId>dido-oddball</artifactId>
             <groupId>uk.co.rgordon</groupId>
             <version>${dido.version}</version>
